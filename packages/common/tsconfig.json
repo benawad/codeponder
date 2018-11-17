@@ -6,8 +6,8 @@
     "sourceMap": true,
     "outDir": "./dist",
     "moduleResolution": "node",
+    "declaration": true,
 
-    "composite": true,
     "removeComments": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -18,11 +18,11 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "baseUrl": ".."
+    "skipLibCheck": true,
+    "composite": true,
+    "baseUrl": ".",
+    "rootDir": "src"
   },
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.tsx", "./src/**/*.ts"],
-  "references": [{ "path": "../common" }]
+  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
 }
