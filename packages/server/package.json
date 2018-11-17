@@ -30,6 +30,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "graphql": "^14.0.2",
+    "graphql-middleware": "^2.0.2",
     "ioredis": "^4.2.0",
     "pg": "^7.3.0",
     "reflect-metadata": "^0.1.10",

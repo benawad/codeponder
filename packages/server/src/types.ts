@@ -1,3 +1,13 @@
+export interface CreateCodeReviewRequestInput {
+  numDays?: number | null;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -88,9 +98,24 @@ export namespace UserResolvers {
 
 export namespace MutationResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
+    createCodeReviewRequest?: CreateCodeReviewRequestResolver<
+      CreateCodeReviewRequestResponse,
+      TypeParent,
+      Context
+    >;
+
     login?: LoginResolver<LoginResponse, TypeParent, Context>;
 
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>;
+  }
+
+  export type CreateCodeReviewRequestResolver<
+    R = CreateCodeReviewRequestResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, CreateCodeReviewRequestArgs>;
+  export interface CreateCodeReviewRequestArgs {
+    input: CreateCodeReviewRequestInput;
   }
 
   export type LoginResolver<
@@ -112,21 +137,28 @@ export namespace MutationResolvers {
   }
 }
 
-export namespace LoginResponseResolvers {
-  export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
+export namespace CreateCodeReviewRequestResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = CreateCodeReviewRequestResponse
+  > {
     errors?: ErrorsResolver<Error[] | null, TypeParent, Context>;
 
-    user?: UserResolver<User | null, TypeParent, Context>;
+    CodeReviewRequest?: CodeReviewRequestResolver<
+      CodeReviewRequest | null,
+      TypeParent,
+      Context
+    >;
   }
 
   export type ErrorsResolver<
     R = Error[] | null,
-    Parent = LoginResponse,
+    Parent = CreateCodeReviewRequestResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
-  export type UserResolver<
-    R = User | null,
-    Parent = LoginResponse,
+  export type CodeReviewRequestResolver<
+    R = CodeReviewRequest | null,
+    Parent = CreateCodeReviewRequestResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -146,6 +178,68 @@ export namespace ErrorResolvers {
   export type MessageResolver<
     R = string,
     Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace CodeReviewRequestResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = CodeReviewRequest
+  > {
+    id?: IdResolver<string, TypeParent, Context>;
+
+    numDays?: NumDaysResolver<number | null, TypeParent, Context>;
+
+    codeUrl?: CodeUrlResolver<string, TypeParent, Context>;
+
+    techTags?: TechTagsResolver<string[], TypeParent, Context>;
+
+    notes?: NotesResolver<string, TypeParent, Context>;
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type NumDaysResolver<
+    R = number | null,
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type CodeUrlResolver<
+    R = string,
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type TechTagsResolver<
+    R = string[],
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type NotesResolver<
+    R = string,
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace LoginResponseResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
+    errors?: ErrorsResolver<Error[] | null, TypeParent, Context>;
+
+    user?: UserResolver<User | null, TypeParent, Context>;
+  }
+
+  export type ErrorsResolver<
+    R = Error[] | null,
+    Parent = LoginResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type UserResolver<
+    R = User | null,
+    Parent = LoginResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -182,21 +276,41 @@ export interface User {
 }
 
 export interface Mutation {
+  createCodeReviewRequest: CreateCodeReviewRequestResponse;
+
   login: LoginResponse;
 
   register: RegisterResponse;
 }
 
-export interface LoginResponse {
+export interface CreateCodeReviewRequestResponse {
   errors?: Error[] | null;
 
-  user?: User | null;
+  CodeReviewRequest?: CodeReviewRequest | null;
 }
 
 export interface Error {
   path: string;
 
   message: string;
+}
+
+export interface CodeReviewRequest {
+  id: string;
+
+  numDays?: number | null;
+
+  codeUrl: string;
+
+  techTags: string[];
+
+  notes: string;
+}
+
+export interface LoginResponse {
+  errors?: Error[] | null;
+
+  user?: User | null;
 }
 
 export interface RegisterResponse {
@@ -207,6 +321,9 @@ export interface RegisterResponse {
 // Arguments
 // ====================================================
 
+export interface CreateCodeReviewRequestMutationArgs {
+  input: CreateCodeReviewRequestInput;
+}
 export interface LoginMutationArgs {
   input: LoginInput;
 }
