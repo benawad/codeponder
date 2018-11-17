@@ -1,24 +1,18 @@
 {
-   "type": "postgres",
-   "host": "localhost",
-   "port": 5432,
-   "username": "test",
-   "password": "test",
-   "database": "test",
-   "synchronize": true,
-   "logging": false,
-   "entities": [
-      "src/entity/**/*.ts"
-   ],
-   "migrations": [
-      "src/migration/**/*.ts"
-   ],
-   "subscribers": [
-      "src/subscriber/**/*.ts"
-   ],
-   "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-   }
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "codeponder",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/entity/**/*.*"],
+  "migrations": ["src/migration/**/*.*"],
+  "subscribers": ["src/subscriber/**/*.*"],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
 }
