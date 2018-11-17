@@ -2,6 +2,39 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: CreateCodeReviewRequestMutation
+// ====================================================
+
+export interface CreateCodeReviewRequestMutation_createCodeReviewRequest_codeReviewRequest {
+  id: string;
+  numDays: number | null;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
+}
+
+export interface CreateCodeReviewRequestMutation_createCodeReviewRequest_errors {
+  path: string;
+  message: string;
+}
+
+export interface CreateCodeReviewRequestMutation_createCodeReviewRequest {
+  codeReviewRequest: CreateCodeReviewRequestMutation_createCodeReviewRequest_codeReviewRequest | null;
+  errors: CreateCodeReviewRequestMutation_createCodeReviewRequest_errors[] | null;
+}
+
+export interface CreateCodeReviewRequestMutation {
+  createCodeReviewRequest: CreateCodeReviewRequestMutation_createCodeReviewRequest;
+}
+
+export interface CreateCodeReviewRequestMutationVariables {
+  input: CreateCodeReviewRequestInput;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: LoginMutation
 // ====================================================
 
@@ -59,6 +92,13 @@ export interface RegisterMutationVariables {
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+export interface CreateCodeReviewRequestInput {
+  numDays?: number | null;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
+}
 
 export interface LoginInput {
   usernameOrEmail: string;

@@ -1,33 +1,35 @@
 import { Button, Form } from "semantic-ui-react";
 import { Formik, Field } from "formik";
-import { registerSchema } from "@codeponder/common";
 import { Mutation } from "react-apollo";
-import Router from "next/router";
 
 import { InputField } from "../components/formik-fields/InputField";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { normalizeErrors } from "../utils/normalizeErrors";
-import { registerMutation } from "../graphql/user/mutation/register";
 import {
-  RegisterMutation,
-  RegisterMutationVariables
+  CreateCodeReviewRequestMutation,
+  CreateCodeReviewRequestMutationVariables
 } from "../lib/schema-types";
+import { loginMutation } from "../graphql/user/mutation/login";
 import Layout from "../components/Layout";
 
 interface FormValues {
-  username: string;
-  email: string;
-  password: string;
+  numDays: number;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
 }
 
 export default () => (
-  <Layout title="register">
-    <Mutation<RegisterMutation, RegisterMutationVariables>
-      mutation={registerMutation}
+  <Layout title="create code review request">
+    <Mutation<
+      CreateCodeReviewRequestMutation,
+      CreateCodeReviewRequestMutationVariables
+    >
+      mutation={loginMutation}
     >
       {mutate => (
         <Formik<FormValues>
-          initialValues={{ username: "", email: "", password: "" }}
+          initialValues={{ numDays: 3, codeUrl: "", techTags: [], notes: "" }}
           onSubmit={async (input, { setErrors, setSubmitting }) => {
             const response = await mutate({
               variables: { input }
@@ -36,43 +38,39 @@ export default () => (
             if (
               response &&
               response.data &&
-              response.data.register.errors &&
-              response.data.register.errors.length
+              response.data.createCodeReviewRequest.errors &&
+              response.data.createCodeReviewRequest.errors.length
             ) {
               setSubmitting(false);
-              return setErrors(normalizeErrors(response.data.register.errors));
+              return setErrors(
+                normalizeErrors(response.data.createCodeReviewRequest.errors)
+              );
             } else {
-              Router.push("/login");
+              setSubmitting(false);
+              console.log(response);
+              console.log("create code review success");
             }
           }}
-          validationSchema={registerSchema}
           validateOnBlur={false}
           validateOnChange={false}
         >
           {({ errors, handleSubmit, isSubmitting }) => (
             <Form onSubmit={handleSubmit}>
               <Field
-                name="username"
-                label="Username"
-                placeholder="Username"
+                name="numDays"
+                label="Number of days"
+                placeholder="Number of days"
                 component={InputField}
               />
               <Field
-                name="email"
-                label="Email"
-                placeholder="Email"
+                name="codeUrl"
+                label="Github Url"
+                placeholder="Github Url"
                 component={InputField}
               />
-              <Field
-                name="password"
-                label="Password"
-                placeholder="Password"
-                component={InputField}
-                type="password"
-              />
-              <ErrorMessage errors={errors} />
+              <ErrorMessage errors={errors as any} />
               <Button disabled={isSubmitting} type="submit">
-                Create Account
+                Create Code Review Request
               </Button>
             </Form>
           )}
