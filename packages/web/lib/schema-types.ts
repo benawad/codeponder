@@ -2,6 +2,37 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: LoginMutation
+// ====================================================
+
+export interface LoginMutation_login_user {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface LoginMutation_login_errors {
+  path: string;
+  message: string;
+}
+
+export interface LoginMutation_login {
+  user: LoginMutation_login_user | null;
+  errors: LoginMutation_login_errors[] | null;
+}
+
+export interface LoginMutation {
+  login: LoginMutation_login;
+}
+
+export interface LoginMutationVariables {
+  input: LoginInput;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: RegisterMutation
 // ====================================================
 
@@ -28,6 +59,11 @@ export interface RegisterMutationVariables {
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+export interface LoginInput {
+  usernameOrEmail: string;
+  password: string;
+}
 
 export interface RegisterInput {
   username: string;

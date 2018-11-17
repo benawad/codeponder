@@ -1,31 +1,23 @@
 import { Button, Form } from "semantic-ui-react";
 import { Formik, Field } from "formik";
-import { registerSchema } from "@codeponder/common";
 import { Mutation } from "react-apollo";
-import Router from "next/router";
 
 import { InputField } from "../components/formik-fields/InputField";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { normalizeErrors } from "../utils/normalizeErrors";
-import { registerMutation } from "../graphql/user/mutation/register";
-import {
-  RegisterMutation,
-  RegisterMutationVariables
-} from "../lib/schema-types";
+import { LoginMutation, LoginMutationVariables } from "../lib/schema-types";
+import { loginMutation } from "../graphql/user/mutation/login";
 
 interface FormValues {
-  username: string;
-  email: string;
+  usernameOrEmail: string;
   password: string;
 }
 
 export default () => (
-  <Mutation<RegisterMutation, RegisterMutationVariables>
-    mutation={registerMutation}
-  >
+  <Mutation<LoginMutation, LoginMutationVariables> mutation={loginMutation}>
     {mutate => (
       <Formik<FormValues>
-        initialValues={{ username: "", email: "", password: "" }}
+        initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (input, { setErrors, setSubmitting }) => {
           const response = await mutate({
             variables: { input }
@@ -34,33 +26,24 @@ export default () => (
           if (
             response &&
             response.data &&
-            response.data.register.errors &&
-            response.data.register.errors.length
+            response.data.login.errors &&
+            response.data.login.errors.length
           ) {
-            console.log("err");
             setSubmitting(false);
-            return setErrors(normalizeErrors(response.data.register.errors));
+            return setErrors(normalizeErrors(response.data.login.errors));
           } else {
-            console.log("change route");
-            Router.push("/login");
+            console.log("login success");
           }
         }}
-        validationSchema={registerSchema}
         validateOnBlur={false}
         validateOnChange={false}
       >
         {({ errors, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Field
-              name="username"
-              label="Username"
-              placeholder="Username"
-              component={InputField}
-            />
-            <Field
-              name="email"
-              label="Email"
-              placeholder="Email"
+              name="usernameOrEmail"
+              label="Username or Email"
+              placeholder="Username or Email"
               component={InputField}
             />
             <Field
@@ -72,7 +55,7 @@ export default () => (
             />
             <ErrorMessage errors={errors} />
             <Button disabled={isSubmitting} type="submit">
-              Create Account
+              Login
             </Button>
           </Form>
         )}
