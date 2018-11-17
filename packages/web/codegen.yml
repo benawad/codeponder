@@ -1,0 +1,10 @@
+schema: http://localhost:4000/graphql
+documents: ./graphql/**/*.ts
+overwrite: true
+generates:
+  ./components/apollo-components.tsx:
+    plugins:
+      - typescript-common:
+        schemaNamespace: false
+      - typescript-client:
+        noNamespaces: true

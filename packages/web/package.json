@@ -5,7 +5,10 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "schema:download": "apollo schema:download --endpoint=http://localhost:4000/graphql",
+    "codegen:generate": "apollo codegen:generate --queries=./graphql/**/*.ts --schema=./schema.json --outputFlat --target=typescript ./lib/schema-types.ts",
+    "generate": "npm run schema:download && npm run codegen:generate"
   },
   "dependencies": {
     "@codeponder/common": "1.0.0",
@@ -27,6 +30,11 @@
     "@types/next": "^7.0.1",
     "@types/react": "^16.4.16",
     "@types/react-dom": "16.0.9",
+    "apollo": "1.9.2",
+    "graphql-code-generator": "^0.14.1",
+    "graphql-codegen-typescript-client": "^0.14.1",
+    "graphql-codegen-typescript-common": "^0.14.1",
+    "graphql-codegen-typescript-react-apollo": "^0.14.1",
     "lerna": "^3.4.3",
     "typescript": "3.1.6"
   },
