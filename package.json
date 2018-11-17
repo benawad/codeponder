@@ -1,0 +1,18 @@
+{
+   "name": "codeponder",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "devDependencies": {
+      "@types/node": "^10.12.9",
+      "ts-node": "7.0.1",
+      "typescript": "3.1.6"
+   },
+   "dependencies": {
+      "pg": "^7.3.0",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "0.2.9"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts"
+   }
+}
