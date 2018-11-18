@@ -95,6 +95,10 @@ export namespace CodeReviewRequestResolvers {
     techTags?: TechTagsResolver<string[], TypeParent, Context>;
 
     notes?: NotesResolver<string, TypeParent, Context>;
+
+    ownerId?: OwnerIdResolver<string, TypeParent, Context>;
+
+    owner?: OwnerResolver<User, TypeParent, Context>;
   }
 
   export type IdResolver<
@@ -119,6 +123,16 @@ export namespace CodeReviewRequestResolvers {
   > = Resolver<R, Parent, Context>;
   export type NotesResolver<
     R = string,
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type OwnerIdResolver<
+    R = string,
+    Parent = CodeReviewRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type OwnerResolver<
+    R = User,
     Parent = CodeReviewRequest,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
@@ -290,6 +304,10 @@ export interface CodeReviewRequest {
   techTags: string[];
 
   notes: string;
+
+  ownerId: string;
+
+  owner: User;
 }
 
 export interface User {

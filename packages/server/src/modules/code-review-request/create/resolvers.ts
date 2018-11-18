@@ -10,13 +10,13 @@ export const resolvers: MutationResolvers.Resolvers = {
   ) => {
     isAuthenticated(req);
 
-    const codeReviewRequest = await CodeReviewRequest.create({
+    const codeReviewRequest = (await CodeReviewRequest.create({
       codeUrl,
       notes,
       numDays: numDays || undefined,
       techTags,
-      owner: req.session!.userId
-    }).save();
+      ownerId: req.session!.userId
+    }).save()) as any;
 
     return {
       errors: [],

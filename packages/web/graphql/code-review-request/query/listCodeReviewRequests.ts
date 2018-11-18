@@ -5,6 +5,10 @@ export const listCodeReviewRequestsQuery = gql`
   query ListCodeReviewRequestsQuery {
     listCodeReviewRequests {
       ...CodeReviewRequestInfo
+      owner {
+        id
+        username
+      }
     }
   }
   ${CodeReviewRequestInfoFragment}

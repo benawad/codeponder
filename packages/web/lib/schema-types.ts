@@ -38,12 +38,18 @@ export interface CreateCodeReviewRequestMutationVariables {
 // GraphQL query operation: ListCodeReviewRequestsQuery
 // ====================================================
 
+export interface ListCodeReviewRequestsQuery_listCodeReviewRequests_owner {
+  id: string;
+  username: string;
+}
+
 export interface ListCodeReviewRequestsQuery_listCodeReviewRequests {
   id: string;
   numDays: number | null;
   codeUrl: string;
   techTags: string[];
   notes: string;
+  owner: ListCodeReviewRequestsQuery_listCodeReviewRequests_owner;
 }
 
 export interface ListCodeReviewRequestsQuery {
