@@ -16,7 +16,7 @@ import {
 } from "../lib/schema-types";
 
 interface FormValues {
-  numDays: number;
+  numDays: tringumber;
   codeUrl: string;
   techTags: string[];
   notes: string;
@@ -30,10 +30,26 @@ export default () => (
     >
       {mutate => (
         <Formik<FormValues>
-          initialValues={{ numDays: 3, codeUrl: "", techTags: [], notes: "" }}
-          onSubmit={async (input, { setErrors, setSubmitting }) => {
+          initialValues={{ numDays: "3", codeUrl: "", techTags: [], notes: "" }}
+          onSubmit={async (
+            { codeUrl, notes, numDays, techTags },
+            { setErrors, setSubmitting }
+          ) => {
+            let days = 3;
+
+            try {
+              days = parseInt(numDays, 10);
+            } catch (err) {}
+
             const response = await mutate({
-              variables: { input }
+              variables: {
+                input: {
+                  codeUrl,
+                  notes,
+                  techTags,
+                  numDays: days
+                }
+              }
             });
 
             if (
