@@ -3,6 +3,7 @@ WORKDIR /usr/app
 COPY . .
 RUN yarn
 RUN npm run build:server
+RUN rm ./packages/server/dist/**/*.d.ts
 
 ENV NODE_ENV=production
 EXPOSE 4000

@@ -11,6 +11,7 @@
     "@types/ioredis": "^4.0.4",
     "@types/node": "^10.12.9",
     "@types/yup": "^0.26.2",
+    "copyfiles": "^2.1.0",
     "graphql-code-generator": "^0.14.1",
     "graphql-codegen-typescript-common": "^0.14.1",
     "graphql-codegen-typescript-resolvers": "^0.14.1",
@@ -40,6 +41,7 @@
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
     "generate": "gql-gen",
-    "build": "tsc -b"
+    "build": "tsc -b && copyfiles -u 1 src/**/*.graphql dist/",
+    "serve": "NODE_ENV=production node dist/index.js"
   }
 }
