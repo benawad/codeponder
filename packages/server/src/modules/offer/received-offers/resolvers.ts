@@ -6,12 +6,14 @@ const resolvers: QueryResolvers.Resolvers = {
   receivedOffers: (_, __, { req }) => {
     isAuthenticated(req);
 
+    console.log(req.session!.userId);
+
     return getConnection().query(
       `
       select * from code_review cr
       inner join offer o
       on cr.id = o."codeReviewId"
-      where cr."ownerId" = $1
+      where cr."ownerId" = $1;
     `,
       [req.session!.userId]
     );

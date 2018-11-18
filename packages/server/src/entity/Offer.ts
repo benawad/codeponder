@@ -2,9 +2,9 @@ import {
   Entity,
   BaseEntity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  PrimaryColumn
 } from "typeorm";
 import { User } from "./User";
 import { CodeReview } from "./CodeReviewRequest";
@@ -20,20 +20,17 @@ Notes
 
 @Entity()
 export class Offer extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid") id: string;
-
   @Column({ type: "boolean", default: false })
   accepted: boolean;
 
-  @Column()
+  @PrimaryColumn()
   userId: string;
+  @PrimaryColumn()
+  codeReviewId: String;
 
   @ManyToOne(() => User, user => user.offers)
   @JoinColumn({ name: "userId" })
   user: Promise<User>;
-
-  @Column()
-  codeReviewId: String;
 
   @ManyToOne(() => CodeReview, crr => crr.offers)
   @JoinColumn({ name: "codeReviewId" })
