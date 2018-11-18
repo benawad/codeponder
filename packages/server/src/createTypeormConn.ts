@@ -29,7 +29,7 @@ const prod = {
   username: "postgres",
   password: "postgres",
   database: "codeponder",
-  synchronize: false,
+  synchronize: true,
   logging: false,
   entities: [CodeReview, User, Offer],
   migrations: ["dist/migration/**/*.js"],
