@@ -1,16 +1,16 @@
 import Layout from "../components/Layout";
-import { listCodeReviewRequestsQuery } from "../graphql/code-review-request/query/listCodeReviewRequests";
 import { Query } from "react-apollo";
-import { ListCodeReviewRequestsQuery } from "../lib/schema-types";
+import { ListCodeReviewsQuery } from "../lib/schema-types";
 import { Card, Icon, Grid } from "semantic-ui-react";
+import { listcodeReviewsQuery } from "../graphql/code-review/query/listCodeReview";
 
 export default () => (
   <Layout title="list of code review requests">
-    <Query<ListCodeReviewRequestsQuery> query={listCodeReviewRequestsQuery}>
+    <Query<ListCodeReviewsQuery> query={listcodeReviewsQuery}>
       {({ data }) => {
         return (
           <Grid>
-            {data.listCodeReviewRequests.map(crr => (
+            {data.listcodeReviews.map(crr => (
               <Grid.Column key={crr.id} width={4}>
                 <Card>
                   <Card.Content>

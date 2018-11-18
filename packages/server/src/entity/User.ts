@@ -5,7 +5,7 @@ import {
   BaseEntity,
   OneToMany
 } from "typeorm";
-import { CodeReviewRequest } from "./CodeReviewRequest";
+import { CodeReview } from "./CodeReviewRequest";
 import { Offer } from "./Offer";
 
 @Entity()
@@ -21,8 +21,8 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => CodeReviewRequest, crr => crr.user)
-  codeReviewRequests: CodeReviewRequest[];
+  @OneToMany(() => CodeReview, crr => crr.user)
+  codeReviews: CodeReview[];
 
   @OneToMany(() => Offer, crr => crr.user)
   offers: Offer[];

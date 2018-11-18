@@ -1,9 +1,9 @@
 import { QueryResolvers } from "../../../types";
-import { CodeReviewRequest } from "../../../entity/CodeReviewRequest";
+import { CodeReview } from "../../../entity/CodeReviewRequest";
 
 const resolvers: QueryResolvers.Resolvers = {
-  listCodeReviewRequests: () => {
-    return CodeReviewRequest.find() as any;
+  listcodeReviews: () => {
+    return CodeReview.find() as any;
   }
 };
 

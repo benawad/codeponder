@@ -1,4 +1,4 @@
-export interface CreateCodeReviewRequestInput {
+export interface CreateCodeReviewInput {
   numDays?: number | null;
 
   codeUrl: string;
@@ -11,7 +11,7 @@ export interface CreateCodeReviewRequestInput {
 export interface CreateOfferInput {
   userId: string;
 
-  codeReviewRequestId: string;
+  codeReviewId: string;
 }
 
 export interface LoginInput {
@@ -66,7 +66,7 @@ export type SubscriptionResolver<
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
-    listCodeReviewRequests?: ListCodeReviewRequestsResolver<
+    listcodeReviews?: ListcodeReviewsResolver<
       CodeReviewRequest[],
       TypeParent,
       Context
@@ -75,7 +75,7 @@ export namespace QueryResolvers {
     me?: MeResolver<User | null, TypeParent, Context>;
   }
 
-  export type ListCodeReviewRequestsResolver<
+  export type ListcodeReviewsResolver<
     R = CodeReviewRequest[],
     Parent = {},
     Context = MyContext
@@ -172,8 +172,8 @@ export namespace UserResolvers {
 
 export namespace MutationResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
-    createCodeReviewRequest?: CreateCodeReviewRequestResolver<
-      CreateCodeReviewRequestResponse,
+    createCodeReview?: CreateCodeReviewResolver<
+      CreateCodeReviewResponse,
       TypeParent,
       Context
     >;
@@ -185,13 +185,13 @@ export namespace MutationResolvers {
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>;
   }
 
-  export type CreateCodeReviewRequestResolver<
-    R = CreateCodeReviewRequestResponse,
+  export type CreateCodeReviewResolver<
+    R = CreateCodeReviewResponse,
     Parent = {},
     Context = MyContext
-  > = Resolver<R, Parent, Context, CreateCodeReviewRequestArgs>;
-  export interface CreateCodeReviewRequestArgs {
-    input: CreateCodeReviewRequestInput;
+  > = Resolver<R, Parent, Context, CreateCodeReviewArgs>;
+  export interface CreateCodeReviewArgs {
+    input: CreateCodeReviewInput;
   }
 
   export type CreateOfferResolver<
@@ -222,14 +222,14 @@ export namespace MutationResolvers {
   }
 }
 
-export namespace CreateCodeReviewRequestResponseResolvers {
+export namespace CreateCodeReviewResponseResolvers {
   export interface Resolvers<
     Context = MyContext,
-    TypeParent = CreateCodeReviewRequestResponse
+    TypeParent = CreateCodeReviewResponse
   > {
     errors?: ErrorsResolver<Error[] | null, TypeParent, Context>;
 
-    codeReviewRequest?: CodeReviewRequestResolver<
+    codeReview?: CodeReviewResolver<
       CodeReviewRequest | null,
       TypeParent,
       Context
@@ -238,12 +238,12 @@ export namespace CreateCodeReviewRequestResponseResolvers {
 
   export type ErrorsResolver<
     R = Error[] | null,
-    Parent = CreateCodeReviewRequestResponse,
+    Parent = CreateCodeReviewResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
-  export type CodeReviewRequestResolver<
+  export type CodeReviewResolver<
     R = CodeReviewRequest | null,
-    Parent = CreateCodeReviewRequestResponse,
+    Parent = CreateCodeReviewResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -321,7 +321,7 @@ export namespace RegisterResponseResolvers {
 // ====================================================
 
 export interface Query {
-  listCodeReviewRequests: CodeReviewRequest[];
+  listcodeReviews: CodeReviewRequest[];
 
   me?: User | null;
 }
@@ -351,7 +351,7 @@ export interface User {
 }
 
 export interface Mutation {
-  createCodeReviewRequest: CreateCodeReviewRequestResponse;
+  createCodeReview: CreateCodeReviewResponse;
 
   createOffer: CreateOfferResponse;
 
@@ -360,10 +360,10 @@ export interface Mutation {
   register: RegisterResponse;
 }
 
-export interface CreateCodeReviewRequestResponse {
+export interface CreateCodeReviewResponse {
   errors?: Error[] | null;
 
-  codeReviewRequest?: CodeReviewRequest | null;
+  codeReview?: CodeReviewRequest | null;
 }
 
 export interface Error {
@@ -390,8 +390,8 @@ export interface RegisterResponse {
 // Arguments
 // ====================================================
 
-export interface CreateCodeReviewRequestMutationArgs {
-  input: CreateCodeReviewRequestInput;
+export interface CreateCodeReviewMutationArgs {
+  input: CreateCodeReviewInput;
 }
 export interface CreateOfferMutationArgs {
   input: CreateOfferInput;

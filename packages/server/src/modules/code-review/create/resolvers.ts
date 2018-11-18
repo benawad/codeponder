@@ -1,16 +1,16 @@
 import { MutationResolvers } from "../../../types";
-import { CodeReviewRequest } from "../../../entity/CodeReviewRequest";
+import { CodeReview } from "../../../entity/CodeReviewRequest";
 import { isAuthenticated } from "../../../middleware";
 
 export const resolvers: MutationResolvers.Resolvers = {
-  createCodeReviewRequest: async (
+  createCodeReview: async (
     _,
     { input: { codeUrl, notes, numDays, techTags } },
     { req }
   ) => {
     isAuthenticated(req);
 
-    const codeReviewRequest = (await CodeReviewRequest.create({
+    const codeReview = (await CodeReview.create({
       codeUrl,
       notes,
       numDays: numDays || undefined,
@@ -20,7 +20,7 @@ export const resolvers: MutationResolvers.Resolvers = {
 
     return {
       errors: [],
-      codeReviewRequest
+      codeReview
     };
   }
 };

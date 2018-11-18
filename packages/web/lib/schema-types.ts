@@ -5,7 +5,7 @@
 // GraphQL mutation operation: CreateCodeReviewRequestMutation
 // ====================================================
 
-export interface CreateCodeReviewRequestMutation_createCodeReviewRequest_codeReviewRequest {
+export interface CreateCodeReviewRequestMutation_createCodeReview_codeReview {
   id: string;
   numDays: number | null;
   codeUrl: string;
@@ -13,47 +13,47 @@ export interface CreateCodeReviewRequestMutation_createCodeReviewRequest_codeRev
   notes: string;
 }
 
-export interface CreateCodeReviewRequestMutation_createCodeReviewRequest_errors {
+export interface CreateCodeReviewRequestMutation_createCodeReview_errors {
   path: string;
   message: string;
 }
 
-export interface CreateCodeReviewRequestMutation_createCodeReviewRequest {
-  codeReviewRequest: CreateCodeReviewRequestMutation_createCodeReviewRequest_codeReviewRequest | null;
-  errors: CreateCodeReviewRequestMutation_createCodeReviewRequest_errors[] | null;
+export interface CreateCodeReviewRequestMutation_createCodeReview {
+  codeReview: CreateCodeReviewRequestMutation_createCodeReview_codeReview | null;
+  errors: CreateCodeReviewRequestMutation_createCodeReview_errors[] | null;
 }
 
 export interface CreateCodeReviewRequestMutation {
-  createCodeReviewRequest: CreateCodeReviewRequestMutation_createCodeReviewRequest;
+  createCodeReview: CreateCodeReviewRequestMutation_createCodeReview;
 }
 
 export interface CreateCodeReviewRequestMutationVariables {
-  input: CreateCodeReviewRequestInput;
+  input: CreateCodeReviewInput;
 }
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ListCodeReviewRequestsQuery
+// GraphQL query operation: ListcodeReviewsQuery
 // ====================================================
 
-export interface ListCodeReviewRequestsQuery_listCodeReviewRequests_owner {
+export interface ListcodeReviewsQuery_listcodeReviews_owner {
   id: string;
   username: string;
 }
 
-export interface ListCodeReviewRequestsQuery_listCodeReviewRequests {
+export interface ListcodeReviewsQuery_listcodeReviews {
   id: string;
   numDays: number | null;
   codeUrl: string;
   techTags: string[];
   notes: string;
-  owner: ListCodeReviewRequestsQuery_listCodeReviewRequests_owner;
+  owner: ListcodeReviewsQuery_listcodeReviews_owner;
 }
 
-export interface ListCodeReviewRequestsQuery {
-  listCodeReviewRequests: ListCodeReviewRequestsQuery_listCodeReviewRequests[];
+export interface ListCodeReviewsQuery {
+  listcodeReviews: ListcodeReviewsQuery_listcodeReviews[];
 }
 
 /* tslint:disable */
@@ -115,10 +115,10 @@ export interface RegisterMutationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: CodeReviewRequestInfo
+// GraphQL fragment: CodeReviewInfo
 // ====================================================
 
-export interface CodeReviewRequestInfo {
+export interface CodeReviewInfo {
   id: string;
   numDays: number | null;
   codeUrl: string;
@@ -133,7 +133,7 @@ export interface CodeReviewRequestInfo {
 // START Enums and Input Objects
 //==============================================================
 
-export interface CreateCodeReviewRequestInput {
+export interface CreateCodeReviewInput {
   numDays?: number | null;
   codeUrl: string;
   techTags: string[];

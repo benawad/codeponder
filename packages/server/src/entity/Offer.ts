@@ -7,7 +7,7 @@ import {
   JoinColumn
 } from "typeorm";
 import { User } from "./User";
-import { CodeReviewRequest } from "./CodeReviewRequest";
+import { CodeReview } from "./CodeReviewRequest";
 
 /*
 
@@ -33,9 +33,9 @@ export class Offer extends BaseEntity {
   user: Promise<User>;
 
   @Column()
-  codeReviewRequestId: String;
+  codeReviewId: String;
 
-  @ManyToOne(() => CodeReviewRequest, crr => crr.offers)
-  @JoinColumn({ name: "codeReviewRequestId" })
-  codeReviewRequest: Promise<CodeReviewRequest>;
+  @ManyToOne(() => CodeReview, crr => crr.offers)
+  @JoinColumn({ name: "codeReviewId" })
+  codeReview: Promise<CodeReview>;
 }

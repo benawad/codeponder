@@ -1,0 +1,15 @@
+type CreateCodeReviewResponse {
+  errors: [Error!]
+  codeReview: CodeReviewRequest
+}
+
+input CreateCodeReviewInput {
+  numDays: Int
+  codeUrl: String!
+  techTags: [String!]!
+  notes: String!
+}
+
+type Mutation {
+  createCodeReview(input: CreateCodeReviewInput!): CreateCodeReviewResponse!
+}

@@ -20,7 +20,7 @@ Notes
 */
 
 @Entity()
-export class CodeReviewRequest extends BaseEntity {
+export class CodeReview extends BaseEntity {
   @PrimaryGeneratedColumn("uuid") id: string;
 
   @Column({ type: "int" })
@@ -38,10 +38,10 @@ export class CodeReviewRequest extends BaseEntity {
   @Column()
   ownerId: string;
 
-  @ManyToOne(() => User, user => user.codeReviewRequests)
+  @ManyToOne(() => User, user => user.codeReviews)
   @JoinColumn({ name: "ownerId" })
   user: Promise<User>;
 
-  @OneToMany(() => Offer, offer => offer.codeReviewRequest)
+  @OneToMany(() => Offer, offer => offer.codeReview)
   offers: Offer[];
 }

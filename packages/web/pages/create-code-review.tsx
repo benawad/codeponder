@@ -11,7 +11,7 @@ import {
 } from "../lib/schema-types";
 import Layout from "../components/Layout";
 import { TextAreaField } from "../components/formik-fields/TextAreaField";
-import { createCodeReviewRequestMutation } from "../graphql/code-review-request/mutation/createCodeReviewRequest";
+import { createCodeReviewMutation } from "../graphql/code-review/mutation/createCodeReview";
 
 interface FormValues {
   numDays: number;
@@ -26,7 +26,7 @@ export default () => (
       CreateCodeReviewRequestMutation,
       CreateCodeReviewRequestMutationVariables
     >
-      mutation={createCodeReviewRequestMutation}
+      mutation={createCodeReviewMutation}
     >
       {mutate => (
         <Formik<FormValues>
@@ -39,12 +39,12 @@ export default () => (
             if (
               response &&
               response.data &&
-              response.data.createCodeReviewRequest.errors &&
-              response.data.createCodeReviewRequest.errors.length
+              response.data.createCodeReview.errors &&
+              response.data.createCodeReview.errors.length
             ) {
               setSubmitting(false);
               return setErrors(
-                normalizeErrors(response.data.createCodeReviewRequest.errors)
+                normalizeErrors(response.data.createCodeReview.errors)
               );
             } else {
               setSubmitting(false);

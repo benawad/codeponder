@@ -14,7 +14,7 @@
         "description": "",
         "fields": [
           {
-            "name": "listCodeReviewRequests",
+            "name": "listcodeReviews",
             "description": "",
             "args": [],
             "type": {
@@ -277,7 +277,7 @@
         "description": "",
         "fields": [
           {
-            "name": "createCodeReviewRequest",
+            "name": "createCodeReview",
             "description": "",
             "args": [
               {
@@ -288,7 +288,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "CreateCodeReviewRequestInput",
+                    "name": "CreateCodeReviewInput",
                     "ofType": null
                   }
                 },
@@ -300,7 +300,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "CreateCodeReviewRequestResponse",
+                "name": "CreateCodeReviewResponse",
                 "ofType": null
               }
             },
@@ -377,7 +377,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "CreateCodeReviewRequestInput",
+        "name": "CreateCodeReviewInput",
         "description": "",
         "fields": null,
         "inputFields": [
@@ -448,7 +448,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CreateCodeReviewRequestResponse",
+        "name": "CreateCodeReviewResponse",
         "description": "",
         "fields": [
           {
@@ -472,7 +472,7 @@
             "deprecationReason": null
           },
           {
-            "name": "codeReviewRequest",
+            "name": "codeReview",
             "description": "",
             "args": [],
             "type": {
@@ -1509,11 +1509,7 @@
       {
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
+        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
         "args": [
           {
             "name": "if",
@@ -1534,11 +1530,7 @@
       {
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
+        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
         "args": [
           {
             "name": "if",
@@ -1559,10 +1551,7 @@
       {
         "name": "deprecated",
         "description": "Marks an element of a GraphQL schema as no longer supported.",
-        "locations": [
-          "FIELD_DEFINITION",
-          "ENUM_VALUE"
-        ],
+        "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
         "args": [
           {
             "name": "reason",

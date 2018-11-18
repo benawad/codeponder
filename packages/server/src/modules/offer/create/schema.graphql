@@ -4,7 +4,7 @@ type CreateOfferResponse {
 
 input CreateOfferInput {
   userId: String!
-  codeReviewRequestId: String!
+  codeReviewId: String!
 }
 
 type Mutation {
