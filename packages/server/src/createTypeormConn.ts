@@ -1,4 +1,7 @@
 import { createConnection } from "typeorm";
+import { CodeReview } from "./entity/CodeReviewRequest";
+import { User } from "./entity/User";
+import { Offer } from "./entity/Offer";
 
 const dev = {
   type: "postgres",
@@ -28,9 +31,9 @@ const prod = {
   database: "codeponder",
   synchronize: false,
   logging: false,
-  entities: ["dist/entity/**/*.*"],
-  migrations: ["dist/migration/**/*.*"],
-  subscribers: ["dist/subscriber/**/*.*"]
+  entities: [CodeReview, User, Offer],
+  migrations: ["dist/migration/**/*.js"],
+  subscribers: ["dist/subscriber/**/*.js"]
 };
 
 export const createTypeormConn = async () => {
