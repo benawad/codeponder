@@ -1,0 +1,59 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  db:
+    image: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: codeponder
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  server:
+    image: server
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  web:
+    image: web
+    ports:
+      - "3000:3000"
+  proxy:
+    image: abiosoft/caddy:no-stats
+    volumes:
+      - /root/codeponder.com/Caddyfile:/etc/Caddyfile
+      - /root/.caddy:/root/.caddy
+      - /root/logs:/etc/logs
+      - /root/goaccess/.html:/site/goaccess
+    ports:
+      - "80:80"
+      - "443:443"
+      - "7890:7890"
+    depends_on:
+      - web
+      - server
+  goaccess:
+    image: allinurl/goaccess
+    volumes:
+      - /root/codeponder.com/goaccess/data/:/srv/data
+      - /root/goaccess/.html:/srv/report
+      - /root/logs:/srv/logs
+    depends_on:
+      - proxy

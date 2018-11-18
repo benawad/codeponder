@@ -23,9 +23,14 @@ export default () => (
     <p>
       <Link href="/register">
         <a>
-          <Button>Register as a Expert</Button>
+          <Button>Register as an Expert</Button>
         </a>
       </Link>
+    </p>
+    <p>
+      <a href="https://github.com/benawad/codeponder">
+        This is an Open Source Project
+      </a>
     </p>
   </Layout>
 );

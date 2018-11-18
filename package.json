@@ -1,5 +1,9 @@
 {
   "private": true,
+  "scripts": {
+    "build:server": "lerna run build --scope={@codeponder/common,@codeponder/server}",
+    "build:web": "lerna run build --scope={@codeponder/common,@codeponder/web}"
+  },
   "workspaces": {
     "packages": [
       "packages/*"
