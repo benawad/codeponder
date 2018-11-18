@@ -6,6 +6,9 @@ export const receivedOffersQuery = gql`
     receivedOffers {
       ...OfferInfo
     }
+    myOffers {
+      ...OfferInfo
+    }
   }
 
   ${OfferInfoFragment}

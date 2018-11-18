@@ -80,6 +80,8 @@ export namespace QueryResolvers {
       Context
     >;
 
+    myOffers?: MyOffersResolver<Offer[], TypeParent, Context>;
+
     receivedOffers?: ReceivedOffersResolver<Offer[], TypeParent, Context>;
 
     me?: MeResolver<User | null, TypeParent, Context>;
@@ -87,6 +89,11 @@ export namespace QueryResolvers {
 
   export type ListCodeReviewsResolver<
     R = CodeReview[],
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type MyOffersResolver<
+    R = Offer[],
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context>;
@@ -407,6 +414,8 @@ export namespace RegisterResponseResolvers {
 
 export interface Query {
   listCodeReviews: CodeReview[];
+
+  myOffers: Offer[];
 
   receivedOffers: Offer[];
 

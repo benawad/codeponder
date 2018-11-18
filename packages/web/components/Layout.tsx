@@ -28,7 +28,7 @@ const Layout: React.SFC<Props> = ({
       <Mutation<LogoutMutation> mutation={logoutMutation}>
         {mutate => (
           <Query<MeQuery> ssr={false} query={meQuery}>
-            {({ data, loading, client }) => {
+            {({ data, loading }) => {
               const isLoggedIn = !!data.me;
 
               if (loading) {
@@ -58,8 +58,9 @@ const Layout: React.SFC<Props> = ({
                         <Menu.Item
                           onClick={async () => {
                             await mutate({});
-                            await client.resetStore();
-                            Router.push("/home");
+                            (window as any).location = "/home";
+                            // Router.push("/home");
+                            // await client.resetStore();
                           }}
                         >
                           logout

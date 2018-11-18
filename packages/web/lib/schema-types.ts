@@ -142,8 +142,29 @@ export interface ReceivedOffersQuery_receivedOffers {
   sender: ReceivedOffersQuery_receivedOffers_sender;
 }
 
+export interface ReceivedOffersQuery_myOffers_codeReview {
+  id: string;
+  numDays: number | null;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
+}
+
+export interface ReceivedOffersQuery_myOffers_sender {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface ReceivedOffersQuery_myOffers {
+  status: string;
+  codeReview: ReceivedOffersQuery_myOffers_codeReview;
+  sender: ReceivedOffersQuery_myOffers_sender;
+}
+
 export interface ReceivedOffersQuery {
   receivedOffers: ReceivedOffersQuery_receivedOffers[];
+  myOffers: ReceivedOffersQuery_myOffers[];
 }
 
 /* tslint:disable */
