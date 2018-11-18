@@ -1,3 +1,7 @@
-import { createConnection } from "typeorm";
+import { createConnection, getConnectionOptions } from "typeorm";
 
-export const createTypeormConn = () => createConnection();
+export const createTypeormConn = async () => {
+  const connectionOptions = await getConnectionOptions(process.env.NODE_ENV);
+
+  return createConnection(connectionOptions);
+};

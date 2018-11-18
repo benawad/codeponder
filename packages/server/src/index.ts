@@ -15,7 +15,10 @@ const RedisStore = connectRedis(session);
 
 const corsOptions = {
   credentials: true,
-  origin: "http://localhost:3000"
+  origin:
+    process.env.NODE_ENV === "production"
+      ? "https://codeponder.com"
+      : "http://localhost:3000"
 };
 
 const startServer = async () => {

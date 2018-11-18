@@ -22,7 +22,10 @@ function create(initialState?: any) {
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
-      uri: "http://localhost:4000/graphql", // Server URL (must be absolute)
+      uri:
+        process.env.NODE_ENV === "production"
+          ? "https://server.codeponder.com/graphql"
+          : "http://localhost:4000/graphql",
       credentials: "include"
     }),
 
