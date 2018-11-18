@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { CodeReviewRequestInfoFragment } from "../fragments";
 
 export const createCodeReviewRequestMutation = gql`
   mutation CreateCodeReviewRequestMutation(
@@ -6,11 +7,7 @@ export const createCodeReviewRequestMutation = gql`
   ) {
     createCodeReviewRequest(input: $input) {
       codeReviewRequest {
-        id
-        numDays
-        codeUrl
-        techTags
-        notes
+        ...CodeReviewRequestInfo
       }
       errors {
         path
@@ -18,4 +15,6 @@ export const createCodeReviewRequestMutation = gql`
       }
     }
   }
+
+  ${CodeReviewRequestInfoFragment}
 `;

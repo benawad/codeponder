@@ -9,8 +9,9 @@ import {
   CreateCodeReviewRequestMutation,
   CreateCodeReviewRequestMutationVariables
 } from "../lib/schema-types";
-import { loginMutation } from "../graphql/user/mutation/login";
 import Layout from "../components/Layout";
+import { TextAreaField } from "../components/formik-fields/TextAreaField";
+import { createCodeReviewRequestMutation } from "../graphql/code-review-request/mutation/createCodeReviewRequest";
 
 interface FormValues {
   numDays: number;
@@ -25,7 +26,7 @@ export default () => (
       CreateCodeReviewRequestMutation,
       CreateCodeReviewRequestMutationVariables
     >
-      mutation={loginMutation}
+      mutation={createCodeReviewRequestMutation}
     >
       {mutate => (
         <Formik<FormValues>
@@ -67,6 +68,12 @@ export default () => (
                 label="Github Url"
                 placeholder="Github Url"
                 component={InputField}
+              />
+              <Field
+                name="notes"
+                label="Notes"
+                placeholder="Notes"
+                component={TextAreaField}
               />
               <ErrorMessage errors={errors as any} />
               <Button disabled={isSubmitting} type="submit">
