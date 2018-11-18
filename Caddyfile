@@ -1,8 +1,3 @@
-codeponder.com {
-  log / /etc/logs/requests.log "{combined}"
-  proxy / web:3000
-}
-
 www.codeponder.com {
   log / /etc/logs/requests.log "{combined}"
   proxy / web:3000

@@ -17,7 +17,7 @@ const corsOptions = {
   credentials: true,
   origin:
     process.env.NODE_ENV === "production"
-      ? "https://codeponder.com"
+      ? "https://www.codeponder.com"
       : "http://localhost:3000"
 };
 
@@ -25,6 +25,8 @@ const startServer = async () => {
   await createTypeormConn();
 
   const app = express();
+
+  app.set("trust proxy", 1);
 
   app.use(cors(corsOptions));
 
