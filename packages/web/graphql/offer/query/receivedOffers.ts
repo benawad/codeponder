@@ -1,20 +1,12 @@
 import gql from "graphql-tag";
-import { CodeReviewInfoFragment } from "../../code-review/fragments";
-import { UserInfoFragment } from "../../user/fragment";
+import { OfferInfoFragment } from "../fragments";
 
 export const receivedOffersQuery = gql`
   query ReceivedOffersQuery {
     receivedOffers {
-      accepted
-      codeReview {
-        ...CodeReviewInfo
-      }
-      sender {
-        ...UserInfo
-      }
+      ...OfferInfo
     }
   }
 
-  ${CodeReviewInfoFragment}
-  ${UserInfoFragment}
+  ${OfferInfoFragment}
 `;

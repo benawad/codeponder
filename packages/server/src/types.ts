@@ -14,6 +14,14 @@ export interface CreateOfferInput {
   codeReviewId: string;
 }
 
+export interface UpdateOfferStatusInput {
+  userId: string;
+
+  codeReviewId: string;
+
+  status: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -184,7 +192,7 @@ export namespace OfferResolvers {
 
     sender?: SenderResolver<User, TypeParent, Context>;
 
-    accepted?: AcceptedResolver<boolean, TypeParent, Context>;
+    status?: StatusResolver<string, TypeParent, Context>;
   }
 
   export type CodeReviewIdResolver<
@@ -207,8 +215,8 @@ export namespace OfferResolvers {
     Parent = Offer,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
-  export type AcceptedResolver<
-    R = boolean,
+  export type StatusResolver<
+    R = string,
     Parent = Offer,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
@@ -223,6 +231,12 @@ export namespace MutationResolvers {
     >;
 
     createOffer?: CreateOfferResolver<CreateOfferResponse, TypeParent, Context>;
+
+    updateOfferStatus?: UpdateOfferStatusResolver<
+      UpdateOfferStatusResponse,
+      TypeParent,
+      Context
+    >;
 
     login?: LoginResolver<LoginResponse, TypeParent, Context>;
 
@@ -247,6 +261,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CreateOfferArgs>;
   export interface CreateOfferArgs {
     input: CreateOfferInput;
+  }
+
+  export type UpdateOfferStatusResolver<
+    R = UpdateOfferStatusResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, UpdateOfferStatusArgs>;
+  export interface UpdateOfferStatusArgs {
+    input: UpdateOfferStatusInput;
   }
 
   export type LoginResolver<
@@ -325,6 +348,21 @@ export namespace CreateOfferResponseResolvers {
   export type OkResolver<
     R = boolean,
     Parent = CreateOfferResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace UpdateOfferStatusResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = UpdateOfferStatusResponse
+  > {
+    offer?: OfferResolver<Offer | null, TypeParent, Context>;
+  }
+
+  export type OfferResolver<
+    R = Offer | null,
+    Parent = UpdateOfferStatusResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -408,13 +446,15 @@ export interface Offer {
 
   sender: User;
 
-  accepted: boolean;
+  status: string;
 }
 
 export interface Mutation {
   createCodeReview: CreateCodeReviewResponse;
 
   createOffer: CreateOfferResponse;
+
+  updateOfferStatus: UpdateOfferStatusResponse;
 
   login: LoginResponse;
 
@@ -439,6 +479,10 @@ export interface CreateOfferResponse {
   ok: boolean;
 }
 
+export interface UpdateOfferStatusResponse {
+  offer?: Offer | null;
+}
+
 export interface LoginResponse {
   errors?: Error[] | null;
 
@@ -458,6 +502,9 @@ export interface CreateCodeReviewMutationArgs {
 }
 export interface CreateOfferMutationArgs {
   input: CreateOfferInput;
+}
+export interface UpdateOfferStatusMutationArgs {
+  input: UpdateOfferStatusInput;
 }
 export interface LoginMutationArgs {
   input: LoginInput;

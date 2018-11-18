@@ -80,6 +80,45 @@ export interface CreateOfferMutationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: UpdateOfferStatusMutation
+// ====================================================
+
+export interface UpdateOfferStatusMutation_updateOfferStatus_offer_codeReview {
+  id: string;
+  numDays: number | null;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
+}
+
+export interface UpdateOfferStatusMutation_updateOfferStatus_offer_sender {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface UpdateOfferStatusMutation_updateOfferStatus_offer {
+  status: string;
+  codeReview: UpdateOfferStatusMutation_updateOfferStatus_offer_codeReview;
+  sender: UpdateOfferStatusMutation_updateOfferStatus_offer_sender;
+}
+
+export interface UpdateOfferStatusMutation_updateOfferStatus {
+  offer: UpdateOfferStatusMutation_updateOfferStatus_offer | null;
+}
+
+export interface UpdateOfferStatusMutation {
+  updateOfferStatus: UpdateOfferStatusMutation_updateOfferStatus;
+}
+
+export interface UpdateOfferStatusMutationVariables {
+  input: UpdateOfferStatusInput;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: ReceivedOffersQuery
 // ====================================================
 
@@ -98,7 +137,7 @@ export interface ReceivedOffersQuery_receivedOffers_sender {
 }
 
 export interface ReceivedOffersQuery_receivedOffers {
-  accepted: boolean;
+  status: string;
   codeReview: ReceivedOffersQuery_receivedOffers_codeReview;
   sender: ReceivedOffersQuery_receivedOffers_sender;
 }
@@ -209,6 +248,33 @@ export interface CodeReviewInfo {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: OfferInfo
+// ====================================================
+
+export interface OfferInfo_codeReview {
+  id: string;
+  numDays: number | null;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
+}
+
+export interface OfferInfo_sender {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface OfferInfo {
+  status: string;
+  codeReview: OfferInfo_codeReview;
+  sender: OfferInfo_sender;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: UserInfo
 // ====================================================
 
@@ -246,6 +312,12 @@ export interface RegisterInput {
   username: string;
   email: string;
   password: string;
+}
+
+export interface UpdateOfferStatusInput {
+  userId: string;
+  codeReviewId: string;
+  status: string;
 }
 
 //==============================================================

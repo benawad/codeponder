@@ -3,5 +3,5 @@ type Offer {
   userId: String!
   codeReview: CodeReview!
   sender: User!
-  accepted: Boolean!
+  status: String!
 }
