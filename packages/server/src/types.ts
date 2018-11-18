@@ -67,16 +67,23 @@ export type SubscriptionResolver<
 export namespace QueryResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
     listCodeReviews?: ListCodeReviewsResolver<
-      CodeReviewRequest[],
+      CodeReview[],
       TypeParent,
       Context
     >;
+
+    receivedOffers?: ReceivedOffersResolver<Offer[], TypeParent, Context>;
 
     me?: MeResolver<User | null, TypeParent, Context>;
   }
 
   export type ListCodeReviewsResolver<
-    R = CodeReviewRequest[],
+    R = CodeReview[],
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type ReceivedOffersResolver<
+    R = Offer[],
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context>;
@@ -87,11 +94,8 @@ export namespace QueryResolvers {
   > = Resolver<R, Parent, Context>;
 }
 
-export namespace CodeReviewRequestResolvers {
-  export interface Resolvers<
-    Context = MyContext,
-    TypeParent = CodeReviewRequest
-  > {
+export namespace CodeReviewResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = CodeReview> {
     id?: IdResolver<string, TypeParent, Context>;
 
     numDays?: NumDaysResolver<number | null, TypeParent, Context>;
@@ -109,37 +113,37 @@ export namespace CodeReviewRequestResolvers {
 
   export type IdResolver<
     R = string,
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type NumDaysResolver<
     R = number | null,
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type CodeUrlResolver<
     R = string,
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type TechTagsResolver<
     R = string[],
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type NotesResolver<
     R = string,
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type OwnerIdResolver<
     R = string,
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type OwnerResolver<
     R = User,
-    Parent = CodeReviewRequest,
+    Parent = CodeReview,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -166,6 +170,46 @@ export namespace UserResolvers {
   export type EmailResolver<
     R = string,
     Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace OfferResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Offer> {
+    codeReviewId?: CodeReviewIdResolver<string, TypeParent, Context>;
+
+    userId?: UserIdResolver<string, TypeParent, Context>;
+
+    codeReview?: CodeReviewResolver<CodeReview, TypeParent, Context>;
+
+    sender?: SenderResolver<User, TypeParent, Context>;
+
+    accepted?: AcceptedResolver<boolean, TypeParent, Context>;
+  }
+
+  export type CodeReviewIdResolver<
+    R = string,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type UserIdResolver<
+    R = string,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type CodeReviewResolver<
+    R = CodeReview,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type SenderResolver<
+    R = User,
+    Parent = Offer,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+  export type AcceptedResolver<
+    R = boolean,
+    Parent = Offer,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -236,11 +280,7 @@ export namespace CreateCodeReviewResponseResolvers {
   > {
     errors?: ErrorsResolver<Error[] | null, TypeParent, Context>;
 
-    codeReview?: CodeReviewResolver<
-      CodeReviewRequest | null,
-      TypeParent,
-      Context
-    >;
+    codeReview?: CodeReviewResolver<CodeReview | null, TypeParent, Context>;
   }
 
   export type ErrorsResolver<
@@ -249,7 +289,7 @@ export namespace CreateCodeReviewResponseResolvers {
     Context = MyContext
   > = Resolver<R, Parent, Context>;
   export type CodeReviewResolver<
-    R = CodeReviewRequest | null,
+    R = CodeReview | null,
     Parent = CreateCodeReviewResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
@@ -328,12 +368,14 @@ export namespace RegisterResponseResolvers {
 // ====================================================
 
 export interface Query {
-  listCodeReviews: CodeReviewRequest[];
+  listCodeReviews: CodeReview[];
+
+  receivedOffers: Offer[];
 
   me?: User | null;
 }
 
-export interface CodeReviewRequest {
+export interface CodeReview {
   id: string;
 
   numDays?: number | null;
@@ -357,6 +399,18 @@ export interface User {
   email: string;
 }
 
+export interface Offer {
+  codeReviewId: string;
+
+  userId: string;
+
+  codeReview: CodeReview;
+
+  sender: User;
+
+  accepted: boolean;
+}
+
 export interface Mutation {
   createCodeReview: CreateCodeReviewResponse;
 
@@ -372,7 +426,7 @@ export interface Mutation {
 export interface CreateCodeReviewResponse {
   errors?: Error[] | null;
 
-  codeReview?: CodeReviewRequest | null;
+  codeReview?: CodeReview | null;
 }
 
 export interface Error {

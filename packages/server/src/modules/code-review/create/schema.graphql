@@ -1,6 +1,6 @@
 type CreateCodeReviewResponse {
   errors: [Error!]
-  codeReview: CodeReviewRequest
+  codeReview: CodeReview
 }
 
 input CreateCodeReviewInput {

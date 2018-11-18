@@ -1,7 +1,7 @@
-import { CodeReviewRequestResolvers } from "../../../types";
+import { CodeReviewResolvers } from "../../../types";
 import { User } from "../../../entity/User";
 
-export const resolvers: CodeReviewRequestResolvers.Resolvers = {
+export const resolvers: CodeReviewResolvers.Resolvers = {
   owner: async ({ ownerId }) => {
     const user = await User.findOne(ownerId);
     if (user) {
@@ -17,7 +17,7 @@ export const resolvers: CodeReviewRequestResolvers.Resolvers = {
 };
 
 export default {
-  CodeReviewRequest: {
+  CodeReview: {
     ...resolvers
   }
 };

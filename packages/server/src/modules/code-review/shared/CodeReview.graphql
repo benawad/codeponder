@@ -1,4 +1,4 @@
-type CodeReviewRequest {
+type CodeReview {
   id: ID!
   numDays: Int
   codeUrl: String!
