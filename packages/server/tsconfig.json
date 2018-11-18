@@ -6,8 +6,9 @@
     "sourceMap": true,
     "outDir": "./dist",
     "moduleResolution": "node",
+    "declaration": false,
 
-    "composite": true,
+    "composite": false,
     "removeComments": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
