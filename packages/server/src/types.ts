@@ -66,7 +66,7 @@ export type SubscriptionResolver<
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
-    listcodeReviews?: ListcodeReviewsResolver<
+    listCodeReviews?: ListCodeReviewsResolver<
       CodeReviewRequest[],
       TypeParent,
       Context
@@ -75,7 +75,7 @@ export namespace QueryResolvers {
     me?: MeResolver<User | null, TypeParent, Context>;
   }
 
-  export type ListcodeReviewsResolver<
+  export type ListCodeReviewsResolver<
     R = CodeReviewRequest[],
     Parent = {},
     Context = MyContext
@@ -321,7 +321,7 @@ export namespace RegisterResponseResolvers {
 // ====================================================
 
 export interface Query {
-  listcodeReviews: CodeReviewRequest[];
+  listCodeReviews: CodeReviewRequest[];
 
   me?: User | null;
 }

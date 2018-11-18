@@ -14,7 +14,7 @@
         "description": "",
         "fields": [
           {
-            "name": "listcodeReviews",
+            "name": "listCodeReviews",
             "description": "",
             "args": [],
             "type": {

@@ -1,3 +1,3 @@
 type Query {
-  listcodeReviews: [CodeReviewRequest!]!
+  listCodeReviews: [CodeReviewRequest!]!
 }

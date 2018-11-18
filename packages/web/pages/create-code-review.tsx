@@ -1,6 +1,7 @@
 import { Button, Form } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import { Mutation } from "react-apollo";
+import Router from "next/router";
 
 import { InputField } from "../components/formik-fields/InputField";
 import { ErrorMessage } from "../components/ErrorMessage";
@@ -8,7 +9,6 @@ import { normalizeErrors } from "../utils/normalizeErrors";
 import Layout from "../components/Layout";
 import { TextAreaField } from "../components/formik-fields/TextAreaField";
 import { createCodeReviewMutation } from "../graphql/code-review/mutation/createCodeReview";
-import Router from "next/router";
 import { listCodeReviewsQuery } from "../graphql/code-review/query/listCodeReview";
 import {
   CreateCodeReviewMutationVariables,

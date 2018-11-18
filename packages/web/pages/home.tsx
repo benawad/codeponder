@@ -1,41 +1,45 @@
+import { Query, Mutation } from "react-apollo";
+import { Grid } from "semantic-ui-react";
+
 import Layout from "../components/Layout";
-import { Query } from "react-apollo";
-import { ListCodeReviewsQuery } from "../lib/schema-types";
-import { Card, Icon, Grid } from "semantic-ui-react";
+import {
+  ListCodeReviewsQuery,
+  CreateOfferMutation,
+  CreateOfferMutationVariables,
+  MeQuery
+} from "../lib/schema-types";
 import { listCodeReviewsQuery } from "../graphql/code-review/query/listCodeReview";
+import { createOfferMutation } from "../graphql/offer/mutation/createOffer";
+import { CodeReviewCard } from "../components/CodeReviewCard";
+import { meQuery } from "../graphql/user/query/me";
 
 export default () => (
   <Layout title="list of code review requests">
-    <Query<ListCodeReviewsQuery> query={listCodeReviewsQuery}>
-      {({ data }) => {
-        return (
-          <Grid>
-            {data.listcodeReviews.map(crr => (
-              <Grid.Column key={crr.id} width={4}>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>
-                      {crr.owner.username} wants a review
-                    </Card.Header>
-                    <Card.Meta>
-                      <span className="date">in {crr.numDays} days</span>
-                    </Card.Meta>
-                    <Card.Description>
-                      {crr.notes.slice(0, 150)}
-                    </Card.Description>
-                  </Card.Content>
-                  <Card.Content extra>
-                    <a href={crr.codeUrl}>
-                      <Icon name="user" />
-                      Offer Review
-                    </a>
-                  </Card.Content>
-                </Card>
-              </Grid.Column>
-            ))}
-          </Grid>
-        );
-      }}
+    <Query<MeQuery> ssr={false} query={meQuery}>
+      {({ data: meData, loading }) =>
+        loading ? null : (
+          <Mutation<CreateOfferMutation, CreateOfferMutationVariables>
+            mutation={createOfferMutation}
+            refetchQueries={[{ query: listCodeReviewsQuery }]}
+          >
+            {() => (
+              <Query<ListCodeReviewsQuery> query={listCodeReviewsQuery}>
+                {({ data, loading }) => {
+                  console.log(data);
+                  return loading ? null : (
+                    <Grid>
+                      {data.listCodeReviews.map(crr => (
+                        <CodeReviewCard key={crr.id} crr={crr} />
+                      ))}
+                      {meData.me && meData.me.username}
+                    </Grid>
+                  );
+                }}
+              </Query>
+            )}
+          </Mutation>
+        )
+      }
     </Query>
   </Layout>
 );

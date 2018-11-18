@@ -3,7 +3,7 @@ import { CodeReviewInfoFragment } from "../fragments";
 
 export const listCodeReviewsQuery = gql`
   query ListCodeReviewsQuery {
-    listcodeReviews {
+    listCodeReviews {
       ...CodeReviewInfo
       owner {
         id
