@@ -15,7 +15,9 @@ export const CodeReviewCard = ({
   <Grid.Column key={crr.id} width={4}>
     <Card>
       <Card.Content>
-        <Card.Header>{crr.owner.username} wants a review</Card.Header>
+        <Card.Header>
+          <a href={crr.codeUrl}>{crr.owner.username} wants a review</a>
+        </Card.Header>
         <Card.Meta>
           <span className="date">in {crr.numDays} days</span>
         </Card.Meta>
