@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 import { CodeReviewInfoFragment } from "../fragments";
 
-export const listcodeReviewsQuery = gql`
-  query ListcodeReviewsQuery {
+export const listCodeReviewsQuery = gql`
+  query ListCodeReviewsQuery {
     listcodeReviews {
       ...CodeReviewInfo
       owner {

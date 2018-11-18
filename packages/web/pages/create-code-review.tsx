@@ -5,13 +5,15 @@ import { Mutation } from "react-apollo";
 import { InputField } from "../components/formik-fields/InputField";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { normalizeErrors } from "../utils/normalizeErrors";
-import {
-  CreateCodeReviewRequestMutation,
-  CreateCodeReviewRequestMutationVariables
-} from "../lib/schema-types";
 import Layout from "../components/Layout";
 import { TextAreaField } from "../components/formik-fields/TextAreaField";
 import { createCodeReviewMutation } from "../graphql/code-review/mutation/createCodeReview";
+import Router from "next/router";
+import { listCodeReviewsQuery } from "../graphql/code-review/query/listCodeReview";
+import {
+  CreateCodeReviewMutationVariables,
+  CreateCodeReviewMutation
+} from "../lib/schema-types";
 
 interface FormValues {
   numDays: number;
@@ -22,11 +24,9 @@ interface FormValues {
 
 export default () => (
   <Layout title="create code review request">
-    <Mutation<
-      CreateCodeReviewRequestMutation,
-      CreateCodeReviewRequestMutationVariables
-    >
+    <Mutation<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>
       mutation={createCodeReviewMutation}
+      refetchQueries={[{ query: listCodeReviewsQuery }]}
     >
       {mutate => (
         <Formik<FormValues>
@@ -47,9 +47,7 @@ export default () => (
                 normalizeErrors(response.data.createCodeReview.errors)
               );
             } else {
-              setSubmitting(false);
-              console.log(response);
-              console.log("create code review success");
+              Router.push("/home");
             }
           }}
           validateOnBlur={false}

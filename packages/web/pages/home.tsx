@@ -2,11 +2,11 @@ import Layout from "../components/Layout";
 import { Query } from "react-apollo";
 import { ListCodeReviewsQuery } from "../lib/schema-types";
 import { Card, Icon, Grid } from "semantic-ui-react";
-import { listcodeReviewsQuery } from "../graphql/code-review/query/listCodeReview";
+import { listCodeReviewsQuery } from "../graphql/code-review/query/listCodeReview";
 
 export default () => (
   <Layout title="list of code review requests">
-    <Query<ListCodeReviewsQuery> query={listcodeReviewsQuery}>
+    <Query<ListCodeReviewsQuery> query={listCodeReviewsQuery}>
       {({ data }) => {
         return (
           <Grid>
