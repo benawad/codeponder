@@ -52,6 +52,9 @@ const Layout: React.SFC<Props> = ({
                     {isLoggedIn ? (
                       <>
                         <Menu.Item>{data.me.username}</Menu.Item>
+                        <Menu.Item onClick={() => Router.push("/view-offers")}>
+                          offers
+                        </Menu.Item>
                         <Menu.Item
                           onClick={async () => {
                             await mutate({

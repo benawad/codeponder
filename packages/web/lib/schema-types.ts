@@ -41,6 +41,7 @@ export interface CreateCodeReviewMutationVariables {
 export interface ListCodeReviewsQuery_listCodeReviews_owner {
   id: string;
   username: string;
+  email: string;
 }
 
 export interface ListCodeReviewsQuery_listCodeReviews {
@@ -73,6 +74,37 @@ export interface CreateOfferMutation {
 
 export interface CreateOfferMutationVariables {
   input: CreateOfferInput;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: ReceivedOffersQuery
+// ====================================================
+
+export interface ReceivedOffersQuery_receivedOffers_codeReview {
+  id: string;
+  numDays: number | null;
+  codeUrl: string;
+  techTags: string[];
+  notes: string;
+}
+
+export interface ReceivedOffersQuery_receivedOffers_sender {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface ReceivedOffersQuery_receivedOffers {
+  accepted: boolean;
+  codeReview: ReceivedOffersQuery_receivedOffers_codeReview;
+  sender: ReceivedOffersQuery_receivedOffers_sender;
+}
+
+export interface ReceivedOffersQuery {
+  receivedOffers: ReceivedOffersQuery_receivedOffers[];
 }
 
 /* tslint:disable */
@@ -150,8 +182,8 @@ export interface RegisterMutationVariables {
 
 export interface MeQuery_me {
   id: string;
-  email: string;
   username: string;
+  email: string;
 }
 
 export interface MeQuery {
@@ -171,6 +203,19 @@ export interface CodeReviewInfo {
   codeUrl: string;
   techTags: string[];
   notes: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: UserInfo
+// ====================================================
+
+export interface UserInfo {
+  id: string;
+  username: string;
+  email: string;
 }
 
 /* tslint:disable */
