@@ -16,7 +16,7 @@ import {
 } from "../lib/schema-types";
 
 interface FormValues {
-  numDays: tringumber;
+  numDays: string;
   codeUrl: string;
   techTags: string[];
   notes: string;
