@@ -28,9 +28,9 @@ const prod = {
   database: "codeponder",
   synchronize: false,
   logging: false,
-  entities: ["src/entity/**/*.*"],
-  migrations: ["src/migration/**/*.*"],
-  subscribers: ["src/subscriber/**/*.*"]
+  entities: ["dist/entity/**/*.*"],
+  migrations: ["dist/migration/**/*.*"],
+  subscribers: ["dist/subscriber/**/*.*"]
 };
 
 export const createTypeormConn = async () => {
