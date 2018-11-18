@@ -26,7 +26,7 @@ services:
   proxy:
     image: abiosoft/caddy:no-stats
     volumes:
-      - /root/codeponder.com/Caddyfile:/etc/Caddyfile
+      - /root/codeponder/Caddyfile:/etc/Caddyfile
       - /root/.caddy:/root/.caddy
       - /root/logs:/etc/logs
       - /root/goaccess/.html:/site/goaccess
@@ -40,7 +40,7 @@ services:
   goaccess:
     image: allinurl/goaccess
     volumes:
-      - /root/codeponder.com/goaccess/data/:/srv/data
+      - /root/codeponder/goaccess/data/:/srv/data
       - /root/goaccess/.html:/srv/report
       - /root/logs:/srv/logs
     depends_on:
