@@ -8,6 +8,12 @@ export interface CreateCodeReviewRequestInput {
   notes: string;
 }
 
+export interface CreateOfferInput {
+  userId: string;
+
+  codeReviewRequestId: string;
+}
+
 export interface LoginInput {
   usernameOrEmail: string;
 
@@ -172,6 +178,8 @@ export namespace MutationResolvers {
       Context
     >;
 
+    createOffer?: CreateOfferResolver<CreateOfferResponse, TypeParent, Context>;
+
     login?: LoginResolver<LoginResponse, TypeParent, Context>;
 
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>;
@@ -184,6 +192,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CreateCodeReviewRequestArgs>;
   export interface CreateCodeReviewRequestArgs {
     input: CreateCodeReviewRequestInput;
+  }
+
+  export type CreateOfferResolver<
+    R = CreateOfferResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, CreateOfferArgs>;
+  export interface CreateOfferArgs {
+    input: CreateOfferInput;
   }
 
   export type LoginResolver<
@@ -246,6 +263,21 @@ export namespace ErrorResolvers {
   export type MessageResolver<
     R = string,
     Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>;
+}
+
+export namespace CreateOfferResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = CreateOfferResponse
+  > {
+    ok?: OkResolver<boolean, TypeParent, Context>;
+  }
+
+  export type OkResolver<
+    R = boolean,
+    Parent = CreateOfferResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>;
 }
@@ -321,6 +353,8 @@ export interface User {
 export interface Mutation {
   createCodeReviewRequest: CreateCodeReviewRequestResponse;
 
+  createOffer: CreateOfferResponse;
+
   login: LoginResponse;
 
   register: RegisterResponse;
@@ -336,6 +370,10 @@ export interface Error {
   path: string;
 
   message: string;
+}
+
+export interface CreateOfferResponse {
+  ok: boolean;
 }
 
 export interface LoginResponse {
@@ -354,6 +392,9 @@ export interface RegisterResponse {
 
 export interface CreateCodeReviewRequestMutationArgs {
   input: CreateCodeReviewRequestInput;
+}
+export interface CreateOfferMutationArgs {
+  input: CreateOfferInput;
 }
 export interface LoginMutationArgs {
   input: LoginInput;
