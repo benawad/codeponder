@@ -9,6 +9,7 @@ import { normalizeErrors } from "../utils/normalizeErrors";
 import { LoginMutation, LoginMutationVariables } from "../lib/schema-types";
 import { loginMutation } from "../graphql/user/mutation/login";
 import Layout from "../components/Layout";
+import { meQuery } from "../graphql/user/query/me";
 
 interface FormValues {
   usernameOrEmail: string;
@@ -23,7 +24,19 @@ export default () => (
           initialValues={{ usernameOrEmail: "", password: "" }}
           onSubmit={async (input, { setErrors, setSubmitting }) => {
             const response = await mutate({
-              variables: { input }
+              variables: { input },
+              update: (store, { data }) => {
+                if (!data || !data.login.user) {
+                  return;
+                }
+
+                store.writeQuery({
+                  query: meQuery,
+                  data: {
+                    me: data.login.user
+                  }
+                });
+              }
             });
 
             if (
@@ -35,7 +48,7 @@ export default () => (
               setSubmitting(false);
               return setErrors(normalizeErrors(response.data.login.errors));
             } else {
-              Router.push("/create-code-review-request");
+              Router.push("/home");
             }
           }}
           validateOnBlur={false}

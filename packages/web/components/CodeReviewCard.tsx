@@ -4,9 +4,13 @@ import { ListCodeReviewsQuery_listCodeReviews } from "../lib/schema-types";
 const CHAR_COUNT = 90;
 
 export const CodeReviewCard = ({
-  crr
+  crr,
+  onOfferClick,
+  showOfferButton
 }: {
   crr: ListCodeReviewsQuery_listCodeReviews;
+  onOfferClick: () => void;
+  showOfferButton: boolean;
 }) => (
   <Grid.Column key={crr.id} width={4}>
     <Card>
@@ -22,10 +26,14 @@ export const CodeReviewCard = ({
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <a href={crr.codeUrl}>
-          <Icon name="user" />
-          Offer Review
-        </a>
+        {showOfferButton ? (
+          <a onClick={onOfferClick}>
+            <Icon name="user" />
+            Offer Review
+          </a>
+        ) : (
+          <div>your code review</div>
+        )}
       </Card.Content>
     </Card>
   </Grid.Column>

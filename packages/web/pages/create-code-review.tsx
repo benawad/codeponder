@@ -23,7 +23,7 @@ interface FormValues {
 }
 
 export default () => (
-  <Layout title="create code review request">
+  <Layout showMenu title="create code review request">
     <Mutation<CreateCodeReviewMutation, CreateCodeReviewMutationVariables>
       mutation={createCodeReviewMutation}
       refetchQueries={[{ query: listCodeReviewsQuery }]}
