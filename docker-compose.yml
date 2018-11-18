@@ -2,11 +2,6 @@ version: "3"
 services:
   redis:
     image: redis
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
   db:
     image: postgres
     volumes:
@@ -17,20 +12,13 @@ services:
       POSTGRES_DB: codeponder
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
   server:
     image: server
     ports:
       - "4000:4000"
     depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - db
+      - redis
   web:
     image: web
     ports:
