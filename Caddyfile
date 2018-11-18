@@ -1,25 +1,25 @@
-ponder.com {
+codeponder.com {
   log / /etc/logs/requests.log "{combined}"
   proxy / web:3000
 }
 
-www.ponder.com {
+www.codeponder.com {
   log / /etc/logs/requests.log "{combined}"
   proxy / web:3000
 }
 
-server.ponder.com {
+server.codeponder.com {
   log / /etc/logs/requests.log "{combined}"
   proxy / server:4000
 }
 
-goaccess.ponder.com {
+goaccess.codeponder.com {
   log / /etc/logs/requests.log "{combined}"
   root /site/goaccess
   gzip
 }
 
-goaccess.ponder.com:7890 {
+goaccess.codeponder.com:7890 {
  proxy / goaccess:7890 {
    websocket
  }
