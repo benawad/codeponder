@@ -1,7 +1,0 @@
-type Offer {
-  codeReviewId: String!
-  userId: String!
-  codeReview: CodeReview!
-  sender: User!
-  status: String!
-}
