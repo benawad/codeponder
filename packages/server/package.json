@@ -1,6 +1,7 @@
 {
   "name": "@codeponder/server",
   "version": "0.0.1",
+  "private": true,
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
     "@types/express": "^4.16.0",
@@ -23,5 +24,11 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "generate": "gql-gen"
+  },
+  "workspaces": {
+    "nohoist": [
+      "typeorm",
+      "typeorm/**"
+    ]
   }
 }

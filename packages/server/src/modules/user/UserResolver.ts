@@ -7,6 +7,6 @@ export class UserResolver {
 
   @Query(() => User, { nullable: true })
   async me() {
-    return null;
+    return User.findOne({ id: "something" });
   }
 }
