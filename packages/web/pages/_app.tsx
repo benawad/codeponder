@@ -1,7 +1,6 @@
 import App, { Container } from "next/app";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import "semantic-ui-css/semantic.min.css";
 
 import withApolloClient from "../lib/with-apollo-client";
 

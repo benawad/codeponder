@@ -2,7 +2,7 @@
   "name": "@codeponder/common",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
     "@types/yup": "^0.26.2",

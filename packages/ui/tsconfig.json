@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build/lib",
+    "outDir": "./dist",
     "module": "commonjs",
     "target": "es5",
     "lib": ["es5", "es6", "es7", "es2017", "dom", "esnext.asynciterable"],
@@ -20,7 +20,8 @@
     "allowSyntheticDefaultImports": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "composite": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build", "scripts"]
