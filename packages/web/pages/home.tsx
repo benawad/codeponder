@@ -3,6 +3,10 @@ import { Button } from "@codeponder/ui";
 
 export default class Home extends React.Component {
   render() {
-    return <Button>hello from ui package</Button>;
+    return (
+      <a href="http://localhost:4000/auth/github">
+        <Button>login with github</Button>
+      </a>
+    );
   }
 }

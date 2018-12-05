@@ -14,7 +14,9 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "composite": true
+    "composite": true,
+    "strict": true,
+    "noImplicitAny": true
   },
   "references": [{ "path": "../common" }, { "path": "../ui" }]
 }
