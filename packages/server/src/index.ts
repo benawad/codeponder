@@ -13,6 +13,7 @@ import { redis } from "./redis";
 
 import { createTypeormConn } from "./createTypeormConn";
 import { UserResolver } from "./modules/user/UserResolver";
+import { createUser } from "./utils/createUser";
 import { User } from "./entity/User";
 
 const SESSION_SECRET = "ajslkjalksjdfkl";
@@ -82,11 +83,13 @@ const startServer = async () => {
       async (accessToken, refreshToken, profile: any, cb) => {
         let user = await User.findOne({ where: { githubId: profile.id } });
         if (!user) {
-          user = await User.create({
+          user = await createUser({
+            username: profile.username,
             githubId: profile.id,
             pictureUrl: profile._json.avatar_url,
-            bio: profile._json.bio
-          }).save();
+            bio: profile._json.bio,
+            name: profile._json.name
+          });
         }
 
         cb(null, {
@@ -106,9 +109,11 @@ const startServer = async () => {
     "/oauth/github",
     passport.authenticate("github", { session: false }),
     (req: any, res) => {
-      req.session.userId = req.user.user.id;
-      req.session.accessToken = req.user.accessToken;
-      req.session.refreshToken = req.user.refreshToken;
+      if (req.user.user.id) {
+        req.session.userId = req.user.user.id;
+        req.session.accessToken = req.user.accessToken;
+        req.session.refreshToken = req.user.refreshToken;
+      }
       res.redirect("http://localhost:3000");
     }
   );

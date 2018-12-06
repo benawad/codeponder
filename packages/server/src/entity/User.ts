@@ -8,9 +8,13 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Field({ nullable: true })
-  @Column({ type: "text", unique: true, nullable: true })
-  username?: string;
+  @Field()
+  @Column({ type: "text", unique: true })
+  username: string;
+
+  @Field()
+  @Column({ type: "text" })
+  name: string;
 
   @Column({ type: "text", unique: true })
   githubId: string;
