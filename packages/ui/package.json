@@ -2,8 +2,8 @@
   "name": "@codeponder/ui",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "dependencies": {
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -11,8 +11,7 @@
     "styled-components": "^4.1.2"
   },
   "scripts": {
-    "start": "styleguidist server",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
   },

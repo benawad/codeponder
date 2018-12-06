@@ -1,6 +1,7 @@
 {
   "name": "@codeponder/web",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "nodemon server/index.ts",
     "build": "next build",
