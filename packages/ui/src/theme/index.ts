@@ -71,11 +71,6 @@ const theme: ITheme = {
   },
   radii: ["3px", "4px", "5px", "6px"],
   space: ["4px", "6px", "8px", "10px", "14px"],
-  textStyles: {
-    caps: {
-      textTransform: "uppercase"
-    }
-  },
   buttons: {
     primary: {
       backgroundColor: "#6DC1FD",
