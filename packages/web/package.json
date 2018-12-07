@@ -7,16 +7,16 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
-    "schema:download": "apollo schema:download --endpoint=http://localhost:4000/graphql",
-    "codegen:generate": "apollo codegen:generate --queries=./graphql/**/*.ts --schema=./schema.json --outputFlat --target=typescript ./lib/schema-types.ts",
-    "generate": "npm run schema:download && npm run codegen:generate"
+    "generate": "gql-gen"
   },
   "dependencies": {
     "@codeponder/common": "1.0.0",
     "@codeponder/ui": "1.0.0",
+    "@octokit/rest": "^16.1.0",
     "apollo-boost": "^0.1.21",
     "apollo-link-context": "^1.0.10",
     "cookie": "^0.3.1",
+    "downshift": "^3.1.5",
     "formik": "^1.3.2",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^7.0.2",
