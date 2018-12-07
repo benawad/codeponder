@@ -74,7 +74,26 @@ const theme: ITheme = {
   buttons: {
     primary: {
       backgroundColor: "#6DC1FD",
-      color: "#ffffff"
+      color: "#ffffff",
+      margin: "0 10px",
+      fontSize: "14px",
+      padding: "8px 10px",
+      textTransform: "uppercase",
+      borderRadius: "4px"
+    },
+    topic: {
+      backgroundColor: "#E2F3FF",
+      color: "#3290D4",
+      borderRadius: "3px",
+      fontSize: "8px",
+      padding: "4px",
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: "#F3FAFF"
+      },
+      "&:not(:first-child)": {
+        marginLeft: "10px"
+      }
     }
   }
 };
