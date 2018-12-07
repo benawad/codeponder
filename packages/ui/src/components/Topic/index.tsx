@@ -10,12 +10,8 @@ const Topic = styled.div`
   font-size: 0.5rem;
   font-weight: 500;
   color: #3290d4;
-  cursor: pointer;
   &:not(:first-child) {
     margin-left: 0.625rem;
-  }
-  &:hover {
-    background: #f3faff;
   }
 `;
 
