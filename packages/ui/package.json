@@ -41,6 +41,7 @@
     "babel-loader": "^8.0.4",
     "react-docgen-typescript": "^1.12.2",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
-    "react-styleguidist": "^8.0.6"
+    "react-styleguidist": "^8.0.6",
+    "storybook-addon-styled-component-theme": "^1.1.0"
   }
 }
