@@ -1,5 +1,4 @@
 import { createServer } from "http";
-import { parse } from "url";
 import * as next from "next";
 
 import { routes } from "./routes";
@@ -11,9 +10,7 @@ const handle = routes.getRequestHandler(app);
 
 app.prepare().then(() => {
   createServer((req, res) => {
-    const parsedUrl = parse(req.url!, true);
-
-    handle(req, res, parsedUrl);
+    handle(req, res);
   }).listen(port, (err: any) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);

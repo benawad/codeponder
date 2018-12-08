@@ -39,7 +39,10 @@ const iconProps = {
   fontSize: "small" as "small"
 };
 
-const FolderTree: React.FunctionComponent<Props> = ({ items, onItemPress }) => (
+export const FolderTree: React.FunctionComponent<Props> = ({
+  items,
+  onItemPress
+}) => (
   <Container>
     {items.map((item, idx) => {
       return (
