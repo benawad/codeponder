@@ -5,6 +5,8 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "dependencies": {
+    "@material-ui/core": "^3.6.1",
+    "@material-ui/icons": "^3.0.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
@@ -32,6 +34,7 @@
     "@storybook/addon-links": "^4.0.10",
     "@storybook/addons": "^4.0.10",
     "@storybook/react": "^4.0.10",
+    "@types/material-ui": "^0.21.5",
     "@types/storybook__addon-actions": "^3.4.1",
     "@types/storybook__addon-info": "^3.4.2",
     "@types/storybook__addon-links": "^3.3.3",
