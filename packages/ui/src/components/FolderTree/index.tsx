@@ -4,14 +4,14 @@ import FolderIcon from "@material-ui/icons/Folder";
 import FileIcon from "@material-ui/icons/InsertDriveFile";
 
 interface TreeItem {
-  path: string;
+  name: string;
   type: string;
-  url: string;
 }
 
 interface Props {
   items: TreeItem[];
-  onItemPress: (path: string) => void;
+  Link: any;
+  getLinkProps: (path: string) => any;
 }
 
 const Container = styled.div`
@@ -41,12 +41,14 @@ const iconProps = {
 
 export const FolderTree: React.FunctionComponent<Props> = ({
   items,
-  onItemPress
+  Link,
+  getLinkProps
 }) => (
   <Container>
     {items.map((item, idx) => {
       return (
         <div
+          key={`${item.name}-${idx}`}
           style={{
             backgroundColor: idx % 2 === 0 ? "#FFFFFF" : "#F3FAFF",
             fontFamily: "Rubik",
@@ -62,9 +64,9 @@ export const FolderTree: React.FunctionComponent<Props> = ({
             <FileIcon {...iconProps} />
           )}
 
-          <A href="#" onClick={() => onItemPress(item.path)}>
-            {item.path}
-          </A>
+          <Link {...getLinkProps(item.name)}>
+            <A>{item.name}</A>
+          </Link>
         </div>
       );
     })}

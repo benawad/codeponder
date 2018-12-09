@@ -1029,6 +1029,8 @@ export type GetRepoObjectTreeInlineFragment = {
 export type GetRepoObjectEntries = {
   __typename?: "TreeEntry";
 
+  type: string;
+
   name: string;
 };
 
@@ -1051,6 +1053,7 @@ export const GetRepoObjectDocument = gql`
         }
         ... on Tree {
           entries {
+            type
             name
           }
         }

@@ -10,6 +10,7 @@ export const getRepoObject = gql`
         }
         ... on Tree {
           entries {
+            type
             name
           }
         }
