@@ -27,7 +27,7 @@ export default class PickRepo extends React.PureComponent<Props> {
       redirect(ctx, "/");
       return {};
     }
-
+    console.log(me.accessToken);
     octokit.authenticate({
       type: "oauth",
       token: me.accessToken

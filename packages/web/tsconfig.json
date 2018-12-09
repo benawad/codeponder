@@ -16,7 +16,8 @@
     "sourceMap": true,
     "composite": true,
     "strict": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "resolveJsonModule": true
   },
   "references": [{ "path": "../common" }, { "path": "../ui" }]
 }

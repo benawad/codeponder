@@ -4,16 +4,20 @@ import { ApolloProvider } from "react-apollo";
 
 import withApolloClient from "../lib/with-apollo-client";
 import { ThemeProvider, theme } from "@codeponder/ui";
+import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 
 class MyApp extends App {
   render() {
-    const { Component, pageProps, apolloClient } = this.props as any;
+    const { Component, pageProps, apolloClient, githubApolloClient } = this
+      .props as any;
     return (
       <Container>
         <ThemeProvider theme={theme}>
-          <ApolloProvider client={apolloClient}>
-            <Component {...pageProps} />
-          </ApolloProvider>
+          <GitHubApolloClientContext.Provider value={githubApolloClient}>
+            <ApolloProvider client={apolloClient}>
+              <Component {...pageProps} />
+            </ApolloProvider>
+          </GitHubApolloClientContext.Provider>
         </ThemeProvider>
       </Container>
     );
