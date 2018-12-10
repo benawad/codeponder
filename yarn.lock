@@ -2733,10 +2733,10 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/yup@0.26.2":
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.2.tgz#823f43bfb29cb4fd2af395c3eb8f30929f4e9d53"
-  integrity sha512-SNVcc8qPUZVi6UiH3xxlCahgjfgx7nDWIJ76KKML2QWB0uRbvCXMsjBNwx5pwdcL4v7fFsDRLoQnOQ7XWayBUg==
+"@types/yup@0.26.3":
+  version "0.26.3"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.3.tgz#7991240645fc8171481838b01a19e355dfdb17fc"
+  integrity sha512-Df1N/EAMOvz9qlt5JbNX8ZvkMTcZcHWQU1nJ6jdz5aTx/oRnn1cmtOTtd+1AEVYDZshqJR3t7nRGPutADiVa/g==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
