@@ -1,6 +1,6 @@
 <div align="center">
 
-  [![Code Ponder](./public/img/media.png)](https://www.codeponder.com)
+  [Code Ponder](./assets/logo.png)
 
   ### Marketplace for Code Reviews
 
