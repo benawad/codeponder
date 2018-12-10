@@ -8,7 +8,9 @@ A project that I'm live coding daily on [Twitch](https://www.twitch.tv/benawad) 
 
 ## Contributing
 
-Anyone is welcome to contribute code or designs. Here's a walkthrough on how to add components to the ui package: https://youtu.be/WDk5O-yaoCQ You can view the current figma mockup [here](https://www.figma.com/proto/hM2nbxqxBH4k8cpE3JEL3q/code-ponder-collaboration) and you can ask for edit permissions in this issue:   https://github.com/benawad/codeponder/issues/2 
+Anyone is welcome to contribute code or designs. Here's a walkthrough on how to add components to the ui package: https://youtu.be/WDk5O-yaoCQ 
+
+You can view the current figma mockup [here](https://www.figma.com/proto/hM2nbxqxBH4k8cpE3JEL3q/code-ponder-collaboration) and you can ask for edit permissions in this issue:   https://github.com/benawad/codeponder/issues/2 
 
 ## Important links
 
