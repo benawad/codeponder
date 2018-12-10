@@ -31,7 +31,7 @@
     "@types/cookie": "0.3.2",
     "@types/next": "7.0.5",
     "@types/react": "16.7.11",
-    "@types/react-dom": "16.0.9",
+    "@types/react-dom": "16.0.11",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-typescript": "1.1.1",
     "file-loader": "2.0.0",
