@@ -5,13 +5,13 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "dependencies": {
-    "@material-ui/core": "^3.6.1",
-    "@material-ui/icons": "^3.0.1",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "@material-ui/core": "3.6.2",
+    "@material-ui/icons": "3.0.1",
+    "react": "16.6.3",
+    "react-dom": "16.6.3",
     "react-scripts": "2.1.1",
-    "styled-components": "^4.1.2",
-    "styled-system": "^3.1.11"
+    "styled-components": "4.1.2",
+    "styled-system": "3.1.11"
   },
   "scripts": {
     "build": "rimraf dist && tsc",
@@ -28,24 +28,24 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/core": "^7.1.6",
-    "@storybook/addon-actions": "^4.0.10",
-    "@storybook/addon-info": "^4.0.10",
-    "@storybook/addon-links": "^4.0.10",
-    "@storybook/addons": "^4.0.10",
-    "@storybook/react": "^4.0.10",
-    "@types/material-ui": "^0.21.5",
-    "@types/storybook__addon-actions": "^3.4.1",
-    "@types/storybook__addon-info": "^3.4.2",
-    "@types/storybook__addon-links": "^3.3.3",
-    "@types/storybook__react": "^4.0.0",
-    "@types/styled-components": "^4.1.3",
-    "@types/styled-system": "^3.0.9",
-    "awesome-typescript-loader": "^5.2.1",
-    "babel-loader": "^8.0.4",
-    "react-docgen-typescript": "^1.12.2",
-    "react-docgen-typescript-webpack-plugin": "^1.1.0",
-    "react-styleguidist": "^8.0.6",
-    "storybook-addon-styled-component-theme": "^1.1.0"
+    "@babel/core": "7.2.0",
+    "@storybook/addon-actions": "4.0.12",
+    "@storybook/addon-info": "4.0.12",
+    "@storybook/addon-links": "4.0.12",
+    "@storybook/addons": "4.0.12",
+    "@storybook/react": "4.0.12",
+    "@types/material-ui": "0.21.5",
+    "@types/storybook__addon-actions": "3.4.1",
+    "@types/storybook__addon-info": "3.4.2",
+    "@types/storybook__addon-links": "3.3.3",
+    "@types/storybook__react": "4.0.0",
+    "@types/styled-components": "4.1.4",
+    "@types/styled-system": "3.0.9",
+    "awesome-typescript-loader": "5.2.1",
+    "babel-loader": "8.0.4",
+    "react-docgen-typescript": "1.12.2",
+    "react-docgen-typescript-webpack-plugin": "1.1.0",
+    "react-styleguidist": "8.0.6",
+    "storybook-addon-styled-component-theme": "1.1.0"
   }
 }
