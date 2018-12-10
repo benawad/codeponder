@@ -2,6 +2,6 @@
 
   # Code Ponder
 
-  ### Marketplace for Code Reviews
+  ### A Marketplace for Code Reviews
 
 </div>
