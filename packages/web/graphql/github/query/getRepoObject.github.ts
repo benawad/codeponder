@@ -6,7 +6,7 @@ export const getRepoObject = gql`
       object(expression: $expression) {
         __typename
         ... on Blob {
-          oid
+          text
         }
         ... on Tree {
           entries {

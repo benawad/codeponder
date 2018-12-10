@@ -57,7 +57,7 @@ export default class Repo extends React.PureComponent<Props> {
           const { object } = data.repository;
 
           if (object.__typename === "Blob") {
-            return "blob";
+            return <pre>{object.text}</pre>;
           }
 
           if (object.__typename === "Tree") {
