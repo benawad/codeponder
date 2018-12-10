@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "apollo-server-express": "2.2.6",
-    "argon2": "0.19.3",
+    "argon2": "0.20.0",
     "connect-redis": "3.4.0",
     "cors": "2.8.5",
     "dotenv-safe": "6.1.0",
