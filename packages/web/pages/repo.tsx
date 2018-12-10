@@ -44,6 +44,40 @@ export default class Repo extends React.PureComponent<Props> {
     };
   }
 
+  renderFilePath = (name: string, path?: string) => {
+    if (!path) {
+      return null;
+    }
+
+    const parts = [name, ...path.split("/")];
+    const currentPath: string[] = [];
+
+    return parts.map((part, idx) => {
+      if (idx) {
+        currentPath.push(part);
+      }
+
+      return idx === parts.length - 1 ? (
+        <span key={part + idx}>{part}</span>
+      ) : (
+        <React.Fragment key={part + idx}>
+          <Link
+            route="repo"
+            params={{
+              branch: this.props.branch,
+              owner: this.props.owner,
+              path: [...currentPath] as any,
+              name
+            }}
+          >
+            <a>{part}</a>
+          </Link>
+          /
+        </React.Fragment>
+      );
+    });
+  };
+
   render() {
     const { branch, owner, path, name, expression } = this.props;
 
@@ -72,32 +106,40 @@ export default class Repo extends React.PureComponent<Props> {
           const { object } = data.repository;
 
           if (object.__typename === "Blob") {
-            return <pre>{object.text}</pre>;
+            return (
+              <>
+                {this.renderFilePath(name, path)}
+                <pre>{object.text}</pre>
+              </>
+            );
           }
 
           if (object.__typename === "Tree") {
             return (
-              <FolderTree
-                items={
-                  (data.repository.object as GetRepoObjectTreeInlineFragment)
-                    .entries || []
-                }
-                Link={Link}
-                getLinkProps={itemPath => ({
-                  passHref: true,
-                  route: "repo",
-                  params: {
-                    branch,
-                    owner,
-                    // path: `${path || ""}/${itemPath}`,
-                    path: [
-                      ...(path ? path.split("/") : []),
-                      ...itemPath.split("/")
-                    ] as any,
-                    name
+              <>
+                {this.renderFilePath(name, path)}
+                <FolderTree
+                  items={
+                    (data.repository.object as GetRepoObjectTreeInlineFragment)
+                      .entries || []
                   }
-                })}
-              />
+                  Link={Link}
+                  getLinkProps={itemPath => ({
+                    passHref: true,
+                    route: "repo",
+                    params: {
+                      branch,
+                      owner,
+                      // path: `${path || ""}/${itemPath}`,
+                      path: [
+                        ...(path ? path.split("/") : []),
+                        ...itemPath.split("/")
+                      ] as any,
+                      name
+                    }
+                  })}
+                />
+              </>
             );
           }
 
