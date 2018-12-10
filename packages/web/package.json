@@ -13,7 +13,7 @@
   "dependencies": {
     "@codeponder/common": "1.0.0",
     "@codeponder/ui": "1.0.0",
-    "@octokit/rest": "16.1.0",
+    "@octokit/rest": "16.2.0",
     "apollo-boost": "0.1.22",
     "apollo-link-context": "1.0.10",
     "cookie": "0.3.1",
