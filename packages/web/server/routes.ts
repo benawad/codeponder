@@ -5,4 +5,4 @@ export const routes = nextRoutes() as Routes;
 export const Router = routes.Router;
 export const Link = routes.Link;
 
-routes.add("repo", "/:owner/:repo/:branch/:path*");
+routes.add("repo", "/:owner/:name/:branch/:path*");

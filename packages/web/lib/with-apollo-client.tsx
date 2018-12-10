@@ -68,6 +68,7 @@ export default (App: any) => {
       );
 
       ctx.ctx.apolloClient = apollo;
+      ctx.ctx.githubApolloClient = githubApolloClient;
 
       let appProps = {};
       if (App.getInitialProps) {

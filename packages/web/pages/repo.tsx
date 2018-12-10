@@ -5,37 +5,52 @@ import { GitHubApolloClientContext } from "../components/GithubApolloClientConte
 import { NextContextWithApollo } from "../types/NextContextWithApollo";
 import {
   GetRepoObjectComponent,
-  GetRepoObjectTreeInlineFragment
+  GetRepoObjectTreeInlineFragment,
+  GetRepoObjectDocument
 } from "../components/github-apollo-components";
 import { Link } from "../server/routes";
 
 interface Props {
-  query: {
-    branch: string;
-    path?: string;
-    owner: string;
-    repo: string;
-  };
+  branch: string;
+  path?: string;
+  owner: string;
+  name: string;
+  expression: string;
 }
 
 export default class Repo extends React.PureComponent<Props> {
   static contextType = GitHubApolloClientContext;
-  static async getInitialProps({ query }: NextContextWithApollo) {
+  static async getInitialProps({
+    query: { branch, owner, path, name },
+    githubApolloClient
+  }: NextContextWithApollo) {
+    const expression = `${branch}:${path || ""}`;
+
+    await githubApolloClient.query({
+      query: GetRepoObjectDocument,
+      variables: {
+        name,
+        owner,
+        expression
+      }
+    });
+
     return {
-      query
+      branch,
+      owner,
+      path,
+      name,
+      expression
     };
   }
 
   render() {
-    const {
-      query: { branch, owner, path, repo }
-    } = this.props;
-    const expression = `${branch}:${path || ""}`;
+    const { branch, owner, path, name, expression } = this.props;
 
     return (
       <GetRepoObjectComponent
         variables={{
-          name: repo,
+          name,
           owner,
           expression
         }}
@@ -79,7 +94,7 @@ export default class Repo extends React.PureComponent<Props> {
                       ...(path ? path.split("/") : []),
                       ...itemPath.split("/")
                     ] as any,
-                    repo
+                    name
                   }
                 })}
               />
