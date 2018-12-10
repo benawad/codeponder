@@ -6,7 +6,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/yup": "0.26.2",
-    "typescript": "3.2.1"
+    "typescript": "3.2.2"
   },
   "dependencies": {
     "yup": "^0.26.6"
