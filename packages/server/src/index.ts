@@ -15,6 +15,7 @@ import { createTypeormConn } from "./createTypeormConn";
 import { UserResolver } from "./modules/user/UserResolver";
 import { createUser } from "./utils/createUser";
 import { User } from "./entity/User";
+import { CodeReviewQuestionResolver } from "./modules/code-review-question/CodeReviewQuestionResolver";
 
 const SESSION_SECRET = "ajslkjalksjdfkl";
 const RedisStore = connectRedis(session as any);
@@ -26,7 +27,10 @@ const startServer = async () => {
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver]
+      resolvers: [UserResolver, CodeReviewQuestionResolver],
+      authChecker: ({ context }) => {
+        return context.req.session && context.req.session.userId; // or false if access denied
+      }
     }),
     context: ({ req }: any) => ({ req })
   });
