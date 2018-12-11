@@ -110,7 +110,13 @@ export default class Repo extends React.PureComponent<Props> {
             return (
               <>
                 {this.renderFilePath(name, path)}
-                <CodeFile text={object.text} />
+                <CodeFile
+                  branch={branch}
+                  repo={name}
+                  username={owner}
+                  path={path}
+                  text={object.text}
+                />
               </>
             );
           }
