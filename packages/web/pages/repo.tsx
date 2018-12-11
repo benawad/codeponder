@@ -9,6 +9,7 @@ import {
   GetRepoObjectDocument
 } from "../components/github-apollo-components";
 import { Link } from "../server/routes";
+import { CodeFile } from "../components/CodeFile";
 
 interface Props {
   branch: string;
@@ -109,7 +110,7 @@ export default class Repo extends React.PureComponent<Props> {
             return (
               <>
                 {this.renderFilePath(name, path)}
-                <pre>{object.text}</pre>
+                <CodeFile text={object.text} />
               </>
             );
           }
