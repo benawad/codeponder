@@ -33,13 +33,20 @@ export class CodeFile extends React.PureComponent<Props> {
             name="startingLineNum"
             placeholder="startingLineNum"
             value={startingLineNum}
+            onChange={this.handleChange}
           />
           <input
             name="endingLineNum"
             placeholder="endingLineNum"
             value={endingLineNum}
+            onChange={this.handleChange}
           />
-          <input name="question" placeholder="question" value={question} />
+          <input
+            name="question"
+            placeholder="question"
+            value={question}
+            onChange={this.handleChange}
+          />
           <button type="submit">save</button>
         </form>
       </>
