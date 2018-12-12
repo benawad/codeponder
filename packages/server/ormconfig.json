@@ -8,7 +8,7 @@
     "password": "postgres",
     "database": "codeponder2",
     "synchronize": true,
-    "logging": false,
+    "logging": true,
     "entities": ["src/entity/**/*.*"],
     "migrations": ["src/migration/**/*.*"],
     "subscribers": ["src/subscriber/**/*.*"],

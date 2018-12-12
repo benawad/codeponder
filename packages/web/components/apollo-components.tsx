@@ -1,5 +1,5 @@
 export interface CreateQuestionReplyInput {
-  reply: string;
+  text: string;
 
   questionId: string;
 }
@@ -9,7 +9,7 @@ export interface CreateCodeReviewQuestionInput {
 
   endingLineNum: number;
 
-  question: string;
+  text: string;
 
   path?: string | null;
 
@@ -76,15 +76,7 @@ export type CreateQuestionReplyCreateQuestionReply = {
   questionReply: CreateQuestionReplyQuestionReply;
 };
 
-export type CreateQuestionReplyQuestionReply = {
-  __typename?: "QuestionReply";
-
-  id: string;
-
-  reply: string;
-
-  creatorId: string;
-};
+export type CreateQuestionReplyQuestionReply = QuestionReplyInfoFragment;
 
 export type MeVariables = {};
 
@@ -117,7 +109,7 @@ export type CodeReviewQuestionInfoFragment = {
 
   endingLineNum: number;
 
-  question: string;
+  text: string;
 
   path: string | null;
 
@@ -126,6 +118,20 @@ export type CodeReviewQuestionInfoFragment = {
   branch: string;
 
   username: string;
+
+  creatorId: string;
+
+  replies: CodeReviewQuestionInfoReplies[];
+};
+
+export type CodeReviewQuestionInfoReplies = QuestionReplyInfoFragment;
+
+export type QuestionReplyInfoFragment = {
+  __typename?: "QuestionReply";
+
+  id: string;
+
+  text: string;
 
   creatorId: string;
 };
@@ -139,18 +145,31 @@ import gql from "graphql-tag";
 // Fragments
 // ====================================================
 
+export const QuestionReplyInfoFragmentDoc = gql`
+  fragment QuestionReplyInfo on QuestionReply {
+    id
+    text
+    creatorId
+  }
+`;
+
 export const CodeReviewQuestionInfoFragmentDoc = gql`
   fragment CodeReviewQuestionInfo on CodeReviewQuestion {
     id
     startingLineNum
     endingLineNum
-    question
+    text
     path
     repo
     branch
     username
     creatorId
+    replies {
+      ...QuestionReplyInfo
+    }
   }
+
+  ${QuestionReplyInfoFragmentDoc}
 `;
 
 // ====================================================
@@ -285,12 +304,12 @@ export const CreateQuestionReplyDocument = gql`
   mutation CreateQuestionReply($questionReply: CreateQuestionReplyInput!) {
     createQuestionReply(questionReply: $questionReply) {
       questionReply {
-        id
-        reply
-        creatorId
+        ...QuestionReplyInfo
       }
     }
   }
+
+  ${QuestionReplyInfoFragmentDoc}
 `;
 export class CreateQuestionReplyComponent extends React.Component<
   Partial<

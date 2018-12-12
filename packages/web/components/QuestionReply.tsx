@@ -18,7 +18,7 @@ export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
               variables: {
                 questionReply: {
                   questionId,
-                  reply: value
+                  text: value
                 }
               }
             });

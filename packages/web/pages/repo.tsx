@@ -115,7 +115,7 @@ export default class Repo extends React.PureComponent<Props> {
                   repo={name}
                   username={owner}
                   path={path}
-                  text={object.text}
+                  code={object.text}
                 />
               </>
             );
@@ -137,7 +137,6 @@ export default class Repo extends React.PureComponent<Props> {
                     params: {
                       branch,
                       owner,
-                      // path: `${path || ""}/${itemPath}`,
                       path: [
                         ...(path ? path.split("/") : []),
                         ...itemPath.split("/")

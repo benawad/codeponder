@@ -6,7 +6,7 @@ import { QuestionReply } from "./QuestionReply";
 import { useInputValue } from "../utils/useInputValue";
 
 interface Props {
-  text: string | null;
+  code: string | null;
   username: string;
   branch: string;
   path?: string;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const CodeFile: React.SFC<Props> = ({
-  text,
+  code,
   path,
   branch,
   username,
@@ -22,13 +22,13 @@ export const CodeFile: React.SFC<Props> = ({
 }) => {
   const [startingLineNum, startingLineNumChange] = useInputValue("0");
   const [endingLineNum, endingLineNumChange] = useInputValue("0");
-  const [question, questionChange] = useInputValue("");
+  const [text, textChange] = useInputValue("");
 
   return (
     <CreateCodeReviewQuestionComponent>
       {mutate => (
         <>
-          <pre>{text}</pre>
+          <pre>{code}</pre>
           <form
             onSubmit={async e => {
               e.preventDefault();
@@ -37,7 +37,7 @@ export const CodeFile: React.SFC<Props> = ({
                   codeReviewQuestion: {
                     startingLineNum: parseInt(startingLineNum, 10),
                     endingLineNum: parseInt(endingLineNum, 10),
-                    question,
+                    text: text,
                     username,
                     branch,
                     path,
@@ -64,8 +64,8 @@ export const CodeFile: React.SFC<Props> = ({
             <input
               name="question"
               placeholder="question"
-              value={question}
-              onChange={questionChange}
+              value={text}
+              onChange={textChange}
             />
             <button type="submit">save</button>
           </form>
@@ -86,7 +86,12 @@ export const CodeFile: React.SFC<Props> = ({
                 <div>
                   {data.findCodeReviewQuestions.map(crq => (
                     <div key={crq.id}>
-                      <div>{crq.question}</div>
+                      <div>{crq.text}</div>
+                      {crq.replies.map(reply => (
+                        <div key={reply.id} style={{ color: "pink" }}>
+                          {reply.text}
+                        </div>
+                      ))}
                       <QuestionReply questionId={crq.id} />
                     </div>
                   ))}

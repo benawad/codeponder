@@ -20,13 +20,13 @@ export class QuestionReply extends BaseEntity {
 
   @Field()
   @Column({ type: "text" })
-  reply: string;
+  text: string;
 
   @Field()
   @Column("uuid")
   questionId: string;
 
-  @ManyToOne(() => CodeReviewQuestion, crq => crq.questionReply)
+  @ManyToOne(() => CodeReviewQuestion, crq => crq.replies)
   question: Promise<CodeReviewQuestion>;
 
   @Field()
