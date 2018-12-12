@@ -1,30 +1,18 @@
-import { Resolver, Ctx, Mutation, Arg, Authorized, Query } from "type-graphql";
-import { MyContext } from "../../types/Context";
+import { Resolver, Arg, Query } from "type-graphql";
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { FindConditions } from "typeorm";
 import { CreateCodeReviewQuestionResponse } from "./createResponse";
 import { CreateCodeReviewQuestionInput } from "./createInput";
+import { createBaseResolver } from "../shared/createBaseResolver";
 
+const CodeReviewQuestionBaseResolver = createBaseResolver(
+  "CodeReviewQuestion",
+  CreateCodeReviewQuestionInput,
+  CodeReviewQuestion,
+  CreateCodeReviewQuestionResponse
+);
 @Resolver(CodeReviewQuestion)
-export class CodeReviewQuestionResolver {
-  constructor() {}
-
-  @Authorized()
-  @Mutation(() => CreateCodeReviewQuestionResponse)
-  async createCodeReviewQuestion(
-    @Arg("question") question: CreateCodeReviewQuestionInput,
-    @Ctx()
-    ctx: MyContext
-  ) {
-    const codeReviewQuestion = await CodeReviewQuestion.create({
-      ...question,
-      creatorId: ctx.req.session!.userId
-    }).save();
-    return {
-      codeReviewQuestion
-    };
-  }
-
+export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
   @Query(() => [CodeReviewQuestion])
   async findCodeReviewQuestions(
     @Arg("path", { nullable: true }) path: string,

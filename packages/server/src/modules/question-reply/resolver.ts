@@ -1,27 +1,16 @@
-import { Resolver, Ctx, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver } from "type-graphql";
 
-import { MyContext } from "../../types/Context";
 import { QuestionReply } from "../../entity/QuestionReply";
 import { CreateQuestionReplyResponse } from "./createResponse";
+import { createBaseResolver } from "../shared/createBaseResolver";
 import { CreateQuestionReplyInput } from "./createInput";
 
-@Resolver(QuestionReply)
-export class QuestionReplyResolver {
-  constructor() {}
+const QuestionReplyBaseResolver = createBaseResolver(
+  "QuestionReply",
+  CreateQuestionReplyInput,
+  QuestionReply,
+  CreateQuestionReplyResponse
+);
 
-  @Authorized()
-  @Mutation(() => CreateQuestionReplyResponse)
-  async createQuestionReply(
-    @Arg("reply") reply: CreateQuestionReplyInput,
-    @Ctx()
-    ctx: MyContext
-  ) {
-    const questionReply = await QuestionReply.create({
-      ...reply,
-      creatorId: ctx.req.session!.userId
-    }).save();
-    return {
-      questionReply
-    };
-  }
-}
+@Resolver(QuestionReply)
+export class QuestionReplyResolver extends QuestionReplyBaseResolver {}
