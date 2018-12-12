@@ -1,3 +1,9 @@
+export interface CreateQuestionReplyInput {
+  reply: string;
+
+  questionId: string;
+}
+
 export interface CreateCodeReviewQuestionInput {
   startingLineNum: number;
 
@@ -21,29 +27,23 @@ export type DateTime = any;
 // Documents
 // ====================================================
 
-export type CreateCodeReviewVariables = {
-  startingLineNum: number;
-  endingLineNum: number;
-  question: string;
-  path?: string | null;
-  repo: string;
-  branch: string;
-  username: string;
+export type CreateCodeReviewQuestionVariables = {
+  codeReviewQuestion: CreateCodeReviewQuestionInput;
 };
 
-export type CreateCodeReviewMutation = {
+export type CreateCodeReviewQuestionMutation = {
   __typename?: "Mutation";
 
-  createCodeReviewQuestion: CreateCodeReviewCreateCodeReviewQuestion;
+  createCodeReviewQuestion: CreateCodeReviewQuestionCreateCodeReviewQuestion;
 };
 
-export type CreateCodeReviewCreateCodeReviewQuestion = {
-  __typename?: "CreateCodeReviewResponse";
+export type CreateCodeReviewQuestionCreateCodeReviewQuestion = {
+  __typename?: "CreateCodeReviewQuestionResponse";
 
-  codeReviewQuestion: CreateCodeReviewCodeReviewQuestion;
+  codeReviewQuestion: CreateCodeReviewQuestionCodeReviewQuestion;
 };
 
-export type CreateCodeReviewCodeReviewQuestion = CodeReviewQuestionInfoFragment;
+export type CreateCodeReviewQuestionCodeReviewQuestion = CodeReviewQuestionInfoFragment;
 
 export type FindCodeReviewQuestionsVariables = {
   username: string;
@@ -59,6 +59,32 @@ export type FindCodeReviewQuestionsQuery = {
 };
 
 export type FindCodeReviewQuestionsFindCodeReviewQuestions = CodeReviewQuestionInfoFragment;
+
+export type CreateQuestionReplyVariables = {
+  questionReply: CreateQuestionReplyInput;
+};
+
+export type CreateQuestionReplyMutation = {
+  __typename?: "Mutation";
+
+  createQuestionReply: CreateQuestionReplyCreateQuestionReply;
+};
+
+export type CreateQuestionReplyCreateQuestionReply = {
+  __typename?: "CreateQuestionReplyResponse";
+
+  questionReply: CreateQuestionReplyQuestionReply;
+};
+
+export type CreateQuestionReplyQuestionReply = {
+  __typename?: "QuestionReply";
+
+  id: string;
+
+  reply: string;
+
+  creatorId: string;
+};
 
 export type MeVariables = {};
 
@@ -131,27 +157,11 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
 // Components
 // ====================================================
 
-export const CreateCodeReviewDocument = gql`
-  mutation CreateCodeReview(
-    $startingLineNum: Int!
-    $endingLineNum: Int!
-    $question: String!
-    $path: String
-    $repo: String!
-    $branch: String!
-    $username: String!
+export const CreateCodeReviewQuestionDocument = gql`
+  mutation CreateCodeReviewQuestion(
+    $codeReviewQuestion: CreateCodeReviewQuestionInput!
   ) {
-    createCodeReviewQuestion(
-      question: {
-        startingLineNum: $startingLineNum
-        endingLineNum: $endingLineNum
-        question: $question
-        path: $path
-        repo: $repo
-        branch: $branch
-        username: $username
-      }
-    ) {
+    createCodeReviewQuestion(codeReviewQuestion: $codeReviewQuestion) {
       codeReviewQuestion {
         ...CodeReviewQuestionInfo
       }
@@ -160,47 +170,53 @@ export const CreateCodeReviewDocument = gql`
 
   ${CodeReviewQuestionInfoFragmentDoc}
 `;
-export class CreateCodeReviewComponent extends React.Component<
+export class CreateCodeReviewQuestionComponent extends React.Component<
   Partial<
     ReactApollo.MutationProps<
-      CreateCodeReviewMutation,
-      CreateCodeReviewVariables
+      CreateCodeReviewQuestionMutation,
+      CreateCodeReviewQuestionVariables
     >
   >
 > {
   render() {
     return (
-      <ReactApollo.Mutation<CreateCodeReviewMutation, CreateCodeReviewVariables>
-        mutation={CreateCodeReviewDocument}
+      <ReactApollo.Mutation<
+        CreateCodeReviewQuestionMutation,
+        CreateCodeReviewQuestionVariables
+      >
+        mutation={CreateCodeReviewQuestionDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type CreateCodeReviewProps<TChildProps = any> = Partial<
-  ReactApollo.MutateProps<CreateCodeReviewMutation, CreateCodeReviewVariables>
+export type CreateCodeReviewQuestionProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    CreateCodeReviewQuestionMutation,
+    CreateCodeReviewQuestionVariables
+  >
 > &
   TChildProps;
-export type CreateCodeReviewMutationFn = ReactApollo.MutationFn<
-  CreateCodeReviewMutation,
-  CreateCodeReviewVariables
+export type CreateCodeReviewQuestionMutationFn = ReactApollo.MutationFn<
+  CreateCodeReviewQuestionMutation,
+  CreateCodeReviewQuestionVariables
 >;
-export function CreateCodeReviewHOC<TProps, TChildProps = any>(
+export function CreateCodeReviewQuestionHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        CreateCodeReviewMutation,
-        CreateCodeReviewVariables,
-        CreateCodeReviewProps<TChildProps>
+        CreateCodeReviewQuestionMutation,
+        CreateCodeReviewQuestionVariables,
+        CreateCodeReviewQuestionProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    CreateCodeReviewMutation,
-    CreateCodeReviewVariables,
-    CreateCodeReviewProps<TChildProps>
-  >(CreateCodeReviewDocument, operationOptions);
+    CreateCodeReviewQuestionMutation,
+    CreateCodeReviewQuestionVariables,
+    CreateCodeReviewQuestionProps<TChildProps>
+  >(CreateCodeReviewQuestionDocument, operationOptions);
 }
 export const FindCodeReviewQuestionsDocument = gql`
   query FindCodeReviewQuestions(
@@ -264,6 +280,65 @@ export function FindCodeReviewQuestionsHOC<TProps, TChildProps = any>(
     FindCodeReviewQuestionsVariables,
     FindCodeReviewQuestionsProps<TChildProps>
   >(FindCodeReviewQuestionsDocument, operationOptions);
+}
+export const CreateQuestionReplyDocument = gql`
+  mutation CreateQuestionReply($questionReply: CreateQuestionReplyInput!) {
+    createQuestionReply(questionReply: $questionReply) {
+      questionReply {
+        id
+        reply
+        creatorId
+      }
+    }
+  }
+`;
+export class CreateQuestionReplyComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      CreateQuestionReplyMutation,
+      CreateQuestionReplyVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        CreateQuestionReplyMutation,
+        CreateQuestionReplyVariables
+      >
+        mutation={CreateQuestionReplyDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type CreateQuestionReplyProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    CreateQuestionReplyMutation,
+    CreateQuestionReplyVariables
+  >
+> &
+  TChildProps;
+export type CreateQuestionReplyMutationFn = ReactApollo.MutationFn<
+  CreateQuestionReplyMutation,
+  CreateQuestionReplyVariables
+>;
+export function CreateQuestionReplyHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        CreateQuestionReplyMutation,
+        CreateQuestionReplyVariables,
+        CreateQuestionReplyProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    CreateQuestionReplyMutation,
+    CreateQuestionReplyVariables,
+    CreateQuestionReplyProps<TChildProps>
+  >(CreateQuestionReplyDocument, operationOptions);
 }
 export const MeDocument = gql`
   query Me {

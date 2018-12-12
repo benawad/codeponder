@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
 import {
-  CreateCodeReviewComponent,
+  CreateCodeReviewQuestionComponent,
   FindCodeReviewQuestionsComponent
 } from "./apollo-components";
+import { QuestionReply } from "./QuestionReply";
+import { useInputValue } from "../utils/useInputValue";
 
 interface Props {
   text: string | null;
@@ -10,15 +11,6 @@ interface Props {
   branch: string;
   path?: string;
   repo: string;
-}
-
-function useInputValue<T>(initialValue: T): [T, (e: any) => void] {
-  const [value, setValue] = useState<T>(initialValue);
-  const onChange = useCallback(event => {
-    setValue(event.currentTarget.value);
-  }, []);
-
-  return [value, onChange];
 }
 
 export const CodeFile: React.SFC<Props> = ({
@@ -33,7 +25,7 @@ export const CodeFile: React.SFC<Props> = ({
   const [question, questionChange] = useInputValue("");
 
   return (
-    <CreateCodeReviewComponent>
+    <CreateCodeReviewQuestionComponent>
       {mutate => (
         <>
           <pre>{text}</pre>
@@ -42,13 +34,15 @@ export const CodeFile: React.SFC<Props> = ({
               e.preventDefault();
               const response = await mutate({
                 variables: {
-                  startingLineNum: parseInt(startingLineNum, 10),
-                  endingLineNum: parseInt(endingLineNum, 10),
-                  question,
-                  username,
-                  branch,
-                  path,
-                  repo
+                  codeReviewQuestion: {
+                    startingLineNum: parseInt(startingLineNum, 10),
+                    endingLineNum: parseInt(endingLineNum, 10),
+                    question,
+                    username,
+                    branch,
+                    path,
+                    repo
+                  }
                 }
               });
 
@@ -91,7 +85,10 @@ export const CodeFile: React.SFC<Props> = ({
               return (
                 <div>
                   {data.findCodeReviewQuestions.map(crq => (
-                    <div key={crq.id}>{crq.question}</div>
+                    <div key={crq.id}>
+                      <div>{crq.question}</div>
+                      <QuestionReply questionId={crq.id} />
+                    </div>
                   ))}
                 </div>
               );
@@ -99,6 +96,6 @@ export const CodeFile: React.SFC<Props> = ({
           </FindCodeReviewQuestionsComponent>
         </>
       )}
-    </CreateCodeReviewComponent>
+    </CreateCodeReviewQuestionComponent>
   );
 };
