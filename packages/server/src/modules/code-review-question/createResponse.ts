@@ -1,8 +1,8 @@
 import { ObjectType, Field } from "type-graphql";
-import { CodeReviewQuestion } from "../../../entity/CodeReviewQuestion";
+import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 
 @ObjectType()
-export class CreateCodeReviewResponse {
+export class CreateCodeReviewQuestionResponse {
   @Field()
   codeReviewQuestion: CodeReviewQuestion;
 }

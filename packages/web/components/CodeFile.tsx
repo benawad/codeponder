@@ -1,5 +1,8 @@
 import { useState, useCallback } from "react";
-import { CreateCodeReviewComponent } from "./apollo-components";
+import {
+  CreateCodeReviewComponent,
+  FindCodeReviewQuestionsComponent
+} from "./apollo-components";
 
 interface Props {
   text: string | null;
@@ -20,7 +23,7 @@ function useInputValue<T>(initialValue: T): [T, (e: any) => void] {
 
 export const CodeFile: React.SFC<Props> = ({
   text,
-  path = "/",
+  path,
   branch,
   username,
   repo
@@ -72,6 +75,28 @@ export const CodeFile: React.SFC<Props> = ({
             />
             <button type="submit">save</button>
           </form>
+          <FindCodeReviewQuestionsComponent
+            variables={{
+              branch,
+              path,
+              repo,
+              username
+            }}
+          >
+            {({ data, loading }) => {
+              if (!data || loading) {
+                return null;
+              }
+
+              return (
+                <div>
+                  {data.findCodeReviewQuestions.map(crq => (
+                    <div key={crq.id}>{crq.question}</div>
+                  ))}
+                </div>
+              );
+            }}
+          </FindCodeReviewQuestionsComponent>
         </>
       )}
     </CreateCodeReviewComponent>

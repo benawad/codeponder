@@ -1,5 +1,5 @@
 import { InputType, Field, Int } from "type-graphql";
-import { CodeReviewQuestion } from "../../../entity/CodeReviewQuestion";
+import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 
 @InputType()
 export class CreateCodeReviewQuestionInput
@@ -13,8 +13,8 @@ export class CreateCodeReviewQuestionInput
   @Field()
   question: string;
 
-  @Field()
-  path: string;
+  @Field(() => String, { nullable: true })
+  path: string | null;
 
   @Field()
   repo: string;

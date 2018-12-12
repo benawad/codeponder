@@ -5,7 +5,7 @@ export interface CreateCodeReviewQuestionInput {
 
   question: string;
 
-  path: string;
+  path?: string | null;
 
   repo: string;
 
@@ -25,7 +25,7 @@ export type CreateCodeReviewVariables = {
   startingLineNum: number;
   endingLineNum: number;
   question: string;
-  path: string;
+  path?: string | null;
   repo: string;
   branch: string;
   username: string;
@@ -93,7 +93,7 @@ export type CodeReviewQuestionInfoFragment = {
 
   question: string;
 
-  path: string;
+  path: string | null;
 
   repo: string;
 
@@ -136,7 +136,7 @@ export const CreateCodeReviewDocument = gql`
     $startingLineNum: Int!
     $endingLineNum: Int!
     $question: String!
-    $path: String!
+    $path: String
     $repo: String!
     $branch: String!
     $username: String!

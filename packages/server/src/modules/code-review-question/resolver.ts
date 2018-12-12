@@ -1,16 +1,16 @@
 import { Resolver, Ctx, Mutation, Arg, Authorized, Query } from "type-graphql";
 import { MyContext } from "../../types/Context";
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
-import { CreateCodeReviewQuestionInput } from "./shared/CreateCodeReviewQuestionInput";
-import { CreateCodeReviewResponse } from "./shared/CreateCodeReviewResponse";
 import { FindConditions } from "typeorm";
+import { CreateCodeReviewQuestionResponse } from "./createResponse";
+import { CreateCodeReviewQuestionInput } from "./createInput";
 
 @Resolver(CodeReviewQuestion)
 export class CodeReviewQuestionResolver {
   constructor() {}
 
   @Authorized()
-  @Mutation(() => CreateCodeReviewResponse)
+  @Mutation(() => CreateCodeReviewQuestionResponse)
   async createCodeReviewQuestion(
     @Arg("question") question: CreateCodeReviewQuestionInput,
     @Ctx()

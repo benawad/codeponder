@@ -5,10 +5,12 @@ import {
   BaseEntity,
   ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  OneToMany
 } from "typeorm";
 import { ObjectType, Field, ID, Int } from "type-graphql";
 import { User } from "./User";
+import { QuestionReply } from "./QuestionReply";
 
 @Entity()
 @ObjectType()
@@ -29,9 +31,9 @@ export class CodeReviewQuestion extends BaseEntity {
   @Column({ type: "text" })
   question: string;
 
-  @Field()
-  @Column({ type: "text" })
-  path: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
+  path: string | null;
 
   @Field()
   @Column({ type: "text" })
@@ -51,6 +53,9 @@ export class CodeReviewQuestion extends BaseEntity {
 
   @ManyToOne(() => User, user => user.codeReviewQuestions)
   creator: Promise<User>;
+
+  @OneToMany(() => QuestionReply, qr => qr.question)
+  questionReply: Promise<QuestionReply[]>;
 
   @Field()
   @CreateDateColumn()
