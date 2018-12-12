@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { codeReviewQuestionInfoFragment } from "../fragments/codeReviewQuestionInfo";
 
 export const createCodeReviewMutation = gql`
   mutation CreateCodeReview(
@@ -22,16 +23,10 @@ export const createCodeReviewMutation = gql`
       }
     ) {
       codeReviewQuestion {
-        id
-        startingLineNum
-        endingLineNum
-        question
-        path
-        repo
-        branch
-        username
-        creatorId
+        ...CodeReviewQuestionInfo
       }
     }
   }
+
+  ${codeReviewQuestionInfoFragment}
 `;
