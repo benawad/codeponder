@@ -51,7 +51,7 @@ export const CodeFile: React.SFC<Props> = ({
     <CreateCodeReviewQuestionComponent>
       {mutate => (
         <>
-          <pre className={`line-numbers language-typescript`}>
+          <pre className={`line-numbers language-${extension}`}>
             <code>{code}</code>
           </pre>
           {/* <pre className={`line-numbers`}>

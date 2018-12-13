@@ -5,7 +5,14 @@
     [
       "prismjs",
       {
-        "languages": ["javascript", "css", "markup", "typescript"],
+        "languages": [
+          "javascript",
+          "css",
+          "markup",
+          "typescript",
+          "json",
+          "markdown"
+        ],
         "plugins": ["line-numbers"],
         "theme": "solarizedlight",
         "css": true
