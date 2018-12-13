@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FolderTree } from "@codeponder/ui";
+import "prismjs";
 
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 import { NextContextWithApollo } from "../types/NextContextWithApollo";

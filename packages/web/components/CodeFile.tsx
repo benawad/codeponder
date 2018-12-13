@@ -1,9 +1,17 @@
+import Highlight, { defaultProps } from "prism-react-renderer";
+import * as Prism from "prismjs";
+import "prismjs/themes/prism.css";
+import "prismjs/themes/prism-solarizedlight.css";
+import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+import "prismjs/plugins/line-numbers/prism-line-numbers.js";
+
 import {
   CreateCodeReviewQuestionComponent,
   FindCodeReviewQuestionsComponent
 } from "./apollo-components";
 import { QuestionReply } from "./QuestionReply";
 import { useInputValue } from "../utils/useInputValue";
+import { useEffect } from "react";
 
 interface Props {
   code: string | null;
@@ -24,11 +32,59 @@ export const CodeFile: React.SFC<Props> = ({
   const [endingLineNum, endingLineNumChange] = useInputValue("0");
   const [text, textChange] = useInputValue("");
 
+  useEffect(() => {
+    // Prism.highlightAll();
+    return () => {};
+  });
+
+  const extension = path ? path.split(".").pop() : "";
+
+  console.log(defaultProps);
+
   return (
     <CreateCodeReviewQuestionComponent>
       {mutate => (
         <>
-          <pre>{code}</pre>
+          {/* <pre className={`line-numbers`}>
+            <code className={`language-${extension}`}>
+              {(code || "").split("\n").map((token, i) => (
+                <div key={i} className="token-line">
+                  {token}
+                </div>
+              ))}
+            </code>
+          </pre> */}
+          <Highlight
+            {...defaultProps}
+            theme={undefined}
+            code={code}
+            language={extension}
+          >
+            {({
+              className,
+              style,
+              tokens,
+              getLineProps,
+              getTokenProps
+            }: any) => (
+              <pre className={`${className} line-numbers`} style={style}>
+                {tokens.map((line: string[], i: number) => (
+                  <div
+                    {...getLineProps({
+                      line,
+                      key: i,
+                      className: "line-numbers"
+                    })}
+                  >
+                    <span>{i}</span>
+                    {line.map((token, key) => (
+                      <span {...getTokenProps({ token, key })} />
+                    ))}
+                  </div>
+                ))}
+              </pre>
+            )}
+          </Highlight>
           <form
             onSubmit={async e => {
               e.preventDefault();
