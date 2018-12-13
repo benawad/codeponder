@@ -1,4 +1,15 @@
 {
   "presets": ["next/babel", "@zeit/next-typescript/babel"],
-  "plugins": ["styled-components"]
+  "plugins": [
+    "styled-components",
+    [
+      "prismjs",
+      {
+        "languages": ["javascript", "css", "markup", "typescript"],
+        "plugins": ["line-numbers"],
+        "theme": "solarizedlight",
+        "css": true
+      }
+    ]
+  ]
 }
