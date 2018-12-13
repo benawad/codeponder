@@ -51,6 +51,7 @@ export class CodeReviewQuestion extends BaseEntity {
   @Column("uuid")
   creatorId: string;
 
+  @Field(() => User)
   @ManyToOne(() => User, user => user.codeReviewQuestions)
   creator: Promise<User>;
 
