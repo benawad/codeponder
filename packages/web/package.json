@@ -15,7 +15,7 @@
     "@codeponder/ui": "1.0.0",
     "@octokit/rest": "16.2.0",
     "apollo-boost": "0.1.22",
-    "apollo-link-context": "1.0.10",
+    "apollo-link-context": "1.0.11",
     "cookie": "0.3.1",
     "downshift": "3.1.7",
     "formik": "1.4.0",
@@ -25,7 +25,7 @@
     "prism-react-renderer": "0.1.5",
     "prismjs": "1.15.0",
     "react": "16.7.0-alpha.2",
-    "react-apollo": "2.3.2",
+    "react-apollo": "2.3.3",
     "react-dom": "16.7.0-alpha.2",
     "styled-components": "4.1.2"
   },
