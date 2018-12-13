@@ -17,6 +17,8 @@ import { createUser } from "./utils/createUser";
 import { User } from "./entity/User";
 import { CodeReviewQuestionResolver } from "./modules/code-review-question/resolver";
 import { QuestionReplyResolver } from "./modules/question-reply/resolver";
+import { userLoader } from "./loaders/userLoader";
+import { questionReplyLoader } from "./loaders/questionReplyLoader";
 
 const SESSION_SECRET = "ajslkjalksjdfkl";
 const RedisStore = connectRedis(session as any);
@@ -37,7 +39,11 @@ const startServer = async () => {
         return context.req.session && context.req.session.userId; // or false if access denied
       }
     }),
-    context: ({ req }: any) => ({ req })
+    context: ({ req }: any) => ({
+      req,
+      userLoader: userLoader(),
+      questionReplyLoader: questionReplyLoader()
+    })
   });
 
   app.set("trust proxy", 1);

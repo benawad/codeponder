@@ -1,9 +1,11 @@
-import { Resolver, Arg, Query } from "type-graphql";
+import { Resolver, Arg, Query, Root, FieldResolver, Ctx } from "type-graphql";
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { FindConditions } from "typeorm";
 import { CreateCodeReviewQuestionResponse } from "./createResponse";
 import { CreateCodeReviewQuestionInput } from "./createInput";
 import { createBaseResolver } from "../shared/createBaseResolver";
+import { QuestionReply } from "../../entity/QuestionReply";
+import { MyContext } from "../../types/Context";
 
 const CodeReviewQuestionBaseResolver = createBaseResolver(
   "CodeReviewQuestion",
@@ -33,5 +35,10 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
     return CodeReviewQuestion.find({
       where
     });
+  }
+
+  @FieldResolver(() => [QuestionReply])
+  replies(@Root() root: CodeReviewQuestion, @Ctx() ctx: MyContext) {
+    return ctx.questionReplyLoader.load(root.id);
   }
 }
