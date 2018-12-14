@@ -1,4 +1,3 @@
-import Highlight, { defaultProps } from "prism-react-renderer";
 import * as Prism from "prismjs";
 import "prismjs/themes/prism.css";
 import "prismjs/themes/prism-solarizedlight.css";
@@ -12,6 +11,8 @@ import {
 import { QuestionReply } from "./QuestionReply";
 import { useInputValue } from "../utils/useInputValue";
 import { useEffect } from "react";
+import { filenameToLang } from "../utils/filenameToLang";
+import { loadLanguage } from "../utils/loadLanguage";
 
 interface Props {
   code: string | null;
@@ -32,59 +33,33 @@ export const CodeFile: React.SFC<Props> = ({
   const [endingLineNum, endingLineNumChange] = useInputValue("0");
   const [text, textChange] = useInputValue("");
 
+  const lang = path ? filenameToLang(path) : "";
   useEffect(() => {
-    // Prism.highlightAll();
+    loadLanguage(lang)
+      .then(() => {
+        Prism.highlightAll();
+      })
+      .catch(() => {
+        Prism.highlightAll();
+      });
+
     return () => {};
   });
-
-  const extension = path ? path.split(".").pop() : "";
-
-  console.log(defaultProps);
 
   return (
     <CreateCodeReviewQuestionComponent>
       {mutate => (
         <>
-          {/* <pre className={`line-numbers`}>
-            <code className={`language-${extension}`}>
-              {(code || "").split("\n").map((token, i) => (
+          <pre className={`line-numbers`}>
+            <code className={`language-${lang}`}>
+              {code}
+              {/* {(code || "").split("\n").map((token, i) => (
                 <div key={i} className="token-line">
                   {token}
                 </div>
-              ))}
+              ))} */}
             </code>
-          </pre> */}
-          <Highlight
-            {...defaultProps}
-            theme={undefined}
-            code={code}
-            language={extension}
-          >
-            {({
-              className,
-              style,
-              tokens,
-              getLineProps,
-              getTokenProps
-            }: any) => (
-              <pre className={`${className} line-numbers`} style={style}>
-                {tokens.map((line: string[], i: number) => (
-                  <div
-                    {...getLineProps({
-                      line,
-                      key: i,
-                      className: "line-numbers"
-                    })}
-                  >
-                    <span>{i}</span>
-                    {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
-                    ))}
-                  </div>
-                ))}
-              </pre>
-            )}
-          </Highlight>
+          </pre>
           <form
             onSubmit={async e => {
               e.preventDefault();
