@@ -20,6 +20,8 @@
     "downshift": "3.1.6",
     "formik": "1.4.0",
     "isomorphic-unfetch": "3.0.0",
+    "monaco-editor": "^0.15.6",
+    "monaco-editor-webpack-plugin": "^1.7.0",
     "next": "7.0.2",
     "next-routes": "1.4.2",
     "prism-react-renderer": "^0.1.5",
@@ -27,6 +29,7 @@
     "react": "16.7.0-alpha.2",
     "react-apollo": "2.3.2",
     "react-dom": "16.7.0-alpha.2",
+    "react-monaco-editor": "^0.22.0",
     "styled-components": "4.1.2"
   },
   "devDependencies": {

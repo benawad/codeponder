@@ -69,15 +69,17 @@ const extensions: { [key: string]: string } = {
   ts: "typescript",
   yml: "yaml",
   hpp: "c++",
-  h: "c"
-};
+  h: "c",
+  tsx: "typescript",
+  jsx: "javascript",
+}
 
 export const filenameToLang = (filename: string) => {
-  const lfn = filename.toLowerCase();
-  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1];
+  const lfn = filename.toLowerCase()
+  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1]
   if (extension) {
-    return extensions[extension] || extension;
+    return extensions[extension] || extension
   }
 
-  return lfn;
-};
+  return lfn
+}
