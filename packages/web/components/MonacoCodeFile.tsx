@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic"
 import { useState } from "react"
-import MonacoEditor from "react-monaco-editor"
 import * as monacoEditorOrig from "monaco-editor/esm/vs/editor/editor.api"
+import { MonacoEditorProps } from "react-monaco-editor"
 import { filenameToLang } from "../utils/filenameToLang"
 
-const MyMonacoEditor = dynamic(import("react-monaco-editor") as any, {
+const MyMonacoEditor = dynamic<MonacoEditorProps>(import("react-monaco-editor") as any, {
   ssr: false,
-}) as typeof MonacoEditor
+});
 
 interface Props {
   code: string | null
