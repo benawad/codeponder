@@ -35,6 +35,7 @@ const extensions: { [key: string]: string } = {
   "cmake.in": "cmake",
   coffee: "coffeescript",
   cson: "coffescript",
+  cs: "csharp",
   iced: "coffescript",
   "c++": "cpp",
   "h++": "cpp",
@@ -69,15 +70,17 @@ const extensions: { [key: string]: string } = {
   ts: "typescript",
   yml: "yaml",
   hpp: "c++",
-  h: "c"
-};
+  h: "c",
+  asm: "asm6502",
+  wasm: "webassembly",
+}
 
 export const filenameToLang = (filename: string) => {
-  const lfn = filename.toLowerCase();
-  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1];
+  const lfn = filename.toLowerCase()
+  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1]
   if (extension) {
-    return extensions[extension] || extension;
+    return extensions[extension] || extension
   }
 
-  return lfn;
-};
+  return lfn
+}

@@ -1,27 +1,27 @@
-import * as Prism from "prismjs";
-import "prismjs/themes/prism.css";
-import "prismjs/themes/prism-solarizedlight.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.js";
-import "prismjs/plugins/line-highlight/prism-line-highlight.css";
-import "prismjs/plugins/line-highlight/prism-line-highlight.js";
+import { useRef } from "react"
+import * as Prism from "prismjs"
+import "prismjs/themes/prism.css"
+import "prismjs/themes/prism-solarizedlight.css"
+import "prismjs/plugins/line-numbers/prism-line-numbers.css"
+import "prismjs/plugins/line-numbers/prism-line-numbers.js"
+import "prismjs/plugins/line-highlight/prism-line-highlight.css"
+import "prismjs/plugins/line-highlight/prism-line-highlight.js"
 
 import {
   CreateCodeReviewQuestionComponent,
-  FindCodeReviewQuestionsComponent
-} from "./apollo-components";
-import { QuestionReply } from "./QuestionReply";
-import { useInputValue } from "../utils/useInputValue";
-import { useEffect } from "react";
-import { filenameToLang } from "../utils/filenameToLang";
-import { loadLanguage } from "../utils/loadLanguage";
+  FindCodeReviewQuestionsComponent,
+} from "./apollo-components"
+import { QuestionReply } from "./QuestionReply"
+import { useInputValue } from "../utils/useInputValue"
+import { filenameToLang } from "../utils/filenameToLang"
+import { loadLanguage } from "../utils/loadLanguage"
 
 interface Props {
-  code: string | null;
-  username: string;
-  branch: string;
-  path?: string;
-  repo: string;
+  code: string | null
+  username: string
+  branch: string
+  path?: string
+  repo: string
 }
 
 export const CodeFile: React.SFC<Props> = ({
@@ -29,24 +29,14 @@ export const CodeFile: React.SFC<Props> = ({
   path,
   branch,
   username,
-  repo
+  repo,
 }) => {
-  const [startingLineNum, startingLineNumChange] = useInputValue("0");
-  const [endingLineNum, endingLineNumChange] = useInputValue("0");
-  const [text, textChange] = useInputValue("");
+  const [startingLineNum, startingLineNumChange] = useInputValue("0")
+  const [endingLineNum, endingLineNumChange] = useInputValue("0")
+  const [text, textChange] = useInputValue("")
+  const hasLoadedLanguage = useRef(false)
 
-  const lang = path ? filenameToLang(path) : "";
-  useEffect(() => {
-    loadLanguage(lang)
-      .then(() => {
-        Prism.highlightAll();
-      })
-      .catch(() => {
-        Prism.highlightAll();
-      });
-
-    return () => {};
-  });
+  const lang = path ? filenameToLang(path) : ""
 
   return (
     <FindCodeReviewQuestionsComponent
@@ -54,35 +44,40 @@ export const CodeFile: React.SFC<Props> = ({
         branch,
         path,
         repo,
-        username
+        username,
       }}
     >
       {({ data, loading }) => {
         if (!data || loading) {
-          return null;
+          return null
         }
 
         const dataLines = data.findCodeReviewQuestions.map(q => {
-          return `${q.startingLineNum}-${q.endingLineNum}`;
-        });
+          return `${q.startingLineNum}-${q.endingLineNum}`
+        })
 
         return (
           <CreateCodeReviewQuestionComponent>
             {mutate => (
               <>
-                <pre className="line-numbers" data-line={dataLines.join(" ")}>
-                  <code className={`language-${lang}`}>
-                    {code}
-                    {/* {(code || "").split("\n").map((token, i) => (
-                <div key={i} className="token-line">
-                  {token}
-                </div>
-              ))} */}
-                  </code>
+                <pre
+                  ref={async () => {
+                    if (!hasLoadedLanguage.current) {
+                      try {
+                        await loadLanguage(lang)
+                      } catch {}
+                      Prism.highlightAll()
+                      hasLoadedLanguage.current = true
+                    }
+                  }}
+                  className="line-numbers"
+                  data-line={dataLines.join(" ")}
+                >
+                  <code className={`language-${lang}`}>{code}</code>
                 </pre>
                 <form
                   onSubmit={async e => {
-                    e.preventDefault();
+                    e.preventDefault()
                     const response = await mutate({
                       variables: {
                         codeReviewQuestion: {
@@ -92,12 +87,12 @@ export const CodeFile: React.SFC<Props> = ({
                           username,
                           branch,
                           path,
-                          repo
-                        }
-                      }
-                    });
+                          repo,
+                        },
+                      },
+                    })
 
-                    console.log(response);
+                    console.log(response)
                   }}
                 >
                   <input
@@ -138,8 +133,8 @@ export const CodeFile: React.SFC<Props> = ({
               </>
             )}
           </CreateCodeReviewQuestionComponent>
-        );
+        )
       }}
     </FindCodeReviewQuestionsComponent>
-  );
-};
+  )
+}
