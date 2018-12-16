@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import * as Prism from "prismjs"
+import { Spinner } from "@codeponder/ui"
 import "prismjs/themes/prism.css"
 import "prismjs/themes/prism-solarizedlight.css"
 import "prismjs/plugins/line-numbers/prism-line-numbers.css"
@@ -49,7 +50,7 @@ export const CodeFile: React.SFC<Props> = ({
     >
       {({ data, loading }) => {
         if (!data || loading) {
-          return null
+          return <Spinner size={3} />
         }
 
         const dataLines = data.findCodeReviewQuestions.map(q => {
