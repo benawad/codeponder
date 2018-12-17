@@ -6,7 +6,7 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany
+  OneToMany,
 } from "typeorm";
 import { ObjectType, Field, ID, Int } from "type-graphql";
 import { User } from "./User";
@@ -26,6 +26,10 @@ export class CodeReviewQuestion extends BaseEntity {
   @Field(() => Int)
   @Column({ type: "int" })
   endingLineNum: number;
+
+  @Field()
+  @Column({ type: "text" })
+  programmingLanguage: string;
 
   @Field()
   @Column({ type: "text" })

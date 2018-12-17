@@ -1,6 +1,6 @@
 import { Resolver, Arg, Query, Root, FieldResolver, Ctx } from "type-graphql"
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion"
-import { FindConditions } from "typeorm"
+import { FindConditions, getConnection } from "typeorm"
 import { CreateCodeReviewQuestionResponse } from "./createResponse"
 import { CreateCodeReviewQuestionInput } from "./createInput"
 import { createBaseResolver } from "../shared/createBaseResolver"
@@ -35,6 +35,15 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
     return CodeReviewQuestion.find({
       where,
     })
+  }
+
+  @Query(() => [CodeReviewQuestion])
+  async homeQuestions() {
+    const questions = await getConnection().query(`
+      select distinct on (repo, username) * from code_review_question;
+    `)
+
+    return questions.map((q: any) => CodeReviewQuestion.create(q))
   }
 
   @FieldResolver(() => [QuestionReply])

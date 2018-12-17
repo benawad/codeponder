@@ -1,151 +1,183 @@
 export interface CreateQuestionReplyInput {
-  text: string;
+  text: string
 
-  questionId: string;
+  questionId: string
 }
 
 export interface CreateCodeReviewQuestionInput {
-  startingLineNum: number;
+  startingLineNum: number
 
-  endingLineNum: number;
+  endingLineNum: number
 
-  text: string;
+  text: string
 
-  path?: string | null;
+  path?: string | null
 
-  repo: string;
+  repo: string
 
-  branch: string;
+  branch: string
 
-  username: string;
+  username: string
 }
 
 /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-export type DateTime = any;
+export type DateTime = any
 
 // ====================================================
 // Documents
 // ====================================================
 
 export type CreateCodeReviewQuestionVariables = {
-  codeReviewQuestion: CreateCodeReviewQuestionInput;
-};
+  codeReviewQuestion: CreateCodeReviewQuestionInput
+}
 
 export type CreateCodeReviewQuestionMutation = {
-  __typename?: "Mutation";
+  __typename?: "Mutation"
 
-  createCodeReviewQuestion: CreateCodeReviewQuestionCreateCodeReviewQuestion;
-};
+  createCodeReviewQuestion: CreateCodeReviewQuestionCreateCodeReviewQuestion
+}
 
 export type CreateCodeReviewQuestionCreateCodeReviewQuestion = {
-  __typename?: "CreateCodeReviewQuestionResponse";
+  __typename?: "CreateCodeReviewQuestionResponse"
 
-  codeReviewQuestion: CreateCodeReviewQuestionCodeReviewQuestion;
-};
+  codeReviewQuestion: CreateCodeReviewQuestionCodeReviewQuestion
+}
 
-export type CreateCodeReviewQuestionCodeReviewQuestion = CodeReviewQuestionInfoFragment;
+export type CreateCodeReviewQuestionCodeReviewQuestion = CodeReviewQuestionInfoFragment
 
 export type FindCodeReviewQuestionsVariables = {
-  username: string;
-  branch: string;
-  repo: string;
-  path?: string | null;
-};
+  username: string
+  branch: string
+  repo: string
+  path?: string | null
+}
 
 export type FindCodeReviewQuestionsQuery = {
-  __typename?: "Query";
+  __typename?: "Query"
 
-  findCodeReviewQuestions: FindCodeReviewQuestionsFindCodeReviewQuestions[];
-};
+  findCodeReviewQuestions: FindCodeReviewQuestionsFindCodeReviewQuestions[]
+}
 
-export type FindCodeReviewQuestionsFindCodeReviewQuestions = CodeReviewQuestionInfoFragment;
+export type FindCodeReviewQuestionsFindCodeReviewQuestions = CodeReviewQuestionInfoFragment
+
+export type HomeQuestionsVariables = {}
+
+export type HomeQuestionsQuery = {
+  __typename?: "Query"
+
+  homeQuestions: HomeQuestionsHomeQuestions[]
+}
+
+export type HomeQuestionsHomeQuestions = {
+  __typename?: "CodeReviewQuestion"
+
+  id: string
+
+  text: string
+
+  repo: string
+
+  username: string
+
+  creator: HomeQuestionsCreator
+}
+
+export type HomeQuestionsCreator = {
+  __typename?: "User"
+
+  id: string
+
+  username: string
+
+  pictureUrl: string
+}
 
 export type CreateQuestionReplyVariables = {
-  questionReply: CreateQuestionReplyInput;
-};
+  questionReply: CreateQuestionReplyInput
+}
 
 export type CreateQuestionReplyMutation = {
-  __typename?: "Mutation";
+  __typename?: "Mutation"
 
-  createQuestionReply: CreateQuestionReplyCreateQuestionReply;
-};
+  createQuestionReply: CreateQuestionReplyCreateQuestionReply
+}
 
 export type CreateQuestionReplyCreateQuestionReply = {
-  __typename?: "CreateQuestionReplyResponse";
+  __typename?: "CreateQuestionReplyResponse"
 
-  questionReply: CreateQuestionReplyQuestionReply;
-};
+  questionReply: CreateQuestionReplyQuestionReply
+}
 
-export type CreateQuestionReplyQuestionReply = QuestionReplyInfoFragment;
+export type CreateQuestionReplyQuestionReply = QuestionReplyInfoFragment
 
-export type MeVariables = {};
+export type MeVariables = {}
 
 export type MeQuery = {
-  __typename?: "Query";
+  __typename?: "Query"
 
-  me: MeMe | null;
-};
+  me: MeMe | null
+}
 
-export type MeMe = UserInfoFragment;
+export type MeMe = UserInfoFragment
 
 export type CodeReviewQuestionInfoFragment = {
-  __typename?: "CodeReviewQuestion";
+  __typename?: "CodeReviewQuestion"
 
-  id: string;
+  id: string
 
-  startingLineNum: number;
+  startingLineNum: number
 
-  endingLineNum: number;
+  endingLineNum: number
 
-  text: string;
+  text: string
 
-  path: string | null;
+  path: string | null
 
-  repo: string;
+  repo: string
 
-  branch: string;
+  branch: string
 
-  username: string;
+  username: string
 
-  creator: CodeReviewQuestionInfoCreator;
+  creator: CodeReviewQuestionInfoCreator
 
-  replies: CodeReviewQuestionInfoReplies[];
-};
+  replies: CodeReviewQuestionInfoReplies[]
+}
 
-export type CodeReviewQuestionInfoCreator = UserInfoFragment;
+export type CodeReviewQuestionInfoCreator = UserInfoFragment
 
-export type CodeReviewQuestionInfoReplies = QuestionReplyInfoFragment;
+export type CodeReviewQuestionInfoReplies = QuestionReplyInfoFragment
 
 export type QuestionReplyInfoFragment = {
-  __typename?: "QuestionReply";
+  __typename?: "QuestionReply"
 
-  id: string;
+  id: string
 
-  text: string;
+  text: string
 
-  creator: QuestionReplyInfoCreator;
-};
+  creator: QuestionReplyInfoCreator
+}
 
-export type QuestionReplyInfoCreator = UserInfoFragment;
+export type QuestionReplyInfoCreator = UserInfoFragment
 
 export type UserInfoFragment = {
-  __typename?: "User";
+  __typename?: "User"
 
-  id: string;
+  id: string
 
-  username: string;
+  username: string
 
-  pictureUrl: string;
+  pictureUrl: string
 
-  bio: string;
+  bio: string
 
-  accessToken: string;
-};
+  accessToken: string
+}
 
-import * as ReactApollo from "react-apollo";
-import * as React from "react";
+import * as ReactApollo from "react-apollo"
+import * as React from "react"
 
-import gql from "graphql-tag";
+import gql from "graphql-tag"
 
 // ====================================================
 // Fragments
@@ -159,7 +191,7 @@ export const UserInfoFragmentDoc = gql`
     bio
     accessToken
   }
-`;
+`
 
 export const QuestionReplyInfoFragmentDoc = gql`
   fragment QuestionReplyInfo on QuestionReply {
@@ -171,7 +203,7 @@ export const QuestionReplyInfoFragmentDoc = gql`
   }
 
   ${UserInfoFragmentDoc}
-`;
+`
 
 export const CodeReviewQuestionInfoFragmentDoc = gql`
   fragment CodeReviewQuestionInfo on CodeReviewQuestion {
@@ -193,7 +225,7 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
 
   ${UserInfoFragmentDoc}
   ${QuestionReplyInfoFragmentDoc}
-`;
+`
 
 // ====================================================
 // Components
@@ -211,7 +243,7 @@ export const CreateCodeReviewQuestionDocument = gql`
   }
 
   ${CodeReviewQuestionInfoFragmentDoc}
-`;
+`
 export class CreateCodeReviewQuestionComponent extends React.Component<
   Partial<
     ReactApollo.MutationProps<
@@ -229,7 +261,7 @@ export class CreateCodeReviewQuestionComponent extends React.Component<
         mutation={CreateCodeReviewQuestionDocument}
         {...(this as any)["props"] as any}
       />
-    );
+    )
   }
 }
 export type CreateCodeReviewQuestionProps<TChildProps = any> = Partial<
@@ -238,11 +270,11 @@ export type CreateCodeReviewQuestionProps<TChildProps = any> = Partial<
     CreateCodeReviewQuestionVariables
   >
 > &
-  TChildProps;
+  TChildProps
 export type CreateCodeReviewQuestionMutationFn = ReactApollo.MutationFn<
   CreateCodeReviewQuestionMutation,
   CreateCodeReviewQuestionVariables
->;
+>
 export function CreateCodeReviewQuestionHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
@@ -258,7 +290,7 @@ export function CreateCodeReviewQuestionHOC<TProps, TChildProps = any>(
     CreateCodeReviewQuestionMutation,
     CreateCodeReviewQuestionVariables,
     CreateCodeReviewQuestionProps<TChildProps>
-  >(CreateCodeReviewQuestionDocument, operationOptions);
+  >(CreateCodeReviewQuestionDocument, operationOptions)
 }
 export const FindCodeReviewQuestionsDocument = gql`
   query FindCodeReviewQuestions(
@@ -278,7 +310,7 @@ export const FindCodeReviewQuestionsDocument = gql`
   }
 
   ${CodeReviewQuestionInfoFragmentDoc}
-`;
+`
 export class FindCodeReviewQuestionsComponent extends React.Component<
   Partial<
     ReactApollo.QueryProps<
@@ -296,7 +328,7 @@ export class FindCodeReviewQuestionsComponent extends React.Component<
         query={FindCodeReviewQuestionsDocument}
         {...(this as any)["props"] as any}
       />
-    );
+    )
   }
 }
 export type FindCodeReviewQuestionsProps<TChildProps = any> = Partial<
@@ -305,7 +337,7 @@ export type FindCodeReviewQuestionsProps<TChildProps = any> = Partial<
     FindCodeReviewQuestionsVariables
   >
 > &
-  TChildProps;
+  TChildProps
 export function FindCodeReviewQuestionsHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
@@ -321,7 +353,55 @@ export function FindCodeReviewQuestionsHOC<TProps, TChildProps = any>(
     FindCodeReviewQuestionsQuery,
     FindCodeReviewQuestionsVariables,
     FindCodeReviewQuestionsProps<TChildProps>
-  >(FindCodeReviewQuestionsDocument, operationOptions);
+  >(FindCodeReviewQuestionsDocument, operationOptions)
+}
+export const HomeQuestionsDocument = gql`
+  query HomeQuestions {
+    homeQuestions {
+      id
+      text
+      repo
+      username
+      creator {
+        id
+        username
+        pictureUrl
+      }
+    }
+  }
+`
+export class HomeQuestionsComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<HomeQuestionsQuery, HomeQuestionsVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<HomeQuestionsQuery, HomeQuestionsVariables>
+        query={HomeQuestionsDocument}
+        {...(this as any)["props"] as any}
+      />
+    )
+  }
+}
+export type HomeQuestionsProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<HomeQuestionsQuery, HomeQuestionsVariables>
+> &
+  TChildProps
+export function HomeQuestionsHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        HomeQuestionsQuery,
+        HomeQuestionsVariables,
+        HomeQuestionsProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    HomeQuestionsQuery,
+    HomeQuestionsVariables,
+    HomeQuestionsProps<TChildProps>
+  >(HomeQuestionsDocument, operationOptions)
 }
 export const CreateQuestionReplyDocument = gql`
   mutation CreateQuestionReply($questionReply: CreateQuestionReplyInput!) {
@@ -333,7 +413,7 @@ export const CreateQuestionReplyDocument = gql`
   }
 
   ${QuestionReplyInfoFragmentDoc}
-`;
+`
 export class CreateQuestionReplyComponent extends React.Component<
   Partial<
     ReactApollo.MutationProps<
@@ -351,7 +431,7 @@ export class CreateQuestionReplyComponent extends React.Component<
         mutation={CreateQuestionReplyDocument}
         {...(this as any)["props"] as any}
       />
-    );
+    )
   }
 }
 export type CreateQuestionReplyProps<TChildProps = any> = Partial<
@@ -360,11 +440,11 @@ export type CreateQuestionReplyProps<TChildProps = any> = Partial<
     CreateQuestionReplyVariables
   >
 > &
-  TChildProps;
+  TChildProps
 export type CreateQuestionReplyMutationFn = ReactApollo.MutationFn<
   CreateQuestionReplyMutation,
   CreateQuestionReplyVariables
->;
+>
 export function CreateQuestionReplyHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
@@ -380,7 +460,7 @@ export function CreateQuestionReplyHOC<TProps, TChildProps = any>(
     CreateQuestionReplyMutation,
     CreateQuestionReplyVariables,
     CreateQuestionReplyProps<TChildProps>
-  >(CreateQuestionReplyDocument, operationOptions);
+  >(CreateQuestionReplyDocument, operationOptions)
 }
 export const MeDocument = gql`
   query Me {
@@ -390,7 +470,7 @@ export const MeDocument = gql`
   }
 
   ${UserInfoFragmentDoc}
-`;
+`
 export class MeComponent extends React.Component<
   Partial<ReactApollo.QueryProps<MeQuery, MeVariables>>
 > {
@@ -400,13 +480,13 @@ export class MeComponent extends React.Component<
         query={MeDocument}
         {...(this as any)["props"] as any}
       />
-    );
+    )
   }
 }
 export type MeProps<TChildProps = any> = Partial<
   ReactApollo.DataProps<MeQuery, MeVariables>
 > &
-  TChildProps;
+  TChildProps
 export function MeHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
@@ -422,5 +502,5 @@ export function MeHOC<TProps, TChildProps = any>(
     MeQuery,
     MeVariables,
     MeProps<TChildProps>
-  >(MeDocument, operationOptions);
+  >(MeDocument, operationOptions)
 }
