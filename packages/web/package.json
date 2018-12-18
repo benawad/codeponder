@@ -38,7 +38,7 @@
     "@zeit/next-css": "1.0.1",
     "@zeit/next-typescript": "1.1.1",
     "file-loader": "2.0.0",
-    "graphql-code-generator": "0.15.0",
+    "graphql-code-generator": "0.15.1",
     "graphql-codegen-typescript-client": "0.15.0",
     "graphql-codegen-typescript-common": "0.15.0",
     "graphql-codegen-typescript-react-apollo": "0.15.0",

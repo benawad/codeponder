@@ -8686,10 +8686,10 @@ graphql-anywhere@^4.1.0-alpha.0:
   dependencies:
     apollo-utilities "^1.0.26"
 
-graphql-code-generator@0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/graphql-code-generator/-/graphql-code-generator-0.15.0.tgz#ef638bc527288660c83c1a2b6348acabee701fd5"
-  integrity sha512-d0pvTKvZFcYrekCr8aZDUhRIRlNx8y0qnXBVZhnnN1WU+J0+yHjZvNxbuy8l7QgJPdU9qVrqd2rv95evxnRb2w==
+graphql-code-generator@0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/graphql-code-generator/-/graphql-code-generator-0.15.1.tgz#3c17aa75c7204aa08bd617fd037e20304deb09ff"
+  integrity sha512-qAliA6+QM89e8QaFU+2FxnbFMJZdWdtgUBl38be/WBnnS93spLj0/5itADmP2XmtPt4pRm+4+xsBg5j7YCkKQQ==
   dependencies:
     "@graphql-modules/epoxy" "0.2.17"
     "@types/babylon" "6.16.4"
@@ -8703,10 +8703,10 @@ graphql-code-generator@0.15.0:
     commander "2.19.0"
     detect-indent "5.0.0"
     glob "7.1.3"
-    graphql-codegen-core "0.15.0"
+    graphql-codegen-core "0.15.1"
     graphql-config "2.2.1"
     graphql-import "0.7.1"
-    graphql-tag-pluck "0.3.3"
+    graphql-tag-pluck "0.4.1"
     indent-string "3.2.0"
     inquirer "6.2.1"
     is-glob "4.0.0"
@@ -8725,6 +8725,19 @@ graphql-codegen-core@0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/graphql-codegen-core/-/graphql-codegen-core-0.15.0.tgz#2c18dd30478fa5eb23ba88edda69e72027a01d2b"
   integrity sha512-2V+BKdTntUEkYbYS/x235aOY7qsRM6zH6phX+GLTC1lk+4UC1Rsh+3NiqfpKitQxkzYh8A70zV2adMkgh+eI3Q==
+  dependencies:
+    chalk "2.4.1"
+    change-case "3.0.2"
+    common-tags "1.8.0"
+    graphql-tag "2.10.0"
+    graphql-tools "4.0.3"
+    ts-log "2.1.4"
+    winston "3.1.0"
+
+graphql-codegen-core@0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/graphql-codegen-core/-/graphql-codegen-core-0.15.1.tgz#c9f74218827933dc2f97ebf2583daefd419bf144"
+  integrity sha512-emcKKInAfV5AJGH6Lp/WmkSpyCB9QVn0RqXnrw89HA7T8B3TgXF5jr62qpaev5n+vXhSeor9ImvF157b4nClFQ==
   dependencies:
     chalk "2.4.1"
     change-case "3.0.2"
@@ -8824,14 +8837,15 @@ graphql-subscriptions@^1.0.0:
   dependencies:
     iterall "^1.2.1"
 
-graphql-tag-pluck@0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/graphql-tag-pluck/-/graphql-tag-pluck-0.3.3.tgz#00f4284f3848b3ed0798ec5541c17f6e8b92363e"
-  integrity sha512-i/ciMZXiRfgocDk8si4SyMaxGOGUdGZVx+19/LhLKpqhS/zi+k8ipzJnaB9gNfjobqASkcc8aSopCNb5kpWeRA==
+graphql-tag-pluck@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/graphql-tag-pluck/-/graphql-tag-pluck-0.4.1.tgz#efbf0832d245dbe6e720d19ae4d5c95f844e274e"
+  integrity sha512-cmXbXHbfBhDicn1w2JZZrUDdQkftw436I7+8ORT3btBWsvR9qhXaPUVzJvbNIltVti/IJZKjzLBr3+rdv8uZ8A==
   dependencies:
     "@babel/parser" "^7.2.0"
     "@babel/traverse" "^7.1.6"
     "@babel/types" "^7.2.0"
+    source-map-support "^0.5.9"
 
 graphql-tag@2.10.0, graphql-tag@^2.4.2, graphql-tag@^2.9.2:
   version "2.10.0"
@@ -15857,7 +15871,7 @@ source-map-support@^0.4.15:
   dependencies:
     source-map "^0.5.6"
 
-source-map-support@^0.5.3, source-map-support@^0.5.6, source-map-support@~0.5.6:
+source-map-support@^0.5.3, source-map-support@^0.5.6, source-map-support@^0.5.9, source-map-support@~0.5.6:
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.9.tgz#41bc953b2534267ea2d605bccfa7bfa3111ced5f"
   integrity sha512-gR6Rw4MvUlYy83vP0vxoVNzM6t8MUXqNuRsuBmBHQDu1Fh6X015FrLdgoDKcNdkwGubozq0P4N0Q37UyFVr1EA==
