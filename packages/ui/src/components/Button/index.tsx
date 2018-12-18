@@ -13,6 +13,7 @@ const StyledButton = styled.button`
   font-family: "Rubik", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
+  cursor: pointer;
   ${buttonStyle}
 `;
 

@@ -1,15 +1,24 @@
-import App, { Container } from "next/app"
-import React from "react"
-import { ThemeProvider, theme } from "@codeponder/ui"
-import { ApolloProvider } from "react-apollo"
+import App, { Container } from "next/app";
+import React from "react";
+import { ThemeProvider, theme } from "@codeponder/ui";
+import { ApolloProvider } from "react-apollo";
 
-import withApolloClient from "../lib/with-apollo-client"
-import { GitHubApolloClientContext } from "../components/GithubApolloClientContext"
+import withApolloClient from "../lib/with-apollo-client";
+import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 
 class MyApp extends App {
+  componentDidCatch(error: any, errorInfo: any) {
+    console.log("err");
+    console.log(error);
+    console.log(errorInfo);
+
+    // This is needed to render errors correctly in development / production
+    super.componentDidCatch!(error, errorInfo);
+  }
+
   render() {
     const { Component, pageProps, apolloClient, githubApolloClient } = this
-      .props as any
+      .props as any;
     return (
       <Container>
         {/*
@@ -24,8 +33,8 @@ class MyApp extends App {
           </GitHubApolloClientContext.Provider>
         </ThemeProvider>
       </Container>
-    )
+    );
   }
 }
 
-export default withApolloClient(MyApp)
+export default withApolloClient(MyApp);

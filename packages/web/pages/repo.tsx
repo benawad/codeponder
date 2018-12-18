@@ -1,41 +1,44 @@
-import * as React from "react"
-import { FolderTree } from "@codeponder/ui"
-import "prismjs"
+import * as React from "react";
+import { FolderTree } from "@codeponder/ui";
+import "prismjs";
 
-import { GitHubApolloClientContext } from "../components/GithubApolloClientContext"
-import { NextContextWithApollo } from "../types/NextContextWithApollo"
+import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
+import { NextContextWithApollo } from "../types/NextContextWithApollo";
 import {
   GetRepoObjectComponent,
   GetRepoObjectTreeInlineFragment,
   GetRepoObjectDocument,
-} from "../components/github-apollo-components"
-import { Link } from "../server/routes"
-import { CodeFile } from "../components/CodeFile"
+} from "../components/github-apollo-components";
+import { Link } from "../server/routes";
+import { CodeFile } from "../components/CodeFile";
 
 interface Props {
-  branch: string
-  path?: string
-  owner: string
-  name: string
-  expression: string
+  branch: string;
+  path?: string;
+  owner: string;
+  name: string;
+  expression: string;
 }
 
 export default class Repo extends React.PureComponent<Props> {
-  static contextType = GitHubApolloClientContext
+  static contextType = GitHubApolloClientContext;
   static async getInitialProps({
     query: { branch, owner, path, name },
     githubApolloClient,
   }: NextContextWithApollo) {
-    const expression = `${branch}:${path || ""}`
+    console.log("getInitProps called!");
+    const expression = `${branch}:${path || ""}`;
 
-    await githubApolloClient.query({
+    const response = await githubApolloClient.query({
       query: GetRepoObjectDocument,
       variables: {
         name,
         owner,
         expression,
       },
-    })
+    });
+
+    console.log("response: ", response);
 
     return {
       branch,
@@ -43,20 +46,20 @@ export default class Repo extends React.PureComponent<Props> {
       path,
       name,
       expression,
-    }
+    };
   }
 
   renderFilePath = (name: string, path?: string) => {
     if (!path) {
-      return null
+      return null;
     }
 
-    const parts = [name, ...path.split("/")]
-    const currentPath: string[] = []
+    const parts = [name, ...path.split("/")];
+    const currentPath: string[] = [];
 
     return parts.map((part, idx) => {
       if (idx) {
-        currentPath.push(part)
+        currentPath.push(part);
       }
 
       return idx === parts.length - 1 ? (
@@ -79,13 +82,12 @@ export default class Repo extends React.PureComponent<Props> {
           </Link>
           /
         </React.Fragment>
-      )
-    })
-  }
+      );
+    });
+  };
 
   render() {
-    const { branch, owner, path, name, expression } = this.props
-
+    const { branch, owner, path, name, expression } = this.props;
     return (
       <GetRepoObjectComponent
         variables={{
@@ -97,18 +99,18 @@ export default class Repo extends React.PureComponent<Props> {
       >
         {({ data, loading }) => {
           if (!data || loading) {
-            return null
+            return null;
           }
 
           if (!data.repository) {
-            return "could not find repo"
+            return "could not find repo";
           }
 
           if (!data.repository.object) {
-            return "could not find folder/file"
+            return "could not find folder/file";
           }
 
-          const { object } = data.repository
+          const { object } = data.repository;
 
           if (object.__typename === "Blob") {
             return (
@@ -122,7 +124,7 @@ export default class Repo extends React.PureComponent<Props> {
                   code={object.text}
                 />
               </>
-            )
+            );
           }
 
           if (object.__typename === "Tree") {
@@ -150,12 +152,12 @@ export default class Repo extends React.PureComponent<Props> {
                   })}
                 />
               </>
-            )
+            );
           }
 
-          return "something went wrong"
+          return "something went wrong";
         }}
       </GetRepoObjectComponent>
-    )
+    );
   }
 }

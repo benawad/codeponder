@@ -34,15 +34,15 @@ const iconProps = {
   style: {
     color: "#78909C",
     height: 16,
-    width: 16
+    width: 16,
   },
-  fontSize: "small" as "small"
+  fontSize: "small" as "small",
 };
 
 export const FolderTree: React.FunctionComponent<Props> = ({
   items,
   Link,
-  getLinkProps
+  getLinkProps,
 }) => (
   <Container>
     {items.map((item, idx) => {
@@ -55,7 +55,7 @@ export const FolderTree: React.FunctionComponent<Props> = ({
             fontSize: 12,
             padding: 8,
             display: "flex",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           {item.type === "tree" ? (

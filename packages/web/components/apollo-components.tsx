@@ -62,7 +62,10 @@ export type FindCodeReviewQuestionsQuery = {
 
 export type FindCodeReviewQuestionsFindCodeReviewQuestions = CodeReviewQuestionInfoFragment;
 
-export type HomeQuestionsVariables = {};
+export type HomeQuestionsVariables = {
+  offset?: number | null;
+  limit?: number | null;
+};
 
 export type HomeQuestionsQuery = {
   __typename?: "Query";
@@ -82,6 +85,10 @@ export type HomeQuestionsHomeQuestions = {
   username: string;
 
   programmingLanguage: string;
+
+  branch: string;
+
+  path: string | null;
 
   creator: HomeQuestionsCreator;
 };
@@ -360,13 +367,15 @@ export function FindCodeReviewQuestionsHOC<TProps, TChildProps = any>(
   >(FindCodeReviewQuestionsDocument, operationOptions);
 }
 export const HomeQuestionsDocument = gql`
-  query HomeQuestions {
-    homeQuestions {
+  query HomeQuestions($offset: Int, $limit: Int) {
+    homeQuestions(offset: $offset, limit: $limit) {
       id
       text
       repo
       username
       programmingLanguage
+      branch
+      path
       creator {
         id
         username

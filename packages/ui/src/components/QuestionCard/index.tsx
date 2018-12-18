@@ -8,11 +8,14 @@ interface Props {
   repo: string;
   username: string;
   programmingLanguage: string;
+  path: string | null;
   creator: {
     id: string;
     username: string;
     pictureUrl: string;
   };
+  Link: any;
+  getLinkProps: () => any;
 }
 
 const Container = styled.div`
@@ -33,6 +36,7 @@ const CardHeader = styled.div`
   line-height: normal;
   font-size: 16px;
   color: #07385a;
+  cursor: pointer;
 `;
 
 const CardBodyText = styled.div`
@@ -73,13 +77,25 @@ export const QuestionCard: React.SFC<Props> = ({
   text,
   programmingLanguage,
   creator: { pictureUrl, username },
+  Link,
+  getLinkProps,
 }) => {
+  const linkProps = getLinkProps();
+
   return (
     <Container>
-      <CardHeader>
-        {owner}/{repo}
-      </CardHeader>
-      <CardBodyText>{text}</CardBodyText>
+      <Link {...linkProps}>
+        <a>
+          <CardHeader>
+            {owner}/{repo}
+          </CardHeader>
+        </a>
+      </Link>
+      <Link {...linkProps}>
+        <a>
+          <CardBodyText>{text}</CardBodyText>
+        </a>
+      </Link>
       <CardFooter>
         <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
           <SmallAvatar src={pictureUrl} alt="avatar" />
