@@ -6,6 +6,8 @@ import { ApolloProvider } from "react-apollo";
 import withApolloClient from "../lib/with-apollo-client";
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 
+import "../empty.css";
+
 class MyApp extends App {
   componentDidCatch(error: any, errorInfo: any) {
     console.log("err");
