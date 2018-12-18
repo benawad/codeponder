@@ -1,28 +1,37 @@
-import * as React from "react"
-import { HomeQuestionsComponent } from "../components/apollo-components"
-import { Spinner } from "@codeponder/ui"
+import * as React from "react";
+import { Spinner, CardGrid, QuestionCard } from "@codeponder/ui";
+
+import { HomeQuestionsComponent } from "../components/apollo-components";
 
 export default class Index extends React.Component {
   render() {
     return (
       <div>
-        <a href="http://localhost:4000/auth/github">login with github</a>
         <div>
+          <a href="http://localhost:4000/auth/github">login with github</a>
+        </div>
+        <div style={{ display: "inline-block" }}>
           <HomeQuestionsComponent>
             {({ data, loading }) => {
               if (loading) {
-                return <Spinner />
+                return <Spinner />;
               }
 
               if (!data) {
-                return "could not get data"
+                return "could not get data";
               }
 
-              return JSON.stringify(data.homeQuestions)
+              return (
+                <CardGrid>
+                  {data.homeQuestions.map(q => (
+                    <QuestionCard key={q.id} {...q} />
+                  ))}
+                </CardGrid>
+              );
             }}
           </HomeQuestionsComponent>
         </div>
       </div>
-    )
+    );
   }
 }

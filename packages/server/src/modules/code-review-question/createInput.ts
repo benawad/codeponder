@@ -24,4 +24,7 @@ export class CreateCodeReviewQuestionInput
 
   @Field()
   username: string;
+
+  @Field()
+  programmingLanguage: string;
 }

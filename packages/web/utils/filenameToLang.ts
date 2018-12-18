@@ -6,6 +6,7 @@ const extensions: { [key: string]: string } = {
   xhtml: "html",
   erl: "erlang",
   jsp: "java",
+  js: "javascript",
   pl: "perl",
   rss: "xml",
   atom: "xml",
@@ -73,14 +74,14 @@ const extensions: { [key: string]: string } = {
   h: "c",
   asm: "asm6502",
   wasm: "webassembly",
-}
+};
 
 export const filenameToLang = (filename: string) => {
-  const lfn = filename.toLowerCase()
-  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1]
+  const lfn = filename.toLowerCase();
+  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1];
   if (extension) {
-    return extensions[extension] || extension
+    return extensions[extension] || extension;
   }
 
-  return lfn
-}
+  return lfn;
+};
