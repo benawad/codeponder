@@ -9,15 +9,6 @@ import { GitHubApolloClientContext } from "../components/GithubApolloClientConte
 import "../empty.css";
 
 class MyApp extends App {
-  componentDidCatch(error: any, errorInfo: any) {
-    console.log("err");
-    console.log(error);
-    console.log(errorInfo);
-
-    // This is needed to render errors correctly in development / production
-    super.componentDidCatch!(error, errorInfo);
-  }
-
   render() {
     const { Component, pageProps, apolloClient, githubApolloClient } = this
       .props as any;

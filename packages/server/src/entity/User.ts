@@ -3,11 +3,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  OneToMany
+  OneToMany,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { CodeReviewQuestion } from "./CodeReviewQuestion";
 import { QuestionReply } from "./QuestionReply";
+import { CodeReviewPost } from "./CodeReviewPost";
 
 @Entity()
 @ObjectType()
@@ -37,6 +38,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => CodeReviewQuestion, crq => crq.creator)
   codeReviewQuestions: Promise<CodeReviewQuestion[]>;
+
+  @OneToMany(() => CodeReviewPost, crp => crp.creator)
+  codeReviewPosts: Promise<CodeReviewPost[]>;
 
   @OneToMany(() => QuestionReply, qr => qr.creator)
   questionReply: Promise<QuestionReply[]>;

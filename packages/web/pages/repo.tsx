@@ -26,10 +26,9 @@ export default class Repo extends React.PureComponent<Props> {
     query: { branch, owner, path, name },
     githubApolloClient,
   }: NextContextWithApollo) {
-    console.log("getInitProps called!");
     const expression = `${branch}:${path || ""}`;
 
-    const response = await githubApolloClient.query({
+    await githubApolloClient.query({
       query: GetRepoObjectDocument,
       variables: {
         name,
@@ -37,8 +36,6 @@ export default class Repo extends React.PureComponent<Props> {
         expression,
       },
     });
-
-    console.log("response: ", response);
 
     return {
       branch,

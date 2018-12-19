@@ -73,7 +73,6 @@ const extensions: { [key: string]: string } = {
   hpp: "c++",
   h: "c",
   asm: "asm6502",
-  wasm: "webassembly",
 };
 
 export const filenameToLang = (filename: string) => {

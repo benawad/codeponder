@@ -13,17 +13,14 @@ export class CreateCodeReviewQuestionInput
   @Field()
   text: string;
 
+  @Field()
+  postId: string;
+
   @Field(() => String, { nullable: true })
   path: string | null;
 
-  @Field()
-  repo: string;
-
-  @Field()
-  branch: string;
-
-  @Field()
-  username: string;
+  @Field(() => String, { nullable: true })
+  codeSnippet: string | null;
 
   @Field()
   programmingLanguage: string;

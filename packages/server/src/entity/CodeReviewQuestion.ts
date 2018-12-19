@@ -11,6 +11,7 @@ import {
 import { ObjectType, Field, ID, Int } from "type-graphql";
 import { User } from "./User";
 import { QuestionReply } from "./QuestionReply";
+import { CodeReviewPost } from "./CodeReviewPost";
 
 @Entity()
 @ObjectType()
@@ -37,19 +38,11 @@ export class CodeReviewQuestion extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: "text", nullable: true })
+  codeSnippet: string | null;
+
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
   path: string | null;
-
-  @Field()
-  @Column({ type: "text" })
-  repo: string;
-
-  @Field()
-  @Column({ type: "text" })
-  branch: string;
-
-  @Field()
-  @Column({ type: "text" })
-  username: string;
 
   @Field()
   @Column("uuid")
@@ -58,6 +51,10 @@ export class CodeReviewQuestion extends BaseEntity {
   @Field(() => User)
   @ManyToOne(() => User, user => user.codeReviewQuestions)
   creator: Promise<User>;
+
+  @Field(() => CodeReviewPost)
+  @ManyToOne(() => CodeReviewPost, crp => crp.questions)
+  post: Promise<User>;
 
   @Field(() => [QuestionReply])
   @OneToMany(() => QuestionReply, qr => qr.question)

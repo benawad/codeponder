@@ -28,14 +28,14 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
   @Query(() => [CodeReviewQuestion])
   async findCodeReviewQuestions(
     @Arg("path", { nullable: true }) path: string,
-    @Arg("repo") repo: string,
-    @Arg("branch") branch: string,
-    @Arg("username") username: string
+    @Arg("repo") _repo: string,
+    @Arg("branch") _branch: string,
+    @Arg("username") _username: string
   ) {
     const where: FindConditions<CodeReviewQuestion> = {
-      repo,
-      branch,
-      username,
+      // repo,
+      // branch,
+      // username,
     };
 
     if (path) {
