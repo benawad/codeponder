@@ -14,7 +14,7 @@
     "@codeponder/common": "1.0.0",
     "@codeponder/ui": "1.0.0",
     "@octokit/rest": "16.3.0",
-    "apollo-boost": "0.1.22",
+    "apollo-boost": "0.1.23",
     "apollo-link-context": "1.0.12",
     "cookie": "0.3.1",
     "downshift": "3.1.7",
