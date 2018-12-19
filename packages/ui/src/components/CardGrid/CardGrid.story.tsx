@@ -3,7 +3,7 @@ import * as React from "react";
 import { storiesOf } from "@storybook/react";
 import { CardGrid } from ".";
 import { QuestionCard } from "../QuestionCard";
-import { Button } from "@material-ui/core";
+import { MyButton } from "../MyButton";
 
 storiesOf("Card Grid", module).add("basic example", () => (
   <div style={{ display: "inline-block" }}>
@@ -24,7 +24,7 @@ storiesOf("Card Grid", module).add("basic example", () => (
               username: "benawad",
               pictureUrl: "https://dummyimage.com/600x400/000/fff",
             }}
-            Link={Button}
+            Link={MyButton}
             getLinkProps={() => ({})}
           />
         ))}

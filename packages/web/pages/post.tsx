@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FolderTree } from "@codeponder/ui";
+import { FolderTree, Wrapper, BigCard } from "@codeponder/ui";
 import "prismjs";
 
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
@@ -96,67 +96,72 @@ export default class Post extends React.PureComponent<Props> {
   render() {
     const { owner, path, name, expression, id } = this.props;
     return (
-      <GetRepoObjectComponent
-        variables={{
-          name,
-          owner,
-          expression,
-        }}
-        client={this.context}
-      >
-        {({ data, loading }) => {
-          if (!data || loading) {
-            return null;
-          }
+      <Wrapper>
+        <BigCard>
+          <GetRepoObjectComponent
+            variables={{
+              name,
+              owner,
+              expression,
+            }}
+            client={this.context}
+          >
+            {({ data, loading }) => {
+              if (!data || loading) {
+                return null;
+              }
 
-          if (!data.repository) {
-            return "could not find repo";
-          }
+              if (!data.repository) {
+                return "could not find repo";
+              }
 
-          if (!data.repository.object) {
-            return "could not find folder/file";
-          }
+              if (!data.repository.object) {
+                return "could not find folder/file";
+              }
 
-          const { object } = data.repository;
+              const { object } = data.repository;
 
-          if (object.__typename === "Blob") {
-            return (
-              <>
-                {this.renderFilePath(name, path)}
-                <CodeFile path={path} code={object.text} postId={id} />
-              </>
-            );
-          }
+              if (object.__typename === "Blob") {
+                return (
+                  <>
+                    {this.renderFilePath(name, path)}
+                    <CodeFile path={path} code={object.text} postId={id} />
+                  </>
+                );
+              }
 
-          if (object.__typename === "Tree") {
-            return (
-              <>
-                {this.renderFilePath(name, path)}
-                <FolderTree
-                  items={
-                    (data.repository.object as GetRepoObjectTreeInlineFragment)
-                      .entries || []
-                  }
-                  Link={Link}
-                  getLinkProps={itemPath => ({
-                    passHref: true,
-                    route: "post",
-                    params: {
-                      path: [
-                        ...(path ? path.split("/") : []),
-                        ...itemPath.split("/"),
-                      ] as any,
-                      id,
-                    },
-                  })}
-                />
-              </>
-            );
-          }
+              if (object.__typename === "Tree") {
+                return (
+                  <>
+                    {this.renderFilePath(name, path)}
+                    <FolderTree
+                      items={
+                        (data.repository
+                          .object as GetRepoObjectTreeInlineFragment).entries ||
+                        []
+                      }
+                      Link={Link}
+                      getLinkProps={itemPath => ({
+                        passHref: true,
+                        route: "post",
+                        params: {
+                          path: [
+                            ...(path ? path.split("/") : []),
+                            ...itemPath.split("/"),
+                          ] as any,
+                          id,
+                        },
+                      })}
+                    />
+                  </>
+                );
+              }
 
-          return "something went wrong";
-        }}
-      </GetRepoObjectComponent>
+              return "something went wrong";
+            }}
+          </GetRepoObjectComponent>
+        </BigCard>
+      </Wrapper>
     );
   }
 }

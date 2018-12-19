@@ -1,13 +1,13 @@
-import * as React from "react"
+import * as React from "react";
 
-import { storiesOf } from "@storybook/react"
-import FolderTree from "."
-import Button from "../Button"
+import { storiesOf } from "@storybook/react";
+import FolderTree from ".";
+import { MyButton } from "../MyButton";
 
 storiesOf("FolderTree", module).add("basic example", () => (
   <FolderTree
     getLinkProps={() => {}}
-    Link={Button}
+    Link={MyButton}
     items={[
       {
         name: ".dockerignore",
@@ -39,4 +39,4 @@ storiesOf("FolderTree", module).add("basic example", () => (
       },
     ]}
   />
-))
+));

@@ -17,8 +17,6 @@ const StyledButton = styled.button`
   ${buttonStyle}
 `;
 
-export const Button: React.FunctionComponent<Props> = props => (
+export const MyButton: React.FunctionComponent<Props> = props => (
   <StyledButton {...props} />
 );
-
-export default Button;

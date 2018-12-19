@@ -1,6 +1,6 @@
 import App, { Container } from "next/app";
 import React from "react";
-import { ThemeProvider, theme } from "@codeponder/ui";
+import { ThemeProvider, theme, GlobalStyle } from "@codeponder/ui";
 import { ApolloProvider } from "react-apollo";
 
 import withApolloClient from "../lib/with-apollo-client";
@@ -14,6 +14,7 @@ class MyApp extends App {
       .props as any;
     return (
       <Container>
+        <GlobalStyle />
         {/*
           // @ts-ignore */}
         <ThemeProvider theme={theme}>

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { QuestionCard } from ".";
-import Button from "../Button";
+import { MyButton } from "../MyButton";
 
 storiesOf("Question Card", module).add("basic example", () => (
   <div style={{ display: "inline-block" }}>
@@ -18,7 +18,7 @@ storiesOf("Question Card", module).add("basic example", () => (
         username: "benawad",
         pictureUrl: "https://dummyimage.com/600x400/000/fff",
       }}
-      Link={Button}
+      Link={MyButton}
       getLinkProps={() => ({})}
     />
   </div>
