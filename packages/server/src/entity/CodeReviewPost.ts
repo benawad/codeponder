@@ -23,6 +23,14 @@ export class CodeReviewPost extends BaseEntity {
   @Column({ type: "text", array: true })
   programmingLanguages: string[];
 
+  @Field(() => [String])
+  @Column({ type: "text", array: true })
+  topics: string[];
+
+  @Field()
+  @Column({ type: "text" })
+  description: string;
+
   @Field()
   @Column({ type: "text" })
   repo: string;

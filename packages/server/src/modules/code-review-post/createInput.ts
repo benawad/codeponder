@@ -6,8 +6,14 @@ export class CreateCodeReviewPostInput implements Partial<CodeReviewPost> {
   @Field(() => [String])
   programmingLanguages: string[];
 
+  @Field(() => [String])
+  topics: string[];
+
   @Field()
   repo: string;
+
+  @Field()
+  description: string;
 
   @Field()
   commitId: string;

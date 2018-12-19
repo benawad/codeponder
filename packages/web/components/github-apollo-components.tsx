@@ -534,12 +534,12 @@ export interface UnresolveReviewThreadInput {
 /** The possible archived states of a project card. */
 export enum ProjectCardArchivedState {
   Archived = "ARCHIVED",
-  NotArchived = "NOT_ARCHIVED"
+  NotArchived = "NOT_ARCHIVED",
 }
 /** The privacy of a repository */
 export enum RepositoryPrivacy {
   Public = "PUBLIC",
-  Private = "PRIVATE"
+  Private = "PRIVATE",
 }
 /** Properties by which repository connections can be ordered. */
 export enum RepositoryOrderField {
@@ -547,47 +547,47 @@ export enum RepositoryOrderField {
   UpdatedAt = "UPDATED_AT",
   PushedAt = "PUSHED_AT",
   Name = "NAME",
-  Stargazers = "STARGAZERS"
+  Stargazers = "STARGAZERS",
 }
 /** Possible directions in which to order a list of items when provided an `orderBy` argument. */
 export enum OrderDirection {
   Asc = "ASC",
-  Desc = "DESC"
+  Desc = "DESC",
 }
 /** The affiliation of a user to a repository */
 export enum RepositoryAffiliation {
   Owner = "OWNER",
   Collaborator = "COLLABORATOR",
-  OrganizationMember = "ORGANIZATION_MEMBER"
+  OrganizationMember = "ORGANIZATION_MEMBER",
 }
 /** The possible states of a subscription. */
 export enum SubscriptionState {
   Unsubscribed = "UNSUBSCRIBED",
   Subscribed = "SUBSCRIBED",
-  Ignored = "IGNORED"
+  Ignored = "IGNORED",
 }
 /** Properties by which star connections can be ordered. */
 export enum StarOrderField {
-  StarredAt = "STARRED_AT"
+  StarredAt = "STARRED_AT",
 }
 /** The possible reasons a given repository could be in a locked state. */
 export enum RepositoryLockReason {
   Moving = "MOVING",
   Billing = "BILLING",
   Rename = "RENAME",
-  Migrating = "MIGRATING"
+  Migrating = "MIGRATING",
 }
 /** The possible states of a pull request. */
 export enum PullRequestState {
   Open = "OPEN",
   Closed = "CLOSED",
-  Merged = "MERGED"
+  Merged = "MERGED",
 }
 /** Properties by which issue connections can be ordered. */
 export enum IssueOrderField {
   CreatedAt = "CREATED_AT",
   UpdatedAt = "UPDATED_AT",
-  Comments = "COMMENTS"
+  Comments = "COMMENTS",
 }
 /** A comment author association with repository. */
 export enum CommentAuthorAssociation {
@@ -597,7 +597,7 @@ export enum CommentAuthorAssociation {
   Contributor = "CONTRIBUTOR",
   FirstTimeContributor = "FIRST_TIME_CONTRIBUTOR",
   FirstTimer = "FIRST_TIMER",
-  None = "NONE"
+  None = "NONE",
 }
 /** The possible errors that will prevent a user from updating a comment. */
 export enum CommentCannotUpdateReason {
@@ -606,19 +606,19 @@ export enum CommentCannotUpdateReason {
   LoginRequired = "LOGIN_REQUIRED",
   Maintenance = "MAINTENANCE",
   VerifiedEmailRequired = "VERIFIED_EMAIL_REQUIRED",
-  Denied = "DENIED"
+  Denied = "DENIED",
 }
 /** The possible states of an issue. */
 export enum IssueState {
   Open = "OPEN",
-  Closed = "CLOSED"
+  Closed = "CLOSED",
 }
 /** The possible reasons that an issue or pull request was locked. */
 export enum LockReason {
   OffTopic = "OFF_TOPIC",
   TooHeated = "TOO_HEATED",
   Resolved = "RESOLVED",
-  Spam = "SPAM"
+  Spam = "SPAM",
 }
 /** Emojis that can be attached to Issues, Pull Requests and Comments. */
 export enum ReactionContent {
@@ -627,11 +627,11 @@ export enum ReactionContent {
   Laugh = "LAUGH",
   Hooray = "HOORAY",
   Confused = "CONFUSED",
-  Heart = "HEART"
+  Heart = "HEART",
 }
 /** A list of fields that reactions can be ordered by. */
 export enum ReactionOrderField {
-  CreatedAt = "CREATED_AT"
+  CreatedAt = "CREATED_AT",
 }
 /** The state of a Git signature. */
 export enum GitSignatureState {
@@ -651,7 +651,7 @@ export enum GitSignatureState {
   OcspPending = "OCSP_PENDING",
   OcspError = "OCSP_ERROR",
   BadCert = "BAD_CERT",
-  OcspRevoked = "OCSP_REVOKED"
+  OcspRevoked = "OCSP_REVOKED",
 }
 /** The possible commit status states. */
 export enum StatusState {
@@ -659,55 +659,55 @@ export enum StatusState {
   Error = "ERROR",
   Failure = "FAILURE",
   Pending = "PENDING",
-  Success = "SUCCESS"
+  Success = "SUCCESS",
 }
 /** Whether or not a PullRequest can be merged. */
 export enum MergeableState {
   Mergeable = "MERGEABLE",
   Conflicting = "CONFLICTING",
-  Unknown = "UNKNOWN"
+  Unknown = "UNKNOWN",
 }
 /** The possible states of a milestone. */
 export enum MilestoneState {
   Open = "OPEN",
-  Closed = "CLOSED"
+  Closed = "CLOSED",
 }
 /** Properties by which team connections can be ordered. */
 export enum TeamOrderField {
-  Name = "NAME"
+  Name = "NAME",
 }
 /** The possible organization invitation types. */
 export enum OrganizationInvitationType {
   User = "USER",
-  Email = "EMAIL"
+  Email = "EMAIL",
 }
 /** The possible organization invitation roles. */
 export enum OrganizationInvitationRole {
   DirectMember = "DIRECT_MEMBER",
   Admin = "ADMIN",
   BillingManager = "BILLING_MANAGER",
-  Reinstate = "REINSTATE"
+  Reinstate = "REINSTATE",
 }
 /** Defines which types of team members are included in the returned list. Can be one of IMMEDIATE, CHILD_TEAM or ALL. */
 export enum TeamMembershipType {
   Immediate = "IMMEDIATE",
   ChildTeam = "CHILD_TEAM",
-  All = "ALL"
+  All = "ALL",
 }
 /** The possible team member roles; either 'maintainer' or 'member'. */
 export enum TeamMemberRole {
   Maintainer = "MAINTAINER",
-  Member = "MEMBER"
+  Member = "MEMBER",
 }
 /** Properties by which team member connections can be ordered. */
 export enum TeamMemberOrderField {
   Login = "LOGIN",
-  CreatedAt = "CREATED_AT"
+  CreatedAt = "CREATED_AT",
 }
 /** The possible team privacy values. */
 export enum TeamPrivacy {
   Secret = "SECRET",
-  Visible = "VISIBLE"
+  Visible = "VISIBLE",
 }
 /** Properties by which team repository connections can be ordered. */
 export enum TeamRepositoryOrderField {
@@ -716,13 +716,13 @@ export enum TeamRepositoryOrderField {
   PushedAt = "PUSHED_AT",
   Name = "NAME",
   Permission = "PERMISSION",
-  Stargazers = "STARGAZERS"
+  Stargazers = "STARGAZERS",
 }
 /** The access level to a repository */
 export enum RepositoryPermission {
   Admin = "ADMIN",
   Write = "WRITE",
-  Read = "READ"
+  Read = "READ",
 }
 /** The possible states of a pull request review. */
 export enum PullRequestReviewState {
@@ -730,12 +730,12 @@ export enum PullRequestReviewState {
   Commented = "COMMENTED",
   Approved = "APPROVED",
   ChangesRequested = "CHANGES_REQUESTED",
-  Dismissed = "DISMISSED"
+  Dismissed = "DISMISSED",
 }
 /** The possible states of a pull request review comment. */
 export enum PullRequestReviewCommentState {
   Pending = "PENDING",
-  Submitted = "SUBMITTED"
+  Submitted = "SUBMITTED",
 }
 /** The possible states for a deployment status. */
 export enum DeploymentStatusState {
@@ -743,7 +743,7 @@ export enum DeploymentStatusState {
   Success = "SUCCESS",
   Failure = "FAILURE",
   Inactive = "INACTIVE",
-  Error = "ERROR"
+  Error = "ERROR",
 }
 /** The possible states in which a deployment can be. */
 export enum DeploymentState {
@@ -753,57 +753,57 @@ export enum DeploymentState {
   Error = "ERROR",
   Failure = "FAILURE",
   Inactive = "INACTIVE",
-  Pending = "PENDING"
+  Pending = "PENDING",
 }
 /** Collaborators affiliation level with a subject. */
 export enum CollaboratorAffiliation {
   Outside = "OUTSIDE",
   Direct = "DIRECT",
-  All = "ALL"
+  All = "ALL",
 }
 /** Properties by which language connections can be ordered. */
 export enum LanguageOrderField {
-  Size = "SIZE"
+  Size = "SIZE",
 }
 /** Properties by which milestone connections can be ordered. */
 export enum MilestoneOrderField {
   DueDate = "DUE_DATE",
   CreatedAt = "CREATED_AT",
   UpdatedAt = "UPDATED_AT",
-  Number = "NUMBER"
+  Number = "NUMBER",
 }
 /** Properties by which project connections can be ordered. */
 export enum ProjectOrderField {
   CreatedAt = "CREATED_AT",
   UpdatedAt = "UPDATED_AT",
-  Name = "NAME"
+  Name = "NAME",
 }
 /** State of the project; either 'open' or 'closed' */
 export enum ProjectState {
   Open = "OPEN",
-  Closed = "CLOSED"
+  Closed = "CLOSED",
 }
 /** Properties by which ref connections can be ordered. */
 export enum RefOrderField {
   TagCommitDate = "TAG_COMMIT_DATE",
-  Alphabetical = "ALPHABETICAL"
+  Alphabetical = "ALPHABETICAL",
 }
 /** Properties by which release connections can be ordered. */
 export enum ReleaseOrderField {
   CreatedAt = "CREATED_AT",
-  Name = "NAME"
+  Name = "NAME",
 }
 /** The privacy of a Gist */
 export enum GistPrivacy {
   Public = "PUBLIC",
   Secret = "SECRET",
-  All = "ALL"
+  All = "ALL",
 }
 /** Properties by which gist connections can be ordered. */
 export enum GistOrderField {
   CreatedAt = "CREATED_AT",
   UpdatedAt = "UPDATED_AT",
-  PushedAt = "PUSHED_AT"
+  PushedAt = "PUSHED_AT",
 }
 /** The reason a repository is listed as 'contributed'. */
 export enum RepositoryContributionType {
@@ -811,63 +811,63 @@ export enum RepositoryContributionType {
   Issue = "ISSUE",
   PullRequest = "PULL_REQUEST",
   Repository = "REPOSITORY",
-  PullRequestReview = "PULL_REQUEST_REVIEW"
+  PullRequestReview = "PULL_REQUEST_REVIEW",
 }
 /** Various content states of a ProjectCard */
 export enum ProjectCardState {
   ContentOnly = "CONTENT_ONLY",
   NoteOnly = "NOTE_ONLY",
-  Redacted = "REDACTED"
+  Redacted = "REDACTED",
 }
 /** The semantic purpose of the column - todo, in progress, or done. */
 export enum ProjectColumnPurpose {
   Todo = "TODO",
   InProgress = "IN_PROGRESS",
-  Done = "DONE"
+  Done = "DONE",
 }
 /** The possible roles within an organization for its members. */
 export enum OrganizationMemberRole {
   Member = "MEMBER",
-  Admin = "ADMIN"
+  Admin = "ADMIN",
 }
 /** The role of a user on a team. */
 export enum TeamRole {
   Admin = "ADMIN",
-  Member = "MEMBER"
+  Member = "MEMBER",
 }
 /** Represents the individual results of a search. */
 export enum SearchType {
   Issue = "ISSUE",
   Repository = "REPOSITORY",
-  User = "USER"
+  User = "USER",
 }
 /** The possible events to perform on a pull request review. */
 export enum PullRequestReviewEvent {
   Comment = "COMMENT",
   Approve = "APPROVE",
   RequestChanges = "REQUEST_CHANGES",
-  Dismiss = "DISMISS"
+  Dismiss = "DISMISS",
 }
 /** Reason that the suggested topic is declined. */
 export enum TopicSuggestionDeclineReason {
   NotRelevant = "NOT_RELEVANT",
   TooSpecific = "TOO_SPECIFIC",
   PersonalPreference = "PERSONAL_PREFERENCE",
-  TooGeneral = "TOO_GENERAL"
+  TooGeneral = "TOO_GENERAL",
 }
 /** The possible default permissions for repositories. */
 export enum DefaultRepositoryPermissionField {
   None = "NONE",
   Read = "READ",
   Write = "WRITE",
-  Admin = "ADMIN"
+  Admin = "ADMIN",
 }
 /** The possible PubSub channels for an issue. */
 export enum IssuePubSubTopic {
   Updated = "UPDATED",
   Markasread = "MARKASREAD",
   Timeline = "TIMELINE",
-  State = "STATE"
+  State = "STATE",
 }
 /** The possible item types found in a timeline. */
 export enum IssueTimelineItemsItemType {
@@ -893,7 +893,7 @@ export enum IssueTimelineItemsItemType {
   UnassignedEvent = "UNASSIGNED_EVENT",
   UnlabeledEvent = "UNLABELED_EVENT",
   UnlockedEvent = "UNLOCKED_EVENT",
-  UnsubscribedEvent = "UNSUBSCRIBED_EVENT"
+  UnsubscribedEvent = "UNSUBSCRIBED_EVENT",
 }
 /** The reasons a piece of content can be reported or minimized. */
 export enum ReportedContentClassifiers {
@@ -901,12 +901,12 @@ export enum ReportedContentClassifiers {
   Abuse = "ABUSE",
   OffTopic = "OFF_TOPIC",
   Outdated = "OUTDATED",
-  Resolved = "RESOLVED"
+  Resolved = "RESOLVED",
 }
 /** Properties by which pull_requests connections can be ordered. */
 export enum PullRequestOrderField {
   CreatedAt = "CREATED_AT",
-  UpdatedAt = "UPDATED_AT"
+  UpdatedAt = "UPDATED_AT",
 }
 /** The possible PubSub channels for a pull request. */
 export enum PullRequestPubSubTopic {
@@ -914,7 +914,7 @@ export enum PullRequestPubSubTopic {
   Markasread = "MARKASREAD",
   HeadRef = "HEAD_REF",
   Timeline = "TIMELINE",
-  State = "STATE"
+  State = "STATE",
 }
 /** The possible item types found in a timeline. */
 export enum PullRequestTimelineItemsItemType {
@@ -956,12 +956,12 @@ export enum PullRequestTimelineItemsItemType {
   UnassignedEvent = "UNASSIGNED_EVENT",
   UnlabeledEvent = "UNLABELED_EVENT",
   UnlockedEvent = "UNLOCKED_EVENT",
-  UnsubscribedEvent = "UNSUBSCRIBED_EVENT"
+  UnsubscribedEvent = "UNSUBSCRIBED_EVENT",
 }
 /** The affiliation type between collaborator and repository. */
 export enum RepositoryCollaboratorAffiliation {
   All = "ALL",
-  Outside = "OUTSIDE"
+  Outside = "OUTSIDE",
 }
 
 /** An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string. */
@@ -1034,6 +1034,116 @@ export type GetRepoObjectEntries = {
   name: string;
 };
 
+export type GetViewerReposVariables = {};
+
+export type GetViewerReposQuery = {
+  __typename?: "Query";
+
+  viewer: GetViewerReposViewer;
+};
+
+export type GetViewerReposViewer = {
+  __typename?: "User";
+
+  repositories: GetViewerReposRepositories;
+};
+
+export type GetViewerReposRepositories = {
+  __typename?: "RepositoryConnection";
+
+  totalCount: number;
+
+  edges: GetViewerReposEdges[] | null;
+};
+
+export type GetViewerReposEdges = {
+  __typename?: "RepositoryEdge";
+
+  node: GetViewerReposNode | null;
+};
+
+export type GetViewerReposNode = {
+  __typename?: "Repository";
+
+  name: string;
+
+  description: string | null;
+
+  owner: GetViewerReposOwner;
+
+  defaultBranchRef: GetViewerReposDefaultBranchRef | null;
+
+  languages: GetViewerReposLanguages | null;
+
+  repositoryTopics: GetViewerReposRepositoryTopics;
+};
+
+export type GetViewerReposOwner = {
+  __typename?: "RepositoryOwner";
+
+  login: string;
+};
+
+export type GetViewerReposDefaultBranchRef = {
+  __typename?: "Ref";
+
+  name: string;
+
+  target: GetViewerReposTarget;
+};
+
+export type GetViewerReposTarget = {
+  __typename?: "GitObject";
+
+  oid: GitObjectId;
+};
+
+export type GetViewerReposLanguages = {
+  __typename?: "LanguageConnection";
+
+  edges: GetViewerRepos_Edges[] | null;
+};
+
+export type GetViewerRepos_Edges = {
+  __typename?: "LanguageEdge";
+
+  node: GetViewerRepos_Node;
+
+  size: number;
+};
+
+export type GetViewerRepos_Node = {
+  __typename?: "Language";
+
+  name: string;
+
+  color: string | null;
+};
+
+export type GetViewerReposRepositoryTopics = {
+  __typename?: "RepositoryTopicConnection";
+
+  edges: GetViewerRepos__Edges[] | null;
+};
+
+export type GetViewerRepos__Edges = {
+  __typename?: "RepositoryTopicEdge";
+
+  node: GetViewerRepos__Node | null;
+};
+
+export type GetViewerRepos__Node = {
+  __typename?: "RepositoryTopic";
+
+  topic: GetViewerReposTopic;
+};
+
+export type GetViewerReposTopic = {
+  __typename?: "Topic";
+
+  name: string;
+};
+
 import * as ReactApollo from "react-apollo";
 import * as React from "react";
 
@@ -1093,4 +1203,80 @@ export function GetRepoObjectHOC<TProps, TChildProps = any>(
     GetRepoObjectVariables,
     GetRepoObjectProps<TChildProps>
   >(GetRepoObjectDocument, operationOptions);
+}
+export const GetViewerReposDocument = gql`
+  query GetViewerRepos {
+    viewer {
+      repositories(first: 100) {
+        totalCount
+        edges {
+          node {
+            name
+            description
+            owner {
+              login
+            }
+            defaultBranchRef {
+              name
+              target {
+                __typename
+                oid
+              }
+            }
+            languages(first: 10) {
+              edges {
+                node {
+                  name
+                  color
+                }
+                size
+              }
+            }
+            repositoryTopics(first: 10) {
+              edges {
+                node {
+                  topic {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export class GetViewerReposComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<GetViewerReposQuery, GetViewerReposVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<GetViewerReposQuery, GetViewerReposVariables>
+        query={GetViewerReposDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type GetViewerReposProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<GetViewerReposQuery, GetViewerReposVariables>
+> &
+  TChildProps;
+export function GetViewerReposHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        GetViewerReposQuery,
+        GetViewerReposVariables,
+        GetViewerReposProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    GetViewerReposQuery,
+    GetViewerReposVariables,
+    GetViewerReposProps<TChildProps>
+  >(GetViewerReposDocument, operationOptions);
 }

@@ -1,76 +1,66 @@
 import * as React from "react";
-import { AppsListReposResponseRepositoriesItem } from "@octokit/rest";
+import { Spinner } from "@codeponder/ui";
+import get from "lodash.get";
 
-import { NextContextWithApollo } from "../types/NextContextWithApollo";
-import { meQuery } from "../graphql/user/query/me";
-import {
-  MeQuery,
-  FindOrCreateCodeReviewPostComponent,
-} from "../components/apollo-components";
-import { octokit } from "../lib/octo";
-import redirect from "../lib/redirect";
+import { FindOrCreateCodeReviewPostComponent } from "../components/apollo-components";
 import { AutoSelect } from "../components/AutoSelect";
+import {
+  GetViewerReposComponent,
+  GetViewerReposEdges,
+} from "../components/github-apollo-components";
+import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 
-interface Props {
-  repositories: AppsListReposResponseRepositoriesItem[];
-}
-
-export default class PickRepo extends React.PureComponent<Props> {
-  static async getInitialProps({
-    apolloClient,
-    ...ctx
-  }: NextContextWithApollo) {
-    const {
-      data: { me },
-    } = await apolloClient.query<MeQuery>({
-      query: meQuery,
-    });
-
-    if (!me) {
-      redirect(ctx, "/");
-      return {};
-    }
-    console.log(me.accessToken);
-    octokit.authenticate({
-      type: "oauth",
-      token: me.accessToken,
-    });
-
-    // @todo handle the case where they have more than 100 repos
-    const repos = await octokit.repos.list({
-      per_page: 100,
-    });
-
-    return {
-      me,
-      repositories: repos.data,
-    };
-  }
+export default class PickRepo extends React.PureComponent {
+  static contextType = GitHubApolloClientContext;
 
   render() {
-    const { repositories } = this.props;
-    console.log(repositories);
     return (
-      <FindOrCreateCodeReviewPostComponent>
-        {mutate => (
-          <AutoSelect
-            items={repositories}
-            itemToString={item => item.name}
-            onChange={(item: AppsListReposResponseRepositoriesItem) =>
-              mutate({
-                variables: {
-                  codeReviewPost: {
-                    programmingLanguages: [item.language || ""],
-                    commitId: "get-commit-id",
-                    repo: item.name,
-                    repoOwner: item.owner.html_url,
-                  },
-                },
-              })
-            }
-          />
-        )}
-      </FindOrCreateCodeReviewPostComponent>
+      <GetViewerReposComponent client={this.context}>
+        {({ data, loading }) => {
+          if (loading) {
+            return <Spinner />;
+          }
+
+          if (!data) {
+            return "no data";
+          }
+
+          return (
+            <FindOrCreateCodeReviewPostComponent>
+              {mutate => (
+                <AutoSelect
+                  items={data.viewer.repositories.edges}
+                  itemToString={(item: GetViewerReposEdges) => item.node!.name}
+                  onChange={async (item: GetViewerReposEdges) => {
+                    const response = await mutate({
+                      variables: {
+                        codeReviewPost: {
+                          programmingLanguages: get(
+                            item,
+                            "node.languages.edges",
+                            []
+                          ).map((x: any) => x.node!.name),
+                          topics: get(
+                            item,
+                            "node.repositoryTopics.edges",
+                            []
+                          ).map((x: any) => x.node!.topic.name),
+                          commitId: item.node!.defaultBranchRef!.target.oid,
+                          description: item.node!.description || "",
+                          repo: item.node!.name,
+                          repoOwner: item.node!.owner.login,
+                        },
+                      },
+                    });
+
+                    console.log(response);
+                  }}
+                />
+              )}
+            </FindOrCreateCodeReviewPostComponent>
+          );
+        }}
+      </GetViewerReposComponent>
     );
   }
 }

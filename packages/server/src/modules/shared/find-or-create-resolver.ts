@@ -13,7 +13,7 @@ export function findOrCreateResolver<ArgType extends Object, T extends Object>(
   class BaseResolver {
     @Authorized()
     @Mutation(() => graphqlReturnType, { name: `findOrCreate${suffix}` })
-    findOrCreate(
+    async findOrCreate(
       @Arg(argAndReturnKeyName, () => argType) input: ArgType,
       @Ctx() { req }: MyContext
     ) {
@@ -21,12 +21,12 @@ export function findOrCreateResolver<ArgType extends Object, T extends Object>(
       fields.forEach(field => {
         where[field] = input[field];
       });
-      let value = entity.findOne({
+      let value = await entity.findOne({
         where,
       });
 
       if (!value) {
-        value = entity
+        value = await entity
           .create({
             ...input,
             creatorId: req.session!.userId,

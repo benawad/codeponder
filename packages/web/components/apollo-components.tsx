@@ -23,7 +23,11 @@ export interface CreateCodeReviewQuestionInput {
 export interface CreateCodeReviewPostInput {
   programmingLanguages: string[];
 
+  topics: string[];
+
   repo: string;
+
+  description: string;
 
   commitId: string;
 
