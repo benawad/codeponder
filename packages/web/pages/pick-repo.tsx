@@ -9,6 +9,7 @@ import {
   GetViewerReposEdges,
 } from "../components/github-apollo-components";
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
+import { Router } from "../server/routes";
 
 export default class PickRepo extends React.PureComponent {
   static contextType = GitHubApolloClientContext;
@@ -54,6 +55,13 @@ export default class PickRepo extends React.PureComponent {
                     });
 
                     console.log(response);
+                    if (response && response.data) {
+                      Router.pushRoute("post", {
+                        id:
+                          response.data.findOrCreateCodeReviewPost
+                            .codeReviewPost.id,
+                      });
+                    }
                   }}
                 />
               )}

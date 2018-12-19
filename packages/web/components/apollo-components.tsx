@@ -1,3 +1,5 @@
+export type Maybe<T> = T | null;
+
 export interface CreateQuestionReplyInput {
   text: string;
 
@@ -13,9 +15,9 @@ export interface CreateCodeReviewQuestionInput {
 
   postId: string;
 
-  path?: string | null;
+  path?: Maybe<string>;
 
-  codeSnippet?: string | null;
+  codeSnippet?: Maybe<string>;
 
   programmingLanguage: string;
 }
@@ -57,19 +59,19 @@ export type FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost = {
   codeReviewPost: FindOrCreateCodeReviewPostCodeReviewPost;
 };
 
-export type FindOrCreateCodeReviewPostCodeReviewPost = {
-  __typename?: "CodeReviewPost";
+export type FindOrCreateCodeReviewPostCodeReviewPost = CodeReviewPostInfoFragment;
 
+export type GetCodeReviewPostByIdVariables = {
   id: string;
-
-  programmingLanguages: string[];
-
-  repo: string;
-
-  commitId: string;
-
-  repoOwner: string;
 };
+
+export type GetCodeReviewPostByIdQuery = {
+  __typename?: "Query";
+
+  getCodeReviewPostById: Maybe<GetCodeReviewPostByIdGetCodeReviewPostById>;
+};
+
+export type GetCodeReviewPostByIdGetCodeReviewPostById = CodeReviewPostInfoFragment;
 
 export type CreateCodeReviewQuestionVariables = {
   codeReviewQuestion: CreateCodeReviewQuestionInput;
@@ -90,10 +92,8 @@ export type CreateCodeReviewQuestionCreateCodeReviewQuestion = {
 export type CreateCodeReviewQuestionCodeReviewQuestion = CodeReviewQuestionInfoFragment;
 
 export type FindCodeReviewQuestionsVariables = {
-  username: string;
-  branch: string;
-  repo: string;
-  path?: string | null;
+  postId: string;
+  path?: Maybe<string>;
 };
 
 export type FindCodeReviewQuestionsQuery = {
@@ -105,8 +105,8 @@ export type FindCodeReviewQuestionsQuery = {
 export type FindCodeReviewQuestionsFindCodeReviewQuestions = CodeReviewQuestionInfoFragment;
 
 export type HomeQuestionsVariables = {
-  offset?: number | null;
-  limit?: number | null;
+  offset?: Maybe<number>;
+  limit?: Maybe<number>;
 };
 
 export type HomeQuestionsQuery = {
@@ -160,10 +160,24 @@ export type MeVariables = {};
 export type MeQuery = {
   __typename?: "Query";
 
-  me: MeMe | null;
+  me: Maybe<MeMe>;
 };
 
 export type MeMe = UserInfoFragment;
+
+export type CodeReviewPostInfoFragment = {
+  __typename?: "CodeReviewPost";
+
+  id: string;
+
+  programmingLanguages: string[];
+
+  repo: string;
+
+  commitId: string;
+
+  repoOwner: string;
+};
 
 export type CodeReviewQuestionInfoFragment = {
   __typename?: "CodeReviewQuestion";
@@ -222,6 +236,16 @@ import gql from "graphql-tag";
 // Fragments
 // ====================================================
 
+export const CodeReviewPostInfoFragmentDoc = gql`
+  fragment CodeReviewPostInfo on CodeReviewPost {
+    id
+    programmingLanguages
+    repo
+    commitId
+    repoOwner
+  }
+`;
+
 export const UserInfoFragmentDoc = gql`
   fragment UserInfo on User {
     id
@@ -273,14 +297,12 @@ export const FindOrCreateCodeReviewPostDocument = gql`
   ) {
     findOrCreateCodeReviewPost(codeReviewPost: $codeReviewPost) {
       codeReviewPost {
-        id
-        programmingLanguages
-        repo
-        commitId
-        repoOwner
+        ...CodeReviewPostInfo
       }
     }
   }
+
+  ${CodeReviewPostInfoFragmentDoc}
 `;
 export class FindOrCreateCodeReviewPostComponent extends React.Component<
   Partial<
@@ -329,6 +351,59 @@ export function FindOrCreateCodeReviewPostHOC<TProps, TChildProps = any>(
     FindOrCreateCodeReviewPostVariables,
     FindOrCreateCodeReviewPostProps<TChildProps>
   >(FindOrCreateCodeReviewPostDocument, operationOptions);
+}
+export const GetCodeReviewPostByIdDocument = gql`
+  query GetCodeReviewPostById($id: String!) {
+    getCodeReviewPostById(id: $id) {
+      ...CodeReviewPostInfo
+    }
+  }
+
+  ${CodeReviewPostInfoFragmentDoc}
+`;
+export class GetCodeReviewPostByIdComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      GetCodeReviewPostByIdQuery,
+      GetCodeReviewPostByIdVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<
+        GetCodeReviewPostByIdQuery,
+        GetCodeReviewPostByIdVariables
+      >
+        query={GetCodeReviewPostByIdDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type GetCodeReviewPostByIdProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<
+    GetCodeReviewPostByIdQuery,
+    GetCodeReviewPostByIdVariables
+  >
+> &
+  TChildProps;
+export function GetCodeReviewPostByIdHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        GetCodeReviewPostByIdQuery,
+        GetCodeReviewPostByIdVariables,
+        GetCodeReviewPostByIdProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    GetCodeReviewPostByIdQuery,
+    GetCodeReviewPostByIdVariables,
+    GetCodeReviewPostByIdProps<TChildProps>
+  >(GetCodeReviewPostByIdDocument, operationOptions);
 }
 export const CreateCodeReviewQuestionDocument = gql`
   mutation CreateCodeReviewQuestion(
@@ -392,18 +467,8 @@ export function CreateCodeReviewQuestionHOC<TProps, TChildProps = any>(
   >(CreateCodeReviewQuestionDocument, operationOptions);
 }
 export const FindCodeReviewQuestionsDocument = gql`
-  query FindCodeReviewQuestions(
-    $username: String!
-    $branch: String!
-    $repo: String!
-    $path: String
-  ) {
-    findCodeReviewQuestions(
-      username: $username
-      branch: $branch
-      repo: $repo
-      path: $path
-    ) {
+  query FindCodeReviewQuestions($postId: String!, $path: String) {
+    findCodeReviewQuestions(postId: $postId, path: $path) {
       ...CodeReviewQuestionInfo
     }
   }

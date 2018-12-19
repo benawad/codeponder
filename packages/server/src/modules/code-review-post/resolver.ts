@@ -3,9 +3,12 @@ import { CodeReviewPost } from "../../entity/CodeReviewPost";
 import { CreateCodeReviewPostResponse } from "./createResponse";
 import { findOrCreateResolver } from "../shared/find-or-create-resolver";
 import { loadCreatorResolver } from "../shared/load-creator-resolver";
+import { getByIdResolver } from "../shared/get-by-id-resolver";
+
+const suffix = "CodeReviewPost";
 
 export const findOrCreateCodeReviewPost = findOrCreateResolver(
-  "CodeReviewPost",
+  suffix,
   CreateCodeReviewPostInput,
   CodeReviewPost,
   CreateCodeReviewPostResponse,
@@ -13,3 +16,9 @@ export const findOrCreateCodeReviewPost = findOrCreateResolver(
 );
 
 export const loadCreatorForCodeReviewPost = loadCreatorResolver(CodeReviewPost);
+
+export const getCodeReviewPostById = getByIdResolver(
+  suffix,
+  CodeReviewPost,
+  CodeReviewPost
+);

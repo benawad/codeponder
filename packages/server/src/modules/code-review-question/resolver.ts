@@ -28,14 +28,10 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
   @Query(() => [CodeReviewQuestion])
   async findCodeReviewQuestions(
     @Arg("path", { nullable: true }) path: string,
-    @Arg("repo") _repo: string,
-    @Arg("branch") _branch: string,
-    @Arg("username") _username: string
+    @Arg("postId") postId: string
   ) {
     const where: FindConditions<CodeReviewQuestion> = {
-      // repo,
-      // branch,
-      // username,
+      postId,
     };
 
     if (path) {
@@ -59,7 +55,7 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
 
     const questions = await getConnection().query(
       `
-      select distinct on (repo, username) * from code_review_question offset $1 limit $2;
+      select * from code_review_question offset $1 limit $2;
     `,
       [offset, limit]
     );

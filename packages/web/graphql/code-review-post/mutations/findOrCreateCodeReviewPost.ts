@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { codeReviewPostInfoFragment } from "../fragments/codeReviewPostInfo";
 
 export const findOrCreateCodeReviewPost = gql`
   mutation FindOrCreateCodeReviewPost(
@@ -6,12 +7,10 @@ export const findOrCreateCodeReviewPost = gql`
   ) {
     findOrCreateCodeReviewPost(codeReviewPost: $codeReviewPost) {
       codeReviewPost {
-        id
-        programmingLanguages
-        repo
-        commitId
-        repoOwner
+        ...CodeReviewPostInfo
       }
     }
   }
+
+  ${codeReviewPostInfoFragment}
 `;

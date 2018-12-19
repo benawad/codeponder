@@ -52,6 +52,10 @@ export class CodeReviewQuestion extends BaseEntity {
   @ManyToOne(() => User, user => user.codeReviewQuestions)
   creator: Promise<User>;
 
+  @Field()
+  @Column("uuid")
+  postId: string;
+
   @Field(() => CodeReviewPost)
   @ManyToOne(() => CodeReviewPost, crp => crp.questions)
   post: Promise<User>;

@@ -11,38 +11,50 @@ import {
 } from "../components/github-apollo-components";
 import { Link } from "../server/routes";
 import { CodeFile } from "../components/CodeFile";
+import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
+import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
 
 interface Props {
-  branch: string;
+  id: string;
   path?: string;
   owner: string;
   name: string;
   expression: string;
 }
 
-export default class Repo extends React.PureComponent<Props> {
+export default class Post extends React.PureComponent<Props> {
   static contextType = GitHubApolloClientContext;
   static async getInitialProps({
-    query: { branch, owner, path, name },
+    query: { id, path },
     githubApolloClient,
+    apolloClient,
   }: NextContextWithApollo) {
-    const expression = `${branch}:${path || ""}`;
+    const response = await apolloClient.query<GetCodeReviewPostByIdQuery>({
+      query: getCodeReviewPostByIdQuery,
+      variables: {
+        id,
+      },
+    });
+
+    const { getCodeReviewPostById } = response.data;
+
+    const expression = `${getCodeReviewPostById!.commitId}:${path || ""}`;
 
     await githubApolloClient.query({
       query: GetRepoObjectDocument,
       variables: {
-        name,
-        owner,
+        name: getCodeReviewPostById!.repo,
+        owner: getCodeReviewPostById!.repoOwner,
         expression,
       },
     });
 
     return {
-      branch,
-      owner,
+      id,
       path,
-      name,
       expression,
+      name: getCodeReviewPostById!.repo,
+      owner: getCodeReviewPostById!.repoOwner,
     };
   }
 
@@ -67,12 +79,10 @@ export default class Repo extends React.PureComponent<Props> {
           {/*
           // @ts-ignore */}
           <Link
-            route="repo"
+            route="post"
             params={{
-              branch: this.props.branch,
-              owner: this.props.owner,
+              id: this.props.id,
               path: [...currentPath] as any,
-              name,
             }}
           >
             <a>{part}</a>
@@ -84,7 +94,7 @@ export default class Repo extends React.PureComponent<Props> {
   };
 
   render() {
-    const { branch, owner, path, name, expression } = this.props;
+    const { owner, path, name, expression, id } = this.props;
     return (
       <GetRepoObjectComponent
         variables={{
@@ -113,13 +123,7 @@ export default class Repo extends React.PureComponent<Props> {
             return (
               <>
                 {this.renderFilePath(name, path)}
-                <CodeFile
-                  branch={branch}
-                  repo={name}
-                  username={owner}
-                  path={path}
-                  code={object.text}
-                />
+                <CodeFile path={path} code={object.text} postId={id} />
               </>
             );
           }
@@ -136,15 +140,13 @@ export default class Repo extends React.PureComponent<Props> {
                   Link={Link}
                   getLinkProps={itemPath => ({
                     passHref: true,
-                    route: "repo",
+                    route: "post",
                     params: {
-                      branch,
-                      owner,
                       path: [
                         ...(path ? path.split("/") : []),
                         ...itemPath.split("/"),
                       ] as any,
-                      name,
+                      id,
                     },
                   })}
                 />

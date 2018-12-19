@@ -19,19 +19,11 @@ import { loadLanguage } from "../utils/loadLanguage";
 
 interface Props {
   code: string | null;
-  username: string;
-  branch: string;
   path?: string;
-  repo: string;
+  postId: string;
 }
 
-export const CodeFile: React.SFC<Props> = ({
-  code,
-  path,
-  branch,
-  username,
-  repo,
-}) => {
+export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
   const [startingLineNum, startingLineNumChange] = useInputValue("0");
   const [endingLineNum, endingLineNumChange] = useInputValue("0");
   const [text, textChange] = useInputValue("");
@@ -42,10 +34,8 @@ export const CodeFile: React.SFC<Props> = ({
   return (
     <FindCodeReviewQuestionsComponent
       variables={{
-        branch,
         path,
-        repo,
-        username,
+        postId,
       }}
     >
       {({ data, loading }) => {
@@ -85,10 +75,8 @@ export const CodeFile: React.SFC<Props> = ({
                           startingLineNum: parseInt(startingLineNum, 10),
                           endingLineNum: parseInt(endingLineNum, 10),
                           text: text,
-                          username,
-                          branch,
                           path,
-                          repo,
+                          postId,
                           programmingLanguage: lang,
                         },
                       },
