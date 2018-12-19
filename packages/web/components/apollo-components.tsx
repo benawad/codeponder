@@ -177,6 +177,8 @@ export type CodeReviewPostInfoFragment = {
   commitId: string;
 
   repoOwner: string;
+
+  topics: string[];
 };
 
 export type CodeReviewQuestionInfoFragment = {
@@ -243,6 +245,7 @@ export const CodeReviewPostInfoFragmentDoc = gql`
     repo
     commitId
     repoOwner
+    topics
   }
 `;
 

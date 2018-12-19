@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "../../theme/styled-components";
-import Topic from "../Topic";
+import { Topic } from "../Topic";
+import { Avatar } from "../Avatar";
 
 interface Props {
   id: string;
@@ -54,12 +55,6 @@ const CardFooter = styled.div`
   display: flex;
 `;
 
-const SmallAvatar = styled.img`
-  height: 16px;
-  width: 16px;
-  border-radius: 16.5px;
-`;
-
 const Username = styled.div`
   font-family: Rubik;
   font-style: normal;
@@ -98,7 +93,7 @@ export const QuestionCard: React.SFC<Props> = ({
       </Link>
       <CardFooter>
         <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
-          <SmallAvatar src={pictureUrl} alt="avatar" />
+          <Avatar src={pictureUrl} alt="avatar" />
           <Username>{username}</Username>
         </div>
         <div

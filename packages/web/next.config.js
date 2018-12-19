@@ -1,4 +1,5 @@
 const withTypescript = require("@zeit/next-typescript");
+const withStyledIcons = require("next-plugin-styled-icons");
 const withCss = require("@zeit/next-css");
 
 const wcss = withCss({
@@ -11,14 +12,16 @@ const wcss = withCss({
           limit: 8192,
           publicPath: "./",
           outputPath: "static/css/",
-          name: "[name].[ext]"
-        }
-      }
+          name: "[name].[ext]",
+        },
+      },
     });
     return config;
-  }
+  },
 });
 
-module.exports = withTypescript({
-  ...wcss
-});
+module.exports = withStyledIcons(
+  withTypescript({
+    ...wcss,
+  })
+);

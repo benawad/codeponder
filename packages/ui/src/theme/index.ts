@@ -44,9 +44,9 @@ export interface ITheme {
 const theme: ITheme = {
   fonts: {
     sans: '"Rubik", sans-serif',
-    mono: '"Roboto Mono", sans-serif'
+    mono: '"Roboto Mono", sans-serif',
   },
-  fontSizes: ["8px", "10px", "12px", "13px", "14px", "16px"],
+  fontSizes: ["8px", "10px", "12px", "13px", "14px", "16px", "18px"],
   colors: {
     primary: [
       "#07385A",
@@ -55,7 +55,7 @@ const theme: ITheme = {
       "#6DC1FD",
       "#A7DAFF",
       "#E2F3FF",
-      "#F3FAFF"
+      "#F3FAFF",
     ],
     neutrals: [
       "#263238",
@@ -63,11 +63,11 @@ const theme: ITheme = {
       "#B7C1C6",
       "#E6EAEF",
       "#F9FBFD",
-      "#FFFFFF"
+      "#FFFFFF",
     ],
     errors: ["#7A1414", "#BE0A0A", "#FF4F4F", "#FFC6C6", "#FFF3F3"],
     warnings: ["#684B00", "#CC9C23", "#FFCB44", "#FFE6A6", "#FFF8E7"],
-    success: ["#07822A", "#49B267", "#67D987", "#AEF1C1", "#E1FFE9"]
+    success: ["#07822A", "#49B267", "#67D987", "#AEF1C1", "#E1FFE9"],
   },
   radii: ["3px", "4px", "5px", "6px"],
   space: ["4px", "6px", "8px", "10px", "14px"],
@@ -79,7 +79,7 @@ const theme: ITheme = {
       fontSize: "14px",
       padding: "8px 10px",
       textTransform: "uppercase",
-      borderRadius: "4px"
+      borderRadius: "4px",
     },
     topic: {
       backgroundColor: "#E2F3FF",
@@ -89,12 +89,12 @@ const theme: ITheme = {
       padding: "4px",
       cursor: "pointer",
       "&:hover": {
-        backgroundColor: "#F3FAFF"
+        backgroundColor: "#F3FAFF",
       },
       "&:not(:first-child)": {
-        marginLeft: "10px"
-      }
-    }
-  }
+        marginLeft: "10px",
+      },
+    },
+  },
 };
 export default theme;

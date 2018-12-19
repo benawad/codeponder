@@ -1,6 +1,7 @@
 import * as React from "react";
-import { FolderTree, Wrapper, BigCard } from "@codeponder/ui";
+import { FolderTree, BigCard, Topic } from "@codeponder/ui";
 import "prismjs";
+import { Heading, Box } from "rebass";
 
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 import { NextContextWithApollo } from "../types/NextContextWithApollo";
@@ -13,6 +14,7 @@ import { Link } from "../server/routes";
 import { CodeFile } from "../components/CodeFile";
 import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
 import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
+import { Layout } from "../components/Layout";
 
 interface Props {
   id: string;
@@ -20,6 +22,7 @@ interface Props {
   owner: string;
   name: string;
   expression: string;
+  topics: string[];
 }
 
 export default class Post extends React.PureComponent<Props> {
@@ -55,6 +58,7 @@ export default class Post extends React.PureComponent<Props> {
       expression,
       name: getCodeReviewPostById!.repo,
       owner: getCodeReviewPostById!.repoOwner,
+      topics: getCodeReviewPostById!.topics,
     };
   }
 
@@ -94,10 +98,19 @@ export default class Post extends React.PureComponent<Props> {
   };
 
   render() {
-    const { owner, path, name, expression, id } = this.props;
+    const { owner, path, name, expression, id, topics } = this.props;
     return (
-      <Wrapper>
+      // @ts-ignore
+      <Layout title={`Code Review Post: ${name}`}>
         <BigCard>
+          <Heading m="0px" fontFamily="rubik" fontSize={6}>
+            {owner}/{name}
+          </Heading>
+          <Box mt={10} mb={16}>
+            {topics.map(topic => (
+              <Topic key={topic}>{topic}</Topic>
+            ))}
+          </Box>
           <GetRepoObjectComponent
             variables={{
               name,
@@ -161,7 +174,7 @@ export default class Post extends React.PureComponent<Props> {
             }}
           </GetRepoObjectComponent>
         </BigCard>
-      </Wrapper>
+      </Layout>
     );
   }
 }

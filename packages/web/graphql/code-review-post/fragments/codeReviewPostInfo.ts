@@ -7,5 +7,6 @@ export const codeReviewPostInfoFragment = gql`
     repo
     commitId
     repoOwner
+    topics
   }
 `;

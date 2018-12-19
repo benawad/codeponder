@@ -2,7 +2,7 @@ import { useRef } from "react";
 import * as Prism from "prismjs";
 import { Spinner } from "@codeponder/ui";
 import "prismjs/themes/prism.css";
-import "prismjs/themes/prism-solarizedlight.css";
+import "prismjs/themes/prism-coy.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-highlight/prism-line-highlight.css";
