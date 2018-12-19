@@ -5,11 +5,7 @@ export const homeQuestionsQuery = gql`
     homeQuestions(offset: $offset, limit: $limit) {
       id
       text
-      repo
-      username
       programmingLanguage
-      branch
-      path
       creator {
         id
         username

@@ -8,10 +8,7 @@ export const codeReviewQuestionInfoFragment = gql`
     startingLineNum
     endingLineNum
     text
-    path
-    repo
-    branch
-    username
+    programmingLanguage
     creator {
       ...UserInfo
     }

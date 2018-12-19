@@ -11,15 +11,23 @@ export interface CreateCodeReviewQuestionInput {
 
   text: string;
 
+  postId: string;
+
   path?: string | null;
+
+  codeSnippet?: string | null;
+
+  programmingLanguage: string;
+}
+
+export interface CreateCodeReviewPostInput {
+  programmingLanguages: string[];
 
   repo: string;
 
-  branch: string;
+  commitId: string;
 
-  username: string;
-
-  programmingLanguage: string;
+  repoOwner: string;
 }
 
 /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
@@ -28,6 +36,36 @@ export type DateTime = any;
 // ====================================================
 // Documents
 // ====================================================
+
+export type FindOrCreateCodeReviewPostVariables = {
+  codeReviewPost: CreateCodeReviewPostInput;
+};
+
+export type FindOrCreateCodeReviewPostMutation = {
+  __typename?: "Mutation";
+
+  findOrCreateCodeReviewPost: FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost;
+};
+
+export type FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost = {
+  __typename?: "CreateCodeReviewPostResponse";
+
+  codeReviewPost: FindOrCreateCodeReviewPostCodeReviewPost;
+};
+
+export type FindOrCreateCodeReviewPostCodeReviewPost = {
+  __typename?: "CodeReviewPost";
+
+  id: string;
+
+  programmingLanguages: string[];
+
+  repo: string;
+
+  commitId: string;
+
+  repoOwner: string;
+};
 
 export type CreateCodeReviewQuestionVariables = {
   codeReviewQuestion: CreateCodeReviewQuestionInput;
@@ -80,15 +118,7 @@ export type HomeQuestionsHomeQuestions = {
 
   text: string;
 
-  repo: string;
-
-  username: string;
-
   programmingLanguage: string;
-
-  branch: string;
-
-  path: string | null;
 
   creator: HomeQuestionsCreator;
 };
@@ -142,13 +172,7 @@ export type CodeReviewQuestionInfoFragment = {
 
   text: string;
 
-  path: string | null;
-
-  repo: string;
-
-  branch: string;
-
-  username: string;
+  programmingLanguage: string;
 
   creator: CodeReviewQuestionInfoCreator;
 
@@ -222,10 +246,7 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
     startingLineNum
     endingLineNum
     text
-    path
-    repo
-    branch
-    username
+    programmingLanguage
     creator {
       ...UserInfo
     }
@@ -242,6 +263,69 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
 // Components
 // ====================================================
 
+export const FindOrCreateCodeReviewPostDocument = gql`
+  mutation FindOrCreateCodeReviewPost(
+    $codeReviewPost: CreateCodeReviewPostInput!
+  ) {
+    findOrCreateCodeReviewPost(codeReviewPost: $codeReviewPost) {
+      codeReviewPost {
+        id
+        programmingLanguages
+        repo
+        commitId
+        repoOwner
+      }
+    }
+  }
+`;
+export class FindOrCreateCodeReviewPostComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      FindOrCreateCodeReviewPostMutation,
+      FindOrCreateCodeReviewPostVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        FindOrCreateCodeReviewPostMutation,
+        FindOrCreateCodeReviewPostVariables
+      >
+        mutation={FindOrCreateCodeReviewPostDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type FindOrCreateCodeReviewPostProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    FindOrCreateCodeReviewPostMutation,
+    FindOrCreateCodeReviewPostVariables
+  >
+> &
+  TChildProps;
+export type FindOrCreateCodeReviewPostMutationFn = ReactApollo.MutationFn<
+  FindOrCreateCodeReviewPostMutation,
+  FindOrCreateCodeReviewPostVariables
+>;
+export function FindOrCreateCodeReviewPostHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        FindOrCreateCodeReviewPostMutation,
+        FindOrCreateCodeReviewPostVariables,
+        FindOrCreateCodeReviewPostProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    FindOrCreateCodeReviewPostMutation,
+    FindOrCreateCodeReviewPostVariables,
+    FindOrCreateCodeReviewPostProps<TChildProps>
+  >(FindOrCreateCodeReviewPostDocument, operationOptions);
+}
 export const CreateCodeReviewQuestionDocument = gql`
   mutation CreateCodeReviewQuestion(
     $codeReviewQuestion: CreateCodeReviewQuestionInput!
@@ -371,11 +455,7 @@ export const HomeQuestionsDocument = gql`
     homeQuestions(offset: $offset, limit: $limit) {
       id
       text
-      repo
-      username
       programmingLanguage
-      branch
-      path
       creator {
         id
         username

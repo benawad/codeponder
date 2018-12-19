@@ -1,16 +1,15 @@
-import { Resolver } from "type-graphql";
-import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
-import { createBaseResolver } from "../shared/createBaseResolver";
 import { CreateCodeReviewPostInput } from "./createInput";
 import { CodeReviewPost } from "../../entity/CodeReviewPost";
 import { CreateCodeReviewPostResponse } from "./createResponse";
+import { findOrCreateResolver } from "../shared/find-or-create-resolver";
+import { loadCreatorResolver } from "../shared/load-creator-resolver";
 
-const CodeReviewPostBaseResolver = createBaseResolver(
+export const findOrCreateCodeReviewPost = findOrCreateResolver(
   "CodeReviewPost",
   CreateCodeReviewPostInput,
   CodeReviewPost,
-  CreateCodeReviewPostResponse
+  CreateCodeReviewPostResponse,
+  ["commitId", "repo", "repoOwner"] as any
 );
 
-@Resolver(CodeReviewQuestion)
-export class CodeReviewPostResolver extends CodeReviewPostBaseResolver {}
+export const loadCreatorForCodeReviewPost = loadCreatorResolver(CodeReviewPost);
