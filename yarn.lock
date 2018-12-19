@@ -2811,7 +2811,7 @@
     csstype "^2.0.0"
     indefinite-observable "^1.0.1"
 
-"@types/lodash.get@^4.4.4":
+"@types/lodash.get@4.4.4":
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/@types/lodash.get/-/lodash.get-4.4.4.tgz#34b67841594e4ddc8853341d65e971a38cb4e2f0"
   integrity sha512-6igkhtKoWAEvTWCgd5uubiuxXLUY/kljQOQZV1G5Y7SrivpmCU+NWG5tGLgRBkccobrDljbJYzBM2vgCG4Oc8Q==
@@ -2962,7 +2962,7 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/rebass@^0.3.3":
+"@types/rebass@0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@types/rebass/-/rebass-0.3.3.tgz#a61d0e1e14f2d21b9e5a633713f898e094b57a4a"
   integrity sha512-ZmEo7EXlSl1VQYjjojcN/Z+80tjLAY4iZylwYF3lZn5upQSi2p0BAOGvUklKK3RZjHlcBHXJryK9xlYnqYdSaQ==
@@ -11293,7 +11293,7 @@ lodash.flowright@^3.5.0:
   resolved "https://registry.yarnpkg.com/lodash.flowright/-/lodash.flowright-3.5.0.tgz#2b5fff399716d7e7dc5724fe9349f67065184d67"
   integrity sha1-K1//OZcW1+fcVyT+k0n2cGUYTWc=
 
-lodash.get@^4.4.2:
+lodash.get@4.4.2, lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
@@ -14809,7 +14809,7 @@ realpath-native@^1.0.0:
   dependencies:
     util.promisify "^1.0.0"
 
-rebass@^3.0.0:
+rebass@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/rebass/-/rebass-3.0.0.tgz#3c9add593046dba9d39af001c96c67448eca8d55"
   integrity sha512-O5kbFdl8hyGmetoybEGHOi2EwVJWr37iJbM1zHRF+Vkvuo/OYxjIu4XnPF6DRKGtsn2BPOfas3Gp1QBO6aq6/A==
