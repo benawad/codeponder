@@ -19,7 +19,7 @@ export class CodeReviewPost extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Field()
+  @Field(() => [String])
   @Column({ type: "text", array: true })
   programmingLanguages: string[];
 

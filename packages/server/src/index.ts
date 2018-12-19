@@ -12,11 +12,8 @@ import * as cors from "cors";
 import { redis } from "./redis";
 
 import { createTypeormConn } from "./createTypeormConn";
-import { UserResolver } from "./modules/user/UserResolver";
 import { createUser } from "./utils/createUser";
 import { User } from "./entity/User";
-import { CodeReviewQuestionResolver } from "./modules/code-review-question/resolver";
-import { QuestionReplyResolver } from "./modules/question-reply/resolver";
 import { userLoader } from "./loaders/userLoader";
 import { questionReplyLoader } from "./loaders/questionReplyLoader";
 
@@ -30,20 +27,16 @@ const startServer = async () => {
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [
-        UserResolver,
-        CodeReviewQuestionResolver,
-        QuestionReplyResolver
-      ],
+      resolvers: [__dirname + "/modules/**/resolver.*"],
       authChecker: ({ context }) => {
         return context.req.session && context.req.session.userId; // or false if access denied
-      }
+      },
     }),
     context: ({ req }: any) => ({
       req,
       userLoader: userLoader(),
-      questionReplyLoader: questionReplyLoader()
-    })
+      questionReplyLoader: questionReplyLoader(),
+    }),
   });
 
   app.set("trust proxy", 1);
@@ -54,7 +47,7 @@ const startServer = async () => {
       origin:
         process.env.NODE_ENV === "production"
           ? "https://www.codeponder.com"
-          : "http://localhost:3000"
+          : "http://localhost:3000",
     })
   );
 
@@ -74,7 +67,7 @@ const startServer = async () => {
   app.use(
     session({
       store: new RedisStore({
-        client: redis as any
+        client: redis as any,
       }),
       name: "qid",
       secret: SESSION_SECRET,
@@ -83,8 +76,8 @@ const startServer = async () => {
       cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 365 // 7 years
-      }
+        maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
+      },
     } as any)
   );
 
@@ -93,7 +86,7 @@ const startServer = async () => {
       {
         clientID: process.env.GITHUB_CLIENT_ID!,
         clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-        callbackURL: "http://localhost:4000/oauth/github"
+        callbackURL: "http://localhost:4000/oauth/github",
       },
       async (accessToken, refreshToken, profile: any, cb) => {
         let user = await User.findOne({ where: { githubId: profile.id } });
@@ -103,14 +96,14 @@ const startServer = async () => {
             githubId: profile.id,
             pictureUrl: profile._json.avatar_url,
             bio: profile._json.bio,
-            name: profile._json.name
+            name: profile._json.name,
           });
         }
 
         cb(null, {
           user,
           accessToken,
-          refreshToken
+          refreshToken,
         });
       }
     )

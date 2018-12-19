@@ -3,7 +3,7 @@ import { CodeReviewPost } from "../../entity/CodeReviewPost";
 
 @InputType()
 export class CreateCodeReviewPostInput implements Partial<CodeReviewPost> {
-  @Field()
+  @Field(() => [String])
   programmingLanguages: string[];
 
   @Field()
