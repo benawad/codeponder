@@ -95,6 +95,15 @@ const theme: ITheme = {
         marginLeft: "10px",
       },
     },
+    github: {
+      display: "flex",
+      backgroundColor: "rgb(22, 23, 26)",
+      color: "#fff",
+      alignItems: "center",
+      fontSize: "12px",
+      fontFamily: "rubik",
+      cursor: "pointer",
+    },
   },
 };
 export default theme;

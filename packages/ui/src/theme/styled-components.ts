@@ -20,6 +20,7 @@ body {
 }
 
 * {
+  outline: none;
   box-sizing: border-box;
   padding: 0;
   margin: 0;

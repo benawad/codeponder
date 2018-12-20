@@ -1,14 +1,16 @@
 import * as React from "react";
-import { ButtonProps, Button } from "rebass";
-import { Github } from "styled-icons/fa-brands";
+import { ButtonProps, Button, Box } from "rebass";
+import { Icon } from "../Icon";
 
 export const GitHubButton: React.SFC<
   ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ children }) => {
   return (
-    <Button>
+    <Button variant="github">
+      <Box mr=".75rem">
+        <Icon name="github" fill="#fff" />
+      </Box>
       {children}
-      <Github />
     </Button>
   );
 };

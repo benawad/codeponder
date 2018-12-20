@@ -6,6 +6,6 @@ import { GitHubButton } from ".";
 
 storiesOf("Button", module).add("GitHub", () => (
   <GitHubButton onClick={action("primary-button-click")}>
-    New code review
+    Sign in with GitHub
   </GitHubButton>
 ));
