@@ -10,6 +10,9 @@ export class CreateCodeReviewPostInput implements Partial<CodeReviewPost> {
   repo: string;
 
   @Field()
+  title: string;
+
+  @Field()
   description: string;
 
   @Field()

@@ -25,6 +25,10 @@ export class CodeReviewPost extends BaseEntity {
 
   @Field()
   @Column({ type: "text" })
+  title: string;
+
+  @Field()
+  @Column({ type: "text" })
   description: string;
 
   @Field()

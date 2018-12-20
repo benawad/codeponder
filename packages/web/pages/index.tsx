@@ -1,61 +1,69 @@
 import * as React from "react";
-import { Spinner, CardGrid, QuestionCard, MyButton } from "@codeponder/ui";
+import { CardGrid, PostCard, MyButton, Topic } from "@codeponder/ui";
 
-import { HomeQuestionsComponent } from "../components/apollo-components";
+import { FindCodeReviewPostComponent } from "../components/apollo-components";
 import { Link } from "../server/routes";
 import { Layout } from "../components/Layout";
-// import Router from "next/router";
-// import { Router } from "../server/routes";
 
-export default class Index extends React.Component<
-  {},
-  { limit: number; offset: number }
-> {
-  state = {
+interface State {
+  limit: number;
+  offset: number;
+  topics: string[];
+}
+export default class Index extends React.Component<{}, State> {
+  state: State = {
+    topics: [],
     limit: 6,
     offset: 0,
+  };
+
+  handleTopic = (topic: string) => {
+    if (!this.state.topics.includes(topic)) {
+      this.setState(state => ({
+        topics: [topic, ...state.topics],
+      }));
+    }
+  };
+
+  removeTopic = (topic: string) => {
+    this.setState(state => ({
+      topics: state.topics.filter(x => x !== topic),
+    }));
   };
 
   render() {
     return (
       // @ts-ignore
       <Layout title="Code Ponder">
-        <HomeQuestionsComponent variables={this.state}>
-          {({ data, loading }) => {
-            if (loading) {
-              return <Spinner />;
-            }
-
-            if (!data) {
-              return "could not get data";
-            }
-
+        <FindCodeReviewPostComponent variables={{ input: this.state }}>
+          {({ data }) => {
             return (
               <div>
-                <div style={{ display: "inline-block" }}>
+                <div>
+                  {this.state.topics.map(topic => (
+                    <Topic key={topic} onClick={() => this.removeTopic(topic)}>
+                      {topic}
+                    </Topic>
+                  ))}
                   <CardGrid>
-                    {data.homeQuestions.map(
-                      q => (
-                        <div key={q.id} />
-                      )
-                      // <QuestionCard
-                      //   key={q.id}
-                      //   Link={Link}
-                      //   getLinkProps={() => ({
-                      //     route: "repo",
-                      //     params: {
-                      //       branch: q.branch,
-                      //       owner: q.username,
-                      //       path: (q.path ? q.path.split("/") : []) as any,
-                      //       name: q.repo,
-                      //     },
-                      //   })}
-                      //   {...q}
-                      // />
-                    )}
+                    {data &&
+                      data.findCodeReviewPost.map(post => (
+                        <PostCard
+                          key={post.id}
+                          Link={Link}
+                          onTopicClick={this.handleTopic}
+                          getLinkProps={() => ({
+                            route: "post",
+                            params: {
+                              id: post.id,
+                            },
+                          })}
+                          {...post}
+                        />
+                      ))}
                   </CardGrid>
                 </div>
-                {data.homeQuestions.length ? (
+                {data && data.findCodeReviewPost.length ? (
                   <div>
                     <MyButton
                       variant="primary"
@@ -72,7 +80,7 @@ export default class Index extends React.Component<
               </div>
             );
           }}
-        </HomeQuestionsComponent>
+        </FindCodeReviewPostComponent>
       </Layout>
     );
   }

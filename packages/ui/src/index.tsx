@@ -4,7 +4,7 @@ export * from "./components/Input";
 export * from "./components/FolderTree";
 export * from "./components/Spinner";
 export * from "./components/CardGrid";
-export * from "./components/QuestionCard";
+export * from "./components/PostCard";
 export * from "./components/Wrapper";
 export * from "./components/BigCard";
 export * from "./components/Topic";

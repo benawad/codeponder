@@ -1,7 +1,7 @@
 export type Maybe<T> = T | null;
 
 export interface FindCodeReviewPostInput {
-  topics: string[];
+  topics?: Maybe<string[]>;
 
   offset: number;
 
@@ -35,6 +35,8 @@ export interface CreateCodeReviewPostInput {
 
   repo: string;
 
+  title: string;
+
   description: string;
 
   commitId: string;
@@ -66,6 +68,18 @@ export type FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost = {
 };
 
 export type FindOrCreateCodeReviewPostCodeReviewPost = CodeReviewPostInfoFragment;
+
+export type FindCodeReviewPostVariables = {
+  input: FindCodeReviewPostInput;
+};
+
+export type FindCodeReviewPostQuery = {
+  __typename?: "Query";
+
+  findCodeReviewPost: FindCodeReviewPostFindCodeReviewPost[];
+};
+
+export type FindCodeReviewPostFindCodeReviewPost = CodeReviewPostInfoFragment;
 
 export type GetCodeReviewPostByIdVariables = {
   id: string;
@@ -176,6 +190,8 @@ export type CodeReviewPostInfoFragment = {
 
   id: string;
 
+  title: string;
+
   repo: string;
 
   commitId: string;
@@ -183,7 +199,11 @@ export type CodeReviewPostInfoFragment = {
   repoOwner: string;
 
   topics: string[];
+
+  creator: CodeReviewPostInfoCreator;
 };
+
+export type CodeReviewPostInfoCreator = UserInfoFragment;
 
 export type CodeReviewQuestionInfoFragment = {
   __typename?: "CodeReviewQuestion";
@@ -242,16 +262,6 @@ import gql from "graphql-tag";
 // Fragments
 // ====================================================
 
-export const CodeReviewPostInfoFragmentDoc = gql`
-  fragment CodeReviewPostInfo on CodeReviewPost {
-    id
-    repo
-    commitId
-    repoOwner
-    topics
-  }
-`;
-
 export const UserInfoFragmentDoc = gql`
   fragment UserInfo on User {
     id
@@ -260,6 +270,22 @@ export const UserInfoFragmentDoc = gql`
     bio
     accessToken
   }
+`;
+
+export const CodeReviewPostInfoFragmentDoc = gql`
+  fragment CodeReviewPostInfo on CodeReviewPost {
+    id
+    title
+    repo
+    commitId
+    repoOwner
+    topics
+    creator {
+      ...UserInfo
+    }
+  }
+
+  ${UserInfoFragmentDoc}
 `;
 
 export const QuestionReplyInfoFragmentDoc = gql`
@@ -357,6 +383,50 @@ export function FindOrCreateCodeReviewPostHOC<TProps, TChildProps = any>(
     FindOrCreateCodeReviewPostVariables,
     FindOrCreateCodeReviewPostProps<TChildProps>
   >(FindOrCreateCodeReviewPostDocument, operationOptions);
+}
+export const FindCodeReviewPostDocument = gql`
+  query findCodeReviewPost($input: FindCodeReviewPostInput!) {
+    findCodeReviewPost(input: $input) {
+      ...CodeReviewPostInfo
+    }
+  }
+
+  ${CodeReviewPostInfoFragmentDoc}
+`;
+export class FindCodeReviewPostComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<FindCodeReviewPostQuery, FindCodeReviewPostVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<FindCodeReviewPostQuery, FindCodeReviewPostVariables>
+        query={FindCodeReviewPostDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type FindCodeReviewPostProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<FindCodeReviewPostQuery, FindCodeReviewPostVariables>
+> &
+  TChildProps;
+export function FindCodeReviewPostHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        FindCodeReviewPostQuery,
+        FindCodeReviewPostVariables,
+        FindCodeReviewPostProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    FindCodeReviewPostQuery,
+    FindCodeReviewPostVariables,
+    FindCodeReviewPostProps<TChildProps>
+  >(FindCodeReviewPostDocument, operationOptions);
 }
 export const GetCodeReviewPostByIdDocument = gql`
   query GetCodeReviewPostById($id: String!) {

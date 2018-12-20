@@ -5,11 +5,12 @@ import { Avatar } from "../Avatar";
 
 interface Props {
   id: string;
-  text: string;
+  title: string;
   repo: string;
-  username: string;
-  programmingLanguage: string;
-  path: string | null;
+  commitId: string;
+  repoOwner: string;
+  topics: string[];
+  onTopicClick?: (topic: string) => void;
   creator: {
     id: string;
     username: string;
@@ -24,8 +25,6 @@ const Container = styled.div`
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   padding: 16px;
-  width: 376px;
-  height: 157px;
   display: flex;
   flex-direction: column;
 `;
@@ -66,11 +65,12 @@ const Username = styled.div`
   padding-left: 8px;
 `;
 
-export const QuestionCard: React.SFC<Props> = ({
-  username: owner,
+export const PostCard: React.SFC<Props> = ({
   repo,
-  text,
-  programmingLanguage,
+  topics,
+  repoOwner,
+  title,
+  onTopicClick,
   creator: { pictureUrl, username },
   Link,
   getLinkProps,
@@ -81,16 +81,18 @@ export const QuestionCard: React.SFC<Props> = ({
     <Container>
       <Link {...linkProps}>
         <a>
-          <CardHeader>
-            {owner}/{repo}
-          </CardHeader>
+          <CardHeader>{title}</CardHeader>
         </a>
       </Link>
-      <Link {...linkProps}>
-        <a>
-          <CardBodyText>{text}</CardBodyText>
-        </a>
-      </Link>
+      <CardBodyText>
+        <Link {...linkProps}>
+          <a>
+            <div>
+              {repoOwner}/{repo}
+            </div>
+          </a>
+        </Link>
+      </CardBodyText>
       <CardFooter>
         <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
           <Avatar src={pictureUrl} alt="avatar" />
@@ -104,7 +106,14 @@ export const QuestionCard: React.SFC<Props> = ({
             alignItems: "center",
           }}
         >
-          <Topic>{programmingLanguage}</Topic>
+          {topics.map(topic => (
+            <Topic
+              key={topic}
+              onClick={() => onTopicClick && onTopicClick(topic)}
+            >
+              {topic}
+            </Topic>
+          ))}
         </div>
       </CardFooter>
     </Container>

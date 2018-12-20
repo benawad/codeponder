@@ -2,8 +2,8 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { CardGrid } from ".";
-import { QuestionCard } from "../QuestionCard";
 import { MyButton } from "../MyButton";
+import { PostCard } from "../PostCard";
 
 storiesOf("Card Grid", module).add("basic example", () => (
   <div style={{ display: "inline-block" }}>
@@ -11,14 +11,14 @@ storiesOf("Card Grid", module).add("basic example", () => (
       {Array(6)
         .fill(0)
         .map((_, i) => (
-          <QuestionCard
+          <PostCard
             key={i}
+            title="i am a title"
             id="12"
-            text="when should I use pkg?"
+            commitId=""
             repo="codeponder"
-            username="benawad"
-            programmingLanguage="typescript"
-            path="package.json"
+            repoOwner="benawad"
+            topics={["typescript"]}
             creator={{
               id: "1",
               username: "benawad",

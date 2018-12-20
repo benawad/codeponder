@@ -1,18 +1,18 @@
 import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
-import { QuestionCard } from ".";
+import { PostCard } from ".";
 import { MyButton } from "../MyButton";
 
-storiesOf("Question Card", module).add("basic example", () => (
+storiesOf("Post Card", module).add("basic example", () => (
   <div style={{ display: "inline-block" }}>
-    <QuestionCard
+    <PostCard
       id="12"
-      text="when should I use pkg?"
+      title="i am a title"
+      commitId=""
       repo="codeponder"
-      username="benawad"
-      programmingLanguage="typescript"
-      path="package.json"
+      repoOwner="benawad"
+      topics={["typescript"]}
       creator={{
         id: "1",
         username: "benawad",
