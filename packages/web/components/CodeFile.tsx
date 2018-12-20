@@ -3,8 +3,8 @@ import * as Prism from "prismjs";
 import { Spinner } from "@codeponder/ui";
 import "prismjs/themes/prism.css";
 import "prismjs/themes/prism-coy.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.js";
+import "./../lib/line-numbers/prism-line-numbers.css";
+import "./../lib/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-highlight/prism-line-highlight.css";
 import "prismjs/plugins/line-highlight/prism-line-highlight.js";
 
@@ -57,7 +57,19 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
                       try {
                         await loadLanguage(lang);
                       } catch {}
+
+                      /***************************************************
+                       * Pass the callback to get access to the event
+                       ****************************************************/
+                      Prism.plugins.lineNumbers.setCallback((event: any) => {
+                        console.log(
+                          "codeFile callback: ",
+                          event.target.innerHTML
+                        );
+                      });
+
                       Prism.highlightAll();
+
                       hasLoadedLanguage.current = true;
                     }
                   }}
