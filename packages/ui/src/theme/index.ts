@@ -101,8 +101,8 @@ const theme: ITheme = {
       color: "#fff",
       alignItems: "center",
       fontSize: "12px",
-      fontFamily: "rubik",
       cursor: "pointer",
+      fontWeight: "normal",
     },
   },
 };

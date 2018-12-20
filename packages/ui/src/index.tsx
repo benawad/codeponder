@@ -9,5 +9,6 @@ export * from "./components/Wrapper";
 export * from "./components/BigCard";
 export * from "./components/Topic";
 export * from "./components/Avatar";
+export * from "./components/GitHubButton";
 export { ThemeProvider, GlobalStyle } from "./theme/styled-components";
 export { default as theme } from "./theme";

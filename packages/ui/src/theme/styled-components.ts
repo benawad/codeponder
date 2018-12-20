@@ -29,8 +29,4 @@ body {
 a {
   text-decoration: none;
 }
-
-a:hover {
-    text-decoration: underline;
-}
 `;
