@@ -43,6 +43,10 @@
     "graphql-codegen-typescript-client": "0.15.1",
     "graphql-codegen-typescript-common": "0.15.1",
     "graphql-codegen-typescript-react-apollo": "0.15.1",
+<<<<<<< HEAD
+=======
+    "next-plugin-styled-icons": "5.2.0",
+>>>>>>> ac6662e0c6db453f3a694979ea1f2215158482c0
     "nodemon": "1.18.9",
     "ts-node": "7.0.1",
     "tslint": "5.12.0",
