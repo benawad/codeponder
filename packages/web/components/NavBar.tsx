@@ -5,8 +5,9 @@ import get from "lodash.get";
 import { MyButton, Avatar, GitHubButton } from "@codeponder/ui";
 import Router from "next/router";
 import styled from "styled-components";
+import { Menu, Dropdown } from "antd";
 
-import { MeComponent } from "./apollo-components";
+import { MeComponent, LogoutComponent } from "./apollo-components";
 
 const Container = styled(Flex)`
   flex: 0 0 auto;
@@ -40,7 +41,31 @@ export const NavBar = () => {
                 >
                   NEW CODE REVIEW
                 </MyButton>
-                <Avatar size={32} src={data!.me!.pictureUrl} alt="avatar" />
+                <LogoutComponent>
+                  {(mutate, { client }) => (
+                    <Dropdown
+                      placement="bottomRight"
+                      overlay={
+                        <Menu>
+                          <Menu.Item
+                            onClick={async () => {
+                              await mutate();
+                              await client.resetStore();
+                            }}
+                          >
+                            logout
+                          </Menu.Item>
+                        </Menu>
+                      }
+                    >
+                      <Avatar
+                        size={32}
+                        src={data!.me!.pictureUrl}
+                        alt="avatar"
+                      />
+                    </Dropdown>
+                  )}
+                </LogoutComponent>
               </Flex>
             );
           }

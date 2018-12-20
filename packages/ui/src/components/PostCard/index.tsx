@@ -47,7 +47,7 @@ const CardBodyText = styled.div`
   font-size: 13px;
   color: #78909c;
   padding: 6px 0;
-  flex: 1;
+  margin-top: auto;
 `;
 
 const CardFooter = styled.div`
@@ -100,7 +100,6 @@ export const PostCard: React.SFC<Props> = ({
         </div>
         <div
           style={{
-            flex: 1,
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "center",
