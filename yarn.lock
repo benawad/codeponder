@@ -6833,6 +6833,11 @@ dateformat@^3.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
+dayjs@^1.7.8:
+  version "1.7.8"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.7.8.tgz#05d288f8d4b2140110cc1519cfe317d6f1f11a3c"
+  integrity sha512-Gp4Y5KWeSri0QOWGzHQz7VrKDkfEpS92dCLK7P8hYowRFbaym1vj3d6CoHio3apSS4KSi/qb5Edemv26IN5Hfg==
+
 debounce@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
@@ -9599,6 +9604,11 @@ https-proxy-agent@^2.2.1:
   dependencies:
     agent-base "^4.1.0"
     debug "^3.1.0"
+
+humanize-duration@^3.16.0:
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/humanize-duration/-/humanize-duration-3.16.0.tgz#c7ec3b898305f007c63893f891870b2b5a2e0a7d"
+  integrity sha512-LDnNSe8EkJjhRsijWgUK12UK7ivbCww2R3LW9quKdBDoQjeAewqnGHch5AJTCOny1cPLhnXTzvniXVP3B9O6Ew==
 
 humanize-ms@^1.2.1:
   version "1.2.1"

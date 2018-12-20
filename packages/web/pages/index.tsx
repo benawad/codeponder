@@ -1,9 +1,10 @@
 import * as React from "react";
-import { CardGrid, PostCard, MyButton, Topic } from "@codeponder/ui";
+import { PostRow, MyButton, Topic } from "@codeponder/ui";
 
 import { FindCodeReviewPostComponent } from "../components/apollo-components";
 import { Link } from "../server/routes";
 import { Layout } from "../components/Layout";
+import { Box } from "rebass";
 
 interface State {
   limit: number;
@@ -39,17 +40,16 @@ export default class Index extends React.Component<{}, State> {
           {({ data }) => {
             return (
               <div>
-                <div>
+                <div style={{ width: 776, margin: "auto" }}>
                   {this.state.topics.map(topic => (
                     <Topic key={topic} onClick={() => this.removeTopic(topic)}>
                       {topic}
                     </Topic>
                   ))}
-                  <CardGrid>
-                    {data &&
-                      data.findCodeReviewPost.map(post => (
-                        <PostCard
-                          key={post.id}
+                  {data &&
+                    data.findCodeReviewPost.map(post => (
+                      <Box key={post.id} pb=".5rem">
+                        <PostRow
                           Link={Link}
                           onTopicClick={this.handleTopic}
                           getLinkProps={() => ({
@@ -60,8 +60,8 @@ export default class Index extends React.Component<{}, State> {
                           })}
                           {...post}
                         />
-                      ))}
-                  </CardGrid>
+                      </Box>
+                    ))}
                 </div>
                 {data && data.findCodeReviewPost.length ? (
                   <div>

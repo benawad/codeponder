@@ -5,8 +5,9 @@ import { findOrCreateResolver } from "../shared/find-or-create-resolver";
 import { loadCreatorResolver } from "../shared/load-creator-resolver";
 import { getByIdResolver } from "../shared/get-by-id-resolver";
 import { FindCodeReviewPostInput } from "./findInput";
-import { Resolver, Query, Arg } from "type-graphql";
+import { Resolver, Query, Arg, FieldResolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
+import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 
 const suffix = "CodeReviewPost";
 
@@ -28,6 +29,11 @@ export const getCodeReviewPostById = getByIdResolver(
 
 @Resolver(CodeReviewPost)
 export class CodeReviewPostResolvers {
+  @FieldResolver()
+  numQuestions(@Root() root: CodeReviewPost) {
+    return CodeReviewQuestion.count({ where: { postId: root.id } });
+  }
+
   @Query(() => [CodeReviewPost], { name: "findCodeReviewPost" })
   async findCodeReviewPost(@Arg("input")
   {
@@ -47,7 +53,7 @@ export class CodeReviewPostResolvers {
       .where("topics @> :topics", { topics })
       .skip(offset)
       .take(limit)
-      .orderBy('"createdAt"', "ASC")
+      .orderBy('"createdAt"', "DESC")
       .getMany();
   }
 }

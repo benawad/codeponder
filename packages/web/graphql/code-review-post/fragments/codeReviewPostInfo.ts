@@ -9,6 +9,8 @@ export const codeReviewPostInfoFragment = gql`
     commitId
     repoOwner
     topics
+    numQuestions
+    createdAt
     creator {
       ...UserInfo
     }

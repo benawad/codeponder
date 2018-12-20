@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, Int } from "type-graphql";
 import { User } from "./User";
 import { CodeReviewQuestion } from "./CodeReviewQuestion";
 
@@ -60,4 +60,7 @@ export class CodeReviewPost extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Field(() => Int)
+  numQuestions: number;
 }

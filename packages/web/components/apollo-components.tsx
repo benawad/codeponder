@@ -208,6 +208,10 @@ export type CodeReviewPostInfoFragment = {
 
   topics: string[];
 
+  numQuestions: number;
+
+  createdAt: DateTime;
+
   creator: CodeReviewPostInfoCreator;
 };
 
@@ -258,7 +262,7 @@ export type UserInfoFragment = {
 
   bio: string;
 
-  accessToken: string;
+  accessToken: Maybe<string>;
 };
 
 import * as ReactApollo from "react-apollo";
@@ -288,6 +292,8 @@ export const CodeReviewPostInfoFragmentDoc = gql`
     commitId
     repoOwner
     topics
+    numQuestions
+    createdAt
     creator {
       ...UserInfo
     }
