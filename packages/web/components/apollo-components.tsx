@@ -1,5 +1,13 @@
 export type Maybe<T> = T | null;
 
+export interface FindCodeReviewPostInput {
+  topics: string[];
+
+  offset: number;
+
+  limit: number;
+}
+
 export interface CreateQuestionReplyInput {
   text: string;
 
@@ -23,8 +31,6 @@ export interface CreateCodeReviewQuestionInput {
 }
 
 export interface CreateCodeReviewPostInput {
-  programmingLanguages: string[];
-
   topics: string[];
 
   repo: string;
@@ -170,8 +176,6 @@ export type CodeReviewPostInfoFragment = {
 
   id: string;
 
-  programmingLanguages: string[];
-
   repo: string;
 
   commitId: string;
@@ -241,7 +245,6 @@ import gql from "graphql-tag";
 export const CodeReviewPostInfoFragmentDoc = gql`
   fragment CodeReviewPostInfo on CodeReviewPost {
     id
-    programmingLanguages
     repo
     commitId
     repoOwner

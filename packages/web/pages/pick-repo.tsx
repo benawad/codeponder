@@ -11,6 +11,7 @@ import {
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 import { Router } from "../server/routes";
 import { Layout } from "../components/Layout";
+import { removeDuplicates } from "../utils/removeDuplicates";
 
 export default class PickRepo extends React.PureComponent {
   static contextType = GitHubApolloClientContext;
@@ -38,19 +39,23 @@ export default class PickRepo extends React.PureComponent {
                       item.node!.name
                     }
                     onChange={async (item: GetViewerReposEdges) => {
+                      const programmingLanguages = get(
+                        item,
+                        "node.languages.edges",
+                        []
+                      ).map((x: any) => x.node!.name);
+                      const topics = get(
+                        item,
+                        "node.repositoryTopics.edges",
+                        []
+                      ).map((x: any) => x.node!.topic.name);
                       const response = await mutate({
                         variables: {
                           codeReviewPost: {
-                            programmingLanguages: get(
-                              item,
-                              "node.languages.edges",
-                              []
-                            ).map((x: any) => x.node!.name),
-                            topics: get(
-                              item,
-                              "node.repositoryTopics.edges",
-                              []
-                            ).map((x: any) => x.node!.topic.name),
+                            topics: removeDuplicates([
+                              ...programmingLanguages,
+                              ...topics,
+                            ]),
                             commitId: item.node!.defaultBranchRef!.target.oid,
                             description: item.node!.description || "",
                             repo: item.node!.name,
