@@ -91,8 +91,8 @@ const theme: ITheme = {
       "&:hover": {
         backgroundColor: "#F3FAFF",
       },
-      "&:not(:first-child)": {
-        marginLeft: "10px",
+      "&:not(:last-child)": {
+        marginRight: "10px",
       },
     },
     github: {

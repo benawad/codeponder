@@ -46,10 +46,17 @@ export default class Index extends React.Component<{}, State> {
                       {topic}
                     </Topic>
                   ))}
-                  {data &&
-                    data.findCodeReviewPost.map(post => (
-                      <Box key={post.id} pb=".5rem">
+                  <div
+                    style={{
+                      backgroundColor: "#fff",
+                      boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+                      borderRadius: 5,
+                    }}
+                  >
+                    {data &&
+                      data.findCodeReviewPost.map(post => (
                         <PostRow
+                          key={post.id}
                           Link={Link}
                           onTopicClick={this.handleTopic}
                           getLinkProps={() => ({
@@ -60,8 +67,8 @@ export default class Index extends React.Component<{}, State> {
                           })}
                           {...post}
                         />
-                      </Box>
-                    ))}
+                      ))}
+                  </div>
                 </div>
                 {data && data.findCodeReviewPost.length ? (
                   <div>

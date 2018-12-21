@@ -4,6 +4,7 @@ import { distanceInWordsStrict } from "date-fns";
 
 import { Avatar } from "../Avatar";
 import { Topic } from "../Topic";
+import styled from "../../theme/styled-components";
 
 interface Props {
   id: string;
@@ -24,6 +25,11 @@ interface Props {
   getLinkProps: () => any;
 }
 
+const BorderCard = styled(Card)`
+  border-width: 0 0 1px 0;
+  border-style: solid;
+`;
+
 export const PostRow: React.SFC<Props> = ({
   title,
   repo,
@@ -35,26 +41,17 @@ export const PostRow: React.SFC<Props> = ({
   createdAt,
 }) => {
   const linkProps = getLinkProps();
-  const dtString = `${distanceInWordsStrict(
-    new Date(),
-    Date.parse(createdAt)
-  )} ago`;
+  const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
+    addSuffix: true,
+  });
 
   return (
-    <Card
-      py=".6rem"
-      px=".75rem"
-      bg="#fff"
-      borderRadius={5}
-      boxShadow="0px 2px 5px rgba(0, 0, 0, 0.1)"
-    >
+    <BorderCard p=".75rem" borderColor="neutrals.3">
       <Flex justifyContent="center">
         <Avatar size={34} src={pictureUrl} alt="avatar" />
         <div
           style={{
-            paddingLeft: "1rem",
-            paddingRight: "2rem",
-            display: "flex",
+            paddingLeft: ".5rem",
             justifyContent: "center",
             flexDirection: "column",
             marginRight: "auto",
@@ -62,26 +59,23 @@ export const PostRow: React.SFC<Props> = ({
         >
           <Link {...linkProps}>
             <a>
-              <Text fontFamily="rubik" fontSize={1} color="neutrals.2">
-                {repoOwner}/{repo}
-              </Text>
-            </a>
-          </Link>
-          <Link {...linkProps}>
-            <a>
               <Text fontSize={5} fontFamily="rubik">
                 {title}
               </Text>
             </a>
           </Link>
-          <Flex alignItems="center">
-            {topics.slice(0, 3).map(topic => (
-              <Topic key={topic}>{topic}</Topic>
-            ))}
-          </Flex>
+          <Link {...linkProps}>
+            <a>
+              <Text fontFamily="rubik" fontSize={2} color="neutrals.2">
+                {repoOwner}/{repo} • {dtString}
+              </Text>
+            </a>
+          </Link>
+          {topics.slice(0, 3).map(topic => (
+            <Topic key={topic}>{topic}</Topic>
+          ))}
         </div>
-        <div>{dtString}</div>
       </Flex>
-    </Card>
+    </BorderCard>
   );
 };
