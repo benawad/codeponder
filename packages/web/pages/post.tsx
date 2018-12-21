@@ -16,6 +16,7 @@ import { CodeFile } from "../components/CodeFile";
 import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
 import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
 import { Layout } from "../components/Layout";
+import { QuestionSection } from "../components/QuestionSection";
 
 interface Props {
   id: string;
@@ -177,6 +178,14 @@ export default class Post extends React.PureComponent<Props> {
               return "something went wrong";
             }}
           </GetRepoObjectComponent>
+          {path ? null : (
+            <QuestionSection
+              variables={{
+                postId: id,
+              }}
+              postId={id}
+            />
+          )}
         </BigCard>
       </Layout>
     );

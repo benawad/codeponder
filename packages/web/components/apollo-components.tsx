@@ -27,7 +27,7 @@ export interface CreateCodeReviewQuestionInput {
 
   codeSnippet?: Maybe<string>;
 
-  programmingLanguage: string;
+  programmingLanguage?: Maybe<string>;
 }
 
 export interface CreateCodeReviewPostInput {
@@ -150,7 +150,7 @@ export type HomeQuestionsHomeQuestions = {
 
   text: string;
 
-  programmingLanguage: string;
+  programmingLanguage: Maybe<string>;
 
   creator: HomeQuestionsCreator;
 };
@@ -236,7 +236,7 @@ export type CodeReviewQuestionInfoFragment = {
 
   text: string;
 
-  programmingLanguage: string;
+  programmingLanguage: Maybe<string>;
 
   creator: CodeReviewQuestionInfoCreator;
 

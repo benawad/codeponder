@@ -22,6 +22,6 @@ export class CreateCodeReviewQuestionInput
   @Field(() => String, { nullable: true })
   codeSnippet: string | null;
 
-  @Field()
-  programmingLanguage: string;
+  @Field(() => String, { nullable: true })
+  programmingLanguage: string | null;
 }

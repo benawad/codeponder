@@ -28,9 +28,9 @@ export class CodeReviewQuestion extends BaseEntity {
   @Column({ type: "int" })
   endingLineNum: number;
 
-  @Field()
-  @Column({ type: "text" })
-  programmingLanguage: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
+  programmingLanguage: string | null;
 
   @Field()
   @Column({ type: "text" })
