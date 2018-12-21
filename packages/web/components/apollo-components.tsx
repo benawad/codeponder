@@ -76,10 +76,18 @@ export type FindCodeReviewPostVariables = {
 export type FindCodeReviewPostQuery = {
   __typename?: "Query";
 
-  findCodeReviewPost: FindCodeReviewPostFindCodeReviewPost[];
+  findCodeReviewPost: FindCodeReviewPostFindCodeReviewPost;
 };
 
-export type FindCodeReviewPostFindCodeReviewPost = CodeReviewPostInfoFragment;
+export type FindCodeReviewPostFindCodeReviewPost = {
+  __typename?: "FindCodeReviewPostResponse";
+
+  hasMore: boolean;
+
+  posts: FindCodeReviewPostPosts[];
+};
+
+export type FindCodeReviewPostPosts = CodeReviewPostInfoFragment;
 
 export type GetCodeReviewPostByIdVariables = {
   id: string;
@@ -401,7 +409,10 @@ export function FindOrCreateCodeReviewPostHOC<TProps, TChildProps = any>(
 export const FindCodeReviewPostDocument = gql`
   query findCodeReviewPost($input: FindCodeReviewPostInput!) {
     findCodeReviewPost(input: $input) {
-      ...CodeReviewPostInfo
+      hasMore
+      posts {
+        ...CodeReviewPostInfo
+      }
     }
   }
 

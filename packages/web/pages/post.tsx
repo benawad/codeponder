@@ -2,6 +2,7 @@ import * as React from "react";
 import { FolderTree, BigCard, Topic } from "@codeponder/ui";
 import "prismjs";
 import { Heading, Box } from "rebass";
+import { orderBy } from "lodash";
 
 import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 import { NextContextWithApollo } from "../types/NextContextWithApollo";
@@ -144,15 +145,18 @@ export default class Post extends React.PureComponent<Props> {
               }
 
               if (object.__typename === "Tree") {
+                const entries =
+                  (data.repository.object as GetRepoObjectTreeInlineFragment)
+                    .entries || [];
                 return (
                   <>
                     {this.renderFilePath(name, path)}
                     <FolderTree
-                      items={
-                        (data.repository
-                          .object as GetRepoObjectTreeInlineFragment).entries ||
-                        []
-                      }
+                      items={orderBy(
+                        entries,
+                        ["type", "name"],
+                        ["desc", "asc"]
+                      )}
                       Link={Link}
                       getLinkProps={itemPath => ({
                         passHref: true,
