@@ -9,7 +9,7 @@ storiesOf("Post Row", module).add("basic example", () => (
     <PostRow
       id="12"
       title="i am a title"
-      createdAt={new Date()}
+      createdAt={""}
       numQuestions={5}
       commitId=""
       repo="codeponder"

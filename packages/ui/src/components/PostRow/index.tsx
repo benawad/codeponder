@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Card, Flex, Text } from "rebass";
-import * as dayjs from "dayjs";
+import { distanceInWordsStrict } from "date-fns";
 
 import { Avatar } from "../Avatar";
 import { Topic } from "../Topic";
-const humanizeDuration = require("humanize-duration");
 
 interface Props {
   id: string;
@@ -15,7 +14,7 @@ interface Props {
   topics: string[];
   onTopicClick?: (topic: string) => void;
   numQuestions: number;
-  createdAt: Date;
+  createdAt: string;
   creator: {
     id: string;
     username: string;
@@ -36,10 +35,10 @@ export const PostRow: React.SFC<Props> = ({
   createdAt,
 }) => {
   const linkProps = getLinkProps();
-  const dt = dayjs(createdAt);
-  const diff = dt.diff(dayjs(), "millisecond");
-  console.log(humanizeDuration);
-  const dtString = humanizeDuration(diff, { largest: 1 });
+  const dtString = `${distanceInWordsStrict(
+    new Date(),
+    Date.parse(createdAt)
+  )} ago`;
 
   return (
     <Card
