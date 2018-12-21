@@ -58,67 +58,71 @@ export default class Index extends React.Component<{}, State> {
                     </Topic>
                   ))}
                   <SidebarCard flex="1">
-                    {data &&
-                      data.findCodeReviewPost.posts.map(post => (
-                        <PostRow
-                          key={post.id}
-                          Link={Link}
-                          onTopicClick={this.handleTopic}
-                          getLinkProps={() => ({
-                            route: "post",
-                            params: {
-                              id: post.id,
-                            },
-                          })}
-                          {...post}
-                        />
-                      ))}
-                    {data && data.findCodeReviewPost.hasMore ? (
-                      <Box my="1rem" ml="1rem">
-                        <MyButton
-                          variant="primary"
-                          onClick={async () => {
-                            await fetchMore({
-                              query: findCodeReviewPostQuery,
-                              variables: {
-                                input: {
-                                  ...this.state,
-                                  offset: this.state.offset + this.state.limit,
-                                },
+                    {data && data.findCodeReviewPost && (
+                      <>
+                        {data.findCodeReviewPost.posts.map(post => (
+                          <PostRow
+                            key={post.id}
+                            Link={Link}
+                            onTopicClick={this.handleTopic}
+                            getLinkProps={() => ({
+                              route: "post",
+                              params: {
+                                id: post.id,
                               },
-                              updateQuery: (
-                                previous: FindCodeReviewPostQuery,
-                                { fetchMoreResult }: any
-                              ) => {
-                                if (!fetchMoreResult) {
-                                  return previous;
-                                }
-
-                                return {
-                                  ...previous,
-                                  findCodeReviewPost: {
-                                    ...previous.findCodeReviewPost,
-                                    hasMore:
-                                      fetchMoreResult.findCodeReviewPost
-                                        .hasMore,
-                                    posts: [
-                                      ...previous.findCodeReviewPost.posts,
-                                      ...fetchMoreResult.findCodeReviewPost
-                                        .posts,
-                                    ],
+                            })}
+                            {...post}
+                          />
+                        ))}
+                        {data.findCodeReviewPost.hasMore ? (
+                          <Box my="1rem" ml="1rem">
+                            <MyButton
+                              variant="primary"
+                              onClick={async () => {
+                                await fetchMore({
+                                  query: findCodeReviewPostQuery,
+                                  variables: {
+                                    input: {
+                                      ...this.state,
+                                      offset:
+                                        this.state.offset + this.state.limit,
+                                    },
                                   },
-                                };
-                              },
-                            });
-                            this.setState(state => ({
-                              offset: state.offset + state.limit,
-                            }));
-                          }}
-                        >
-                          load more
-                        </MyButton>
-                      </Box>
-                    ) : null}
+                                  updateQuery: (
+                                    previous: FindCodeReviewPostQuery,
+                                    { fetchMoreResult }: any
+                                  ) => {
+                                    if (!fetchMoreResult) {
+                                      return previous;
+                                    }
+
+                                    return {
+                                      ...previous,
+                                      findCodeReviewPost: {
+                                        ...previous.findCodeReviewPost,
+                                        hasMore:
+                                          fetchMoreResult.findCodeReviewPost
+                                            .hasMore,
+                                        posts: [
+                                          ...previous.findCodeReviewPost.posts,
+                                          ...fetchMoreResult.findCodeReviewPost
+                                            .posts,
+                                        ],
+                                      },
+                                    };
+                                  },
+                                });
+                                this.setState(state => ({
+                                  offset: state.offset + state.limit,
+                                }));
+                              }}
+                            >
+                              load more
+                            </MyButton>
+                          </Box>
+                        ) : null}
+                      </>
+                    )}
                   </SidebarCard>
                   <SidebarCard flex="0 0 240px" ml="2.5rem">
                     i am sidebar

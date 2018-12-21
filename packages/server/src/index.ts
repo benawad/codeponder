@@ -21,7 +21,13 @@ const SESSION_SECRET = "ajslkjalksjdfkl";
 const RedisStore = connectRedis(session as any);
 
 const startServer = async () => {
-  await createTypeormConn();
+  const conn = await createTypeormConn();
+  if (conn) {
+    // sets timezone for the current session
+    // pull requests are welcome to make this permanent
+    await conn.query(`SET TIME ZONE 'UTC';`);
+    await conn.runMigrations();
+  }
 
   const app = express();
 
