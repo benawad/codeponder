@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Flex, Text } from "rebass";
+import { Card, Flex, Text, Box } from "rebass";
 import { distanceInWordsStrict } from "date-fns";
 
 import { Avatar } from "../Avatar";
@@ -66,14 +66,22 @@ export const PostRow: React.SFC<Props> = ({
           </Link>
           <Link {...linkProps}>
             <a>
-              <Text fontFamily="rubik" fontSize={2} color="neutrals.2">
+              <Text
+                lineHeight="10px"
+                fontFamily="rubik"
+                fontSize={3}
+                color="neutrals.2"
+                mb=".75rem"
+              >
                 {repoOwner}/{repo} • {dtString}
               </Text>
             </a>
           </Link>
-          {topics.slice(0, 3).map(topic => (
-            <Topic key={topic}>{topic}</Topic>
-          ))}
+          <Box mt=".25rem">
+            {topics.slice(0, 3).map(topic => (
+              <Topic key={topic}>{topic}</Topic>
+            ))}
+          </Box>
         </div>
       </Flex>
     </BorderCard>

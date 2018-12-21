@@ -86,7 +86,11 @@ const theme: ITheme = {
       color: "#3290D4",
       borderRadius: "3px",
       fontSize: "8px",
-      padding: "4px",
+      padding: "3px",
+      paddingRight: "5px",
+      paddingLeft: "5px",
+      letterSpacing: 0.5,
+      fontWeight: "normal",
       cursor: "pointer",
       "&:hover": {
         backgroundColor: "#F3FAFF",

@@ -1,10 +1,9 @@
 import * as React from "react";
-import { PostRow, MyButton, Topic } from "@codeponder/ui";
+import { PostRow, MyButton, Topic, SidebarCard } from "@codeponder/ui";
 
 import { FindCodeReviewPostComponent } from "../components/apollo-components";
 import { Link } from "../server/routes";
 import { Layout } from "../components/Layout";
-import { Box } from "rebass";
 
 interface State {
   limit: number;
@@ -40,19 +39,13 @@ export default class Index extends React.Component<{}, State> {
           {({ data }) => {
             return (
               <div>
-                <div style={{ width: 776, margin: "auto" }}>
+                <div style={{ display: "flex" }}>
                   {this.state.topics.map(topic => (
                     <Topic key={topic} onClick={() => this.removeTopic(topic)}>
                       {topic}
                     </Topic>
                   ))}
-                  <div
-                    style={{
-                      backgroundColor: "#fff",
-                      boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-                      borderRadius: 5,
-                    }}
-                  >
+                  <SidebarCard flex="1">
                     {data &&
                       data.findCodeReviewPost.map(post => (
                         <PostRow
@@ -68,7 +61,10 @@ export default class Index extends React.Component<{}, State> {
                           {...post}
                         />
                       ))}
-                  </div>
+                  </SidebarCard>
+                  <SidebarCard flex="0 0 240px" ml="2.5rem">
+                    i am sidebar
+                  </SidebarCard>
                 </div>
                 {data && data.findCodeReviewPost.length ? (
                   <div>
