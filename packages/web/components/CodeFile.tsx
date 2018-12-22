@@ -1,15 +1,13 @@
-import { useRef } from "react";
-import * as Prism from "prismjs";
+//import * as Prism from "prismjs";
 import "prismjs/themes/prism.css";
 import "prismjs/themes/prism-coy.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "prismjs/plugins/line-numbers/prism-line-numbers.js";
-import "prismjs/plugins/line-highlight/prism-line-highlight.css";
-import "prismjs/plugins/line-highlight/prism-line-highlight.js";
+
+import styled from "styled-components";
+import Highlight, { defaultProps, Language } from "prism-react-renderer";
+//import theme from "prism-react-renderer/themes/vsDarkPlus";
 
 import { FindCodeReviewQuestionsComponent } from "./apollo-components";
 import { filenameToLang } from "../utils/filenameToLang";
-import { loadLanguage } from "../utils/loadLanguage";
 import { QuestionSection } from "./QuestionSection";
 
 interface Props {
@@ -19,9 +17,25 @@ interface Props {
 }
 
 export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
-  const hasLoadedLanguage = useRef(false);
+  const Pre = styled.pre`
+    text-align: left;
+    margin: 1em 0;
+    padding: 0.5em;
 
-  const lang = path ? filenameToLang(path) : "";
+    & .token-line {
+      line-height: 1.3em;
+      height: 1.3em;
+    }
+  `;
+
+  const LineNo = styled.span`
+    display: inline-block;
+    width: 2em;
+    user-select: none;
+    opacity: 0.3;
+  `;
+
+  const lang: Language = path ? filenameToLang(path) : "";
   const variables = {
     path,
     postId,
@@ -40,21 +54,27 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
 
         return (
           <>
-            <pre
-              ref={async () => {
-                if (!hasLoadedLanguage.current) {
-                  try {
-                    await loadLanguage(lang);
-                  } catch {}
-                  Prism.highlightAll();
-                  hasLoadedLanguage.current = true;
-                }
-              }}
-              className="line-numbers"
-              data-line={dataLines.join(" ")}
+            <Highlight
+              {...defaultProps}
+              theme={undefined}
+              code={code}
+              language={lang}
             >
-              <code className={`language-${lang}`}>{code}</code>
-            </pre>
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={className} style={style}>
+                  {tokens.map((line, i) => {
+                    return (
+                      <div {...getLineProps({ line, key: i })}>
+                        <LineNo>{i + 1}</LineNo>
+                        {line.map((token, key) => {
+                          return <span {...getTokenProps({ token, key })} />;
+                        })}
+                      </div>
+                    );
+                  })}
+                </pre>
+              )}
+            </Highlight>
             <QuestionSection
               variables={variables}
               code={code || ""}
