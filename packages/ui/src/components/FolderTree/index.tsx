@@ -12,12 +12,6 @@ interface Props {
   getLinkProps: (path: string) => any;
 }
 
-const Container = styled.div`
-  border: 1px solid #d7eeff;
-  border-radius: 9px;
-  overflow: hidden;
-  box-shadow: 5px 5px 3px -1px #b7b7b7;
-`;
 
 const A = styled.a`
   padding-left: 10px;
@@ -28,16 +22,11 @@ const A = styled.a`
   }
 `;
 
-const iconProps = {
-  style: {
-    color: "#78909C",
-    height: 16,
-    width: 16,
-  },
-  fontSize: "small" as "small",
-};
-
 const Table = styled.table`
+    border: 1px solid #d7eeff;
+    border-radius: 9px;
+    overflow: hidden;
+    box-shadow: 5px 5px 3px -1px #b7b7b7;
     border-collapse: collapse;
     width: 100%;
 `;
@@ -51,22 +40,18 @@ export const FolderTree: React.FunctionComponent<Props> = ({
   Link,
   getLinkProps,
 }) => (
-  <Container>
   <Table>
+  <tbody>
     {items.map((item, idx) => {
       return (
-      <TR>
-        <div
-          key={`${item.name}-${idx}`}
-          style={{
+      <TR key={`${item.name}-${idx}`} style={{
             backgroundColor: idx % 2 === 0 ? "#FFFFFF" : "#F3FAFF",
             fontFamily: "Rubik",
             fontSize: 12,
             padding: 8,
             display: "flex",
             alignItems: "center",
-          }}
-        >
+          }}>
         <td>
           {item.type === "tree" ? (
             <svg
@@ -106,12 +91,11 @@ export const FolderTree: React.FunctionComponent<Props> = ({
             <A>{item.name}</A>
           </Link>
           </td>
-        </div>
         </TR>
       );
     })}
+    </tbody>
     </Table>
-  </Container>
 );
 
 export default FolderTree;
