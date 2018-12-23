@@ -1,7 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import FolderIcon from "@material-ui/icons/Folder";
-import FileIcon from "@material-ui/icons/InsertDriveFile";
 
 interface TreeItem {
   name: string;
@@ -23,7 +21,7 @@ const Container = styled.div`
 
 const A = styled.a`
   padding-left: 10px;
-  color: #113f60;
+  color: #0366d6;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
@@ -39,14 +37,25 @@ const iconProps = {
   fontSize: "small" as "small",
 };
 
+const Table = styled.table`
+    border-collapse: collapse;
+    width: 100%;
+`;
+
+const TR = styled.tr`
+    border: 1px solid grey;
+`;
+
 export const FolderTree: React.FunctionComponent<Props> = ({
   items,
   Link,
   getLinkProps,
 }) => (
   <Container>
+  <Table>
     {items.map((item, idx) => {
       return (
+      <TR>
         <div
           key={`${item.name}-${idx}`}
           style={{
@@ -58,18 +67,50 @@ export const FolderTree: React.FunctionComponent<Props> = ({
             alignItems: "center",
           }}
         >
+        <td>
           {item.type === "tree" ? (
-            <FolderIcon {...iconProps} />
+            <svg
+              aria-label="directory"
+              class="octicon octicon-file-directory"
+              viewBox="0 0 14 16"
+              version="1.1"
+              width="14"
+              height="16"
+              role="img"
+            >
+              <path
+                  fill-rule="evenodd"
+                  d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM6 4H1V3h5v1z"
+              />
+            </svg>
           ) : (
-            <FileIcon {...iconProps} />
+            <svg
+              aria-label="file"
+              class="octicon octicon-file"
+              viewBox="0 0 12 16"
+              version="1.1"
+              width="12"
+              height="16"
+              role="img"
+            >
+              <path
+                  fill-rule="evenodd"
+                  d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"
+              />
+            </svg>
           )}
+          </td>
+          <td>
 
           <Link {...getLinkProps(item.name)}>
             <A>{item.name}</A>
           </Link>
+          </td>
         </div>
+        </TR>
       );
     })}
+    </Table>
   </Container>
 );
 

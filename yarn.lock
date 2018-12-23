@@ -2245,13 +2245,6 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@phc/format@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@phc/format/-/format-0.5.0.tgz#a99d27a83d78b3100a191412adda04315e2e3aba"
-  integrity sha512-JWtZ5P1bfXU0bAtTzCpOLYHDXuxSVdtL/oqz4+xa97h8w9E5IlVN333wugXVFv8vZ1hbXObKQf1ptXmFFcMByg==
-  dependencies:
-    safe-buffer "^5.1.2"
-
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -4147,15 +4140,6 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
 
-argon2@0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/argon2/-/argon2-0.20.0.tgz#5c7012b3c75067db6f46def5618cf4b3b56cc73f"
-  integrity sha512-9Ww2IBBFTab/HPb8CiOydvm5LTjksDuRA8ltTxiGXC7IBkEsw5ZwFWzsTSThrFMpcrwUPbj0JUGFEOTKIz8zVw==
-  dependencies:
-    "@phc/format" "^0.5.0"
-    bindings "^1.3.0"
-    node-addon-api "^1.6.0"
-
 argparse@^1.0.7:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
@@ -5078,11 +5062,6 @@ binary-extensions@^1.0.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.12.0.tgz#c2d780f53d45bba8317a8902d4ceeaf3a6385b14"
   integrity sha512-DYWGk01lDcxeS/K9IHPGWfT8PsJmbXRtRd2Sx72Tnb8pcYZQFF1oSDb8hJtS1vhp212q1Rzi5dUf9+nq0o9UIg==
-
-bindings@^1.3.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.1.tgz#21fc7c6d67c18516ec5aaa2815b145ff77b26ea5"
-  integrity sha512-i47mqjF9UbjxJhxGf+pZ6kSxrnI3wBLlnGI2ArWJ4r0VrvDS7ZYXkprq/pLaBWYq4GM0r4zdHY+NNRqEMU7uew==
 
 block-stream@*:
   version "0.0.9"
@@ -12460,11 +12439,6 @@ no-case@^2.2.0, no-case@^2.3.2:
   integrity sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
   dependencies:
     lower-case "^1.1.1"
-
-node-addon-api@^1.6.0:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.6.2.tgz#d8aad9781a5cfc4132cc2fecdbdd982534265217"
-  integrity sha512-479Bjw9nTE5DdBSZZWprFryHGjUaQC31y1wHo19We/k0BZlrmhqQitWoUL0cD8+scljCbIUL+E58oRDEakdGGA==
 
 node-dir@^0.1.10:
   version "0.1.17"
