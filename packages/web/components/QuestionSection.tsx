@@ -8,6 +8,7 @@ import { Question } from "./Question";
 
 interface Props extends QuestionFormProps {
   variables: FindCodeReviewQuestionsVariables;
+  linesSelection: number[];
 }
 
 export const QuestionSection = ({
@@ -16,6 +17,7 @@ export const QuestionSection = ({
   postId,
   path,
   programmingLanguage,
+  linesSelection,
 }: Props) => {
   return (
     <FindCodeReviewQuestionsComponent variables={variables}>
@@ -31,6 +33,7 @@ export const QuestionSection = ({
               postId={postId}
               path={path}
               programmingLanguage={programmingLanguage}
+              linesSelection={linesSelection}
             />
             <div>
               {data.findCodeReviewQuestions.map(crq => (

@@ -1,3 +1,4 @@
+import { useState } from "react";
 //import * as Prism from "prismjs";
 //import "prismjs/themes/prism.css";
 import "prismjs/themes/prism-coy.css";
@@ -19,6 +20,12 @@ interface Props {
   postId: string;
 }
 
+/*
+ * *Styles for the line numbers coming from the server
+ *
+ * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
+ * Or the two in a more general utils?
+ */
 const SelectLines = (prop: FindCodeReviewQuestionsQuery) => {
   const styles = prop.findCodeReviewQuestions.reduce((total, current) => {
     return (total += `
@@ -29,17 +36,81 @@ const SelectLines = (prop: FindCodeReviewQuestionsQuery) => {
     }
      `);
   }, "");
+  return css`
+    ${styles}
+  `;
+};
 
+/*
+ *Styles for the onClick line numbers
+ *
+ * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
+ * Or the two in a more general utils?
+ */
+const SelectLinesMouse = (arg: number[]) => {
+  // establishing defaults
+  // The lenght of the args array can be variable
+  const startLine = arg[0] || 0;
+  const endLine = arg[1] || startLine;
+
+  const styles = `
+     & .token-line:nth-child(n+${startLine}):nth-child(-n+${endLine}) {
+      background-color: #ffddbb;
+    }
+     `;
   return css`
     ${styles}
   `;
 };
 
 export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
+  const [lineSelectionState, setLineSelectionState] = useState<number[]>([]);
   const lang: Language = path ? filenameToLang(path) : "";
   const variables = {
     path,
     postId,
+  };
+
+  // Handler to manage the array of selected lines
+  const handleSelectLine = (lineNumber: number) => {
+    const tempSelectionState = [...lineSelectionState];
+
+    if (tempSelectionState.length == 0) {
+      tempSelectionState.push(lineNumber);
+      tempSelectionState.sort((a, b) => a - b);
+      setLineSelectionState([...tempSelectionState]);
+      return;
+    }
+
+    const lineExist = tempSelectionState
+      .filter(value => {
+        return value !== lineNumber;
+      })
+      .sort((a, b) => a - b);
+
+    if (lineExist.length !== tempSelectionState.length) {
+      setLineSelectionState([...lineExist]);
+      return;
+    }
+
+    if (tempSelectionState.length == 2) {
+      tempSelectionState[1] = lineNumber;
+      tempSelectionState.sort((a, b) => a - b);
+      setLineSelectionState([...tempSelectionState]);
+      return;
+    }
+
+    if (tempSelectionState.length > 0 || tempSelectionState.length < 2) {
+      tempSelectionState.push(lineNumber);
+      tempSelectionState.sort((a, b) => a - b);
+      setLineSelectionState([...tempSelectionState]);
+      return;
+    }
+
+    // perhaps not really needed, but just for completeness sake...
+    tempSelectionState.sort((a, b) => a - b);
+    setLineSelectionState([...tempSelectionState]);
+    return;
   };
 
   return (
@@ -59,18 +130,27 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
             height: 1.3em;
           }
 
+          /* Style for the effect of alternating colors in the background */
           & .token-line:nth-child(odd) {
             background: #f3faff;
           }
 
           ${SelectLines(data)};
+
+          ${SelectLinesMouse(lineSelectionState)};
         `;
 
+        /* Style for the line numbers */
         const LineNo = styled.span`
           display: inline-block;
           width: 2em;
           user-select: none;
           opacity: 0.3;
+          &:hover {
+            font-weight: 900;
+            opacity: 0.4;
+            cursor: pointer;
+          }
         `;
 
         return (
@@ -86,7 +166,9 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
                   {tokens.map((line, i) => {
                     return (
                       <div {...getLineProps({ line, key: i })}>
-                        <LineNo>{i + 1}</LineNo>
+                        <LineNo onClick={() => handleSelectLine(i + 1)}>
+                          {i + 1}
+                        </LineNo>
                         {line.map((token, key) => {
                           return <span {...getTokenProps({ token, key })} />;
                         })}
@@ -102,6 +184,8 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
               postId={postId}
               programmingLanguage={lang}
               path={path}
+              /* Added a props to pass the selected lines */
+              linesSelection={lineSelectionState}
             />
           </>
         );

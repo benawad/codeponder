@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
@@ -8,6 +9,7 @@ export interface QuestionFormProps {
   path?: string;
   postId: string;
   programmingLanguage?: string;
+  linesSelection: number[];
 }
 
 export const QuestionForm = ({
@@ -15,10 +17,24 @@ export const QuestionForm = ({
   path,
   postId,
   programmingLanguage,
+  linesSelection,
 }: QuestionFormProps) => {
-  const [startingLineNum, startingLineNumChange] = useInputValue("0");
-  const [endingLineNum, endingLineNumChange] = useInputValue("0");
+  const [startingLineNum, setStartingLineNum] = useInputValue("0");
+  const [endingLineNum, setEndingLineNum] = useInputValue("0");
   const [text, textChange] = useInputValue("");
+
+  useEffect(
+    () => {
+      // Used local constant
+      // but the values may be passed directly with the || ?
+      const startLinesSelection = linesSelection[0] || 0;
+      const endLinesSelection = linesSelection[1] || 0;
+
+      setStartingLineNum(startLinesSelection);
+      setEndingLineNum(endLinesSelection);
+    },
+    [linesSelection]
+  );
 
   return (
     <CreateCodeReviewQuestionComponent>
@@ -47,20 +63,20 @@ export const QuestionForm = ({
               },
             });
 
-            console.log(response);
+            //console.log(response);
           }}
         >
           <input
             name="startingLineNum"
             placeholder="startingLineNum"
             value={startingLineNum}
-            onChange={startingLineNumChange}
+            onChange={setStartingLineNum}
           />
           <input
             name="endingLineNum"
             placeholder="endingLineNum"
             value={endingLineNum}
-            onChange={endingLineNumChange}
+            onChange={setEndingLineNum}
           />
           <input
             name="question"
