@@ -17,6 +17,7 @@ const A = styled.a`
   padding-left: 10px;
   color: #0366d6;
   text-decoration: none;
+  cursor: pointer;
   &:hover {
     text-decoration: underline;
   }
@@ -87,9 +88,7 @@ export const FolderTree: React.FunctionComponent<Props> = ({
           </td>
           <td>
 
-          <Link {...getLinkProps(item.name)}>
-            <A>{item.name}</A>
-          </Link>
+            <A onClick={() => props.onItemPress(item.name)}>{item.name}</A>
           </td>
         </TR>
       );
