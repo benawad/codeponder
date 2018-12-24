@@ -71,16 +71,12 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
     postId,
   };
 
-  // Handler to manage the array of selected lines
+  /*
+   * Handler to manage the array of selected lines
+   * It simulates the github line number selection
+   *  */
   const handleSelectLine = (lineNumber: number) => {
-    const tempSelectionState = [...lineSelectionState];
-
-    if (tempSelectionState.length == 0) {
-      tempSelectionState.push(lineNumber);
-      tempSelectionState.sort((a, b) => a - b);
-      setLineSelectionState([...tempSelectionState]);
-      return;
-    }
+    let tempSelectionState = [...lineSelectionState];
 
     const lineExist = tempSelectionState
       .filter(value => {
@@ -88,26 +84,20 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
       })
       .sort((a, b) => a - b);
 
-    if (lineExist.length !== tempSelectionState.length) {
-      setLineSelectionState([...lineExist]);
-      return;
-    }
-
-    if (tempSelectionState.length == 2) {
-      tempSelectionState[1] = lineNumber;
-      tempSelectionState.sort((a, b) => a - b);
-      setLineSelectionState([...tempSelectionState]);
-      return;
-    }
-
-    if (tempSelectionState.length > 0 || tempSelectionState.length < 2) {
+    // so many if else are not so legible...
+    // a switch might be possible here, but does it bring more or less?
+    if (tempSelectionState.length == 0) {
       tempSelectionState.push(lineNumber);
-      tempSelectionState.sort((a, b) => a - b);
-      setLineSelectionState([...tempSelectionState]);
-      return;
+    } else if (lineExist.length !== tempSelectionState.length) {
+      tempSelectionState = [...lineExist];
+    } else if (tempSelectionState.length == 2) {
+      tempSelectionState[1] = lineNumber;
+    } else if (tempSelectionState.length > 0 || tempSelectionState.length < 2) {
+      // this is the same as the first condition, but the order is important...
+      tempSelectionState.push(lineNumber);
     }
 
-    // perhaps not really needed, but just for completeness sake...
+    // The react hook must be outside conditions?
     tempSelectionState.sort((a, b) => a - b);
     setLineSelectionState([...tempSelectionState]);
     return;
