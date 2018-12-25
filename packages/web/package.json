@@ -36,7 +36,7 @@
     "@types/cookie": "0.3.2",
     "@types/lodash": "4.14.119",
     "@types/lodash.get": "4.4.4",
-    "@types/next": "7.0.5",
+    "@types/next": "7.0.6",
     "@types/prismjs": "1.9.0",
     "@types/react": "16.7.18",
     "@types/react-dom": "16.0.11",
