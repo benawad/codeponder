@@ -51,7 +51,7 @@ export default class Index extends React.Component<{}, State> {
           {({ data, fetchMore }) => {
             return (
               <div>
-                <div style={{ display: "flex", marginBottom: "4rem" }}>
+                <div style={{ display: "flex", marginBottom: "6.4rem" }}>
                   {this.state.topics.map(topic => (
                     <Topic key={topic} onClick={() => this.removeTopic(topic)}>
                       {topic}
@@ -75,7 +75,7 @@ export default class Index extends React.Component<{}, State> {
                           />
                         ))}
                         {data.findCodeReviewPost.hasMore ? (
-                          <Box my="1rem" ml="1rem">
+                          <Box my="1.6rem" ml="1.6rem">
                             <MyButton
                               variant="primary"
                               onClick={async () => {
@@ -124,7 +124,7 @@ export default class Index extends React.Component<{}, State> {
                       </>
                     )}
                   </SidebarCard>
-                  <SidebarCard flex="0 0 240px" ml="2.5rem">
+                  <SidebarCard flex="0 0 24rem" ml="4rem">
                     i am sidebar
                   </SidebarCard>
                 </div>
