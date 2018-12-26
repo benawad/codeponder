@@ -27,8 +27,8 @@ export const QuestionForm = ({
     () => {
       // Used local constant
       // but the values may be passed directly with the || ?
-      const startLinesSelection = linesSelection[0] || 0;
-      const endLinesSelection = linesSelection[1] || 0;
+      const startLinesSelection = linesSelection ? linesSelection[0] || 0 : 0;
+      const endLinesSelection = linesSelection ? linesSelection[1] || 0 : 0;
 
       setStartingLineNum(startLinesSelection);
       setEndingLineNum(endLinesSelection);

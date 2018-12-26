@@ -78,11 +78,9 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
   const handleSelectLine = (lineNumber: number) => {
     let tempSelectionState = [...lineSelectionState];
 
-    const lineExist = tempSelectionState
-      .filter(value => {
-        return value !== lineNumber;
-      })
-      .sort((a, b) => a - b);
+    const lineExist = tempSelectionState.filter(value => {
+      return value !== lineNumber;
+    });
 
     // so many if else are not so legible...
     // a switch might be possible here, but does it bring more or less?
