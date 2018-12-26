@@ -64,7 +64,10 @@ const SelectLinesMouse = (arg: number[]) => {
 };
 
 export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
-  const [lineSelectionState, setLineSelectionState] = useState<number[]>([]);
+  const [lineSelectionState, setLineSelectionState] = useState<number[]>([
+    0,
+    0,
+  ]);
   const lang: Language = path ? filenameToLang(path) : "";
   const variables = {
     path,
@@ -76,25 +79,28 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
    * It simulates the github line number selection
    *  */
   const handleSelectLine = (lineNumber: number) => {
-    let tempSelectionState = [...lineSelectionState];
+    let tempSelectionState = lineSelectionState.filter(value => {
+      return value !== 0;
+    });
 
-    const lineExist = tempSelectionState.filter(value => {
+    const withoutRepeatLines = tempSelectionState.filter(value => {
       return value !== lineNumber;
     });
 
-    // so many if else are not so legible...
+    // so many else/if are not so legible...
     // a switch might be possible here, but does it bring more or less?
     if (tempSelectionState.length == 0) {
-      tempSelectionState.push(lineNumber);
-    } else if (lineExist.length !== tempSelectionState.length) {
-      tempSelectionState = [...lineExist];
-    } else if (tempSelectionState.length == 2) {
+      tempSelectionState = [lineNumber, lineNumber];
+    } else if (withoutRepeatLines.length == 0) {
+      tempSelectionState = [0, 0];
+    } else if (tempSelectionState.length !== withoutRepeatLines.length) {
+      tempSelectionState = [withoutRepeatLines[0], withoutRepeatLines[0]];
+    } else if (
+      tempSelectionState.length == 2 ||
+      tempSelectionState.length == 1
+    ) {
       tempSelectionState[1] = lineNumber;
-    } else if (tempSelectionState.length > 0 || tempSelectionState.length < 2) {
-      // this is the same as the first condition, but the order is important...
-      tempSelectionState.push(lineNumber);
     }
-
     // The react hook must be outside conditions?
     tempSelectionState.sort((a, b) => a - b);
     setLineSelectionState([...tempSelectionState]);
