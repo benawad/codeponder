@@ -68,6 +68,8 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
     0,
     0,
   ]);
+  const [startLinesSelection, setStartLinesSelection] = useState<number>(0);
+  const [endLinesSelection, setEndLinesSelection] = useState<number>(0);
   const lang: Language = path ? filenameToLang(path) : "";
   const variables = {
     path,
@@ -103,8 +105,28 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
     }
     // The react hook must be outside conditions?
     tempSelectionState.sort((a, b) => a - b);
+    setStartLinesSelection(tempSelectionState[0] || 0);
+    setEndLinesSelection(tempSelectionState[1] || 0);
     setLineSelectionState([...tempSelectionState]);
     return;
+  };
+
+  /*
+   * handleStartLinesSelection and handleEndLinesSelection are temporary solutions
+   * They are still buggy
+   * TODO: add a 'debounceTime' to the inputs values for an easier UX experience
+   * it should be easy to do it or maybe just use something like
+   * https://www.npmjs.com/package/react-debounce-input or
+   * https://lodash.com/docs/#debounce (used by the above ref)
+   */
+  const handleStartLinesSelection = (event: any) => {
+    setLineSelectionState([event.currentTarget.value, lineSelectionState[1]]);
+    setStartLinesSelection(event.currentTarget.value);
+  };
+
+  const handleEndLinesSelection = (event: any) => {
+    setLineSelectionState([lineSelectionState[0], event.currentTarget.value]);
+    setEndLinesSelection(event.currentTarget.value);
   };
 
   return (
@@ -178,8 +200,11 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
               postId={postId}
               programmingLanguage={lang}
               path={path}
-              /* Added a props to pass the selected lines */
-              linesSelection={lineSelectionState}
+              /* Added a props to pass and handle the selected lines */
+              startLinesSelection={startLinesSelection}
+              endLinesSelection={endLinesSelection}
+              handleStartLinesSelection={handleStartLinesSelection}
+              handleEndLinesSelection={handleEndLinesSelection}
             />
           </>
         );

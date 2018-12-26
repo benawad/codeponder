@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { ChangeEvent } from "react";
 
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
@@ -9,7 +9,10 @@ export interface QuestionFormProps {
   path?: string;
   postId: string;
   programmingLanguage?: string;
-  linesSelection: number[];
+  startLinesSelection: number;
+  endLinesSelection: number;
+  handleStartLinesSelection: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleEndLinesSelection: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const QuestionForm = ({
@@ -17,24 +20,12 @@ export const QuestionForm = ({
   path,
   postId,
   programmingLanguage,
-  linesSelection,
+  startLinesSelection,
+  endLinesSelection,
+  handleStartLinesSelection,
+  handleEndLinesSelection,
 }: QuestionFormProps) => {
-  const [startingLineNum, setStartingLineNum] = useInputValue("0");
-  const [endingLineNum, setEndingLineNum] = useInputValue("0");
   const [text, textChange] = useInputValue("");
-
-  useEffect(
-    () => {
-      // the undefined check is probably no longer needed
-      // but an extra check, in this type of app, are never a negative thing?
-      const startLinesSelection = linesSelection ? linesSelection[0] || 0 : 0;
-      const endLinesSelection = linesSelection ? linesSelection[1] || 0 : 0;
-
-      setStartingLineNum(startLinesSelection);
-      setEndingLineNum(endLinesSelection);
-    },
-    [linesSelection]
-  );
 
   return (
     <CreateCodeReviewQuestionComponent>
@@ -42,8 +33,8 @@ export const QuestionForm = ({
         <form
           onSubmit={async e => {
             e.preventDefault();
-            const start = parseInt(startingLineNum, 10);
-            const end = parseInt(endingLineNum, 10);
+            const start = startLinesSelection;
+            const end = endLinesSelection;
             const response = await mutate({
               variables: {
                 codeReviewQuestion: {
@@ -69,14 +60,14 @@ export const QuestionForm = ({
           <input
             name="startingLineNum"
             placeholder="startingLineNum"
-            value={startingLineNum}
-            onChange={setStartingLineNum}
+            value={startLinesSelection.toString()}
+            onChange={handleStartLinesSelection}
           />
           <input
             name="endingLineNum"
             placeholder="endingLineNum"
-            value={endingLineNum}
-            onChange={setEndingLineNum}
+            value={endLinesSelection.toString()}
+            onChange={handleEndLinesSelection}
           />
           <input
             name="question"
