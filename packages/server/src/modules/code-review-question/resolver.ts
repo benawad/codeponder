@@ -55,7 +55,7 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
 
     const questions = await getConnection().query(
       `
-      select * from code_review_question offset $1 limt $2;
+      select * from code_review_question offset $1 limit $2;
     `,
       [offset, limit]
     );
