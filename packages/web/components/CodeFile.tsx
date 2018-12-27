@@ -13,7 +13,6 @@ import {
 } from "./apollo-components";
 import { filenameToLang } from "../utils/filenameToLang";
 import { QuestionSection } from "./QuestionSection";
-import { Token } from "prismjs";
 
 interface Props {
   code: string | null;
