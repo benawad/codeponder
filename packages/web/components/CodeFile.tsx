@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 //import * as Prism from "prismjs";
 //import "prismjs/themes/prism.css";
 import "prismjs/themes/prism-coy.css";
 
-import styled, { css } from "styled-components";
+import { css, styled } from "@codeponder/ui";
 import Highlight, { defaultProps, Language } from "prism-react-renderer";
 //import theme from "prism-react-renderer/themes/vsDarkPlus";
 
@@ -72,7 +72,7 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
   const [startLinesSelection, setStartLinesSelection] = useState<number>(0);
   const [endLinesSelection, setEndLinesSelection] = useState<number>(0);
 
-  const lang: Language = path ? filenameToLang(path) : "";
+  const lang = (path ? filenameToLang(path) : "") as Language;
   const variables = {
     path,
     postId,
@@ -163,10 +163,11 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
             height: 1.3em;
           }
 
-          /* Style for the effect of alternating colors in the background */
+          /* Style for the effect of alternating colors in the background
           & .token-line:nth-child(odd) {
             background: #f3faff;
           }
+          */
 
           ${SelectLines(data)};
 
@@ -191,11 +192,14 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
             <Highlight
               {...defaultProps}
               theme={undefined}
-              code={code}
+              code={code || ""}
               language={lang}
             >
               {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <Pre className={className} style={style}>
+                <Pre
+                  className={className}
+                  style={{ ...style, overflowX: "auto" }}
+                >
                   {tokens.map((line, i) => {
                     return (
                       <div {...getLineProps({ line, key: i })}>
