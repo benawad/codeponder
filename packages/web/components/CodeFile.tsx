@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //import * as Prism from "prismjs";
 //import "prismjs/themes/prism.css";
 import "prismjs/themes/prism-coy.css";
@@ -64,12 +64,14 @@ const SelectLinesMouse = (arg: number[]) => {
 };
 
 export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
+  // does this needs so many states? Should be simplified more...
   const [lineSelectionState, setLineSelectionState] = useState<number[]>([
     0,
     0,
   ]);
   const [startLinesSelection, setStartLinesSelection] = useState<number>(0);
   const [endLinesSelection, setEndLinesSelection] = useState<number>(0);
+
   const lang: Language = path ? filenameToLang(path) : "";
   const variables = {
     path,
@@ -112,21 +114,36 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
   };
 
   /*
-   * handleStartLinesSelection and handleEndLinesSelection are temporary solutions
-   * They are still buggy
-   * TODO: add a 'debounceTime' to the inputs values for an easier UX experience
-   * it should be easy to do it or maybe just use something like
-   * https://www.npmjs.com/package/react-debounce-input or
-   * https://lodash.com/docs/#debounce (used by the above ref)
+   * handleStartLinesSelection and handleEndLinesSelection
+   * are still a little buggy, but almost there
+   * TODO: merge the 2 functions to avoid repetition
+   * TODO: better handling of the situation when values of input1 > input2
+   * TODO: ability to reset the line selections directly from the input
    */
   const handleStartLinesSelection = (event: any) => {
-    setLineSelectionState([event.currentTarget.value, lineSelectionState[1]]);
-    setStartLinesSelection(event.currentTarget.value);
+    if (event.target) {
+      // || lineSelectionState[0] to block NaN and secure default
+      // TODO: add a better checks
+      let value1 = parseInt(event.target.value, 10) || lineSelectionState[0];
+      let value2 = lineSelectionState[1];
+      if (value1 > value2) {
+        value2 = value1;
+      }
+      setLineSelectionState([value1, value2]);
+      setStartLinesSelection(value1);
+      setEndLinesSelection(value2);
+    }
   };
 
   const handleEndLinesSelection = (event: any) => {
-    setLineSelectionState([lineSelectionState[0], event.currentTarget.value]);
-    setEndLinesSelection(event.currentTarget.value);
+    if (event.target) {
+      // || lineSelectionState[0] to block NaN and secure default
+      // TODO: add a better checks
+      let value = parseInt(event.target.value, 10) || lineSelectionState[1];
+      value = value >= lineSelectionState[0] ? value : lineSelectionState[0];
+      setLineSelectionState([lineSelectionState[0], value]);
+      setEndLinesSelection(value);
+    }
   };
 
   return (

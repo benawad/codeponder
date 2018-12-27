@@ -1,6 +1,8 @@
 import * as React from "react";
 import { ChangeEvent } from "react";
 
+import { DebounceInput } from "react-debounce-input";
+
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
 
@@ -57,16 +59,19 @@ export const QuestionForm = ({
             //console.log(response);
           }}
         >
-          <input
+          {/* see https://www.npmjs.com/package/react-debounce-input */}
+          <DebounceInput
             name="startingLineNum"
-            placeholder="startingLineNum"
-            value={startLinesSelection.toString()}
+            placeholder="0"
+            value={startLinesSelection}
+            debounceTimeout={300}
             onChange={handleStartLinesSelection}
           />
-          <input
+          <DebounceInput
             name="endingLineNum"
-            placeholder="endingLineNum"
-            value={endLinesSelection.toString()}
+            placeholder="0"
+            value={endLinesSelection}
+            debounceTimeout={300}
             onChange={handleEndLinesSelection}
           />
           <input
