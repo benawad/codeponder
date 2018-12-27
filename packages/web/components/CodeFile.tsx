@@ -13,6 +13,7 @@ import {
 } from "./apollo-components";
 import { filenameToLang } from "../utils/filenameToLang";
 import { QuestionSection } from "./QuestionSection";
+import { Token } from "prismjs";
 
 interface Props {
   code: string | null;
@@ -83,6 +84,10 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
    * It simulates the github line number selection
    *  */
   const handleSelectLine = (lineNumber: number) => {
+    const codeLength = (code || "").split("\n").length;
+    if (lineNumber > codeLength) {
+      lineNumber = codeLength;
+    }
     let tempSelectionState = lineSelectionState.filter(value => {
       return value !== 0;
     });
@@ -114,35 +119,31 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
   };
 
   /*
-   * handleStartLinesSelection and handleEndLinesSelection
-   * are still a little buggy, but almost there
-   * TODO: merge the 2 functions to avoid repetition
-   * TODO: better handling of the situation when values of input1 > input2
    * TODO: ability to reset the line selections directly from the input
    */
-  const handleStartLinesSelection = (event: any) => {
+  const handleLinesSelection = (event: any, inputNumber: number) => {
     if (event.target) {
-      // || lineSelectionState[0] to block NaN and secure default
       // TODO: add a better checks
-      let value1 = parseInt(event.target.value, 10) || lineSelectionState[0];
-      let value2 = lineSelectionState[1];
-      if (value1 > value2) {
-        value2 = value1;
-      }
-      setLineSelectionState([value1, value2]);
-      setStartLinesSelection(value1);
-      setEndLinesSelection(value2);
-    }
-  };
+      const codeLength = (code || "").split("\n").length;
+      const value: number[] = [];
+      /*
+       * Check for selections with numbers bigger than the code has lines
+       * And check for possible negative numbers
+       */
+      const maxLines = lineSelectionState.map(value => {
+        return codeLength < value ? codeLength : value;
+      });
+      let tempValue = Math.abs(parseInt(event.target.value, 10));
+      tempValue = codeLength > tempValue ? tempValue : codeLength;
 
-  const handleEndLinesSelection = (event: any) => {
-    if (event.target) {
-      // || lineSelectionState[0] to block NaN and secure default
-      // TODO: add a better checks
-      let value = parseInt(event.target.value, 10) || lineSelectionState[1];
-      value = value >= lineSelectionState[0] ? value : lineSelectionState[0];
-      setLineSelectionState([lineSelectionState[0], value]);
-      setEndLinesSelection(value);
+      value[inputNumber] = tempValue || maxLines[inputNumber];
+      value[1 - inputNumber] = maxLines[1 - inputNumber];
+      if (value[0] > value[1]) {
+        value[1] = value[0];
+      }
+      setLineSelectionState([...value]);
+      setStartLinesSelection(value[0]);
+      setEndLinesSelection(value[1]);
     }
   };
 
@@ -169,9 +170,9 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
           }
           */
 
-          ${SelectLines(data)};
+          ${SelectLines(data)}
 
-          ${SelectLinesMouse(lineSelectionState)};
+          ${SelectLinesMouse(lineSelectionState)}
         `;
 
         /* Style for the line numbers */
@@ -224,8 +225,7 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
               /* Added a props to pass and handle the selected lines */
               startLinesSelection={startLinesSelection}
               endLinesSelection={endLinesSelection}
-              handleStartLinesSelection={handleStartLinesSelection}
-              handleEndLinesSelection={handleEndLinesSelection}
+              handleLinesSelection={handleLinesSelection}
             />
           </>
         );
