@@ -7,7 +7,7 @@ export const GitHubButton: React.SFC<
 > = ({ children }) => {
   return (
     <Button variant="github">
-      <Box mr=".75rem">
+      <Box mr="1.2rem">
         <Icon name="github" fill="#fff" />
       </Box>
       {children}
