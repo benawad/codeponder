@@ -1,6 +1,8 @@
 import "reflect-metadata";
 require("dotenv-safe").config();
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, ApolloError } from "apollo-server-express";
+import { v4 } from "uuid";
+import { GraphQLError } from "graphql";
 import * as session from "express-session";
 import * as connectRedis from "connect-redis";
 import * as express from "express";
@@ -23,9 +25,6 @@ const RedisStore = connectRedis(session as any);
 const startServer = async () => {
   const conn = await createTypeormConn();
   if (conn) {
-    // sets timezone for the current session
-    // pull requests are welcome to make this permanent
-    await conn.query(`SET TIME ZONE 'UTC';`);
     await conn.runMigrations();
   }
 
@@ -43,6 +42,17 @@ const startServer = async () => {
       userLoader: userLoader(),
       questionReplyLoader: questionReplyLoader(),
     }),
+    formatError: (error: GraphQLError) => {
+      if (error.originalError instanceof ApolloError) {
+        return error;
+      }
+
+      const errId = v4();
+      console.log("errId: ", errId);
+      console.log(error);
+
+      return new GraphQLError(`Internal Error: ${errId}`);
+    },
   });
 
   app.set("trust proxy", 1);

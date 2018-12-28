@@ -26,6 +26,10 @@ body {
   margin: 0;
 }
 
+html {
+  font-size: 62.5%;
+}
+
 a {
   text-decoration: none;
 }

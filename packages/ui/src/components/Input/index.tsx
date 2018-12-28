@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 const MyInput = styled.input`
-  font-size: 18px;
+  font-size: 1.8rem;
   color: #0d0d0d;
 `;
 

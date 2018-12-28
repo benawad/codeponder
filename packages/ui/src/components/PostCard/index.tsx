@@ -21,10 +21,11 @@ interface Props {
 }
 
 const Container = styled.div`
-  border-radius: 9px;
+  border-radius: 0.9rem;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  padding: 16px;
+  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+    0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+  padding: 1.6rem;
   display: flex;
   flex-direction: column;
 `;
@@ -34,7 +35,7 @@ const CardHeader = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  font-size: 16px;
+  font-size: 1.6rem;
   color: #07385a;
   cursor: pointer;
 `;
@@ -44,9 +45,9 @@ const CardBodyText = styled.div`
   font-style: normal;
   font-weight: normal;
   line-height: normal;
-  font-size: 13px;
+  font-size: 1.3rem;
   color: #78909c;
-  padding: 6px 0;
+  padding: 0.6rem 0;
   margin-top: auto;
 `;
 
@@ -59,10 +60,9 @@ const Username = styled.div`
   font-style: normal;
   font-weight: normal;
   line-height: normal;
-  font-size: 12px;
-
+  font-size: 1.2rem;
   color: #3290d4;
-  padding-left: 8px;
+  padding-left: 0.8rem;
 `;
 
 export const PostCard: React.SFC<Props> = ({

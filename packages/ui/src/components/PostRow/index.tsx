@@ -26,7 +26,7 @@ interface Props {
 }
 
 const BorderCard = styled(Card)`
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0.1rem 0;
   border-style: solid;
 `;
 
@@ -46,12 +46,12 @@ export const PostRow: React.SFC<Props> = ({
   });
 
   return (
-    <BorderCard p=".75rem" borderColor="neutrals.3">
+    <BorderCard p="1.2rem" borderColor="neutrals.3">
       <Flex justifyContent="center">
         <Avatar size={34} src={pictureUrl} alt="avatar" />
         <div
           style={{
-            paddingLeft: ".5rem",
+            paddingLeft: ".8rem",
             justifyContent: "center",
             flexDirection: "column",
             marginRight: "auto",
@@ -67,17 +67,17 @@ export const PostRow: React.SFC<Props> = ({
           <Link {...linkProps}>
             <a>
               <Text
-                lineHeight="10px"
+                lineHeight="1rem"
                 fontFamily="rubik"
                 fontSize={3}
                 color="neutrals.2"
-                mb=".75rem"
+                mb="1.2rem"
               >
                 {repoOwner}/{repo} • {dtString}
               </Text>
             </a>
           </Link>
-          <Box mt=".25rem">
+          <Box mt=".4rem">
             {topics.slice(0, 3).map(topic => (
               <Topic key={topic}>{topic}</Topic>
             ))}

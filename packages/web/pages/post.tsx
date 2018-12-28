@@ -105,7 +105,7 @@ export default class Post extends React.PureComponent<Props> {
       // @ts-ignore
       <Layout title={`Code Review Post: ${name}`}>
         <BigCard>
-          <Heading m="0px" fontFamily="rubik" fontSize={6}>
+          <Heading m="0rem" fontFamily="rubik" fontSize={6}>
             {owner}/{name}
           </Heading>
           <Box mt={10} mb={16}>

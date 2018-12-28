@@ -6,5 +6,7 @@ interface Props extends ImageProps {
 }
 
 export const Avatar: React.SFC<Props> = ({ size = 16, ...props }) => {
-  return <Image height={size} width={size} borderRadius={16.5} {...props} />;
+  return (
+    <Image height={size} width={size} borderRadius={"1.65rem"} {...props} />
+  );
 };

@@ -21,9 +21,9 @@ export class User extends BaseEntity {
   @Column({ type: "text", unique: true })
   username: string;
 
-  @Field()
-  @Column({ type: "text" })
-  name: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
+  name: string | null;
 
   @Column({ type: "text", unique: true })
   githubId: string;
