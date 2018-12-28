@@ -9,6 +9,10 @@ export const codeReviewQuestionInfoFragment = gql`
     endingLineNum
     text
     programmingLanguage
+    codeSnippet
+    numReplies
+    createdAt
+    path
     creator {
       ...UserInfo
     }

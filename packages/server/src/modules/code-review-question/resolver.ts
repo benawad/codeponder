@@ -25,6 +25,11 @@ const CodeReviewQuestionBaseResolver = createBaseResolver(
 const PAGE_SIZE = 6;
 @Resolver(CodeReviewQuestion)
 export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
+  @FieldResolver()
+  numReplies(@Root() root: CodeReviewQuestion) {
+    return QuestionReply.count({ where: { questionId: root.id } });
+  }
+
   @Query(() => [CodeReviewQuestion])
   async findCodeReviewQuestions(
     @Arg("path", { nullable: true }) path: string,

@@ -70,4 +70,7 @@ export class CodeReviewQuestion extends BaseEntity {
 
   @UpdateDateColumn({ type: "timestamp with time zone" })
   updatedAt: Date;
+
+  @Field(() => Int)
+  numReplies: number;
 }

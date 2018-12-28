@@ -1,11 +1,11 @@
 import * as React from "react";
+import { Question } from "@codeponder/ui";
+
 import {
   FindCodeReviewQuestionsComponent,
   FindCodeReviewQuestionsVariables,
 } from "./apollo-components";
 import { QuestionForm, QuestionFormProps } from "./QuestionForm";
-import { Question } from "./Question";
-import { ChangeEvent } from "react";
 
 interface Props extends QuestionFormProps {
   variables: FindCodeReviewQuestionsVariables;
@@ -42,9 +42,14 @@ export const QuestionSection = ({
               endLinesSelection={endLinesSelection}
               handleLinesSelection={handleLinesSelection}
             />
-            <div>
+            <div
+              style={{
+                border: "1px solid #F2F2F2",
+                borderRadius: "5px",
+              }}
+            >
               {data.findCodeReviewQuestions.map(crq => (
-                <Question key={crq.id} q={crq} />
+                <Question key={crq.id} {...crq} />
               ))}
             </div>
           </>

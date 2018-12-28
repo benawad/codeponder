@@ -8,15 +8,16 @@ interface Props {
 }
 
 export const Icon: React.SFC<Props> = ({ name, size = 16, fill }) => {
+  const { viewBox, d } = icons[name];
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      viewBox={viewBox}
       fill={fill}
     >
-      <path d={icons[name]} />
+      <path d={d} />
     </svg>
   );
 };

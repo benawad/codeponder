@@ -238,6 +238,14 @@ export type CodeReviewQuestionInfoFragment = {
 
   programmingLanguage: Maybe<string>;
 
+  codeSnippet: Maybe<string>;
+
+  numReplies: number;
+
+  createdAt: DateTime;
+
+  path: Maybe<string>;
+
   creator: CodeReviewQuestionInfoCreator;
 
   replies: CodeReviewQuestionInfoReplies[];
@@ -329,6 +337,10 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
     endingLineNum
     text
     programmingLanguage
+    codeSnippet
+    numReplies
+    createdAt
+    path
     creator {
       ...UserInfo
     }
