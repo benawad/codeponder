@@ -55,10 +55,10 @@ export class CodeReviewPost extends BaseEntity {
   creator: Promise<User>;
 
   @Field()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   updatedAt: Date;
 
   @Field(() => Int)

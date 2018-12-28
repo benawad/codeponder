@@ -5,7 +5,7 @@ import {
   BaseEntity,
   ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { User } from "./User";
@@ -38,9 +38,9 @@ export class QuestionReply extends BaseEntity {
   creator: Promise<User>;
 
   @Field()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   updatedAt: Date;
 }
