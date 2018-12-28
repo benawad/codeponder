@@ -12,7 +12,7 @@ const {
   ThemeProvider,
 } = styledComponents as ThemedStyledComponentsModule<ITheme>;
 
-export { css, createGlobalStyle, keyframes, ThemeProvider };
+export { css, createGlobalStyle, keyframes, ThemeProvider, styled };
 export default styled;
 export const GlobalStyle = createGlobalStyle`
 body {

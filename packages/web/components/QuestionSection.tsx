@@ -5,9 +5,13 @@ import {
 } from "./apollo-components";
 import { QuestionForm, QuestionFormProps } from "./QuestionForm";
 import { Question } from "./Question";
+import { ChangeEvent } from "react";
 
 interface Props extends QuestionFormProps {
   variables: FindCodeReviewQuestionsVariables;
+  startLinesSelection: number;
+  endLinesSelection: number;
+  handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
 export const QuestionSection = ({
@@ -16,6 +20,9 @@ export const QuestionSection = ({
   postId,
   path,
   programmingLanguage,
+  startLinesSelection,
+  endLinesSelection,
+  handleLinesSelection,
 }: Props) => {
   return (
     <FindCodeReviewQuestionsComponent variables={variables}>
@@ -31,6 +38,9 @@ export const QuestionSection = ({
               postId={postId}
               path={path}
               programmingLanguage={programmingLanguage}
+              startLinesSelection={startLinesSelection}
+              endLinesSelection={endLinesSelection}
+              handleLinesSelection={handleLinesSelection}
             />
             <div>
               {data.findCodeReviewQuestions.map(crq => (

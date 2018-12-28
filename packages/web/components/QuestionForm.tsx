@@ -1,4 +1,7 @@
 import * as React from "react";
+import { ChangeEvent } from "react";
+
+import { DebounceInput } from "react-debounce-input";
 
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
@@ -8,6 +11,9 @@ export interface QuestionFormProps {
   path?: string;
   postId: string;
   programmingLanguage?: string;
+  startLinesSelection: number;
+  endLinesSelection: number;
+  handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
 export const QuestionForm = ({
@@ -15,9 +21,10 @@ export const QuestionForm = ({
   path,
   postId,
   programmingLanguage,
+  startLinesSelection,
+  endLinesSelection,
+  handleLinesSelection,
 }: QuestionFormProps) => {
-  const [startingLineNum, startingLineNumChange] = useInputValue("0");
-  const [endingLineNum, endingLineNumChange] = useInputValue("0");
   const [text, textChange] = useInputValue("");
 
   return (
@@ -26,8 +33,8 @@ export const QuestionForm = ({
         <form
           onSubmit={async e => {
             e.preventDefault();
-            const start = parseInt(startingLineNum, 10);
-            const end = parseInt(endingLineNum, 10);
+            const start = startLinesSelection;
+            const end = endLinesSelection;
             const response = await mutate({
               variables: {
                 codeReviewQuestion: {
@@ -47,20 +54,23 @@ export const QuestionForm = ({
               },
             });
 
-            console.log(response);
+            //console.log(response);
           }}
         >
-          <input
+          {/* see https://www.npmjs.com/package/react-debounce-input */}
+          <DebounceInput
             name="startingLineNum"
-            placeholder="startingLineNum"
-            value={startingLineNum}
-            onChange={startingLineNumChange}
+            placeholder="0"
+            value={startLinesSelection}
+            debounceTimeout={300}
+            onChange={ev => handleLinesSelection(ev, 0)}
           />
-          <input
+          <DebounceInput
             name="endingLineNum"
-            placeholder="endingLineNum"
-            value={endingLineNum}
-            onChange={endingLineNumChange}
+            placeholder="0"
+            value={endLinesSelection}
+            debounceTimeout={300}
+            onChange={ev => handleLinesSelection(ev, 1)}
           />
           <input
             name="question"
