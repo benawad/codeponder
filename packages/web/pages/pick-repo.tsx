@@ -12,12 +12,13 @@ import { GitHubApolloClientContext } from "../components/GithubApolloClientConte
 import { Router } from "../server/routes";
 import { Layout } from "../components/Layout";
 import { removeDuplicates } from "../utils/removeDuplicates";
+import { withAuth } from "../components/withAuth";
 
 interface State {
   title: string;
 }
 
-export default class PickRepo extends React.PureComponent<{}, State> {
+class PickRepo extends React.PureComponent<{}, State> {
   static contextType = GitHubApolloClientContext;
 
   state = {
@@ -106,3 +107,5 @@ export default class PickRepo extends React.PureComponent<{}, State> {
     );
   }
 }
+
+export default withAuth(PickRepo);

@@ -19,7 +19,6 @@ interface Props {
   path?: string;
   postId: string;
 }
-
 /*
  * *Styles for the line numbers coming from the server
  *
