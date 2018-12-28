@@ -10,9 +10,15 @@
     ]
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0",
     "lerna": "3.8.0"
   },
   "resolutions": {
     "graphql": "14.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

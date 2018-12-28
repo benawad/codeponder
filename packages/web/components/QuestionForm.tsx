@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ChangeEvent } from "react";
 
 import { DebounceInput } from "react-debounce-input";
 
@@ -54,7 +53,7 @@ export const QuestionForm = ({
               },
             });
 
-            //console.log(response);
+            console.log(response);
           }}
         >
           {/* see https://www.npmjs.com/package/react-debounce-input */}
