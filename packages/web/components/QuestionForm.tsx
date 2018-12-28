@@ -13,8 +13,7 @@ export interface QuestionFormProps {
   programmingLanguage?: string;
   startLinesSelection: number;
   endLinesSelection: number;
-  handleStartLinesSelection: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleEndLinesSelection: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
 export const QuestionForm = ({
@@ -24,8 +23,7 @@ export const QuestionForm = ({
   programmingLanguage,
   startLinesSelection,
   endLinesSelection,
-  handleStartLinesSelection,
-  handleEndLinesSelection,
+  handleLinesSelection,
 }: QuestionFormProps) => {
   const [text, textChange] = useInputValue("");
 
@@ -65,14 +63,14 @@ export const QuestionForm = ({
             placeholder="0"
             value={startLinesSelection}
             debounceTimeout={300}
-            onChange={handleStartLinesSelection}
+            onChange={ev => handleLinesSelection(ev, 0)}
           />
           <DebounceInput
             name="endingLineNum"
             placeholder="0"
             value={endLinesSelection}
             debounceTimeout={300}
-            onChange={handleEndLinesSelection}
+            onChange={ev => handleLinesSelection(ev, 1)}
           />
           <input
             name="question"

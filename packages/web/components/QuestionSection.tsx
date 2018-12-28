@@ -11,8 +11,7 @@ interface Props extends QuestionFormProps {
   variables: FindCodeReviewQuestionsVariables;
   startLinesSelection: number;
   endLinesSelection: number;
-  handleStartLinesSelection: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleEndLinesSelection: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
 export const QuestionSection = ({
@@ -23,8 +22,7 @@ export const QuestionSection = ({
   programmingLanguage,
   startLinesSelection,
   endLinesSelection,
-  handleStartLinesSelection,
-  handleEndLinesSelection,
+  handleLinesSelection,
 }: Props) => {
   return (
     <FindCodeReviewQuestionsComponent variables={variables}>
@@ -42,8 +40,7 @@ export const QuestionSection = ({
               programmingLanguage={programmingLanguage}
               startLinesSelection={startLinesSelection}
               endLinesSelection={endLinesSelection}
-              handleStartLinesSelection={handleStartLinesSelection}
-              handleEndLinesSelection={handleEndLinesSelection}
+              handleLinesSelection={handleLinesSelection}
             />
             <div>
               {data.findCodeReviewQuestions.map(crq => (
