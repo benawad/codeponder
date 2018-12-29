@@ -1,3 +1,4 @@
+import * as Prism from "prismjs";
 const langDepMap: { [key: string]: string | string[] } = {
   javascript: "clike",
   actionscript: "javascript",
@@ -59,7 +60,7 @@ const langDepMap: { [key: string]: string | string[] } = {
   velocity: "markup",
   wiki: "markup",
   xeora: "markup",
-  xquery: "markup"
+  xquery: "markup",
 };
 
 export const loadLanguage = async (lang: string) => {
@@ -70,6 +71,10 @@ export const loadLanguage = async (lang: string) => {
     } else {
       await Promise.all(deps.map(loadLanguage));
     }
+  }
+
+  if (lang in Prism.languages) {
+    return null;
   }
 
   return import(`prismjs/components/prism-${lang}`);
