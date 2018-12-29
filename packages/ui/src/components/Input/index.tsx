@@ -18,6 +18,7 @@ const MyInput = styled.input`
   font-size: 1.6rem
   color: #b7c1c6;
   font-family: roboto;
+  width: 100%;
 `;
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
@@ -26,9 +27,9 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
 
 export class Input extends React.PureComponent<Props> {
   render() {
-    const { icon, ...props } = this.props;
+    const { icon, style, ...props } = this.props;
     return (
-      <Container>
+      <Container style={style}>
         {icon && (
           <Icon name={icon} fill="#b7c1c6" style={{ marginRight: ".8rem" }} />
         )}
