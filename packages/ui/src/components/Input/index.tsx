@@ -13,6 +13,7 @@ const Container = styled.div`
 `;
 
 const MyInput = styled.input`
+  padding-left: .1rem;
   border: none;
   font-size: 1.6rem
   color: #b7c1c6;

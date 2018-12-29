@@ -2,12 +2,12 @@ import * as React from "react";
 import { Link, Text, Flex } from "rebass";
 import NextLink from "next/link";
 import get from "lodash.get";
-import { MyButton, Avatar, GitHubButton } from "@codeponder/ui";
-import Router from "next/router";
+import { Avatar, GitHubButton } from "@codeponder/ui";
 import styled from "styled-components";
 import { Menu, Dropdown } from "antd";
 
 import { MeComponent, LogoutComponent } from "./apollo-components";
+import { CreateCodeReviewModal } from "./CreateCodeReviewModal";
 
 const Container = styled(Flex)`
   flex: 0 0 auto;
@@ -35,12 +35,7 @@ export const NavBar = () => {
           if (isLoggedIn) {
             return (
               <Flex>
-                <MyButton
-                  variant="primary"
-                  onClick={() => Router.push("/pick-repo")}
-                >
-                  NEW CODE REVIEW
-                </MyButton>
+                <CreateCodeReviewModal />
                 <LogoutComponent>
                   {(mutate, { client }) => (
                     <Dropdown

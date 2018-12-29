@@ -6,9 +6,16 @@ interface Props {
   size?: number;
   fill: string;
   style?: any;
+  onClick?: () => void;
 }
 
-export const Icon: React.SFC<Props> = ({ name, size = 16, fill, style }) => {
+export const Icon: React.SFC<Props> = ({
+  name,
+  size = 16,
+  fill,
+  style,
+  onClick,
+}) => {
   const { viewBox, d } = icons[name];
   return (
     <svg
@@ -18,6 +25,7 @@ export const Icon: React.SFC<Props> = ({ name, size = 16, fill, style }) => {
       viewBox={viewBox}
       fill={fill}
       style={style}
+      onClick={onClick}
     >
       <path d={d} />
     </svg>
