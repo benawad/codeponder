@@ -7,3 +7,4 @@ temp/
 dist
 .next
 .env
+storybook-static/

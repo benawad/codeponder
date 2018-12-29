@@ -13,5 +13,6 @@ export * from "./components/GitHubButton";
 export * from "./components/PostRow";
 export * from "./components/SidebarCard";
 export * from "./components/Question";
+export * from "./components/IconButton";
 export * from "./theme/styled-components";
 export { default as theme } from "./theme";

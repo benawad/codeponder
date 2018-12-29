@@ -116,6 +116,38 @@ const theme: ITheme = {
       cursor: "pointer",
       fontWeight: "normal",
     },
+    form: {
+      border: "1px solid rgba(27, 31, 35, 0.2)",
+      borderRadius: "0.25em",
+      color: "rgb(36, 41, 46)",
+      fontSize: "1em",
+      marginRight: "1em",
+      padding: "0.375em 0.75em",
+      "&:hover": {
+        backgroundColor: "#e6ebf1",
+        backgroundImage: "linear-gradient(-180deg, #f0f3f6, #e6ebf1 90%)",
+        backgroundPosition: "-0.5em",
+        borderColor: "rgba(27, 31, 35, 0.35)",
+      },
+      "&.primary": {
+        backgroundColor: "#28a745",
+        backgroundImage: "linear-gradient(-180deg, #34d058, #28a745 90%)",
+        color: "#fff",
+      },
+      "&.primary:hover": {
+        backgroundColor: "#269f42",
+        backgroundImage: "linear-gradient(-180deg, #2fcb53, #269f42 90%)",
+        backgroundPosition: "-0.5em",
+        borderColor: "rgba(27, 31, 35, 0.5)",
+      },
+      "&.primary.disabled": {
+        backgroundColor: "#94d3a2",
+        backgroundImage: "none",
+        borderColor: "rgba(27, 31, 35, 0.2)",
+        boxShadow: "none",
+        color: "hsla(0, 0%, 100%, 0.75)",
+      },
+    },
   },
 };
 export default theme;
