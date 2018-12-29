@@ -5,9 +5,10 @@ interface Props {
   name: keyof typeof icons;
   size?: number;
   fill: string;
+  style?: any;
 }
 
-export const Icon: React.SFC<Props> = ({ name, size = 16, fill }) => {
+export const Icon: React.SFC<Props> = ({ name, size = 16, fill, style }) => {
   const { viewBox, d } = icons[name];
   return (
     <svg
@@ -16,6 +17,7 @@ export const Icon: React.SFC<Props> = ({ name, size = 16, fill }) => {
       height={size}
       viewBox={viewBox}
       fill={fill}
+      style={style}
     >
       <path d={d} />
     </svg>
