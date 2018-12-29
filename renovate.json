@@ -1,7 +1,5 @@
-
 {
-  "extends": [
-    "config:base"
-  ],
-  "automerge": true
+  "extends": ["config:base"],
+  "automerge": true,
+  "ignoreDeps": ["react", "react-dom"]
 }
