@@ -9,6 +9,7 @@ import { useInputValue } from "../utils/useInputValue";
 import { removeDuplicates } from "../utils/removeDuplicates";
 import { GetViewerReposEdges } from "./github-apollo-components";
 import { Router } from "../server/routes";
+import { findCodeReviewPostQuery } from "../graphql/code-review-post/queries/findCodeReviewPost";
 
 const customStyles = {
   content: {
@@ -30,7 +31,20 @@ export const CreateCodeReviewModal = () => {
   const [title, changeTitle] = useInputValue("");
 
   return (
-    <FindOrCreateCodeReviewPostComponent>
+    <FindOrCreateCodeReviewPostComponent
+      refetchQueries={[
+        {
+          query: findCodeReviewPostQuery,
+          variables: {
+            input: {
+              limit: 6,
+              offset: 0,
+              topics: [],
+            },
+          },
+        },
+      ]}
+    >
       {mutate => (
         <>
           <Modal
