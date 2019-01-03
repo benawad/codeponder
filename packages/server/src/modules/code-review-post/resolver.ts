@@ -37,7 +37,7 @@ export class CodeReviewPostResolvers {
     return CodeReviewQuestion.count({ where: { postId: root.id } });
   }
 
-  @Query(() => FindCodeReviewPostResponse, { name: "findCodeReviewPost" })
+  @Query(() => FindCodeReviewPostResponse)
   async findCodeReviewPost(@Arg("input")
   {
     offset,
