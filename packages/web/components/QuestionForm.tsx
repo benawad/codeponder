@@ -40,7 +40,6 @@ export const QuestionForm = ({
             background: "#FFFFFF",
             border: "1px solid #F2F2F2",
             borderRadius: "5px",
-            marginBottom: "1rem",
           }}
           onSubmit={async e => {
             e.preventDefault();
