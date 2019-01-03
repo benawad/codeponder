@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "dependencies": {
-    "@material-ui/core": "3.7.1",
+    "@material-ui/core": "3.8.1",
     "@material-ui/icons": "3.0.1",
     "date-fns": "1.30.1",
     "react": "16.7.0",
@@ -13,7 +13,7 @@
     "react-scripts": "2.1.2",
     "rebass": "3.0.0",
     "styled-components": "4.1.3",
-    "styled-system": "3.1.11"
+    "styled-system": "3.2.0"
   },
   "scripts": {
     "build": "rimraf dist && tsc",
