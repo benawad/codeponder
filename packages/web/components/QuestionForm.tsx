@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { BlueInput, MyButton, Label, styled } from "@codeponder/ui";
 import { DebounceInput } from "react-debounce-input";
 
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
@@ -17,6 +17,10 @@ export interface QuestionFormProps {
   handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
+const FormRow = styled.div`
+  padding: 1rem 2rem;
+`;
+
 export const QuestionForm = ({
   code,
   path,
@@ -32,6 +36,12 @@ export const QuestionForm = ({
     <CreateCodeReviewQuestionComponent>
       {mutate => (
         <form
+          style={{
+            background: "#FFFFFF",
+            border: "1px solid #F2F2F2",
+            borderRadius: "5px",
+            marginBottom: "1rem",
+          }}
           onSubmit={async e => {
             e.preventDefault();
             const start = startLinesSelection;
@@ -59,27 +69,62 @@ export const QuestionForm = ({
           }}
         >
           {/* see https://www.npmjs.com/package/react-debounce-input */}
-          <DebounceInput
-            name="startingLineNum"
-            placeholder="0"
-            value={startLinesSelection}
-            debounceTimeout={300}
-            onChange={ev => handleLinesSelection(ev, 0)}
+          <FormRow>
+            <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
+            <DebounceInput
+              name="startingLineNum"
+              placeholder="0"
+              value={startLinesSelection}
+              debounceTimeout={300}
+              element={BlueInput}
+              style={{ width: 33 }}
+              onChange={ev => handleLinesSelection(ev, 0)}
+            />
+            <span style={{ padding: "0px 1rem" }}>–</span>
+            <DebounceInput
+              name="endingLineNum"
+              placeholder="0"
+              value={endLinesSelection}
+              debounceTimeout={300}
+              element={BlueInput}
+              style={{ width: 33 }}
+              onChange={ev => handleLinesSelection(ev, 1)}
+            />
+          </FormRow>
+          <div
+            style={{
+              width: "100%",
+              height: 1,
+              background: "#F2F2F2",
+            }}
           />
-          <DebounceInput
-            name="endingLineNum"
-            placeholder="0"
-            value={endLinesSelection}
-            debounceTimeout={300}
-            onChange={ev => handleLinesSelection(ev, 1)}
+          <FormRow>
+            <Label style={{ paddingBottom: ".4rem" }}>Question</Label>
+            <BlueInput
+              name="question"
+              placeholder="question"
+              value={text}
+              onChange={textChange}
+              style={{ width: "100%", minHeight: 85 }}
+              as="textarea"
+            />
+          </FormRow>
+          <div
+            style={{
+              width: "100%",
+              height: 1,
+              background: "#F2F2F2",
+            }}
           />
-          <input
-            name="question"
-            placeholder="question"
-            value={text}
-            onChange={textChange}
-          />
-          <button type="submit">save</button>
+          <div style={{ padding: "1rem", display: "flex" }}>
+            <MyButton
+              style={{ marginLeft: "auto" }}
+              variant="primary"
+              type="submit"
+            >
+              save
+            </MyButton>
+          </div>
         </form>
       )}
     </CreateCodeReviewQuestionComponent>

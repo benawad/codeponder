@@ -15,5 +15,7 @@ export * from "./components/SidebarCard";
 export * from "./components/Question";
 export * from "./components/IconButton";
 export * from "./components/Icon";
+export * from "./components/BlueInput";
+export * from "./components/Label";
 export * from "./theme/styled-components";
 export { default as theme } from "./theme";
