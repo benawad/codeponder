@@ -3048,10 +3048,10 @@
     "@types/react" "*"
     "@types/webpack" "*"
 
-"@types/react-modal@3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.6.0.tgz#57e7c74f2b39b1a90116bdb30aeaac89e5e1866a"
-  integrity sha512-GBj80Nff06tNJhg1t+PGIINUVC5566La7GYIFuUJSZTI9EmEg88oillz7m5BEVp/DUqvMP0PIG5jeDemJuFA0w==
+"@types/react-modal@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.8.0.tgz#f51371e69e8f2c07454127901ac26ca0ec7f4162"
+  integrity sha512-E2Vl5qjALYxvB1oqJMqd6zcRTBw1eXRuJglKe5opTW2/TIxhH4X/YIeUpUT91jAIgxrKZzIfnn5ts7EAba7TXQ==
   dependencies:
     "@types/react" "*"
 
@@ -4697,6 +4697,16 @@ babel-loader@8.0.4:
   integrity sha512-fhBhNkUToJcW9nV46v8w87AJOwAJDz84c1CL57n3Stj73FANM/b9TbCUK4YhdOwEyZ+OxhYpdeZDNzSI29Firw==
   dependencies:
     find-cache-dir "^1.0.0"
+    loader-utils "^1.0.2"
+    mkdirp "^0.5.1"
+    util.promisify "^1.0.0"
+
+babel-loader@8.0.5:
+  version "8.0.5"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.5.tgz#225322d7509c2157655840bba52e46b6c2f2fe33"
+  integrity sha512-NTnHnVRd2JnRqPC0vW+iOQWU5pchDbYXsG2E6DMXEpMfUcQKclF9gmf3G3ZMhzG7IG9ji4coL0cm+FxeWxDpnw==
+  dependencies:
+    find-cache-dir "^2.0.0"
     loader-utils "^1.0.2"
     mkdirp "^0.5.1"
     util.promisify "^1.0.0"
