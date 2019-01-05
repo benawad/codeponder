@@ -1,22 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
-import { CommentData, AddComment } from "./CommentSection";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AddComment } from "./CommentSection";
 import { CommentProps, CommentBox } from "./commentUI";
 import { getScrollY } from "../utils/domScrollUtils";
+import { CodeFileContext } from "./CodeFileContext";
 
-interface RenderLineProps extends CommentData {
+interface RenderLineProps {
   comments: CommentProps[];
   line: string;
-  owner: string;
   lineNum: number;
 }
 
 export const RenderLine: React.FC<RenderLineProps> = ({
   comments,
   line,
-  owner,
   lineNum,
-  ...props
 }) => {
+  const { owner } = useContext(CodeFileContext);
   const [showEditor, setShowEditor] = useState(false);
   const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
@@ -83,7 +82,6 @@ export const RenderLine: React.FC<RenderLineProps> = ({
       }) || null}
       {showEditor && (
         <AddComment
-          {...props}
           comments={commentsForRow}
           line={lineNum}
           onEditorSubmit={onEditorSubmit}

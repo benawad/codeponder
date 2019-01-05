@@ -14,16 +14,3 @@ declare module "prismjs/components/prism-core" {
 
   export const util: Prism.Util;
 }
-
-// declare module "prismjs/components/index.js" {
-//   export interface PrismUtils {
-//     loadLanguages: (lang: string) => void;
-//   }
-// }
-
-// declare module "prismjs/components/index.js";
-// declare module "prismjs/components/index.js" {
-//   import * as PrismUtils from "prismjs/components/index.js";
-//   export function loadLanguages(lang: string): void;
-//   // export default loadLanguages;
-// }

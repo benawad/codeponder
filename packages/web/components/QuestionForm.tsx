@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { BlueInput, MyButton, Label, styled } from "@codeponder/ui";
 import { DebounceInput } from "react-debounce-input";
 
@@ -6,6 +6,7 @@ import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
 import { wrapEditor } from "./commentUI";
 import { TextEditor, TextEditorResult } from "./CommentForm";
+import { CodeFileContext } from "./CodeFileContext";
 
 export interface QuestionFormProps {
   code?: string;
@@ -130,73 +131,62 @@ export const QuestionForm = ({
   );
 };
 
-export interface BaseQuestionProps {
+export interface QuestionProps {
   onEditorSubmit: (T?: any) => void;
-  code?: string;
-  path?: string;
-  postId: string;
-  programmingLanguage?: string;
-}
-
-export interface QuestionProps extends BaseQuestionProps {
   isReplay: boolean;
-  startingLineNum?: number; // not exist before the first commnet created
+  startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
 }
 
 const WrappedTextEditor = wrapEditor(TextEditor);
 
-// TODO: fix type defenition
-export const CreateQuestion = ({
-  code,
-  path,
-  postId,
-  programmingLanguage,
-  onEditorSubmit,
-  ...props
-}: QuestionProps) => (
-  <CreateCodeReviewQuestionComponent>
-    {mutate => {
-      const submitForm = async ({
-        cancel,
-        startingLineNum,
-        endingLineNum,
-        text,
-      }: TextEditorResult) => {
-        if (!cancel) {
-          // save result
-          const codeReviewQuestion = {
-            startingLineNum,
-            endingLineNum,
-            codeSnippet: !code
-              ? null
-              : code
-                  .split("\n")
-                  .slice(startingLineNum - 1, endingLineNum)
-                  .join("\n"),
-            text: text,
-            path,
-            postId,
-            programmingLanguage,
-          };
-          const response = await mutate({
-            variables: {
-              codeReviewQuestion,
-            },
-          });
+// TODO: fix type definition
+export const CreateQuestion = ({ onEditorSubmit, ...props }: QuestionProps) => {
+  const { code, path, postId, lang } = useContext(CodeFileContext);
+  return (
+    <CreateCodeReviewQuestionComponent>
+      {mutate => {
+        const submitForm = async ({
+          cancel,
+          startingLineNum,
+          endingLineNum,
+          text,
+        }: TextEditorResult) => {
+          if (!cancel) {
+            // save result
+            const codeReviewQuestion = {
+              startingLineNum,
+              endingLineNum,
+              codeSnippet: !code
+                ? null
+                : code
+                    .split("\n")
+                    .slice(startingLineNum - 1, endingLineNum)
+                    .join("\n"),
+              text: text,
+              path,
+              postId,
+              programmingLanguage: lang,
+            };
+            const response = await mutate({
+              variables: {
+                codeReviewQuestion,
+              },
+            });
 
-          console.log(response);
+            console.log(response);
 
-          onEditorSubmit({
-            submitted: true,
-            response,
-            data: { type: "question", ...codeReviewQuestion },
-          });
-        } else {
-          onEditorSubmit({ submitted: false });
-        }
-      };
-      return <WrappedTextEditor {...{ ...props, submitForm }} />;
-    }}
-  </CreateCodeReviewQuestionComponent>
-);
+            onEditorSubmit({
+              submitted: true,
+              response,
+              data: { type: "question", ...codeReviewQuestion },
+            });
+          } else {
+            onEditorSubmit({ submitted: false });
+          }
+        };
+        return <WrappedTextEditor {...{ ...props, submitForm }} />;
+      }}
+    </CreateCodeReviewQuestionComponent>
+  );
+};

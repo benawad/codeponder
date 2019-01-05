@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { css, CodeCard } from "@codeponder/ui";
 import { CommentProps, Comments } from "./commentUI";
 
@@ -8,16 +8,9 @@ import {
   CodeReviewQuestionInfoFragment,
   QuestionReplyInfoFragment,
 } from "./apollo-components";
-import { filenameToLang } from "../utils/filenameToLang";
 import { getHighlightedCode } from "../utils/highlightCode";
 import { RenderLine } from "./CodeLine";
-
-interface Props {
-  owner: string;
-  code: string | null;
-  path?: string;
-  postId: string;
-}
+import { CodeFileContext } from "./CodeFileContext";
 
 interface loadingCodeState {
   pending: boolean;
@@ -30,7 +23,6 @@ interface loadingCodeState {
  * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
  * Or the two in a more general utils?
  */
-// const SelectLines = (prop: FindCodeReviewQuestionsQuery) => {
 const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
   let offset = 0;
   const styles = prop.reduce((total, current) => {
@@ -138,10 +130,9 @@ const useHighlight = (lang: string, code: string) => {
   return highlightCode;
 };
 
-export const CodeFile: React.FC<Props> = ({ code, path, postId, owner }) => {
-  const lang = path ? filenameToLang(path) : "";
+export const CodeFile: React.FC = () => {
+  const { code, lang, owner, path, postId } = useContext(CodeFileContext);
   const highlightCode = useHighlight(lang, code || "");
-
   const variables = {
     path,
     postId,
@@ -167,13 +158,9 @@ export const CodeFile: React.FC<Props> = ({ code, path, postId, owner }) => {
             {highlightedCode.map((line, index) => (
               <RenderLine
                 key={index}
-                code={code || ""}
                 comments={comments[index + 1]}
-                lang={lang}
                 line={line}
                 lineNum={index + 1}
-                owner={owner}
-                {...variables}
               />
             ))}
           </CodeCard>

@@ -13,6 +13,8 @@ import {
 } from "../components/github-apollo-components";
 import { Link } from "../server/routes";
 import { CodeFile } from "../components/CodeFile";
+import { CodeFileContext, ContextProps } from "../components/CodeFileContext";
+import { filenameToLang } from "../utils/filenameToLang";
 import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
 import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
 import { Layout } from "../components/Layout";
@@ -137,12 +139,21 @@ export default class Post extends React.PureComponent<Props> {
               const { object } = data.repository;
 
               if (object.__typename === "Blob") {
+                const context: ContextProps = {
+                  code: object.text,
+                  lang: path ? filenameToLang(path) : "",
+                  owner,
+                  path,
+                  postId: id,
+                };
                 return (
                   <>
                     {this.renderFilePath(name, path)}
-                    <CodeFile
-                      {...{ path, code: object.text, postId: id, owner }}
-                    />
+                    {/*
+                    // @ts-ignore */}
+                    <CodeFileContext.Provider value={context}>
+                      <CodeFile />
+                    </CodeFileContext.Provider>
                   </>
                 );
               }
