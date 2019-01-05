@@ -1,7 +1,7 @@
 import { useInputValue } from "../utils/useInputValue";
 import { CreateQuestionReplyComponent } from "./apollo-components";
 import { TextEditorResult, TextEditor } from "./CommentForm";
-import { wrapEditor } from "./commnetUI";
+import { wrapEditor } from "./commentUI";
 
 interface Props {
   questionId: string;
@@ -9,7 +9,6 @@ interface Props {
 
 export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
   const [value, onChange] = useInputValue("");
-  console.log("questionId", questionId);
 
   return (
     <CreateQuestionReplyComponent>
@@ -40,7 +39,7 @@ interface QuestionReplyProps {
   isReplay: boolean;
   startingLineNum?: number; // not exist before the first commnet created
   endingLineNum: number;
-  closeCommentEditor: Function;
+  onEditorSubmit: (T?: any) => void;
   questionId: string;
 }
 
@@ -48,7 +47,7 @@ const WrappedTextEditor = wrapEditor(TextEditor);
 
 export const CreateQuestionReply = ({
   questionId,
-  closeCommentEditor,
+  onEditorSubmit,
   ...props
 }: QuestionReplyProps) => (
   <CreateQuestionReplyComponent>
@@ -56,17 +55,27 @@ export const CreateQuestionReply = ({
       const submitForm = async ({ cancel, text }: TextEditorResult) => {
         if (!cancel) {
           // save result
+          const questionReply = {
+            questionId,
+            text,
+          };
+
           const response = await mutate({
             variables: {
-              questionReply: {
-                questionId,
-                text,
-              },
+              questionReply,
             },
           });
+
           console.log(response);
+
+          onEditorSubmit({
+            submitted: true,
+            response,
+            data: { type: "reply", ...questionReply },
+          });
+        } else {
+          onEditorSubmit({ submitted: false });
         }
-        closeCommentEditor();
       };
       return <WrappedTextEditor {...{ ...props, submitForm }} />;
     }}

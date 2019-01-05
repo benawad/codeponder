@@ -1,4 +1,5 @@
-import * as Prism from "prismjs";
+import Prism from "prismjs/components/prism-core";
+
 const langDepMap: { [key: string]: string | string[] } = {
   javascript: "clike",
   actionscript: "javascript",
@@ -63,7 +64,7 @@ const langDepMap: { [key: string]: string | string[] } = {
   xquery: "markup",
 };
 
-export const loadLanguage = async (lang: string) => {
+const loadLanguage = async (lang: string) => {
   const deps = langDepMap[lang];
   if (deps) {
     if (typeof deps === "string") {
@@ -73,9 +74,26 @@ export const loadLanguage = async (lang: string) => {
     }
   }
 
-  if (lang in Prism.languages) {
-    return null;
-  }
+  // see prismjs/components/index.js
+  delete require.cache[require.resolve(`prismjs/components/prism-${lang}`)];
+  delete Prism.languages[lang];
 
-  return import(`prismjs/components/prism-${lang}`);
+  return import(`prismjs/components/prism-${lang}.min`);
+};
+
+export const getHighlightedCode = async (code: string, lang: string) => {
+  let grammar = Prism.languages[lang];
+  if (grammar === undefined) {
+    await loadLanguage(lang);
+    grammar = Prism.languages[lang];
+  }
+  const mixedTokens =
+    grammar !== undefined ? Prism.tokenize(code, grammar) : [code];
+
+  const encoded = Prism.util.encode(mixedTokens);
+  return Prism.Token.stringify(
+    encoded,
+    lang as Prism.LanguageDefinition,
+    {} as HTMLPreElement
+  );
 };

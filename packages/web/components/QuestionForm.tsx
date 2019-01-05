@@ -4,7 +4,7 @@ import { DebounceInput } from "react-debounce-input";
 
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
-import { wrapEditor } from "./commnetUI";
+import { wrapEditor } from "./commentUI";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 
 export interface QuestionFormProps {
@@ -130,66 +130,18 @@ export const QuestionForm = ({
   );
 };
 
-// const WrappedTextEditor = wrapEditor(TextEditor);
-
-// // TODO: fix type defenition
-// export const QuestionForm = (
-//   ChileComponent: (props: TextEditorProps) => JSX.Element
-// ) => ({
-//   code,
-//   path,
-//   postId,
-//   programmingLanguage,
-//   closeCommentEditor,
-//   ...props
-// }: QuestionProps) => (
-//   <CreateCodeReviewQuestionComponent>
-//     {mutate => {
-//       const submitForm = async ({
-//         cancel,
-//         startingLineNum,
-//         endingLineNum,
-//         text,
-//       }: TextEditorResult) => {
-//         if (!cancel) {
-//           // save result
-//           const response = await mutate({
-//             variables: {
-//               codeReviewQuestion: {
-//                 startingLineNum,
-//                 endingLineNum,
-//                 codeSnippet: !code
-//                   ? null
-//                   : code
-//                       .split("\n")
-//                       .slice(startingLineNum - 1, endingLineNum)
-//                       .join("\n"),
-//                 text: text,
-//                 path,
-//                 postId,
-//                 programmingLanguage,
-//               },
-//             },
-//           });
-//           console.log(response);
-//         }
-//         closeCommentEditor();
-//       };
-//       return <ChileComponent {...{ ...props, submitForm }} />;
-//     }}
-//   </CreateCodeReviewQuestionComponent>
-// );
-
-// export interface QuestionProps {
-export interface QuestionProps {
-  isReplay: boolean;
-  startingLineNum?: number; // not exist before the first commnet created
-  endingLineNum: number;
-  closeCommentEditor: Function;
+export interface BaseQuestionProps {
+  onEditorSubmit: (T?: any) => void;
   code?: string;
   path?: string;
   postId: string;
   programmingLanguage?: string;
+}
+
+export interface QuestionProps extends BaseQuestionProps {
+  isReplay: boolean;
+  startingLineNum?: number; // not exist before the first commnet created
+  endingLineNum: number;
 }
 
 const WrappedTextEditor = wrapEditor(TextEditor);
@@ -200,7 +152,7 @@ export const CreateQuestion = ({
   path,
   postId,
   programmingLanguage,
-  closeCommentEditor,
+  onEditorSubmit,
   ...props
 }: QuestionProps) => (
   <CreateCodeReviewQuestionComponent>
@@ -213,27 +165,36 @@ export const CreateQuestion = ({
       }: TextEditorResult) => {
         if (!cancel) {
           // save result
+          const codeReviewQuestion = {
+            startingLineNum,
+            endingLineNum,
+            codeSnippet: !code
+              ? null
+              : code
+                  .split("\n")
+                  .slice(startingLineNum - 1, endingLineNum)
+                  .join("\n"),
+            text: text,
+            path,
+            postId,
+            programmingLanguage,
+          };
           const response = await mutate({
             variables: {
-              codeReviewQuestion: {
-                startingLineNum,
-                endingLineNum,
-                codeSnippet: !code
-                  ? null
-                  : code
-                      .split("\n")
-                      .slice(startingLineNum - 1, endingLineNum)
-                      .join("\n"),
-                text: text,
-                path,
-                postId,
-                programmingLanguage,
-              },
+              codeReviewQuestion,
             },
           });
+
           console.log(response);
+
+          onEditorSubmit({
+            submitted: true,
+            response,
+            data: { type: "question", ...codeReviewQuestion },
+          });
+        } else {
+          onEditorSubmit({ submitted: false });
         }
-        closeCommentEditor();
       };
       return <WrappedTextEditor {...{ ...props, submitForm }} />;
     }}

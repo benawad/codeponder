@@ -140,7 +140,9 @@ export default class Post extends React.PureComponent<Props> {
                 return (
                   <>
                     {this.renderFilePath(name, path)}
-                    <CodeFile path={path} code={object.text} postId={id} />
+                    <CodeFile
+                      {...{ path, code: object.text, postId: id, owner }}
+                    />
                   </>
                 );
               }

@@ -11,28 +11,16 @@ export const getBorderColor = (type: string) => {
   return colors[type];
 };
 
-export const LineNo = styled.a<{ cursor?: string }>`
-  border-right: 1px solid #999;
-  color: #999;
-  cursor: ${p => p.cursor || "pointer"};
-  display: inline-block;
-  letter-spacing: -1px;
-  margin-right: 0.65em;
-  padding-right: 0.8em;
-  text-align: right;
-  user-select: none;
-  width: 3em;
-`;
-
-export const CommentBoxContainer = styled.div<{ color?: string }>`
+export const CommentBoxContainer = styled.div`
   background-color: #fff;
   display: grid;
   grid-template-columns: 3em auto;
   grid-column-gap: 0.65em;
 
-  & .comment-innder-box {
+  & .comment-inner-box {
     border: 1px solid #999;
-    border-left: 10px solid ${p => p.color || getBorderColor("question")};
+    border-left: 10px solid
+      ${(p: { color?: string }) => p.color || getBorderColor("question")};
     margin: 4px 0;
   }
 
@@ -65,6 +53,10 @@ export const CommentBoxContainer = styled.div<{ color?: string }>`
   }
 `;
 
+export interface Comments {
+  [key: number]: CommentProps[];
+}
+
 export interface CommentProps {
   id: string;
   startingLineNum?: number; // not include in reply
@@ -76,7 +68,7 @@ export interface CommentProps {
 }
 
 interface CommentFunctionProps extends CommentProps {
-  onReply: (props: any) => any;
+  onOpenEditor: (props: any) => any;
 }
 
 export const CommentBox: React.SFC<CommentFunctionProps> = ({
@@ -84,43 +76,40 @@ export const CommentBox: React.SFC<CommentFunctionProps> = ({
   text,
   isOwner,
   type,
-  onReply,
+  onOpenEditor,
 }) => (
   <CommentBoxContainer color={getBorderColor(type)}>
-    <LineNo cursor="default" />
-    <div className="comment-innder-box">
+    <span className="line-number comment" />
+    <div className="comment-inner-box">
       <div className="comment-title">
         <span className="comment-creator">{username}</span>
         {isOwner ? <span className="repo-owner">Author</span> : null}
         <MyButton
           variant="form"
           className="btn-reply primary"
-          onClick={onReply}
+          onClick={onOpenEditor}
         >
           Reply
         </MyButton>
       </div>
       <p className="comment-text">
         {text}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-        consequuntur modi quas alias placeat aliquam vitae explicabo magni saepe
-        commodi. Corporis ullam ratione fugit optio tempore provident voluptates
-        commodi quasi!
+        {
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est consequuntur modi quas alias placeat aliquam vitae explicabo magni saepe commodi. Corporis ullam ratione fugit optio tempore provident voluptates commodi quasi!"
+        }
       </p>
     </div>
   </CommentBoxContainer>
 );
 
-// TODO: fix type defenition
-export const wrapEditor = (ChileComponent: (props: any) => JSX.Element) => (
+// TODO: fix type definition
+export const wrapEditor = (ChildComponent: (props: any) => JSX.Element) => (
   props: any
 ) => (
   <CommentBoxContainer color={getBorderColor("editor")}>
-    <LineNo cursor="default" />
-    <div className="comment-innder-box">
-      <div>
-        <ChileComponent {...props} />
-      </div>
+    <span className="line-number comment" />
+    <div className="comment-inner-box">
+      <ChildComponent {...props} />
     </div>
   </CommentBoxContainer>
 );

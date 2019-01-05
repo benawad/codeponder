@@ -7,7 +7,7 @@ import { IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
 import introspectionQueryResultData from "./github-api-fragments.json";
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData: introspectionQueryResultData as any
+  introspectionQueryResultData: introspectionQueryResultData as any,
 });
 
 import initApollo from "./init-apollo";
@@ -25,7 +25,7 @@ function parseCookies(req?: any, options = {}) {
 
 const SERVER_LINK_OPTIONS = {
   uri: "http://localhost:4000/graphql",
-  credentials: "include"
+  credentials: "include",
 };
 const GITHUB_LINK_OPTIONS = { uri: "https://api.github.com/graphql" };
 
@@ -33,27 +33,27 @@ export default (App: any) => {
   return class WithData extends React.Component {
     static displayName = `WithData(${App.displayName})`;
     static propTypes = {
-      apolloState: PropTypes.object.isRequired
+      apolloState: PropTypes.object.isRequired,
     };
 
     static async getInitialProps(ctx: any) {
       const {
         Component,
         router,
-        ctx: { req, res }
+        ctx: { req, res },
       } = ctx;
       const apollo = initApollo(
         SERVER_LINK_OPTIONS,
         {},
         {
-          getToken: () => parseCookies(req).qid
+          getToken: () => parseCookies(req).qid,
         }
       );
 
       const {
-        data: { me }
+        data: { me },
       } = await apollo.query<MeQuery>({
-        query: meQuery
+        query: meQuery,
       });
 
       const githubApolloClient = initApollo(
@@ -62,7 +62,7 @@ export default (App: any) => {
         {
           getToken: () => {
             return me ? me.accessToken : "";
-          }
+          },
         },
         { fragmentMatcher }
       );
@@ -115,7 +115,7 @@ export default (App: any) => {
         ...appProps,
         me,
         apolloState,
-        githubApolloState
+        githubApolloState,
       };
     }
 
@@ -129,7 +129,7 @@ export default (App: any) => {
       this.apolloClient = initApollo(SERVER_LINK_OPTIONS, props.apolloState, {
         getToken: () => {
           return parseCookies().qid;
-        }
+        },
       });
 
       this.githubApolloClient = initApollo(
@@ -138,7 +138,7 @@ export default (App: any) => {
         {
           getToken: () => {
             return props.me ? props.me.accessToken : "";
-          }
+          },
         },
         { fragmentMatcher }
       );
