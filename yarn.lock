@@ -7490,10 +7490,10 @@ double-ended-queue@^2.1.0-0:
   resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
   integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
 
-downshift@3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.1.9.tgz#1336ec7f531161f97ab224a55a824911706d8dc4"
-  integrity sha512-zz0PIXghNxDFdUvST7pZ8snFkwf8iexaVWRkyJDBIZQuk4U8S+mUej2K6VClu6a2aBMvIHKtlrWmnB8SI8BJQw==
+downshift@3.1.10:
+  version "3.1.10"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.1.10.tgz#fc4f5b9923de11e7a9cb7c00b863f9c16c2656ac"
+  integrity sha512-AgFnU+O92N9aCglKaElFD+HXtKBHM6ph3HYfVV7q+Ob4FtKIyLwVg74/XMAAlrdgPRlo3NvjxqGADD12j3l7fg==
   dependencies:
     "@babel/runtime" "^7.1.2"
     compute-scroll-into-view "^1.0.9"
@@ -15307,7 +15307,12 @@ react-docgen-typescript-webpack-plugin@1.1.0:
     ajv "^6.1.1"
     react-docgen-typescript "^1.2.3"
 
-react-docgen-typescript@1.12.2, react-docgen-typescript@^1.2.3:
+react-docgen-typescript@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/react-docgen-typescript/-/react-docgen-typescript-1.12.3.tgz#fe62a5ce82e93573e316366e53adfe8273121c70"
+  integrity sha512-s1XswWs4ykNdWKsPyfM4qptV5dT8nnjnVi2IcjoS/vGlRNYrc0TkW0scVOrinHZ+ndKhPqA4iVNrdwhxZBzJcg==
+
+react-docgen-typescript@^1.2.3:
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/react-docgen-typescript/-/react-docgen-typescript-1.12.2.tgz#d5fb578d12f6876efdde69176f4ea658e75a9a29"
   integrity sha512-pcot0jGiMIyhmwNeSU83GvClNwk9NbcnYHcGf4pKMmw5J43d5OzYRcTzrZTGlIOWjYfYazYhvTxjujE625P3Mw==
