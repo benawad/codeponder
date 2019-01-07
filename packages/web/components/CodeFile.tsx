@@ -14,7 +14,7 @@ import {
 import { filenameToLang } from "../utils/filenameToLang";
 import { loadLanguage } from "../utils/loadLanguage";
 import { CreateQuestion, QuestionProps } from "./QuestionForm";
-import { CreateQuestionReply, QuestionReply } from "./QuestionReply";
+import { CreateQuestionReply } from "./QuestionReply";
 
 interface Props {
   code: string | null;
@@ -49,7 +49,7 @@ const SelectLines = (prop: FindCodeReviewQuestionsQuery) => {
  * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
  * Or the two in a more general utils?
  */
-const SelectLinesMouse = (arg: number[]) => {
+/* const SelectLinesMouse = (arg: number[]) => {
   // establishing defaults
   // The lenght of the args array can be variable
   const startLine = arg[0] || 0;
@@ -63,7 +63,7 @@ const SelectLinesMouse = (arg: number[]) => {
   return css`
     ${styles}
   `;
-};
+}; */
 
 interface Comments {
   [key: number]: CommentProps[];
