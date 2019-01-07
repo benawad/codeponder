@@ -1344,7 +1344,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@7.2.0":
+"@babel/runtime@7.2.0", "@babel/runtime@^7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.2.0.tgz#b03e42eeddf5898e00646e4c840fa07ba8dcad7f"
   integrity sha512-oouEibCbHMVdZSDlJBO6bZmID/zA/G/Qx3H1d3rSNPTD+L8UNKvCat7aKWSJ74zYbm5zWGh0GQN0hKj8zYFTCg==
@@ -2208,12 +2208,12 @@
     libnpm "^2.0.1"
     write-file-atomic "^2.3.0"
 
-"@material-ui/core@3.8.1":
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.1.tgz#ee8697732afd1856504044646c20a33ca1c6fab5"
-  integrity sha512-YhVanMT+DBaw8te6WbpU+RGm/wPYwT2FXlz0JGEexSOReDK3zVuyQJ7mTyDEE+HZQH6p1s6CTXXIH4CoivpogQ==
+"@material-ui/core@3.8.2":
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.2.tgz#24d78fb6093f5435c25a7cb76f17a6289215d805"
+  integrity sha512-OLPZqA0oeu1ritKxwDl6vfuVu+pxmcyF0C9iulvy41O9OJzjgFi89c8i8XOoJYcxW3HyuOvl+HGB4YX0sr2QZw==
   dependencies:
-    "@babel/runtime" "7.2.0"
+    "@babel/runtime" "^7.2.0"
     "@material-ui/system" "^3.0.0-alpha.0"
     "@material-ui/utils" "^3.0.0-alpha.2"
     "@types/jss" "^9.5.6"
@@ -2242,13 +2242,13 @@
     recompose "0.28.0 - 0.30.0"
     warning "^4.0.1"
 
-"@material-ui/icons@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-3.0.1.tgz#671fb3d04dcaf9351dbbd2bf82ae2ae72e3d93cd"
-  integrity sha512-1kNcxYiIT1x8iDPEAlgmKrfRTIV8UyK6fLVcZ9kMHIKGWft9I451V5mvSrbCjbf7MX1TbLWzZjph0aVCRf9MqQ==
+"@material-ui/icons@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-3.0.2.tgz#d67a6dd1ec8312d3a88ec97944a63daeef24fe10"
+  integrity sha512-QY/3gJnObZQ3O/e6WjH+0ah2M3MOgLOzCy8HTUoUx9B6dDrS18vP7Ycw3qrDEKlB6q1KNxy6CZHm5FCauWGy2g==
   dependencies:
-    "@babel/runtime" "7.0.0"
-    recompose "^0.29.0"
+    "@babel/runtime" "^7.2.0"
+    recompose "0.28.0 - 0.30.0"
 
 "@material-ui/system@^3.0.0-alpha.0":
   version "3.0.0-alpha.0"
@@ -2301,10 +2301,10 @@
     node-fetch "^2.3.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@16.3.2":
-  version "16.3.2"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.3.2.tgz#8dd08f5b11ce9dfb785669326fb4d904bf91d143"
-  integrity sha512-g1Shr7Bp5K3+o1VdUvQn//8ZIAFFODBi9GFdx4eqV2qZQtWwy28jmCGuS+CphnCj8PlQbFmZtXvmUh5xIRGFcA==
+"@octokit/rest@16.4.0":
+  version "16.4.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.4.0.tgz#31e470769210b8891a28a5025781389778ce2f1d"
+  integrity sha512-yAiUU6DgjZYTS00pMh/qis9N8rrAhBhKzMiRg/YMReCO6ZvboaSD5R3Sc2W2IJzGXbefdFnSTaELEg6mS7Kh9g==
   dependencies:
     "@octokit/request" "2.2.1"
     before-after-hook "^1.2.0"
@@ -15860,18 +15860,6 @@ recompose@^0.27.1:
   integrity sha512-p7xsyi/rfNjHfdP7vPU02uSFa+Q1eHhjKrvO+3+kRP4Ortj+MxEmpmd+UQtBGM2D2iNAjzNI5rCyBKp9Ob5McA==
   dependencies:
     babel-runtime "^6.26.0"
-    change-emitter "^0.1.2"
-    fbjs "^0.8.1"
-    hoist-non-react-statics "^2.3.1"
-    react-lifecycles-compat "^3.0.2"
-    symbol-observable "^1.0.4"
-
-recompose@^0.29.0:
-  version "0.29.0"
-  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.29.0.tgz#f1a4e20d5f24d6ef1440f83924e821de0b1bccef"
-  integrity sha512-J/qLXNU4W+AeHCDR70ajW8eMd1uroqZaECTj6qqDLPMILz3y0EzpYlvrnxKB9DnqcngWrtGwjXY9JeXaW9kS1A==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
     change-emitter "^0.1.2"
     fbjs "^0.8.1"
     hoist-non-react-statics "^2.3.1"
