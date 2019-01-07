@@ -84,7 +84,9 @@ const loadLanguage = async (lang: string) => {
 export const getHighlightedCode = async (code: string, lang: string) => {
   let grammar = Prism.languages[lang];
   if (grammar === undefined) {
-    await loadLanguage(lang);
+    try {
+      await loadLanguage(lang);
+    } catch {}
     grammar = Prism.languages[lang];
   }
   const mixedTokens =
