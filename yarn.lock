@@ -7485,10 +7485,10 @@ double-ended-queue@^2.1.0-0:
   resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
   integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
 
-downshift@3.1.10:
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.1.10.tgz#fc4f5b9923de11e7a9cb7c00b863f9c16c2656ac"
-  integrity sha512-AgFnU+O92N9aCglKaElFD+HXtKBHM6ph3HYfVV7q+Ob4FtKIyLwVg74/XMAAlrdgPRlo3NvjxqGADD12j3l7fg==
+downshift@3.1.11:
+  version "3.1.11"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.1.11.tgz#51ba398aa2688f798592575fd9c9fba618d62623"
+  integrity sha512-7f9KPmbjuHulBdezYBOKYu1cK3X/Pv7yYsIKkk0q3WIrjWIPBk0CxJrbv70wdCfgghny6JJuGA8gc7/zDj1OZw==
   dependencies:
     "@babel/runtime" "^7.1.2"
     compute-scroll-into-view "^1.0.9"
