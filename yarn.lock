@@ -2301,10 +2301,10 @@
     node-fetch "^2.3.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@16.5.0":
-  version "16.5.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.5.0.tgz#3e9d6ec09891ce23903d5dda0baaf60107337536"
-  integrity sha512-qDtUd1GXXJ1X77s/TRQYBdbgWZJ1xhTrsJ/6hwSmLRrZ1b0d0ABe6Ai5WYLOR0pqfm0JZzWMSbfO9P3Ioub3Xw==
+"@octokit/rest@16.6.0":
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.6.0.tgz#95de6c6259ad43778af436251e1625f92f0fdb04"
+  integrity sha512-hiSZCNDrYlJvF5Xone4KVYidiRC8T71oBVj5rLgsj4NwUuQQmFIzAypu9stbA7pSzJbwf2psk85mByCRlG/rKg==
   dependencies:
     "@octokit/request" "2.2.1"
     before-after-hook "^1.2.0"
@@ -3138,10 +3138,10 @@
     "@types/react" "*"
     "@types/webpack-env" "*"
 
-"@types/styled-components@4.1.4":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.4.tgz#c6915ccee4413da2e1e81b4df9d7ea5b97eb56aa"
-  integrity sha512-zEj6BptOBBxob0hnNdr/qiXZjlC8EUVl7GDN1z+kp58zLtDBjbrbo+1yjL2Gi64IjhFaF7Qz4MbsDdbBuUa83A==
+"@types/styled-components@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.5.tgz#6eca4dba53d167bd303d6555f57ebdccf1e061bf"
+  integrity sha512-TPFoJoOUszQ1yDymSDbz8kRry+DujKfjFoyGj/kokkm5pigTdoyH8tp3amclLLAJxuOsILVhjtTiCPbMq0sJMQ==
   dependencies:
     "@types/node" "*"
     "@types/react" "*"
