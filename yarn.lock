@@ -2301,10 +2301,10 @@
     node-fetch "^2.3.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@16.4.0":
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.4.0.tgz#31e470769210b8891a28a5025781389778ce2f1d"
-  integrity sha512-yAiUU6DgjZYTS00pMh/qis9N8rrAhBhKzMiRg/YMReCO6ZvboaSD5R3Sc2W2IJzGXbefdFnSTaELEg6mS7Kh9g==
+"@octokit/rest@16.5.0":
+  version "16.5.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.5.0.tgz#3e9d6ec09891ce23903d5dda0baaf60107337536"
+  integrity sha512-qDtUd1GXXJ1X77s/TRQYBdbgWZJ1xhTrsJ/6hwSmLRrZ1b0d0ABe6Ai5WYLOR0pqfm0JZzWMSbfO9P3Ioub3Xw==
   dependencies:
     "@octokit/request" "2.2.1"
     before-after-hook "^1.2.0"
