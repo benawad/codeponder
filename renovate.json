@@ -1,5 +1,12 @@
 {
   "extends": ["config:base"],
   "automerge": true,
-  "ignoreDeps": ["react", "react-dom"]
+  "packageRules": [
+    {
+      "packageNames": [
+        "react", "react-dom"
+      ],
+      "followTag": "next"
+    }
+  ]
 }
