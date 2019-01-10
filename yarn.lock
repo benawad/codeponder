@@ -2208,10 +2208,10 @@
     libnpm "^2.0.1"
     write-file-atomic "^2.3.0"
 
-"@material-ui/core@3.8.2":
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.2.tgz#24d78fb6093f5435c25a7cb76f17a6289215d805"
-  integrity sha512-OLPZqA0oeu1ritKxwDl6vfuVu+pxmcyF0C9iulvy41O9OJzjgFi89c8i8XOoJYcxW3HyuOvl+HGB4YX0sr2QZw==
+"@material-ui/core@3.8.3":
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.3.tgz#5173ceb114e781b01d239a02d851ff6ffbdbc0b0"
+  integrity sha512-jgWx5uwpo+mCj+Y6JdygFRji8ZHDYZdbylqCXvpK42c2n6m/jsr4Y5Y7RnlgllkIqftKFGNnik/rd1gTLaF+Ig==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@material-ui/system" "^3.0.0-alpha.0"
@@ -2301,10 +2301,10 @@
     node-fetch "^2.3.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@16.7.0":
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.7.0.tgz#e17bdf3387d6994631d8fc74e223db9a2f247d9e"
-  integrity sha512-DxLiwTZ/sqWOWGuIxnisURbR9LLt9lVVeG17nZ3IeclElUjw1C/ZUYUiHLpdBCaFebvrP+GM2x1OdTAD8IzLQg==
+"@octokit/rest@16.8.0":
+  version "16.8.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.8.0.tgz#7d621a9f0d04178ba86c5c5d3792fa3e04a6409a"
+  integrity sha512-08jVneGXjopQr0SYeborTjGgVFCro6udW9l4bLJQXW0IUkQqCIyDKjUXNctWI8QnZ3W0jYELV9SCV4VPPLXAXg==
   dependencies:
     "@octokit/request" "2.2.1"
     before-after-hook "^1.2.0"
