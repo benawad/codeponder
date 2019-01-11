@@ -51,7 +51,7 @@
     "react-docgen-typescript": "1.12.3",
     "react-docgen-typescript-webpack-plugin": "1.1.0",
     "react-styleguidist": "8.0.6",
-    "storybook-addon-styled-component-theme": "1.1.0",
+    "storybook-addon-styled-component-theme": "1.1.1",
     "tslint": "5.12.1"
   }
 }
