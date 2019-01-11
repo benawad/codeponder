@@ -30,7 +30,7 @@
     "ioredis": "4.3.0",
     "passport": "0.4.0",
     "passport-github": "1.1.0",
-    "pg": "7.7.1",
+    "pg": "7.8.0",
     "reflect-metadata": "0.1.12",
     "type-graphql": "0.16.0",
     "typeorm": "0.2.11",
