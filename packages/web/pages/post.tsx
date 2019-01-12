@@ -145,6 +145,7 @@ export default class Post extends React.PureComponent<Props> {
                   owner,
                   path,
                   postId: id,
+                  totalLines: (object.text || "").split("\n").length,
                 };
                 return (
                   <>

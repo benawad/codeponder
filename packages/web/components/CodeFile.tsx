@@ -20,23 +20,19 @@ interface loadingCodeState {
 /*
  * *Styles for the line numbers coming from the server
  *
- * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
- * Or the two in a more general utils?
  */
 const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
-  let offset = 0;
   const styles = prop.reduce((total, current) => {
-    const { startingLineNum, endingLineNum, numReplies } = current;
+    const { startingLineNum, endingLineNum } = current;
     total += `
-     & .token-line:nth-child(n+${startingLineNum +
-       offset}):nth-child(-n+${endingLineNum + offset}) {
+     & .token-line:nth-child(n+${startingLineNum}):nth-child(-n+${endingLineNum}) {
       background: hsla(24, 20%, 50%,.08);
       background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
     }
      `;
-    offset += numReplies + 1;
     return total;
   }, "");
+
   return css`
     ${styles}
   `;
@@ -76,34 +72,40 @@ const getCommentsForFile = (
   }, {});
 };
 
-const setIsHovered = ({ target: elm, currentTarget: current, type }: any) => {
-  let showButton = type == "mouseover";
-  while (elm && elm != current && !elm.classList.contains("token-line")) {
-    // hide the button when user hover over comments or line-number
-    const name = elm.classList[0];
-    if (name && name.match(/CommentBoxContainer|line-number|code-content/)) {
-      showButton = false;
-    }
+const setIsHovered = (
+  questions: CodeReviewQuestionInfoFragment[],
+  { target: elm, currentTarget: parent, type }: any
+) => {
+  // let the comment form handle the event
+  if (parent.classList.contains("js-select-line")) {
+    return;
+  }
+  while (elm && elm != parent && !elm.classList.contains("token-line")) {
     elm = elm.parentNode || null;
   }
-  if (elm && current) {
-    current
-      .querySelectorAll(".is-hovered")
-      .forEach((button: HTMLButtonElement) =>
-        button.classList.toggle("is-hovered", false)
+  if (elm && parent) {
+    let isOverLine =
+      type == "mouseover" && elm.classList.contains("token-line");
+
+    let numberElm = elm.childNodes[0];
+    const currentLine = +numberElm.dataset.lineNumber;
+    // we only allow one question on lines range
+    if (isOverLine && questions.length > 0) {
+      isOverLine = !questions.some(
+        q => currentLine >= q.startingLineNum && currentLine <= q.endingLineNum
       );
-    if (showButton) {
-      elm.childNodes[1].classList.add("is-hovered");
+    }
+
+    parent
+      .querySelectorAll(".is-hovered")
+      .forEach((elm: Element) => elm.classList.remove("is-hovered"));
+    if (isOverLine) {
+      elm.classList.add("is-hovered");
     }
   }
 };
 
-const PLUSBUTTON = `<button variant="primary" class="btn-open-edit hidden">
-    <svg viewBox="0 0 12 16" version="1.1" width="12" height="16"
-      aria-hidden="true" preserveAspectRatio="xMaxYMax meet">
-      <path fill-rule="evenodd" d="M12 9H7v5H5V9H0V7h5V2h2v5h5v2z"></path>
-    </svg>
-  </button>`;
+const PLUSBUTTON = `<button class="btn-open-edit token-btn hidden"><span>+</span></button>`;
 
 const useHighlight = (lang: string, code: string) => {
   const hasLoadedLanguage = useRef(false);
@@ -118,9 +120,8 @@ const useHighlight = (lang: string, code: string) => {
         const PlusButton = PLUSBUTTON.split("\n")
           .map(item => item.trim())
           .join("");
-        const tokens = highlightedCode.split("\n").map((line, lineNum) => {
-          return `<span class="line-number">${lineNum +
-            1}</span>${PlusButton}${line}`;
+        const tokens = highlightedCode.split("\n").map(line => {
+          return `${PlusButton}${line}`;
         });
 
         setHighlightCode({ pending: false, resolved: tokens });
@@ -147,13 +148,16 @@ export const CodeFile: React.FC = () => {
 
         const highlightedCode = highlightCode.resolved!;
         const comments = getCommentsForFile(data, owner);
+        const questions = data.findCodeReviewQuestions;
+
+        const onMouseOverAndOut = setIsHovered.bind(null, questions);
 
         return (
           <CodeCard
             lang={lang}
-            selectedLines={SelectLines(data.findCodeReviewQuestions)}
-            onMouseOut={setIsHovered}
-            onMouseOver={setIsHovered}
+            selectedLines={SelectLines(questions)}
+            onMouseOut={onMouseOverAndOut}
+            onMouseOver={onMouseOverAndOut}
           >
             {highlightedCode.map((line, index) => (
               <RenderLine

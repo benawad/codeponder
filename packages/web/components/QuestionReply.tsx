@@ -1,7 +1,6 @@
 import { useInputValue } from "../utils/useInputValue";
 import { CreateQuestionReplyComponent } from "./apollo-components";
-import { TextEditorResult, TextEditor } from "./CommentForm";
-import { wrapEditor } from "./commentUI";
+import { TextEditor, TextEditorResult } from "./CommentForm";
 
 interface Props {
   questionId: string;
@@ -37,13 +36,11 @@ export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
 
 interface QuestionReplyProps {
   isReplay: boolean;
-  startingLineNum?: number; // not exist before the first commnet created
+  startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
   onEditorSubmit: (T?: any) => void;
   questionId: string;
 }
-
-const WrappedTextEditor = wrapEditor(TextEditor);
 
 export const CreateQuestionReply = ({
   questionId,
@@ -77,7 +74,11 @@ export const CreateQuestionReply = ({
           onEditorSubmit({ submitted: false });
         }
       };
-      return <WrappedTextEditor {...{ ...props, submitForm }} />;
+      return (
+        <TextEditor
+          {...{ ...props, submitForm, type: "reply", view: "in-code" }}
+        />
+      );
     }}
   </CreateQuestionReplyComponent>
 );

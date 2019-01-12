@@ -2,31 +2,18 @@
 
 import { MyButton, styled } from "@codeponder/ui";
 
-export const getBorderColor = (type: string) => {
-  const colors: { [key: string]: string } = {
-    question: "rgb(238, 238, 88)",
-    reply: "rgb(235, 73, 144)",
-    editor: "rgb(0, 238, 88)",
-  };
-  return colors[type];
-};
-
 export const CommentBoxContainer = styled.div`
   background-color: #fff;
-  display: grid;
-  grid-template-columns: 3em auto;
-  grid-column-gap: 0.65em;
 
   & .comment-inner-box {
-    border: 1px solid #999;
-    border-left: 10px solid
-      ${(p: { color?: string }) => p.color || getBorderColor("question")};
-    margin: 4px 0;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    margin: 0.652em;
   }
 
   & .comment-title {
     align-items: center;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #d1d5da;
     display: flex;
     padding: 0.5em;
   }
@@ -75,11 +62,9 @@ export const CommentBox: React.SFC<CommentFunctionProps> = ({
   username,
   text,
   isOwner,
-  type,
   onOpenEditor,
 }) => (
-  <CommentBoxContainer color={getBorderColor(type)}>
-    <span className="line-number comment" />
+  <CommentBoxContainer>
     <div className="comment-inner-box">
       <div className="comment-title">
         <span className="comment-creator">{username}</span>
@@ -98,18 +83,6 @@ export const CommentBox: React.SFC<CommentFunctionProps> = ({
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est consequuntur modi quas alias placeat aliquam vitae explicabo magni saepe commodi. Corporis ullam ratione fugit optio tempore provident voluptates commodi quasi!"
         }
       </p>
-    </div>
-  </CommentBoxContainer>
-);
-
-// TODO: fix type definition
-export const wrapEditor = (ChildComponent: (props: any) => JSX.Element) => (
-  props: any
-) => (
-  <CommentBoxContainer color={getBorderColor("editor")}>
-    <span className="line-number comment" />
-    <div className="comment-inner-box">
-      <ChildComponent {...props} />
     </div>
   </CommentBoxContainer>
 );

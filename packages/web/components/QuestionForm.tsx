@@ -4,7 +4,6 @@ import { DebounceInput } from "react-debounce-input";
 
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
-import { wrapEditor } from "./commentUI";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 import { CodeFileContext } from "./CodeFileContext";
 
@@ -138,8 +137,6 @@ export interface QuestionProps {
   endingLineNum: number;
 }
 
-const WrappedTextEditor = wrapEditor(TextEditor);
-
 // TODO: fix type definition
 export const CreateQuestion = ({ onEditorSubmit, ...props }: QuestionProps) => {
   const { code, path, postId, lang } = useContext(CodeFileContext);
@@ -185,7 +182,11 @@ export const CreateQuestion = ({ onEditorSubmit, ...props }: QuestionProps) => {
             onEditorSubmit({ submitted: false });
           }
         };
-        return <WrappedTextEditor {...{ ...props, submitForm }} />;
+        return (
+          <TextEditor
+            {...{ ...props, submitForm, type: "question", view: "in-code" }}
+          />
+        );
       }}
     </CreateCodeReviewQuestionComponent>
   );

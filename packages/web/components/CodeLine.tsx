@@ -1,8 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+import { Discussion } from "./Discussion";
 import { AddComment } from "./CommentSection";
-import { CommentProps, CommentBox } from "./commentUI";
-import { getScrollY } from "../utils/domScrollUtils";
+import { CommentProps } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
+import { getScrollY } from "../utils/domScrollUtils";
 
 interface RenderLineProps {
   comments: CommentProps[];
@@ -62,7 +63,8 @@ export const RenderLine: React.FC<RenderLineProps> = ({
 
   const onOpenEditor = useCallback(({ target: elm }: any) => {
     if (
-      elm.classList.contains("btn-open-edit") ||
+      (elm.classList.contains("btn-open-edit") &&
+        elm.parentNode.parentNode.classList.contains("is-hovered")) ||
       elm.classList.contains("btn-reply")
     ) {
       setShowEditor(true);
@@ -70,16 +72,16 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   }, []);
 
   return (
-    <>
-      <div
-        key={lineNum}
-        className="token-line"
+    <div key={lineNum} className="token-line">
+      <span
+        className="token-html"
+        data-line-number={lineNum}
         dangerouslySetInnerHTML={{ __html: line }}
         onClick={onOpenEditor}
       />
-      {commentsForRow.map((comment, key) => {
-        return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
-      }) || null}
+      {commentsForRow.length > 0 && (
+        <Discussion comments={commentsForRow} onOpenEditor={onOpenEditor} />
+      )}
       {showEditor && (
         <AddComment
           comments={commentsForRow}
@@ -87,6 +89,6 @@ export const RenderLine: React.FC<RenderLineProps> = ({
           onEditorSubmit={onEditorSubmit}
         />
       )}
-    </>
+    </div>
   );
 };

@@ -6,6 +6,7 @@ export interface ContextProps {
   owner: string;
   path?: string;
   postId: string;
+  totalLines: number;
 }
 
 export const CodeFileContext = createContext<ContextProps>({} as any);
