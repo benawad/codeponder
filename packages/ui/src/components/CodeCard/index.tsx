@@ -31,7 +31,7 @@ const Pre = styled.pre`
   }
 
   & .token-line {
-    &.is-selected {
+    &[class*="is-selected"] {
       background: hsla(24, 20%, 50%, 0.08);
       background: linear-gradient(
         to right,
@@ -99,7 +99,7 @@ const Pre = styled.pre`
   }
 
   &:not(.js-select-line) {
-    & .token-line:not(.is-selected).is-hovered {
+    & .token-line:not([class*="is-selected"]).is-hovered {
       & .btn-open-edit {
         opacity: 1;
         cursor: pointer;

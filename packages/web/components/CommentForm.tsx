@@ -160,7 +160,7 @@ export const TextEditor = (props: TextEditorProps) => {
   );
 
   const onCancel = useCallback(() => {
-    cleanSelectedLines();
+    cleanSelectedLines(end);
     submitForm({ cancel: true } as TextEditorResult);
   }, []);
 
