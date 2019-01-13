@@ -132,7 +132,7 @@ export const QuestionForm = ({
 
 export interface QuestionProps {
   onEditorSubmit: (T?: any) => void;
-  isReplay: boolean;
+  isReply: boolean;
   startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
 }

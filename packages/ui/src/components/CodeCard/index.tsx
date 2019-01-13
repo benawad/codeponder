@@ -31,6 +31,9 @@ const Pre = styled.pre`
   }
 
   & .token-line {
+    display: flex;
+    flex-direction: column;
+
     &[class*="is-selected"] {
       background: hsla(24, 20%, 50%, 0.08);
       background: linear-gradient(
@@ -108,23 +111,6 @@ const Pre = styled.pre`
       & .btn-open-edit:hover {
         transform: scale(1);
       }
-    }
-  }
-
-  & .discussion-container {
-    background: #ffffff;
-
-    & .discussion-inner-box {
-      border-top: 1px solid #dfe2e5;
-      border-bottom: 1px solid #dfe2e5;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 400ms, opacity 600ms ease;
-    }
-
-    &.is-open > .discussion-inner-box {
-      max-height: 2000px;
-      opacity: 1;
     }
   }
 

@@ -5,6 +5,7 @@ import { styled } from "@codeponder/ui";
 interface DiscussionProps {
   comments: CommentProps[];
   onOpenEditor: (props: any) => any;
+  showEditor: boolean;
 }
 
 const DiscussionNavBar = styled.div`
@@ -29,6 +30,25 @@ const DiscussionNavBar = styled.div`
   }
 `;
 
+const DiscussionContainer = styled.div`
+  background-color: #ffffff;
+
+  & .discussion-inner-box {
+    border-top: 1px solid #dfe2e5;
+    border-bottom: ${(p: { showEditor: boolean }) =>
+      p.showEditor ? "none" : "1px solid #dfe2e5"};
+    margin-bottom: ${p => (p.showEditor ? "-0.5em" : "0")};
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 400ms, opacity 600ms ease;
+  }
+
+  &.is-open > .discussion-inner-box {
+    max-height: 2000px;
+    opacity: 1;
+  }
+`;
+
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
 
@@ -43,6 +63,7 @@ const lineNumbers = (comment: CommentProps) => {
 export const Discussion: React.FC<DiscussionProps> = ({
   comments,
   onOpenEditor,
+  showEditor,
 }) => {
   const discussionRef = useRef<HTMLDivElement>(null);
   const [showDiscussion, setShowDiscussion] = useState(false);
@@ -68,7 +89,7 @@ export const Discussion: React.FC<DiscussionProps> = ({
         discussionRef.current!.classList.add("is-open");
       }
     },
-    [showDiscussion]
+    [showDiscussion, showEditor]
   );
 
   return (
@@ -82,7 +103,7 @@ export const Discussion: React.FC<DiscussionProps> = ({
         <span className="badge-icon">▾</span>
       </button>
       {showDiscussion && (
-        <div ref={discussionRef} className="discussion-container">
+        <DiscussionContainer ref={discussionRef} showEditor={showEditor}>
           <div className="discussion-inner-box">
             <DiscussionNavBar>
               <h2 className="header-title">
@@ -97,7 +118,7 @@ export const Discussion: React.FC<DiscussionProps> = ({
               return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
             })}
           </div>
-        </div>
+        </DiscussionContainer>
       )}
     </>
   );

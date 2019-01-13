@@ -13,16 +13,16 @@ export const AddComment: React.SFC<AddCommentProps> = ({
   line,
   onEditorSubmit,
 }) => {
-  const isReplay = comments.length > 0;
-  const question = isReplay ? comments[0] : undefined;
+  const isReply = comments.length > 0;
+  const question = isReply ? comments[0] : undefined;
 
   const commentProps = {
-    isReplay,
+    isReply,
     endingLineNum: line,
     onEditorSubmit,
   };
 
-  return isReplay ? (
+  return isReply ? (
     <CreateQuestionReply
       {...commentProps}
       startingLineNum={question!.startingLineNum}

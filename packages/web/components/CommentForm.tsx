@@ -39,7 +39,7 @@ const FormInput = styled(BlueInput)`
 `;
 
 const FormRow = styled.div`
-  padding: 1rem 0.5em;
+  padding: 1rem 0.625em;
 `;
 
 const Separator = styled.div`
@@ -49,9 +49,12 @@ const Separator = styled.div`
 `;
 
 const FormContainer = styled.div`
+  border-top: ${(p: { isReply: boolean }) =>
+    p.isReply ? "none" : "1px solid #d1d5da"};
+  border-bottom: 1px solid #d1d5da;
   display: flex;
   flex-direction: column;
-  margin: 0.625em;
+  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.625em")};
 
   & .btn-box {
     display: flex;
@@ -81,7 +84,7 @@ const FormContainer = styled.div`
 `;
 
 export interface TextEditorProps {
-  isReplay: boolean;
+  isReply: boolean;
   startingLineNum?: number;
   endingLineNum: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
@@ -99,7 +102,7 @@ export interface TextEditorResult {
 
 export const TextEditor = (props: TextEditorProps) => {
   const {
-    isReplay,
+    isReply,
     startingLineNum,
     endingLineNum,
     submitForm,
@@ -127,7 +130,7 @@ export const TextEditor = (props: TextEditorProps) => {
     !startInput.current ||
     !endInput.current ||
     (startInput.current!.validity.valid && endInput.current!.validity.valid);
-  const isValidForm = isReplay
+  const isValidForm = isReply
     ? textTrimmed
     : titleTrimmed && textTrimmed && validateStartEnd;
 
@@ -166,9 +169,9 @@ export const TextEditor = (props: TextEditorProps) => {
 
   return (
     <CommentBoxContainer>
-      <FormContainer ref={formRef} onKeyDown={onKeyDown}>
+      <FormContainer ref={formRef} onKeyDown={onKeyDown} isReply={isReply}>
         {// hide title and line numbers on reply
-        !isReplay && (
+        !isReply && (
           <>
             <FormRow>
               <FormInput
@@ -215,7 +218,7 @@ export const TextEditor = (props: TextEditorProps) => {
 
         <FormRow>
           <FormInput
-            ref={isReplay ? inputRef : null}
+            ref={isReply ? inputRef : null}
             minHeight="100px"
             name="question"
             placeholder={

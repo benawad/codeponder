@@ -80,7 +80,11 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         onClick={onOpenEditor}
       />
       {commentsForRow.length > 0 && (
-        <Discussion comments={commentsForRow} onOpenEditor={onOpenEditor} />
+        <Discussion
+          comments={commentsForRow}
+          onOpenEditor={onOpenEditor}
+          showEditor={showEditor}
+        />
       )}
       {showEditor && (
         <AddComment
