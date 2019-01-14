@@ -45,6 +45,7 @@ export interface Comments {
 }
 
 export interface CommentProps {
+  newQuestion?: boolean;
   id: string;
   startingLineNum?: number; // not include in reply
   endingLineNum?: number; // not include in reply

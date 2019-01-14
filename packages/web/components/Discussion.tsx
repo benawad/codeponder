@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { CommentProps, CommentBox } from "./commentUI";
 import { styled } from "@codeponder/ui";
 import { useAnimateOpen } from "./useAnimateOpen";
@@ -32,14 +32,10 @@ const DiscussionNavBar = styled.div`
 `;
 
 const DiscussionContainer = styled.div`
-  background-color: #ffffff;
-
-  & .discussion-inner-box {
-    border-top: 1px solid #dfe2e5;
-    border-bottom: ${(p: { showEditor: boolean }) =>
-      p.showEditor ? "none" : "1px solid #dfe2e5"};
-    margin-bottom: ${p => (p.showEditor ? "-0.5em" : "0")};
-  }
+  border-top: 1px solid #dfe2e5;
+  border-bottom: ${(p: { showEditor: boolean }) =>
+    p.showEditor ? "none" : "1px solid #dfe2e5"};
+  margin-bottom: ${p => (p.showEditor ? "-0.5em" : "0")};
 `;
 
 const COLLAPSE = "Collapse this discussion";
@@ -58,15 +54,31 @@ export const Discussion: React.FC<DiscussionProps> = ({
   onOpenEditor,
   showEditor,
 }) => {
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const newQuestionRef = useRef(
+    comments.length == 1 && comments[0].newQuestion
+  );
   const {
-    AnimateContainer,
+    AnimateOpen,
     isOpen: showDiscussion,
     onClick: onToggleDiscussion,
   } = useAnimateOpen(false);
 
+  // show new question immediately
+  useEffect(
+    () => {
+      if (newQuestionRef.current) {
+        newQuestionRef.current = false;
+        onToggleDiscussion({ target: toggleButtonRef.current });
+      }
+    },
+    [comments]
+  );
+
   return (
     <>
       <button
+        ref={toggleButtonRef}
         className="token-btn discussion-badge"
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={onToggleDiscussion}
@@ -74,9 +86,12 @@ export const Discussion: React.FC<DiscussionProps> = ({
         <span className="badge-counter">{comments.length}</span>
         <span className="badge-icon">▾</span>
       </button>
-      <AnimateContainer>
-        <DiscussionContainer showEditor={showEditor}>
-          <div className="discussion-inner-box inner-animate-box">
+      {
+        <AnimateOpen bgColor="#ffffff">
+          <DiscussionContainer
+            showEditor={showEditor}
+            className="inner-animate-box"
+          >
             <DiscussionNavBar>
               <h2 className="header-title">
                 <span className="discussion-title">Title placeholder</span>{" "}
@@ -89,9 +104,9 @@ export const Discussion: React.FC<DiscussionProps> = ({
             {comments.map((comment, key) => {
               return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
             })}
-          </div>
-        </DiscussionContainer>
-      </AnimateContainer>
+          </DiscussionContainer>
+        </AnimateOpen>
+      }
     </>
   );
 };

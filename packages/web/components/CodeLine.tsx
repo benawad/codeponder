@@ -1,14 +1,21 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Discussion } from "./Discussion";
 import { AddComment } from "./CommentSection";
 import { CommentProps } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
 import { getScrollY } from "../utils/domScrollUtils";
+import { useAnimateOpen } from "./useAnimateOpen";
 
 interface RenderLineProps {
   comments: CommentProps[];
   line: string;
   lineNum: number;
+}
+
+interface RenderLineRef {
+  showEditor: boolean;
+  preventScroll: boolean;
+  scrollPosition: number;
 }
 
 export const RenderLine: React.FC<RenderLineProps> = ({
@@ -17,32 +24,51 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   lineNum,
 }) => {
   const { owner } = useContext(CodeFileContext);
-  const [showEditor, setShowEditor] = useState(false);
+  const lineRef = useRef<RenderLineRef>({
+    showEditor: false,
+    preventScroll: false,
+    scrollPosition: getScrollY(),
+  });
   const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
-  let preventScroll = false;
-  let scrollPosition = getScrollY();
-  const onEditorSubmit = ({ submitted, response, data }: any) => {
-    if (submitted) {
-      const { id, creator, __typename } =
-        data.type == "question"
-          ? response.data.createCodeReviewQuestion.codeReviewQuestion
-          : response.data.createQuestionReply.questionReply;
+  const {
+    AnimateOpen,
+    isOpen: showEditor,
+    onClick: onToggleShowEditor,
+  } = useAnimateOpen(false);
 
-      data.id = id;
-      data.username = creator.username;
-      data.isOwner = creator.username == owner;
-      data.__typename = __typename;
-      preventScroll = true;
-      scrollPosition = getScrollY();
-      setCommentsForRow([...commentsForRow, data]);
+  const setShowEditor = useCallback(val => {
+    if (lineRef.current.showEditor != val) {
+      lineRef.current.showEditor = val;
+      onToggleShowEditor();
     }
-    setShowEditor(false);
-  };
+  }, []);
+
+  const onEditorSubmit = useCallback(
+    ({ submitted, response, data }: any) => {
+      if (submitted) {
+        const { id, creator, __typename } =
+          data.type == "question"
+            ? response.data.createCodeReviewQuestion.codeReviewQuestion
+            : response.data.createQuestionReply.questionReply;
+
+        data.id = id;
+        data.username = creator.username;
+        data.isOwner = creator.username == owner;
+        data.__typename = __typename;
+        lineRef.current.preventScroll = true;
+        lineRef.current.scrollPosition = getScrollY();
+        data.newQuestion = true;
+        setCommentsForRow([...commentsForRow, data]);
+      }
+      setShowEditor(false);
+    },
+    [commentsForRow]
+  );
 
   useEffect(
     () => {
-      preventScroll = false;
+      lineRef.current.preventScroll = false;
     },
     [commentsForRow]
   );
@@ -50,9 +76,9 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   useEffect(() => {
     // prevent page scroll after submitting comment form
     const stopScroll = (event: UIEvent): void => {
-      if (preventScroll) {
+      if (lineRef.current.preventScroll) {
         event.preventDefault();
-        window.scrollTo(0, scrollPosition);
+        window.scrollTo(0, lineRef.current.scrollPosition);
       }
     };
     window.addEventListener("scroll", stopScroll);
@@ -87,11 +113,13 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         />
       )}
       {showEditor && (
-        <AddComment
-          comments={commentsForRow}
-          line={lineNum}
-          onEditorSubmit={onEditorSubmit}
-        />
+        <AnimateOpen bgColor="#ffffff">
+          <AddComment
+            comments={commentsForRow}
+            line={lineNum}
+            onEditorSubmit={onEditorSubmit}
+          />
+        </AnimateOpen>
       )}
     </div>
   );

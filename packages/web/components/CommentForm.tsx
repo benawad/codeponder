@@ -4,7 +4,6 @@ import { useSelectedLines, cleanSelectedLines } from "./useSelectedLines";
 import { useInputValue } from "../utils/useInputValue";
 import { isScrolledIntoView, getScrollY } from "../utils/domScrollUtils";
 import { MyButton, styled, Label, BlueInput } from "@codeponder/ui";
-import { CommentBoxContainer } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
 
 interface FormInputProps {
@@ -136,19 +135,24 @@ export const TextEditor = (props: TextEditorProps) => {
 
   // focus title / textarea
   useEffect(() => {
-    if (inputRef) {
-      inputRef.current!.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   }, []);
 
   // make sure the editor is fully visible
   useEffect(() => {
     if (view == "in-code") {
-      const elm = formRef.current!.parentElement!.parentElement;
-      const { offsetBottom = 0 } = isScrolledIntoView(elm);
-      if (offsetBottom > 0) {
-        window.scrollTo(0, getScrollY() + offsetBottom + 50);
-      }
+      // wait for the animate to finish
+      setTimeout(() => {
+        if (formRef.current) {
+          const elm = formRef.current!.parentElement!;
+          const { offsetBottom = 0 } = isScrolledIntoView(elm);
+          if (offsetBottom > 0) {
+            window.scrollTo(0, getScrollY() + offsetBottom + 50);
+          }
+        }
+      }, 400);
     }
   }, []);
 
@@ -168,92 +172,95 @@ export const TextEditor = (props: TextEditorProps) => {
   }, []);
 
   return (
-    <CommentBoxContainer>
-      <FormContainer ref={formRef} onKeyDown={onKeyDown} isReply={isReply}>
-        {// hide title and line numbers on reply
-        !isReply && (
-          <>
-            <FormRow>
-              <FormInput
-                ref={inputRef}
-                placeholder="Title"
-                name="title"
-                value={title}
-                onChange={titleChange}
-              />
-            </FormRow>
-            <FormRow>
-              <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
-              <FormInput
-                className="start-tooltip"
-                ref={startInput}
-                name="startingLineNum"
-                min="1"
-                max={Math.min(endingLineNum, totalLines)}
-                type="number"
-                value={start}
-                width="5em"
-                onChange={startingLineNumChange}
-              />
-              <Label className="tooltiptext" as="span">
-                You can type a number, use up/down arrows or select a line with
-                the mouse
-              </Label>
-              <span style={{ padding: "0px 1rem" }}>–</span>
-              <FormInput
-                ref={endInput}
-                disabled={view == "in-code"}
-                name="endingLineNum"
-                min={Math.min(start, totalLines)}
-                max={totalLines}
-                type="number"
-                value={end}
-                width="5em"
-                onChange={endingLineNumChange}
-              />
-            </FormRow>
-            <Separator />
-          </>
-        )}
+    <FormContainer
+      ref={formRef}
+      className="inner-animate-box"
+      onKeyDown={onKeyDown}
+      isReply={isReply}
+    >
+      {// hide title and line numbers on reply
+      !isReply && (
+        <>
+          <FormRow>
+            <FormInput
+              ref={inputRef}
+              placeholder="Title"
+              name="title"
+              value={title}
+              onChange={titleChange}
+            />
+          </FormRow>
+          <FormRow>
+            <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
+            <FormInput
+              className="start-tooltip"
+              ref={startInput}
+              name="startingLineNum"
+              min="1"
+              max={Math.min(endingLineNum, totalLines)}
+              type="number"
+              value={start}
+              width="5em"
+              onChange={startingLineNumChange}
+            />
+            <Label className="tooltiptext" as="span">
+              You can type a number, use up/down arrows or select a line with
+              the mouse
+            </Label>
+            <span style={{ padding: "0px 1rem" }}>–</span>
+            <FormInput
+              ref={endInput}
+              disabled={view == "in-code"}
+              name="endingLineNum"
+              min={Math.min(start, totalLines)}
+              max={totalLines}
+              type="number"
+              value={end}
+              width="5em"
+              onChange={endingLineNumChange}
+            />
+          </FormRow>
+          <Separator />
+        </>
+      )}
 
-        <FormRow>
-          <FormInput
-            ref={isReply ? inputRef : null}
-            minHeight="100px"
-            name="question"
-            placeholder={
-              type == "reply" ? "Type your Reply" : "Type your Question"
+      <FormRow>
+        <FormInput
+          ref={isReply ? inputRef : null}
+          minHeight="100px"
+          name="question"
+          placeholder={
+            type == "reply" ? "Type your Reply" : "Type your Question"
+          }
+          value={text}
+          onChange={textChange}
+          as="textarea"
+        />
+      </FormRow>
+      <Separator />
+      <div className="btn-box">
+        <MyButton variant="form" className="btn" onClick={onCancel}>
+          Cancel
+        </MyButton>
+        <MyButton
+          variant="form"
+          disabled={!isValidForm}
+          className={`primary ${isValidForm ? "" : "disabled"}`}
+          onClick={() => {
+            if (isValidForm) {
+              submitForm({
+                cancel: false,
+                startingLineNum: start,
+                endingLineNum: end,
+                title: titleTrimmed,
+                text: textTrimmed,
+              });
             }
-            value={text}
-            onChange={textChange}
-            as="textarea"
-          />
-        </FormRow>
-        <Separator />
-        <div className="btn-box">
-          <MyButton variant="form" className="btn" onClick={onCancel}>
-            Cancel
-          </MyButton>
-          <MyButton
-            variant="form"
-            disabled={!isValidForm}
-            className={`primary ${isValidForm ? "" : "disabled"}`}
-            onClick={() => {
-              if (isValidForm) {
-                submitForm({
-                  cancel: false,
-                  startingLineNum: start,
-                  endingLineNum: end,
-                  title: titleTrimmed,
-                  text: textTrimmed,
-                });
-              }
-            }}
-          >
-            Save
-          </MyButton>
-        </div>
-      </FormContainer>
-    </CommentBoxContainer>
+          }}
+        >
+          Save
+        </MyButton>
+      </div>
+    </FormContainer>
   );
 };

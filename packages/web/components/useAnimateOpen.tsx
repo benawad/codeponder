@@ -1,7 +1,12 @@
 import { styled } from "@codeponder/ui";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+interface AnimateProps {
+  bgColor?: string;
+}
+
 const Container = styled.div`
+  background-color: ${(props: AnimateProps) => props.bgColor || "inherit"};
   & .inner-animate-box {
     max-height: 0;
     opacity: 0;
@@ -18,8 +23,8 @@ export const useAnimateOpen = (initialState: boolean = false) => {
   const animate = useRef(!initialState);
   const [isOpen, setIsOpen] = useState(initialState);
 
-  const onClick = useCallback(({ target: elm }: any) => {
-    elm.classList.toggle("is-open");
+  const onClick = useCallback(({ target: elm }: any = {}) => {
+    elm && elm.classList.toggle("is-open");
     if (ref.current) {
       ref.current!.classList.remove("is-open");
       // remove the component after the transition ends
@@ -41,12 +46,16 @@ export const useAnimateOpen = (initialState: boolean = false) => {
     [isOpen]
   );
 
-  const AnimateContainer: React.FC = ({ children }) =>
+  const AnimateOpen: React.FC<AnimateProps> = ({ children, ...props }) =>
     isOpen ? (
-      <Container ref={ref} className={animate.current ? "" : "is-open"}>
+      <Container
+        {...props}
+        ref={ref}
+        className={animate.current ? "" : "is-open"}
+      >
         {children}
       </Container>
     ) : null;
 
-  return { AnimateContainer, isOpen, onClick };
+  return { AnimateOpen, isOpen, onClick };
 };
