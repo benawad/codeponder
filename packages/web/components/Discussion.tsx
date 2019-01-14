@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CommentProps, CommentBox } from "./commentUI";
 import { styled } from "@codeponder/ui";
 
@@ -38,14 +38,6 @@ const DiscussionContainer = styled.div`
     border-bottom: ${(p: { showEditor: boolean }) =>
       p.showEditor ? "none" : "1px solid #dfe2e5"};
     margin-bottom: ${p => (p.showEditor ? "-0.5em" : "0")};
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 400ms, opacity 600ms ease;
-  }
-
-  &.is-open > .discussion-inner-box {
-    max-height: 2000px;
-    opacity: 1;
   }
 `;
 
@@ -60,37 +52,123 @@ const lineNumbers = (comment: CommentProps) => {
   return `Lines ${startingLineNum} - ${endingLineNum}`;
 };
 
+const useAnimateOpen = (initialState: boolean = false) => {
+  const Container = styled.div`
+    & .inner-animate-box {
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 400ms, opacity 600ms ease;
+    }
+    &.is-open .inner-animate-box {
+      max-height: 2000px;
+      opacity: 1;
+    }
+  `;
+  const ref = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(initialState);
+  const animate = useRef(!initialState);
+
+  const onClick = useCallback(({ target: elm }: any) => {
+    elm.classList.toggle("is-open");
+    if (ref.current) {
+      ref.current!.classList.remove("is-open");
+      // remove the component after the transition ends
+      setTimeout(() => {
+        console.log("setIsOpen(false)");
+        setIsOpen(false);
+      }, 400);
+    } else {
+      console.log("setIsOpen(true)");
+      setIsOpen(true);
+    }
+  }, []);
+
+  // const getClassName = useCallback(() => (isOpen ? "is-open" : ""), [
+  //   ...states,
+  // ]);
+
+  // const getClassName = useCallback(
+  //   () => {
+  //     // console.log({
+  //     //   isOpen,
+  //     //   showEditor: states[0],
+  //     //   animate: animate.current,
+  //     //   // return: isOpen ? "is-open" : "",
+  //     //   return: animate.current ? "" : "is-open",
+  //     // });
+  //     // return isOpen ? "is-open" : "";
+  //     return animate.current ? "" : "is-open";
+  //   },
+  //   [...states]
+  // );
+
+  const getClassName1 = () => {
+    // const className = getClassName();
+    const className = animate.current ? "" : "is-open";
+    console.log({ animate: animate.current, class: className });
+    return className;
+  };
+
+  useEffect(
+    () => {
+      console.log("in useEffect");
+      if (isOpen) {
+        ref.current!.classList.add("is-open");
+      }
+      animate.current = !isOpen;
+    },
+    [isOpen]
+  );
+
+  const AnimateContainer: React.FC = ({ children, ...props }) => (
+    <Container ref={ref} {...props} className={getClassName1()}>
+      {children}
+    </Container>
+  );
+
+  return { AnimateContainer, isOpen, onClick };
+};
+
 export const Discussion: React.FC<DiscussionProps> = ({
   comments,
   onOpenEditor,
   showEditor,
 }) => {
-  const discussionRef = useRef<HTMLDivElement>(null);
-  const [showDiscussion, setShowDiscussion] = useState(false);
+  // const discussionRef = useRef<HTMLDivElement>(null);
+  // const [showDiscussion, setShowDiscussion] = useState(false);
 
-  const onToggleDiscussion = useCallback(({ target: elm }: any) => {
-    if (elm.classList.contains("discussion-badge")) {
-      elm.classList.toggle("is-open");
-      if (discussionRef.current) {
-        discussionRef.current!.classList.remove("is-open");
-        // remove the component after the transition ends
-        setTimeout(() => {
-          setShowDiscussion(false);
-        }, 400);
-      } else {
-        setShowDiscussion(true);
-      }
-    }
-  }, []);
+  // console.log("showDiscussion", showDiscussion);
 
-  useEffect(
-    () => {
-      if (showDiscussion) {
-        discussionRef.current!.classList.add("is-open");
-      }
-    },
-    [showDiscussion, showEditor]
-  );
+  // const onToggleDiscussion = useCallback(({ target: elm }: any) => {
+  //   if (elm.classList.contains("discussion-badge")) {
+  //     elm.classList.toggle("is-open");
+  //     if (discussionRef.current) {
+  //       discussionRef.current!.classList.remove("is-open");
+  //       // remove the component after the transition ends
+  //       setTimeout(() => {
+  //         setShowDiscussion(false);
+  //       }, 400);
+  //     } else {
+  //       setShowDiscussion(true);
+  //     }
+  //   }
+  // }, []);
+
+  // useEffect(
+  //   () => {
+  //     if (showDiscussion) {
+  //       discussionRef.current!.classList.add("is-open");
+  //     }
+  //   },
+  //   [showDiscussion, showEditor]
+  // );
+  const {
+    AnimateContainer,
+    isOpen: showDiscussion,
+    onClick: onToggleDiscussion,
+    // } = useAnimateOpen(false, [showEditor], showDiscussion, setShowDiscussion);
+    // } = useAnimateOpen(false, [showEditor]);
+  } = useAnimateOpen(false);
 
   return (
     <>
@@ -102,23 +180,29 @@ export const Discussion: React.FC<DiscussionProps> = ({
         <span className="badge-counter">{comments.length}</span>
         <span className="badge-icon">▾</span>
       </button>
-      {showDiscussion && (
+      {/* {      {showDiscussion && (
         <DiscussionContainer ref={discussionRef} showEditor={showEditor}>
-          <div className="discussion-inner-box">
-            <DiscussionNavBar>
-              <h2 className="header-title">
-                <span className="discussion-title">Title placeholder</span>{" "}
-                <span className="header-sub-title">#???</span>
-              </h2>
-              <span className="header-sub-title">
-                {lineNumbers(comments[0])}
-              </span>
-            </DiscussionNavBar>
-            {comments.map((comment, key) => {
-              return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
-            })}
-          </div>
-        </DiscussionContainer>
+          <AnimateContainer className={showDiscussion ? "is-open" : ""}>
+         */}
+      {showDiscussion && (
+        <AnimateContainer>
+          <DiscussionContainer showEditor={showEditor}>
+            <div className="discussion-inner-box inner-animate-box">
+              <DiscussionNavBar>
+                <h2 className="header-title">
+                  <span className="discussion-title">Title placeholder</span>{" "}
+                  <span className="header-sub-title">#???</span>
+                </h2>
+                <span className="header-sub-title">
+                  {lineNumbers(comments[0])}
+                </span>
+              </DiscussionNavBar>
+              {comments.map((comment, key) => {
+                return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
+              })}
+            </div>
+          </DiscussionContainer>
+        </AnimateContainer>
       )}
     </>
   );
