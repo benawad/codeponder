@@ -64,6 +64,7 @@ const useAnimateOpen = (initialState: boolean = false) => {
       opacity: 1;
     }
   `;
+
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(initialState);
   const animate = useRef(!initialState);
@@ -74,44 +75,15 @@ const useAnimateOpen = (initialState: boolean = false) => {
       ref.current!.classList.remove("is-open");
       // remove the component after the transition ends
       setTimeout(() => {
-        console.log("setIsOpen(false)");
         setIsOpen(false);
       }, 400);
     } else {
-      console.log("setIsOpen(true)");
       setIsOpen(true);
     }
   }, []);
 
-  // const getClassName = useCallback(() => (isOpen ? "is-open" : ""), [
-  //   ...states,
-  // ]);
-
-  // const getClassName = useCallback(
-  //   () => {
-  //     // console.log({
-  //     //   isOpen,
-  //     //   showEditor: states[0],
-  //     //   animate: animate.current,
-  //     //   // return: isOpen ? "is-open" : "",
-  //     //   return: animate.current ? "" : "is-open",
-  //     // });
-  //     // return isOpen ? "is-open" : "";
-  //     return animate.current ? "" : "is-open";
-  //   },
-  //   [...states]
-  // );
-
-  const getClassName1 = () => {
-    // const className = getClassName();
-    const className = animate.current ? "" : "is-open";
-    console.log({ animate: animate.current, class: className });
-    return className;
-  };
-
   useEffect(
     () => {
-      console.log("in useEffect");
       if (isOpen) {
         ref.current!.classList.add("is-open");
       }
@@ -120,8 +92,8 @@ const useAnimateOpen = (initialState: boolean = false) => {
     [isOpen]
   );
 
-  const AnimateContainer: React.FC = ({ children, ...props }) => (
-    <Container ref={ref} {...props} className={getClassName1()}>
+  const AnimateContainer: React.FC = ({ children }) => (
+    <Container ref={ref} className={animate.current ? "" : "is-open"}>
       {children}
     </Container>
   );
@@ -134,40 +106,10 @@ export const Discussion: React.FC<DiscussionProps> = ({
   onOpenEditor,
   showEditor,
 }) => {
-  // const discussionRef = useRef<HTMLDivElement>(null);
-  // const [showDiscussion, setShowDiscussion] = useState(false);
-
-  // console.log("showDiscussion", showDiscussion);
-
-  // const onToggleDiscussion = useCallback(({ target: elm }: any) => {
-  //   if (elm.classList.contains("discussion-badge")) {
-  //     elm.classList.toggle("is-open");
-  //     if (discussionRef.current) {
-  //       discussionRef.current!.classList.remove("is-open");
-  //       // remove the component after the transition ends
-  //       setTimeout(() => {
-  //         setShowDiscussion(false);
-  //       }, 400);
-  //     } else {
-  //       setShowDiscussion(true);
-  //     }
-  //   }
-  // }, []);
-
-  // useEffect(
-  //   () => {
-  //     if (showDiscussion) {
-  //       discussionRef.current!.classList.add("is-open");
-  //     }
-  //   },
-  //   [showDiscussion, showEditor]
-  // );
   const {
     AnimateContainer,
     isOpen: showDiscussion,
     onClick: onToggleDiscussion,
-    // } = useAnimateOpen(false, [showEditor], showDiscussion, setShowDiscussion);
-    // } = useAnimateOpen(false, [showEditor]);
   } = useAnimateOpen(false);
 
   return (
@@ -180,10 +122,6 @@ export const Discussion: React.FC<DiscussionProps> = ({
         <span className="badge-counter">{comments.length}</span>
         <span className="badge-icon">▾</span>
       </button>
-      {/* {      {showDiscussion && (
-        <DiscussionContainer ref={discussionRef} showEditor={showEditor}>
-          <AnimateContainer className={showDiscussion ? "is-open" : ""}>
-         */}
       {showDiscussion && (
         <AnimateContainer>
           <DiscussionContainer showEditor={showEditor}>
