@@ -57,9 +57,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
 }) => {
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const discussionRef = useRef<HTMLDivElement>(null);
-  const newQuestionRef = useRef(
-    comments.length == 1 && comments[0].newQuestion
-  );
+  const newCommentRef = useRef(comments.length == 1 && comments[0].newComment);
 
   const [showDiscussion, setShowDiscussion] = useState(false);
   const discussionOpen = useTransitionend(discussionRef, showDiscussion, false);
@@ -72,8 +70,8 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   // show new question immediately
   useEffect(
     () => {
-      if (newQuestionRef.current) {
-        newQuestionRef.current = false;
+      if (newCommentRef.current) {
+        newCommentRef.current = false;
         onToggleDiscussion({ target: toggleButtonRef.current });
       }
     },

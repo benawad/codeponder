@@ -28,18 +28,19 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   const onEditorSubmit = useCallback(
     ({ submitted, response, data }: any) => {
       if (submitted) {
-        const { id, creator, __typename } =
+        const { id, creator, __typename, ...rest } =
           data.type == "question"
             ? response.data.createCodeReviewQuestion.codeReviewQuestion
             : response.data.createQuestionReply.questionReply;
 
+        data = { ...data, ...rest };
         data.id = id;
         data.username = creator.username;
         data.isOwner = creator.username == owner;
         data.__typename = __typename;
         preventScroll = true;
         scrollPosition = getScrollY();
-        data.newQuestion = true;
+        data.newComment = true;
         setCommentsForRow([...commentsForRow, data]);
       }
       setShowEditor(false);

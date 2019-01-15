@@ -47,14 +47,19 @@ const getCommentsForFile = (
     text,
     creator,
     __typename,
+    ...rest
   }:
     | CodeReviewQuestionInfoFragment
-    | QuestionReplyInfoFragment): CommentProps => ({
+    // | QuestionReplyInfoFragment): CommentProps => ({
+    | QuestionReplyInfoFragment): any => ({
     id,
     text,
+    creator,
+    __typename,
     username: creator.username,
     isOwner: creator.username == owner,
     type: (__typename || "").includes("Reply") ? "reply" : "question",
+    ...rest,
   });
 
   return prop.findCodeReviewQuestions.reduce((comments: Comments, props) => {
