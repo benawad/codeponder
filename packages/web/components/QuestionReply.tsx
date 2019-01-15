@@ -74,11 +74,7 @@ export const CreateQuestionReply = ({
           onEditorSubmit({ submitted: false });
         }
       };
-      return (
-        <TextEditor
-          {...{ ...props, submitForm, type: "reply", view: "in-code" }}
-        />
-      );
+      return <TextEditor {...{ ...props, submitForm, view: "in-code" }} />;
     }}
   </CreateQuestionReplyComponent>
 );

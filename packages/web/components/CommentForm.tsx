@@ -88,8 +88,6 @@ export interface TextEditorProps {
   startingLineNum?: number;
   endingLineNum: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
-  // TODO : use isReply !!!
-  type: "reply" | "question";
   view: "in-code" | "in-tree";
 }
 
@@ -102,14 +100,7 @@ export interface TextEditorResult {
 }
 
 export const TextEditor = (props: TextEditorProps) => {
-  const {
-    isReply,
-    startingLineNum,
-    endingLineNum,
-    submitForm,
-    type,
-    view,
-  } = props;
+  const { isReply, startingLineNum, endingLineNum, submitForm, view } = props;
 
   const formRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -226,9 +217,7 @@ export const TextEditor = (props: TextEditorProps) => {
           ref={isReply ? inputRef : null}
           minHeight="100px"
           name="question"
-          placeholder={
-            type == "reply" ? "Type your Reply" : "Type your Question"
-          }
+          placeholder={isReply ? "Type your Reply" : "Type your Question"}
           value={text}
           onChange={textChange}
           as="textarea"
