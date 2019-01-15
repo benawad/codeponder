@@ -152,6 +152,17 @@ const Pre = styled.pre`
     }
   }
 
+  & .inner-animate-box {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 400ms ease-in-out, opacity 600ms ease-in-out;
+
+    &.is-open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+  }
+
   ${(p: styleProps) => p.selectedLines}
 `;
 

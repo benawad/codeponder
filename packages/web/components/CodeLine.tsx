@@ -4,18 +4,12 @@ import { AddComment } from "./CommentSection";
 import { CommentProps } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
 import { getScrollY } from "../utils/domScrollUtils";
-import { useAnimateOpen } from "./useAnimateOpen";
+import { useTransitionend } from "./useAnimateOpen";
 
 interface RenderLineProps {
   comments: CommentProps[];
   line: string;
   lineNum: number;
-}
-
-interface RenderLineRef {
-  showEditor: boolean;
-  preventScroll: boolean;
-  scrollPosition: number;
 }
 
 export const RenderLine: React.FC<RenderLineProps> = ({
@@ -24,26 +18,13 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   lineNum,
 }) => {
   const { owner } = useContext(CodeFileContext);
-  const lineRef = useRef<RenderLineRef>({
-    showEditor: false,
-    preventScroll: false,
-    scrollPosition: getScrollY(),
-  });
+  const formRef = useRef<HTMLDivElement>(null);
+  const [showEditor, setShowEditor] = useState(false);
+  const editorOpen = useTransitionend(formRef, showEditor, false);
   const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
-  const {
-    AnimateOpen,
-    isOpen: showEditor,
-    onClick: onToggleShowEditor,
-  } = useAnimateOpen(false);
-
-  const setShowEditor = useCallback(val => {
-    if (lineRef.current.showEditor != val) {
-      lineRef.current.showEditor = val;
-      onToggleShowEditor();
-    }
-  }, []);
-
+  let preventScroll = false;
+  let scrollPosition = getScrollY();
   const onEditorSubmit = useCallback(
     ({ submitted, response, data }: any) => {
       if (submitted) {
@@ -56,8 +37,8 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         data.username = creator.username;
         data.isOwner = creator.username == owner;
         data.__typename = __typename;
-        lineRef.current.preventScroll = true;
-        lineRef.current.scrollPosition = getScrollY();
+        preventScroll = true;
+        scrollPosition = getScrollY();
         data.newQuestion = true;
         setCommentsForRow([...commentsForRow, data]);
       }
@@ -68,7 +49,7 @@ export const RenderLine: React.FC<RenderLineProps> = ({
 
   useEffect(
     () => {
-      lineRef.current.preventScroll = false;
+      preventScroll = false;
     },
     [commentsForRow]
   );
@@ -76,9 +57,9 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   useEffect(() => {
     // prevent page scroll after submitting comment form
     const stopScroll = (event: UIEvent): void => {
-      if (lineRef.current.preventScroll) {
+      if (preventScroll) {
         event.preventDefault();
-        window.scrollTo(0, lineRef.current.scrollPosition);
+        window.scrollTo(0, scrollPosition);
       }
     };
     window.addEventListener("scroll", stopScroll);
@@ -87,15 +68,19 @@ export const RenderLine: React.FC<RenderLineProps> = ({
     };
   }, []);
 
-  const onOpenEditor = useCallback(({ target: elm }: any) => {
-    if (
-      (elm.classList.contains("btn-open-edit") &&
-        elm.parentNode.parentNode.classList.contains("is-hovered")) ||
-      elm.classList.contains("btn-reply")
-    ) {
-      setShowEditor(true);
-    }
-  }, []);
+  const onOpenEditor = useCallback(
+    ({ target: elm }: any) => {
+      if (
+        !showEditor &&
+        ((elm.classList.contains("btn-open-edit") &&
+          elm.parentNode.parentNode.classList.contains("is-hovered")) ||
+          elm.classList.contains("btn-reply"))
+      ) {
+        setShowEditor(true);
+      }
+    },
+    [showEditor]
+  );
 
   return (
     <div key={lineNum} className="token-line">
@@ -109,17 +94,17 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         <Discussion
           comments={commentsForRow}
           onOpenEditor={onOpenEditor}
-          showEditor={showEditor}
+          showEditor={showEditor || editorOpen}
         />
       )}
-      {showEditor && (
-        <AnimateOpen bgColor="#ffffff">
+      {(showEditor || editorOpen) && (
+        <div ref={formRef} className="inner-animate-box">
           <AddComment
             comments={commentsForRow}
             line={lineNum}
             onEditorSubmit={onEditorSubmit}
           />
-        </AnimateOpen>
+        </div>
       )}
     </div>
   );

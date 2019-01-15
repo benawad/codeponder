@@ -48,6 +48,7 @@ const Separator = styled.div`
 `;
 
 const FormContainer = styled.div`
+  background-color: #ffffff;
   border-top: ${(p: { isReply: boolean }) =>
     p.isReply ? "none" : "1px solid #d1d5da"};
   border-bottom: 1px solid #d1d5da;
@@ -87,6 +88,7 @@ export interface TextEditorProps {
   startingLineNum?: number;
   endingLineNum: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
+  // TODO : use isReply !!!
   type: "reply" | "question";
   view: "in-code" | "in-tree";
 }
@@ -172,12 +174,7 @@ export const TextEditor = (props: TextEditorProps) => {
   }, []);
 
   return (
-    <FormContainer
-      ref={formRef}
-      className="inner-animate-box"
-      onKeyDown={onKeyDown}
-      isReply={isReply}
-    >
+    <FormContainer ref={formRef} onKeyDown={onKeyDown} isReply={isReply}>
       {// hide title and line numbers on reply
       !isReply && (
         <>

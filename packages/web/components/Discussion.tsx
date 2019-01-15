@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CommentProps, CommentBox } from "./commentUI";
 import { styled } from "@codeponder/ui";
-import { useAnimateOpen } from "./useAnimateOpen";
+import { useTransitionend } from "./useAnimateOpen";
 
 interface DiscussionProps {
   comments: CommentProps[];
@@ -32,6 +32,7 @@ const DiscussionNavBar = styled.div`
 `;
 
 const DiscussionContainer = styled.div`
+  background-color: #ffffff;
   border-top: 1px solid #dfe2e5;
   border-bottom: ${(p: { showEditor: boolean }) =>
     p.showEditor ? "none" : "1px solid #dfe2e5"};
@@ -55,14 +56,18 @@ export const Discussion: React.FC<DiscussionProps> = ({
   showEditor,
 }) => {
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const discussionRef = useRef<HTMLDivElement>(null);
   const newQuestionRef = useRef(
     comments.length == 1 && comments[0].newQuestion
   );
-  const {
-    AnimateOpen,
-    isOpen: showDiscussion,
-    onClick: onToggleDiscussion,
-  } = useAnimateOpen(false);
+
+  const [showDiscussion, setShowDiscussion] = useState(false);
+  const discussionOpen = useTransitionend(discussionRef, showDiscussion, false);
+
+  const onToggleDiscussion = useCallback(({ target: elm }: any = {}) => {
+    elm && elm.classList.toggle("is-open");
+    setShowDiscussion(val => !val);
+  }, []);
 
   // show new question immediately
   useEffect(
@@ -86,27 +91,24 @@ export const Discussion: React.FC<DiscussionProps> = ({
         <span className="badge-counter">{comments.length}</span>
         <span className="badge-icon">▾</span>
       </button>
-      {
-        <AnimateOpen bgColor="#ffffff">
-          <DiscussionContainer
-            showEditor={showEditor}
-            className="inner-animate-box"
-          >
-            <DiscussionNavBar>
-              <h2 className="header-title">
-                <span className="discussion-title">Title placeholder</span>{" "}
-                <span className="header-sub-title">#???</span>
-              </h2>
-              <span className="header-sub-title">
-                {lineNumbers(comments[0])}
-              </span>
-            </DiscussionNavBar>
-            {comments.map((comment, key) => {
-              return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
-            })}
-          </DiscussionContainer>
-        </AnimateOpen>
-      }
+      {(showDiscussion || discussionOpen) && (
+        <DiscussionContainer
+          ref={discussionRef}
+          showEditor={showEditor}
+          className={`inner-animate-box${discussionOpen ? " is-open" : ""}`}
+        >
+          <DiscussionNavBar>
+            <h2 className="header-title">
+              <span className="discussion-title">Title placeholder</span>{" "}
+              <span className="header-sub-title">#???</span>
+            </h2>
+            <span className="header-sub-title">{lineNumbers(comments[0])}</span>
+          </DiscussionNavBar>
+          {comments.map((comment, key) => {
+            return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
+          })}
+        </DiscussionContainer>
+      )}
     </>
   );
 };
