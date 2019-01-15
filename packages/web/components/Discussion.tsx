@@ -3,7 +3,7 @@ import { CommentProps, CommentBox } from "./commentUI";
 import { styled } from "@codeponder/ui";
 import { useTransitionend } from "./useAnimateOpen";
 
-interface DiscussionProps {
+interface CodeDiscussionViewProps {
   comments: CommentProps[];
   onOpenEditor: (props: any) => any;
   showEditor: boolean;
@@ -50,7 +50,7 @@ const lineNumbers = (comment: CommentProps) => {
   return `Lines ${startingLineNum} - ${endingLineNum}`;
 };
 
-export const Discussion: React.FC<DiscussionProps> = ({
+export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   comments,
   onOpenEditor,
   showEditor,
@@ -92,23 +92,46 @@ export const Discussion: React.FC<DiscussionProps> = ({
         <span className="badge-icon">▾</span>
       </button>
       {(showDiscussion || discussionOpen) && (
-        <DiscussionContainer
-          ref={discussionRef}
-          showEditor={showEditor}
+        <Discussion
+          discussionRef={discussionRef}
           className={`inner-animate-box${discussionOpen ? " is-open" : ""}`}
-        >
-          <DiscussionNavBar>
-            <h2 className="header-title">
-              <span className="discussion-title">Title placeholder</span>{" "}
-              <span className="header-sub-title">#???</span>
-            </h2>
-            <span className="header-sub-title">{lineNumbers(comments[0])}</span>
-          </DiscussionNavBar>
-          {comments.map((comment, key) => {
-            return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
-          })}
-        </DiscussionContainer>
+          comments={comments}
+          onOpenEditor={onOpenEditor}
+          showEditor={showEditor}
+        />
       )}
     </>
+  );
+};
+
+interface DiscussionProps extends CodeDiscussionViewProps {
+  discussionRef: React.RefObject<HTMLDivElement>;
+  className: string;
+}
+
+export const Discussion: React.FC<DiscussionProps> = ({
+  discussionRef,
+  className,
+  comments,
+  onOpenEditor,
+  showEditor,
+}) => {
+  return (
+    <DiscussionContainer
+      ref={discussionRef}
+      className={className}
+      showEditor={showEditor}
+    >
+      <DiscussionNavBar>
+        <h2 className="header-title">
+          <span className="discussion-title">Title placeholder</span>{" "}
+          <span className="header-sub-title">#???</span>
+        </h2>
+        <span className="header-sub-title">{lineNumbers(comments[0])}</span>
+      </DiscussionNavBar>
+      {comments.map((comment, key) => {
+        return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
+      })}
+    </DiscussionContainer>
   );
 };

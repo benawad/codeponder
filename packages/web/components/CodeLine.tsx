@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Discussion } from "./Discussion";
+import { CodeDiscussionView } from "./Discussion";
 import { AddComment } from "./CommentSection";
 import { CommentProps } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
@@ -91,7 +91,7 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         onClick={onOpenEditor}
       />
       {commentsForRow.length > 0 && (
-        <Discussion
+        <CodeDiscussionView
           comments={commentsForRow}
           onOpenEditor={onOpenEditor}
           showEditor={showEditor || editorOpen}
