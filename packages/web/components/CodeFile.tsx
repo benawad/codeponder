@@ -1,16 +1,19 @@
 import { useContext, useRef, useState, useEffect } from "react";
 import { css, CodeCard } from "@codeponder/ui";
-import { CommentProps, Comments, QuestionInfo } from "./commentUI";
+import { CommentProps, QuestionInfo } from "../types/questionReplyTypes";
 
 import {
   FindCodeReviewQuestionsComponent,
-  FindCodeReviewQuestionsQuery,
   CodeReviewQuestionInfoFragment,
   QuestionReplyInfoFragment,
 } from "./apollo-components";
 import { getHighlightedCode } from "../utils/highlightCode";
 import { RenderLine } from "./CodeLine";
 import { CodeFileContext } from "./CodeFileContext";
+
+interface Comments {
+  [key: number]: CommentProps[];
+}
 
 interface loadingCodeState {
   pending: boolean;
@@ -39,7 +42,7 @@ const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
 };
 
 const getCommentsForFile = (
-  prop: FindCodeReviewQuestionsQuery,
+  prop: CodeReviewQuestionInfoFragment[],
   owner: string
 ): Comments => {
   const comment = (
@@ -47,7 +50,7 @@ const getCommentsForFile = (
   ): CommentProps => {
     return { ...data, isOwner: data.creator.username == owner };
   };
-  return prop.findCodeReviewQuestions.reduce((comments: Comments, props) => {
+  return prop.reduce((comments: Comments, props) => {
     const { replies, ...question } = props;
     const key = question.endingLineNum;
     comments[key] = comments[key] || [];
@@ -134,8 +137,8 @@ export const CodeFile: React.FC = () => {
         }
 
         const highlightedCode = highlightCode.resolved!;
-        const comments = getCommentsForFile(data, owner);
         const questions = data.findCodeReviewQuestions;
+        const comments = getCommentsForFile(questions, owner);
 
         const onMouseOverAndOut = setIsHovered.bind(null, questions);
 

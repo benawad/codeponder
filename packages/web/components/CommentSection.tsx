@@ -1,5 +1,5 @@
 import { CreateQuestion } from "./QuestionForm";
-import { CommentProps, QuestionProps } from "./commentUI";
+import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
 import { CreateQuestionReply } from "./QuestionReply";
 
 interface AddCommentProps {

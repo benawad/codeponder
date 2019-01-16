@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CodeDiscussionView } from "./Discussion";
 import { AddComment } from "./CommentSection";
-import { CommentProps } from "./commentUI";
+import { CommentProps } from "../types/questionReplyTypes";
 import { CodeFileContext } from "./CodeFileContext";
 import { getScrollY } from "../utils/domScrollUtils";
 import { useTransitionend } from "./useAnimateOpen";

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CommentProps, CommentBox, QuestionProps } from "./commentUI";
-import { styled } from "@codeponder/ui";
+import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
+import { styled, CommentCard } from "@codeponder/ui";
 import { useTransitionend } from "./useAnimateOpen";
 
 interface CodeDiscussionViewProps {
@@ -130,7 +130,7 @@ export const Discussion: React.FC<DiscussionProps> = ({
         </span>
       </DiscussionNavBar>
       {comments.map((comment, key) => {
-        return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
+        return <CommentCard {...{ ...comment, key, onOpenEditor }} />;
       })}
     </DiscussionContainer>
   );
