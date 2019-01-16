@@ -191,7 +191,7 @@ export const CreateQuestion = ({
             onEditorSubmit({ submitted: false });
           }
         };
-        return <TextEditor {...{ ...props, submitForm, view: "in-code" }} />;
+        return <TextEditor {...{ ...props, submitForm, view: "code-view" }} />;
       }}
     </CreateCodeReviewQuestionComponent>
   );

@@ -8,11 +8,11 @@ import {
 } from "./apollo-components";
 import { distanceInWordsStrict } from "date-fns";
 
-export const CommentCard = styled(Card)`
+const CommentCard = styled(Card)`
   background-color: #fff;
   border: 1px solid #d1d5da;
   border-radius: 3px;
-  margin: 0.652em;
+  margin: 0.625em;
 
   & .comment-title {
     border-bottom: 1px solid #d1d5da;

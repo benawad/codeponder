@@ -88,7 +88,7 @@ export interface TextEditorProps {
   startingLineNum?: number;
   endingLineNum: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
-  view: "in-code" | "in-tree";
+  view: "code-view" | "repo-view";
 }
 
 export interface TextEditorResult {
@@ -135,7 +135,7 @@ export const TextEditor = (props: TextEditorProps) => {
 
   // make sure the editor is fully visible
   useEffect(() => {
-    if (view == "in-code") {
+    if (view == "code-view") {
       // wait for the animate to finish
       setTimeout(() => {
         if (formRef.current) {
@@ -198,7 +198,7 @@ export const TextEditor = (props: TextEditorProps) => {
             <span style={{ padding: "0px 1rem" }}>–</span>
             <FormInput
               ref={endInput}
-              disabled={view == "in-code"}
+              disabled={view == "code-view"}
               name="endingLineNum"
               min={Math.min(start, totalLines)}
               max={totalLines}

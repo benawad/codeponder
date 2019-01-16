@@ -80,7 +80,7 @@ export const CreateQuestionReply = ({
           onEditorSubmit({ submitted: false });
         }
       };
-      return <TextEditor {...{ ...props, submitForm, view: "in-code" }} />;
+      return <TextEditor {...{ ...props, submitForm, view: "code-view" }} />;
     }}
   </CreateQuestionReplyComponent>
 );
