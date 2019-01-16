@@ -3083,10 +3083,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/react@16.7.18":
-  version "16.7.18"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.18.tgz#f4ce0d539a893dd61e36cd11ae3a5e54f5a48337"
-  integrity sha512-Tx4uu3ppK53/iHk6VpamMP3f3ahfDLEVt3ZQc8TFm30a1H3v9lMsCntBREswZIW/SKrvJjkb3Hq8UwO6GREBng==
+"@types/react@16.7.19":
+  version "16.7.19"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.19.tgz#f9a527a172c7fd9375c01445cbd04834fa0fcca7"
+  integrity sha512-qT5NOZiZJ4z+ZjOSzOKeNxFvea2F+EJqTQVsqsMWM8uGIrDxMT2rmoIG/yu2vLmZFiJzW7c7+oFULr4kLCoJ6w==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -3149,10 +3149,10 @@
     "@types/react" "*"
     csstype "^2.2.0"
 
-"@types/styled-system@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-3.1.0.tgz#1394fa60516f404df5e85f10616d17902c937d00"
-  integrity sha512-ptinr11BRe/9H1uFVPgfx/zzl0wwZU1pJISIYgEZNAppLxVZl3iKhR7jqMj0NQr4szat7GepecdGWUxiEqeOaQ==
+"@types/styled-system@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-3.1.1.tgz#ff4430f5b5fe21e6f0dee49fdbf6f7a993bdb502"
+  integrity sha512-jyUmr/I/tMDG4COSLHE4DXzGcGGRxRvSUjLGPV1Xy5jZ3+KLg+EJ+e04rOrw0AzLaKHSnZCM/P1iUwKq6b6cnQ==
   dependencies:
     csstype "^2.2.0"
 
@@ -9262,7 +9262,7 @@ graphql-upload@^8.0.2:
     http-errors "^1.7.1"
     object-path "^0.11.4"
 
-graphql@14.0.2, graphql@^14.0.2:
+graphql@14.0.2, graphql@14.1.0, graphql@^14.0.2:
   version "14.0.2"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.0.2.tgz#7dded337a4c3fd2d075692323384034b357f5650"
   integrity sha512-gUC4YYsaiSJT1h40krG3J+USGlwhzNTXSb4IOZljn9ag5Tj+RkoXrWp+Kh7WyE3t1NCfab5kzCuxBIvOMERMXw==
