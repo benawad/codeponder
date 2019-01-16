@@ -1,5 +1,8 @@
 import { useInputValue } from "../utils/useInputValue";
-import { CreateQuestionReplyComponent } from "./apollo-components";
+import {
+  CreateQuestionReplyComponent,
+  QuestionReplyInfoFragment,
+} from "./apollo-components";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 
 interface Props {
@@ -34,11 +37,16 @@ export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
   );
 };
 
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: QuestionReplyInfoFragment | void;
+}
+
 interface QuestionReplyProps {
   isReply: boolean;
   startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
-  onEditorSubmit: (T?: any) => void;
+  onEditorSubmit: (T: EditorSubmitProps) => void;
   questionId: string;
 }
 
@@ -52,14 +60,12 @@ export const CreateQuestionReply = ({
       const submitForm = async ({ cancel, text }: TextEditorResult) => {
         if (!cancel) {
           // save result
-          const questionReply = {
-            questionId,
-            text,
-          };
-
           const response = await mutate({
             variables: {
-              questionReply,
+              questionReply: {
+                questionId,
+                text,
+              },
             },
           });
 
@@ -67,8 +73,8 @@ export const CreateQuestionReply = ({
 
           onEditorSubmit({
             submitted: true,
-            response,
-            data: { type: "reply", ...questionReply },
+            response:
+              response && response.data!.createQuestionReply.questionReply,
           });
         } else {
           onEditorSubmit({ submitted: false });

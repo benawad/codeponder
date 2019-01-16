@@ -5,6 +5,7 @@ export const questionReplyInfoFragment = gql`
   fragment QuestionReplyInfo on QuestionReply {
     id
     text
+    createdAt
     creator {
       ...UserInfo
     }

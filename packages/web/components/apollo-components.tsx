@@ -262,6 +262,8 @@ export type QuestionReplyInfoFragment = {
 
   text: string;
 
+  createdAt: DateTime;
+
   creator: QuestionReplyInfoCreator;
 };
 
@@ -322,6 +324,7 @@ export const QuestionReplyInfoFragmentDoc = gql`
   fragment QuestionReplyInfo on QuestionReply {
     id
     text
+    createdAt
     creator {
       ...UserInfo
     }

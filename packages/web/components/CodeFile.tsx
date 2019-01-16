@@ -1,6 +1,6 @@
 import { useContext, useRef, useState, useEffect } from "react";
 import { css, CodeCard } from "@codeponder/ui";
-import { CommentProps, Comments } from "./commentUI";
+import { CommentProps, Comments, QuestionInfo } from "./commentUI";
 
 import {
   FindCodeReviewQuestionsComponent,
@@ -42,37 +42,19 @@ const getCommentsForFile = (
   prop: FindCodeReviewQuestionsQuery,
   owner: string
 ): Comments => {
-  const comment = ({
-    id,
-    text,
-    creator,
-    __typename,
-    ...rest
-  }:
-    | CodeReviewQuestionInfoFragment
-    // | QuestionReplyInfoFragment): CommentProps => ({
-    | QuestionReplyInfoFragment): any => ({
-    id,
-    text,
-    creator,
-    __typename,
-    username: creator.username,
-    isOwner: creator.username == owner,
-    type: (__typename || "").includes("Reply") ? "reply" : "question",
-    ...rest,
-  });
-
+  const comment = (
+    data: QuestionInfo | QuestionReplyInfoFragment
+  ): CommentProps => {
+    return { ...data, isOwner: data.creator.username == owner };
+  };
   return prop.findCodeReviewQuestions.reduce((comments: Comments, props) => {
-    const startingLineNum = props.startingLineNum;
-    const endingLineNum = props.endingLineNum;
-    const key = endingLineNum;
+    const { replies, ...question } = props;
+    const key = question.endingLineNum;
     comments[key] = comments[key] || [];
     comments[key].push({
-      startingLineNum,
-      endingLineNum,
-      ...comment(props),
+      ...comment(question),
     });
-    props.replies.forEach(reply => comments[key].push(comment(reply)));
+    replies.forEach(reply => comments[key].push(comment(reply)));
     return comments;
   }, {});
 };

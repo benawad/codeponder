@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CommentProps, CommentBox } from "./commentUI";
+import { CommentProps, CommentBox, QuestionProps } from "./commentUI";
 import { styled } from "@codeponder/ui";
 import { useTransitionend } from "./useAnimateOpen";
 
@@ -42,7 +42,7 @@ const DiscussionContainer = styled.div`
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
 
-const lineNumbers = (comment: CommentProps) => {
+const lineNumbers = (comment: QuestionProps) => {
   const { startingLineNum, endingLineNum } = comment;
   if (startingLineNum == endingLineNum) {
     return `Line ${startingLineNum}`;
@@ -125,7 +125,9 @@ export const Discussion: React.FC<DiscussionProps> = ({
           <span className="discussion-title">Title placeholder</span>{" "}
           <span className="header-sub-title">#???</span>
         </h2>
-        <span className="header-sub-title">{lineNumbers(comments[0])}</span>
+        <span className="header-sub-title">
+          {lineNumbers(comments[0] as QuestionProps)}
+        </span>
       </DiscussionNavBar>
       {comments.map((comment, key) => {
         return <CommentBox {...{ ...comment, key, onOpenEditor }} />;

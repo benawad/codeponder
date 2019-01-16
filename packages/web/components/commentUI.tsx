@@ -47,72 +47,49 @@ export interface Comments {
   [key: number]: CommentProps[];
 }
 
-// type Q = Omit<CodeReviewQuestionInfoFragment, "__typename">;
-type Q = Pick<
+type KeysToExclude = {
+  replies: true;
+};
+
+export type QuestionInfo = Pick<
   CodeReviewQuestionInfoFragment,
-  Exclude<keyof CodeReviewQuestionInfoFragment, "__typename">
+  Exclude<keyof CodeReviewQuestionInfoFragment, keyof KeysToExclude>
 >;
 
-type R = Pick<
-  QuestionReplyInfoFragment,
-  Exclude<keyof QuestionReplyInfoFragment, "__typename">
->;
-export interface CommentProps extends Q, R {
-  newComment?: boolean;
-  id: string;
-  startingLineNum?: number; // not include in reply
-  endingLineNum?: number; // not include in reply
-  text?: string;
-  username?: string;
-  isOwner?: boolean;
-  __typename?: "CodeReviewQuestion" | "QuestionReply";
-  type: "reply" | "question";
-}
-
-interface CommentFunctionProps extends CommentProps {
-  onOpenEditor: (props: any) => any;
-}
-
-interface Props {
-  onOpenEditor: (props: any) => any;
-  id: string;
-  text: string;
-  programmingLanguage?: string | null;
-  codeSnippet?: string | null;
-  numReplies: number;
-  createdAt: string;
-  path?: string | null;
-  creator: {
-    id: string;
-    username: string;
-    pictureUrl: string;
-    bio: string;
-    accessToken?: string | null;
-  };
-  username: string;
+export interface QuestionProps extends QuestionInfo {
   isOwner: boolean;
+  newComment?: boolean;
 }
 
-export const CommentBox: React.FC<Props> = ({
+interface ReplyProps extends QuestionReplyInfoFragment {
+  isOwner: boolean;
+  newComment?: boolean;
+}
+
+export type CommentProps = ReplyProps | QuestionProps;
+
+interface CommentQuestionProps extends QuestionProps {
+  onOpenEditor: (e: any) => void;
+}
+
+interface CommentReplyPropsProps extends ReplyProps {
+  numReplies?: number; // not exist on reply
+  onOpenEditor: (e: any) => void;
+}
+
+export const CommentBox: React.FC<
+  CommentQuestionProps | CommentReplyPropsProps
+> = ({
   text,
   isOwner,
-  // username: _username,
+  numReplies,
   createdAt,
   creator: { username = "", pictureUrl = "" } = {},
   onOpenEditor,
 }) => {
-  const dtString =
-    createdAt &&
-    distanceInWordsStrict(new Date(), Date.parse(createdAt), {
-      addSuffix: true,
-    });
-
-  /*
-  * result from question/reply mutation missing:
-    - creator
-   * result from reply mutation and QuestionReplyInfoFragment missing:
-    - createdAt
-  */
+  const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
+    addSuffix: true,
+  });
 
   return (
     <CommentCard>
@@ -122,7 +99,7 @@ export const CommentBox: React.FC<Props> = ({
           <Flex flexDirection="column" justifyContent="center" ml=".6rem">
             <Flex alignItems="center">
               <Text mb=".2rem" fontFamily="rubik" fontSize={2} fontWeight="500">
-                {username || "?????"}
+                {username}
               </Text>
               {isOwner && (
                 <Text className="user-role" fontSize={1}>
@@ -131,6 +108,12 @@ export const CommentBox: React.FC<Props> = ({
               )}
             </Flex>
             <Flex>
+              {numReplies && (
+                <>
+                  <Icon size={12} name="comment" fill="#A5A5A5" />
+                  <GrayText>{numReplies}</GrayText>
+                </>
+              )}
               <Icon size={12} name="clock" fill="#A5A5A5" />
               <GrayText>{dtString}</GrayText>
             </Flex>

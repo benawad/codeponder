@@ -5,6 +5,15 @@ import { CommentProps } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
 import { getScrollY } from "../utils/domScrollUtils";
 import { useTransitionend } from "./useAnimateOpen";
+import {
+  CodeReviewQuestionInfoFragment,
+  QuestionReplyInfoFragment,
+} from "./apollo-components";
+
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: CodeReviewQuestionInfoFragment | QuestionReplyInfoFragment;
+}
 
 interface RenderLineProps {
   comments: CommentProps[];
@@ -26,21 +35,15 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   let preventScroll = false;
   let scrollPosition = getScrollY();
   const onEditorSubmit = useCallback(
-    ({ submitted, response, data }: any) => {
-      if (submitted) {
-        const { id, creator, __typename, ...rest } =
-          data.type == "question"
-            ? response.data.createCodeReviewQuestion.codeReviewQuestion
-            : response.data.createQuestionReply.questionReply;
-
-        data = { ...data, ...rest };
-        data.id = id;
-        data.username = creator.username;
-        data.isOwner = creator.username == owner;
-        data.__typename = __typename;
+    ({ submitted, response }: EditorSubmitProps) => {
+      if (submitted && response) {
+        const data = {
+          ...response,
+          isOwner: response.creator.username == owner,
+          newComment: true,
+        };
         preventScroll = true;
         scrollPosition = getScrollY();
-        data.newComment = true;
         setCommentsForRow([...commentsForRow, data]);
       }
       setShowEditor(false);

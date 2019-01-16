@@ -1,9 +1,9 @@
 import { CreateQuestion } from "./QuestionForm";
-import { CommentProps } from "./commentUI";
+import { CommentProps, QuestionProps } from "./commentUI";
 import { CreateQuestionReply } from "./QuestionReply";
 
 interface AddCommentProps {
-  onEditorSubmit: (T?: any) => void;
+  onEditorSubmit: (T: any) => void;
   comments: CommentProps[];
   line: number;
 }
@@ -14,7 +14,7 @@ export const AddComment: React.SFC<AddCommentProps> = ({
   onEditorSubmit,
 }) => {
   const isReply = comments.length > 0;
-  const question = isReply ? comments[0] : undefined;
+  const question = isReply ? (comments[0] as QuestionProps) : undefined;
 
   const commentProps = {
     isReply,
