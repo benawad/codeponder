@@ -45,7 +45,7 @@
     "@types/storybook__addon-links": "3.3.3",
     "@types/storybook__react": "4.0.0",
     "@types/styled-components": "4.1.5",
-    "@types/styled-system": "3.1.0",
+    "@types/styled-system": "3.1.1",
     "awesome-typescript-loader": "5.2.1",
     "babel-loader": "8.0.5",
     "react-docgen-typescript": "1.12.3",
