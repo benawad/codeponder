@@ -12,7 +12,7 @@ const CommentCard = styled(Card)`
   background-color: #fff;
   border: 1px solid #d1d5da;
   border-radius: 3px;
-  margin: 0.625em;
+  margin: 0.9rem;
 
   & .comment-title {
     border-bottom: 1px solid #d1d5da;

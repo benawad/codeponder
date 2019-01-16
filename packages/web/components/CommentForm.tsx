@@ -38,7 +38,7 @@ const FormInput = styled(BlueInput)`
 `;
 
 const FormRow = styled.div`
-  padding: 1rem 0.625em;
+  padding: 1rem 0.9rem;
 `;
 
 const Separator = styled.div`
@@ -54,7 +54,7 @@ const FormContainer = styled.div`
   border-bottom: 1px solid #d1d5da;
   display: flex;
   flex-direction: column;
-  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.625em")};
+  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
 
   & .btn-box {
     display: flex;
