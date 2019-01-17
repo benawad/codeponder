@@ -1,12 +1,12 @@
 import { createContext } from "react";
 
 export interface ContextProps {
-  code: string | null;
+  code?: string | null;
   lang: string;
   owner: string;
   path?: string;
   postId: string;
-  totalLines: number;
+  totalLines?: number;
 }
 
 export const PostContext = createContext<ContextProps>({} as any);

@@ -103,6 +103,12 @@ export default class Post extends React.PureComponent<Props> {
 
   render() {
     const { owner, path, name, expression, id, topics } = this.props;
+    const context: ContextProps = {
+      lang: path ? filenameToLang(path) : "",
+      owner,
+      path,
+      postId: id,
+    };
     return (
       // @ts-ignore
       <Layout title={`Code Review Post: ${name}`}>
@@ -139,14 +145,8 @@ export default class Post extends React.PureComponent<Props> {
               const { object } = data.repository;
 
               if (object.__typename === "Blob") {
-                const context: ContextProps = {
-                  code: object.text,
-                  lang: path ? filenameToLang(path) : "",
-                  owner,
-                  path,
-                  postId: id,
-                  totalLines: (object.text || "").split("\n").length,
-                };
+                context.code = object.text;
+                context.totalLines = (object.text || "").split("\n").length;
                 return (
                   <>
                     {this.renderFilePath(name, path)}
@@ -193,12 +193,13 @@ export default class Post extends React.PureComponent<Props> {
             }}
           </GetRepoObjectComponent>
           {path ? null : (
-            <QuestionSection
-              variables={{
-                postId: id,
-              }}
-              postId={id}
-            />
+            <PostContext.Provider value={context}>
+              <QuestionSection
+                variables={{
+                  postId: id,
+                }}
+              />
+            </PostContext.Provider>
           )}
         </BigCard>
       </Layout>

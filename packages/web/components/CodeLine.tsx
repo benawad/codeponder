@@ -106,6 +106,7 @@ export const RenderLine: React.FC<RenderLineProps> = ({
           comments={commentsForRow}
           line={lineNum}
           onEditorSubmit={onEditorSubmit}
+          view="code-view"
         />
       )}
     </div>

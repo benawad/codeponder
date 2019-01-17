@@ -1,41 +1,8 @@
-import { useInputValue } from "../utils/useInputValue";
 import {
   CreateQuestionReplyComponent,
   QuestionReplyInfoFragment,
 } from "./apollo-components";
 import { TextEditor, TextEditorResult } from "./CommentForm";
-
-interface Props {
-  questionId: string;
-}
-
-export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
-  const [value, onChange] = useInputValue("");
-
-  return (
-    <CreateQuestionReplyComponent>
-      {mutate => (
-        <form
-          onSubmit={async e => {
-            e.preventDefault();
-            const response = await mutate({
-              variables: {
-                questionReply: {
-                  questionId,
-                  text: value,
-                },
-              },
-            });
-
-            console.log(response);
-          }}
-        >
-          <input value={value} onChange={onChange} placeholder="...reply" />
-        </form>
-      )}
-    </CreateQuestionReplyComponent>
-  );
-};
 
 interface EditorSubmitProps {
   submitted: boolean;
@@ -48,6 +15,7 @@ interface QuestionReplyProps {
   endingLineNum: number;
   onEditorSubmit: (T: EditorSubmitProps) => void;
   questionId: string;
+  view: "code-view" | "repo-view";
 }
 
 export const CreateQuestionReply = ({
@@ -80,7 +48,7 @@ export const CreateQuestionReply = ({
           onEditorSubmit({ submitted: false });
         }
       };
-      return <TextEditor {...{ ...props, submitForm, view: "code-view" }} />;
+      return <TextEditor {...props} submitForm={submitForm} />;
     }}
   </CreateQuestionReplyComponent>
 );

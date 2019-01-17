@@ -87,10 +87,12 @@ export const Question = ({ path, ...props }: QuestionProps) => {
   return (
     <Card p="1rem">
       <BaseCommentCard {...props} variant="flat" />
-      <Flex alignItems="center">
-        <Icon name="link" fill="#a5a5a5" />
-        <GrayText>This code is a reference to: {path}</GrayText>
-      </Flex>
+      {path && (
+        <Flex alignItems="center">
+          <Icon name="link" fill="#a5a5a5" />
+          <GrayText>This code is a reference to: {path}</GrayText>
+        </Flex>
+      )}
     </Card>
   );
 };

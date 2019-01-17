@@ -5,25 +5,13 @@ import {
   FindCodeReviewQuestionsComponent,
   FindCodeReviewQuestionsVariables,
 } from "./apollo-components";
-import { QuestionForm, QuestionFormProps } from "./Question";
+import { CreateQuestion } from "./Question";
 
-interface Props extends QuestionFormProps {
+interface Props {
   variables: FindCodeReviewQuestionsVariables;
-  startLinesSelection: number;
-  endLinesSelection: number;
-  handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
-export const QuestionSection = ({
-  variables,
-  code,
-  postId,
-  path,
-  programmingLanguage,
-  startLinesSelection,
-  endLinesSelection,
-  handleLinesSelection,
-}: Props) => {
+export const QuestionSection = ({ variables }: Props) => {
   return (
     <FindCodeReviewQuestionsComponent variables={variables}>
       {({ data, loading }) => {
@@ -33,14 +21,10 @@ export const QuestionSection = ({
 
         return (
           <>
-            <QuestionForm
-              code={code || ""}
-              postId={postId}
-              path={path}
-              programmingLanguage={programmingLanguage}
-              startLinesSelection={startLinesSelection}
-              endLinesSelection={endLinesSelection}
-              handleLinesSelection={handleLinesSelection}
+            <CreateQuestion
+              onEditorSubmit={() => {}}
+              isReply={false}
+              view="repo-view"
             />
             <div
               style={{

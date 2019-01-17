@@ -49,9 +49,9 @@ const Separator = styled.div`
 
 const FormContainer = styled.div`
   background-color: #ffffff;
-  border-top: ${(p: { isReply: boolean }) =>
+  border-top: ${(p: { isReply: boolean; view: string }) =>
     p.isReply ? "none" : "1px solid #d1d5da"};
-  border-bottom: 1px solid #d1d5da;
+  border-bottom: ${p => (p.view ? "none" : "1px solid #d1d5da")};
   display: flex;
   flex-direction: column;
   padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
@@ -86,7 +86,7 @@ const FormContainer = styled.div`
 export interface TextEditorProps {
   isReply: boolean;
   startingLineNum?: number;
-  endingLineNum: number;
+  endingLineNum?: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
   view: "code-view" | "repo-view";
 }
@@ -141,6 +141,12 @@ export const TextEditor = (props: TextEditorProps) => {
     }
   }, []);
 
+  const clearForm = useCallback(() => {
+    const value = { currentTarget: { value: "" } };
+    titleChange(value);
+    textChange(value);
+  }, []);
+
   // close editor with Esc if user did not start editing
   const onKeyDown = useCallback(
     ({ keyCode }: any) => {
@@ -152,9 +158,13 @@ export const TextEditor = (props: TextEditorProps) => {
   );
 
   const onCancel = useCallback(() => {
-    cleanSelectedLines(end);
-    formRef.current!.classList.remove("is-open");
-    submitForm({ cancel: true } as TextEditorResult);
+    if (view == "repo-view") {
+      clearForm();
+    } else {
+      cleanSelectedLines(end);
+      formRef.current!.classList.remove("is-open");
+      submitForm({ cancel: true } as TextEditorResult);
+    }
   }, []);
 
   return (
@@ -162,20 +172,24 @@ export const TextEditor = (props: TextEditorProps) => {
       ref={formRef}
       onKeyDown={onKeyDown}
       isReply={isReply}
+      view={view}
       className={`${view == "code-view" ? "inner-animate-box" : ""}`}
     >
-      {// hide title and line numbers on reply
+      {// show title only for question
       !isReply && (
+        <FormRow>
+          <FormInput
+            ref={inputRef}
+            placeholder="Title"
+            name="title"
+            value={title}
+            onChange={titleChange}
+          />
+        </FormRow>
+      )}
+      {// show line numbers for question associated to a file
+      !isReply && view != "repo-view" && (
         <>
-          <FormRow>
-            <FormInput
-              ref={inputRef}
-              placeholder="Title"
-              name="title"
-              value={title}
-              onChange={titleChange}
-            />
-          </FormRow>
           <FormRow>
             <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
             <FormInput
@@ -183,7 +197,7 @@ export const TextEditor = (props: TextEditorProps) => {
               ref={startInput}
               name="startingLineNum"
               min="1"
-              max={Math.min(endingLineNum, totalLines)}
+              max={Math.min(endingLineNum!, totalLines!)}
               type="number"
               value={start}
               width="5em"
@@ -198,7 +212,7 @@ export const TextEditor = (props: TextEditorProps) => {
               ref={endInput}
               disabled={view == "code-view"}
               name="endingLineNum"
-              min={Math.min(start, totalLines)}
+              min={Math.min(start, totalLines!)}
               max={totalLines}
               type="number"
               value={end}
@@ -224,7 +238,7 @@ export const TextEditor = (props: TextEditorProps) => {
       <Separator />
       <div className="btn-box">
         <MyButton variant="form" className="btn" onClick={onCancel}>
-          Cancel
+          {view == "repo-view" ? "Clear" : "Cancel"}
         </MyButton>
         <MyButton
           variant="form"
@@ -240,6 +254,9 @@ export const TextEditor = (props: TextEditorProps) => {
                 title: titleTrimmed,
                 text: textTrimmed,
               });
+              if (view == "repo-view") {
+                clearForm();
+              }
             }
           }}
         >

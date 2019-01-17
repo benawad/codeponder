@@ -45,8 +45,8 @@ export const cleanSelectedLines = (
 };
 
 export const useSelectedLines = (
-  startingLineNum: number | undefined,
-  endingLineNum: number,
+  startingLineNum: number = 0,
+  endingLineNum: number = 0,
   view: string
 ): [startReturnValue, endReturnValue] => {
   const parentElm = document.querySelector(".code-content");
