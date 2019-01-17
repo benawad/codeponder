@@ -5,7 +5,7 @@ import {
   FindCodeReviewQuestionsComponent,
   FindCodeReviewQuestionsVariables,
 } from "./apollo-components";
-import { QuestionForm, QuestionFormProps } from "./QuestionForm";
+import { QuestionForm, QuestionFormProps } from "./Question";
 
 interface Props extends QuestionFormProps {
   variables: FindCodeReviewQuestionsVariables;

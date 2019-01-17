@@ -13,7 +13,7 @@ import {
 } from "../components/github-apollo-components";
 import { Link } from "../server/routes";
 import { CodeFile } from "../components/CodeFile";
-import { CodeFileContext, ContextProps } from "../components/CodeFileContext";
+import { PostContext, ContextProps } from "../components/PostContext";
 import { filenameToLang } from "../utils/filenameToLang";
 import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
 import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
@@ -152,9 +152,9 @@ export default class Post extends React.PureComponent<Props> {
                     {this.renderFilePath(name, path)}
                     {/*
                     // @ts-ignore */}
-                    <CodeFileContext.Provider value={context}>
+                    <PostContext.Provider value={context}>
                       <CodeFile />
-                    </CodeFileContext.Provider>
+                    </PostContext.Provider>
                   </>
                 );
               }

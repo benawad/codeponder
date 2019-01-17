@@ -8,7 +8,7 @@ import {
 } from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
 import { TextEditor, TextEditorResult } from "./CommentForm";
-import { CodeFileContext } from "./CodeFileContext";
+import { PostContext } from "./PostContext";
 
 export interface QuestionFormProps {
   code?: string;
@@ -148,7 +148,7 @@ export const CreateQuestion = ({
   onEditorSubmit,
   ...props
 }: CreateQuestionProps) => {
-  const { code, path, postId, lang } = useContext(CodeFileContext);
+  const { code, path, postId, lang } = useContext(PostContext);
   return (
     <CreateCodeReviewQuestionComponent>
       {mutate => {

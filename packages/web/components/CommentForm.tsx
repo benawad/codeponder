@@ -4,7 +4,7 @@ import { useSelectedLines, cleanSelectedLines } from "./useSelectedLines";
 import { useInputValue } from "../utils/useInputValue";
 import { scrollToView } from "../utils/domScrollUtils";
 import { MyButton, styled, Label, BlueInput } from "@codeponder/ui";
-import { CodeFileContext } from "./CodeFileContext";
+import { PostContext } from "./PostContext";
 
 interface FormInputProps {
   minHeight?: string;
@@ -106,7 +106,7 @@ export const TextEditor = (props: TextEditorProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, titleChange] = useInputValue("");
   const [text, textChange] = useInputValue("");
-  const { totalLines } = useContext(CodeFileContext);
+  const { totalLines } = useContext(PostContext);
 
   // listening to mouse move when start input is focused
   // Styles lines between start - end when start change

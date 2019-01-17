@@ -1,4 +1,4 @@
-import { CreateQuestion } from "./QuestionForm";
+import { CreateQuestion } from "./Question";
 import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
 import { CreateQuestionReply } from "./QuestionReply";
 

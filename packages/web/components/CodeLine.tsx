@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CodeDiscussionView } from "./Discussion";
 import { AddComment } from "./CommentSection";
 import { CommentProps } from "../types/questionReplyTypes";
-import { CodeFileContext } from "./CodeFileContext";
+import { PostContext } from "./PostContext";
 import { getScrollY } from "../utils/domScrollUtils";
 import {
   CodeReviewQuestionInfoFragment,
@@ -38,7 +38,7 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   line,
   lineNum,
 }) => {
-  const { owner } = useContext(CodeFileContext);
+  const { owner } = useContext(PostContext);
   const preventScrollRef = useRef<(() => void) | null>(null);
   const [showEditor, setShowEditor] = useState(false);
   const [commentsForRow, setCommentsForRow] = useState(comments || []);

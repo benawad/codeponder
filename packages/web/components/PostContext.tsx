@@ -9,4 +9,4 @@ export interface ContextProps {
   totalLines: number;
 }
 
-export const CodeFileContext = createContext<ContextProps>({} as any);
+export const PostContext = createContext<ContextProps>({} as any);
