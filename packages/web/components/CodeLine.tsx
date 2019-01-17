@@ -12,19 +12,32 @@ interface RenderLineProps {
   lineNum: number;
 }
 
+// prevent page scroll after submitting comment form
+const preventScroll = (): (() => void) => {
+  const scrollPosition = getScrollY();
+  const stopScroll = (event: UIEvent): void => {
+    console.log("preventScroll", getScrollY() - scrollPosition);
+    event.preventDefault();
+    window.scrollTo(0, scrollPosition);
+  };
+  window.addEventListener("scroll", stopScroll);
+  return () => {
+    window.removeEventListener("scroll", stopScroll);
+  };
+};
+
 export const RenderLine: React.FC<RenderLineProps> = ({
   comments,
   line,
   lineNum,
 }) => {
   const { owner } = useContext(CodeFileContext);
+  const preventScrollRef = useRef<(() => void) | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const [showEditor, setShowEditor] = useState(false);
   const editorOpen = useTransitionend(formRef, showEditor, false);
   const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
-  let preventScroll = false;
-  let scrollPosition = getScrollY();
   const onEditorSubmit = useCallback(
     ({ submitted, response, data }: any) => {
       if (submitted) {
@@ -37,8 +50,7 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         data.username = creator.username;
         data.isOwner = creator.username == owner;
         data.__typename = __typename;
-        preventScroll = true;
-        scrollPosition = getScrollY();
+        preventScrollRef.current = preventScroll();
         data.newQuestion = true;
         setCommentsForRow([...commentsForRow, data]);
       }
@@ -49,24 +61,13 @@ export const RenderLine: React.FC<RenderLineProps> = ({
 
   useEffect(
     () => {
-      preventScroll = false;
+      if (typeof preventScrollRef.current == "function") {
+        preventScrollRef.current();
+        preventScrollRef.current = null;
+      }
     },
     [commentsForRow]
   );
-
-  useEffect(() => {
-    // prevent page scroll after submitting comment form
-    const stopScroll = (event: UIEvent): void => {
-      if (preventScroll) {
-        event.preventDefault();
-        window.scrollTo(0, scrollPosition);
-      }
-    };
-    window.addEventListener("scroll", stopScroll);
-    return () => {
-      window.removeEventListener("scroll", stopScroll);
-    };
-  }, []);
 
   const onOpenEditor = useCallback(
     ({ target: elm }: any) => {
