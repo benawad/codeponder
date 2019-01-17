@@ -15,7 +15,7 @@
     "@codeponder/ui": "1.0.0",
     "@octokit/rest": "16.10.0",
     "antd": "3.12.3",
-    "apollo-boost": "0.1.23",
+    "apollo-boost": "0.1.24",
     "apollo-link-context": "1.0.12",
     "babel-plugin-import": "1.11.0",
     "cookie": "0.3.1",
