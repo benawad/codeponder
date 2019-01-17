@@ -134,7 +134,7 @@ const BaseCommentCard = ({
               )}
             </Flex>
             <Flex>
-              {numReplies && (
+              {Number(numReplies) >= 0 && (
                 <>
                   <Icon size={12} name="comment" fill="#A5A5A5" />
                   <GrayText>{numReplies}</GrayText>
