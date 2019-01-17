@@ -15,7 +15,6 @@ interface RenderLineProps {
 const preventScroll = (): (() => void) => {
   const scrollPosition = getScrollY();
   const stopScroll = (event: UIEvent): void => {
-    console.log("preventScroll", getScrollY() - scrollPosition);
     event.preventDefault();
     window.scrollTo(0, scrollPosition);
   };

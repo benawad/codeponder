@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useRef, useEffect } from "react";
 
 import { useSelectedLines, cleanSelectedLines } from "./useSelectedLines";
 import { useInputValue } from "../utils/useInputValue";
-import { isScrolledIntoView, getScrollY } from "../utils/domScrollUtils";
+import { scrollToView } from "../utils/domScrollUtils";
 import { MyButton, styled, Label, BlueInput } from "@codeponder/ui";
 import { CodeFileContext } from "./CodeFileContext";
 
@@ -135,22 +135,10 @@ export const TextEditor = (props: TextEditorProps) => {
 
   // make sure the editor is fully visible
   useEffect(() => {
-    if (view == "in-code") {
-      // wait until open animation is finished
-      setTimeout(() => {
-        if (formRef.current) {
-          const elm = formRef.current!.parentElement!;
-          const { offsetBottom = 0 } = isScrolledIntoView(elm);
-          if (offsetBottom > 0) {
-            window.scrollTo(0, getScrollY() + offsetBottom + 50);
-          }
-        }
-      }, 400);
-    }
-  }, []);
-
-  useEffect(() => {
     formRef.current!.classList.add("is-open");
+    if (view == "in-code" && formRef.current) {
+      scrollToView(formRef.current, 400);
+    }
   }, []);
 
   // close editor with Esc if user did not start editing
@@ -174,7 +162,7 @@ export const TextEditor = (props: TextEditorProps) => {
       ref={formRef}
       onKeyDown={onKeyDown}
       isReply={isReply}
-      className="inner-animate-box"
+      className={`${view == "in-code" ? "inner-animate-box" : ""}`}
     >
       {// hide title and line numbers on reply
       !isReply && (
