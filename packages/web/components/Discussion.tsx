@@ -91,7 +91,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={onToggleDiscussion}
       >
-        <span className="badge-counter">{comments.length}</span>
+        <span className="badge-counter">{comments.length - 1}</span>
         <span className="badge-icon">▾</span>
       </button>
       {showDiscussion && (
