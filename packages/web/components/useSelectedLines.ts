@@ -57,7 +57,7 @@ export const useSelectedLines = (
   );
   const [end, endingLineNumChange] = useInputValue(endingLineNum);
 
-  const applyEffect = view == "in-code";
+  const applyEffect = view == "code-view";
 
   const updateStart = useCallback((val: any) => {
     if (typeof val != "number") {

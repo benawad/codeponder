@@ -1,9 +1,18 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CodeDiscussionView } from "./Discussion";
 import { AddComment } from "./CommentSection";
-import { CommentProps } from "./commentUI";
+import { CommentProps } from "../types/questionReplyTypes";
 import { CodeFileContext } from "./CodeFileContext";
 import { getScrollY } from "../utils/domScrollUtils";
+import {
+  CodeReviewQuestionInfoFragment,
+  QuestionReplyInfoFragment,
+} from "./apollo-components";
+
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: CodeReviewQuestionInfoFragment | QuestionReplyInfoFragment;
+}
 
 interface RenderLineProps {
   comments: CommentProps[];
@@ -35,19 +44,14 @@ export const RenderLine: React.FC<RenderLineProps> = ({
   const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
   const onEditorSubmit = useCallback(
-    ({ submitted, response, data }: any) => {
-      if (submitted) {
-        const { id, creator, __typename } =
-          data.type == "question"
-            ? response.data.createCodeReviewQuestion.codeReviewQuestion
-            : response.data.createQuestionReply.questionReply;
-
-        data.id = id;
-        data.username = creator.username;
-        data.isOwner = creator.username == owner;
-        data.__typename = __typename;
+    ({ submitted, response }: EditorSubmitProps) => {
+      if (submitted && response) {
+        const data = {
+          ...response,
+          isOwner: response.creator.username == owner,
+          newComment: true,
+        };
         preventScrollRef.current = preventScroll();
-        data.newQuestion = true;
         setCommentsForRow([...commentsForRow, data]);
         setShowEditor(false);
       } else {

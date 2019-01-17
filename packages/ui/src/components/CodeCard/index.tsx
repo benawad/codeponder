@@ -44,8 +44,8 @@ const Pre = styled.pre`
     }
 
     & .token-html {
-      padding-left: 0.625em;
-      padding-right: 0.625em;
+      padding-left: 0.9rem;
+      padding-right: 0.9rem;
 
       /* line-number */
       &::before {

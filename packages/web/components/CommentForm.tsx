@@ -38,7 +38,7 @@ const FormInput = styled(BlueInput)`
 `;
 
 const FormRow = styled.div`
-  padding: 1rem 0.625em;
+  padding: 1rem 0.9rem;
 `;
 
 const Separator = styled.div`
@@ -54,7 +54,7 @@ const FormContainer = styled.div`
   border-bottom: 1px solid #d1d5da;
   display: flex;
   flex-direction: column;
-  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.625em")};
+  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
 
   & .btn-box {
     display: flex;
@@ -88,7 +88,7 @@ export interface TextEditorProps {
   startingLineNum?: number;
   endingLineNum: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
-  view: "in-code" | "in-tree";
+  view: "code-view" | "repo-view";
 }
 
 export interface TextEditorResult {
@@ -136,7 +136,7 @@ export const TextEditor = (props: TextEditorProps) => {
   // make sure the editor is fully visible
   useEffect(() => {
     formRef.current!.classList.add("is-open");
-    if (view == "in-code" && formRef.current) {
+    if (view == "code-view" && formRef.current) {
       scrollToView(formRef.current, 400);
     }
   }, []);
@@ -162,7 +162,7 @@ export const TextEditor = (props: TextEditorProps) => {
       ref={formRef}
       onKeyDown={onKeyDown}
       isReply={isReply}
-      className={`${view == "in-code" ? "inner-animate-box" : ""}`}
+      className={`${view == "code-view" ? "inner-animate-box" : ""}`}
     >
       {// hide title and line numbers on reply
       !isReply && (
@@ -196,7 +196,7 @@ export const TextEditor = (props: TextEditorProps) => {
             <span style={{ padding: "0px 1rem" }}>–</span>
             <FormInput
               ref={endInput}
-              disabled={view == "in-code"}
+              disabled={view == "code-view"}
               name="endingLineNum"
               min={Math.min(start, totalLines)}
               max={totalLines}

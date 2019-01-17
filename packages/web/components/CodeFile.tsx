@@ -1,16 +1,19 @@
 import { useContext, useRef, useState, useEffect } from "react";
 import { css, CodeCard } from "@codeponder/ui";
-import { CommentProps, Comments } from "./commentUI";
+import { CommentProps, QuestionInfo } from "../types/questionReplyTypes";
 
 import {
   FindCodeReviewQuestionsComponent,
-  FindCodeReviewQuestionsQuery,
   CodeReviewQuestionInfoFragment,
   QuestionReplyInfoFragment,
 } from "./apollo-components";
 import { getHighlightedCode } from "../utils/highlightCode";
 import { RenderLine } from "./CodeLine";
 import { CodeFileContext } from "./CodeFileContext";
+
+interface Comments {
+  [key: number]: CommentProps[];
+}
 
 interface loadingCodeState {
   pending: boolean;
@@ -39,35 +42,22 @@ const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
 };
 
 const getCommentsForFile = (
-  prop: FindCodeReviewQuestionsQuery,
+  prop: CodeReviewQuestionInfoFragment[],
   owner: string
 ): Comments => {
-  const comment = ({
-    id,
-    text,
-    creator,
-    __typename,
-  }:
-    | CodeReviewQuestionInfoFragment
-    | QuestionReplyInfoFragment): CommentProps => ({
-    id,
-    text,
-    username: creator.username,
-    isOwner: creator.username == owner,
-    type: (__typename || "").includes("Reply") ? "reply" : "question",
-  });
-
-  return prop.findCodeReviewQuestions.reduce((comments: Comments, props) => {
-    const startingLineNum = props.startingLineNum;
-    const endingLineNum = props.endingLineNum;
-    const key = endingLineNum;
+  const comment = (
+    data: QuestionInfo | QuestionReplyInfoFragment
+  ): CommentProps => {
+    return { ...data, isOwner: data.creator.username == owner };
+  };
+  return prop.reduce((comments: Comments, props) => {
+    const { replies, ...question } = props;
+    const key = question.endingLineNum;
     comments[key] = comments[key] || [];
     comments[key].push({
-      startingLineNum,
-      endingLineNum,
-      ...comment(props),
+      ...comment(question),
     });
-    props.replies.forEach(reply => comments[key].push(comment(reply)));
+    replies.forEach(reply => comments[key].push(comment(reply)));
     return comments;
   }, {});
 };
@@ -147,8 +137,8 @@ export const CodeFile: React.FC = () => {
         }
 
         const highlightedCode = highlightCode.resolved!;
-        const comments = getCommentsForFile(data, owner);
         const questions = data.findCodeReviewQuestions;
+        const comments = getCommentsForFile(questions, owner);
 
         const onMouseOverAndOut = setIsHovered.bind(null, questions);
 

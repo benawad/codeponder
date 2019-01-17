@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 import { BlueInput, MyButton, Label, styled } from "@codeponder/ui";
 import { DebounceInput } from "react-debounce-input";
 
-import { CreateCodeReviewQuestionComponent } from "./apollo-components";
+import {
+  CreateCodeReviewQuestionComponent,
+  CodeReviewQuestionInfoFragment,
+} from "./apollo-components";
 import { useInputValue } from "../utils/useInputValue";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 import { CodeFileContext } from "./CodeFileContext";
@@ -130,15 +133,21 @@ export const QuestionForm = ({
   );
 };
 
-export interface QuestionProps {
-  onEditorSubmit: (T?: any) => void;
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: CodeReviewQuestionInfoFragment | void;
+}
+
+interface CreateQuestionProps {
+  onEditorSubmit: (T: EditorSubmitProps) => void;
   isReply: boolean;
-  startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
 }
 
-// TODO: fix type definition
-export const CreateQuestion = ({ onEditorSubmit, ...props }: QuestionProps) => {
+export const CreateQuestion = ({
+  onEditorSubmit,
+  ...props
+}: CreateQuestionProps) => {
   const { code, path, postId, lang } = useContext(CodeFileContext);
   return (
     <CreateCodeReviewQuestionComponent>
@@ -151,23 +160,22 @@ export const CreateQuestion = ({ onEditorSubmit, ...props }: QuestionProps) => {
         }: TextEditorResult) => {
           if (!cancel) {
             // save result
-            const codeReviewQuestion = {
-              startingLineNum,
-              endingLineNum,
-              codeSnippet: !code
-                ? null
-                : code
-                    .split("\n")
-                    .slice(startingLineNum - 1, endingLineNum)
-                    .join("\n"),
-              text: text,
-              path,
-              postId,
-              programmingLanguage: lang,
-            };
             const response = await mutate({
               variables: {
-                codeReviewQuestion,
+                codeReviewQuestion: {
+                  startingLineNum,
+                  endingLineNum,
+                  codeSnippet: !code
+                    ? null
+                    : code
+                        .split("\n")
+                        .slice(startingLineNum - 1, endingLineNum)
+                        .join("\n"),
+                  text: text,
+                  path,
+                  postId,
+                  programmingLanguage: lang,
+                },
               },
             });
 
@@ -175,14 +183,15 @@ export const CreateQuestion = ({ onEditorSubmit, ...props }: QuestionProps) => {
 
             onEditorSubmit({
               submitted: true,
-              response,
-              data: { type: "question", ...codeReviewQuestion },
+              response:
+                response &&
+                response.data!.createCodeReviewQuestion.codeReviewQuestion,
             });
           } else {
             onEditorSubmit({ submitted: false });
           }
         };
-        return <TextEditor {...{ ...props, submitForm, view: "in-code" }} />;
+        return <TextEditor {...{ ...props, submitForm, view: "code-view" }} />;
       }}
     </CreateCodeReviewQuestionComponent>
   );
