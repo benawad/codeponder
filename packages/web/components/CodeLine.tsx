@@ -4,7 +4,6 @@ import { AddComment } from "./CommentSection";
 import { CommentProps } from "./commentUI";
 import { CodeFileContext } from "./CodeFileContext";
 import { getScrollY } from "../utils/domScrollUtils";
-import { useTransitionend } from "./useAnimateOpen";
 
 interface RenderLineProps {
   comments: CommentProps[];
@@ -33,9 +32,7 @@ export const RenderLine: React.FC<RenderLineProps> = ({
 }) => {
   const { owner } = useContext(CodeFileContext);
   const preventScrollRef = useRef<(() => void) | null>(null);
-  const formRef = useRef<HTMLDivElement>(null);
   const [showEditor, setShowEditor] = useState(false);
-  const editorOpen = useTransitionend(formRef, showEditor, false);
   const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
   const onEditorSubmit = useCallback(
@@ -53,8 +50,11 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         preventScrollRef.current = preventScroll();
         data.newQuestion = true;
         setCommentsForRow([...commentsForRow, data]);
+        setShowEditor(false);
+      } else {
+        // wait until close animation is finished
+        setTimeout(() => setShowEditor(false), 400);
       }
-      setShowEditor(false);
     },
     [commentsForRow]
   );
@@ -95,17 +95,15 @@ export const RenderLine: React.FC<RenderLineProps> = ({
         <CodeDiscussionView
           comments={commentsForRow}
           onOpenEditor={onOpenEditor}
-          showEditor={showEditor || editorOpen}
+          showEditor={showEditor}
         />
       )}
-      {(showEditor || editorOpen) && (
-        <div ref={formRef} className="inner-animate-box">
-          <AddComment
-            comments={commentsForRow}
-            line={lineNum}
-            onEditorSubmit={onEditorSubmit}
-          />
-        </div>
+      {showEditor && (
+        <AddComment
+          comments={commentsForRow}
+          line={lineNum}
+          onEditorSubmit={onEditorSubmit}
+        />
       )}
     </div>
   );

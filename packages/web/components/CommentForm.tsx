@@ -136,7 +136,7 @@ export const TextEditor = (props: TextEditorProps) => {
   // make sure the editor is fully visible
   useEffect(() => {
     if (view == "in-code") {
-      // wait for the animate to finish
+      // wait until open animation is finished
       setTimeout(() => {
         if (formRef.current) {
           const elm = formRef.current!.parentElement!;
@@ -147,6 +147,10 @@ export const TextEditor = (props: TextEditorProps) => {
         }
       }, 400);
     }
+  }, []);
+
+  useEffect(() => {
+    formRef.current!.classList.add("is-open");
   }, []);
 
   // close editor with Esc if user did not start editing
@@ -161,11 +165,17 @@ export const TextEditor = (props: TextEditorProps) => {
 
   const onCancel = useCallback(() => {
     cleanSelectedLines(end);
+    formRef.current!.classList.remove("is-open");
     submitForm({ cancel: true } as TextEditorResult);
   }, []);
 
   return (
-    <FormContainer ref={formRef} onKeyDown={onKeyDown} isReply={isReply}>
+    <FormContainer
+      ref={formRef}
+      onKeyDown={onKeyDown}
+      isReply={isReply}
+      className="inner-animate-box"
+    >
       {// hide title and line numbers on reply
       !isReply && (
         <>
@@ -234,6 +244,7 @@ export const TextEditor = (props: TextEditorProps) => {
           className={`primary ${isValidForm ? "" : "disabled"}`}
           onClick={() => {
             if (isValidForm) {
+              formRef.current!.classList.remove("is-open");
               submitForm({
                 cancel: false,
                 startingLineNum: start,

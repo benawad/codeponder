@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CommentProps, CommentBox } from "./commentUI";
 import { styled } from "@codeponder/ui";
-import { useTransitionend } from "./useAnimateOpen";
 
 interface CodeDiscussionViewProps {
   comments: CommentProps[];
@@ -57,28 +56,32 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
 }) => {
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const discussionRef = useRef<HTMLDivElement>(null);
-  const newQuestionRef = useRef(
-    comments.length == 1 && comments[0].newQuestion
-  );
-
+  const newQuestionRef = useRef(false);
   const [showDiscussion, setShowDiscussion] = useState(false);
-  const discussionOpen = useTransitionend(discussionRef, showDiscussion, false);
 
-  const onToggleDiscussion = useCallback(({ target: elm }: any = {}) => {
-    elm && elm.classList.toggle("is-open");
-    setShowDiscussion(val => !val);
-  }, []);
-
-  // show new question immediately
-  useEffect(
-    () => {
-      if (newQuestionRef.current) {
+  const onToggleDiscussion = useCallback(
+    ({ target: elm }: any = {}) => {
+      elm && elm.classList.toggle("is-open");
+      if (showDiscussion) {
         newQuestionRef.current = false;
-        onToggleDiscussion({ target: toggleButtonRef.current });
+        discussionRef.current!.classList.remove("is-open");
+        setTimeout(() => {
+          setShowDiscussion(false);
+        }, 400);
+      } else {
+        setShowDiscussion(true);
       }
     },
-    [comments]
+    [showDiscussion]
   );
+
+  // show new question immediately
+  useEffect(() => {
+    if (comments.length == 1 && comments[0].newQuestion) {
+      newQuestionRef.current = true;
+      onToggleDiscussion({ target: toggleButtonRef.current });
+    }
+  }, []);
 
   return (
     <>
@@ -91,13 +94,16 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
         <span className="badge-counter">{comments.length}</span>
         <span className="badge-icon">▾</span>
       </button>
-      {(showDiscussion || discussionOpen) && (
+      {showDiscussion && (
         <Discussion
           discussionRef={discussionRef}
-          className={`inner-animate-box${discussionOpen ? " is-open" : ""}`}
+          className={`inner-animate-box${
+            newQuestionRef.current ? " is-open" : ""
+          }`}
           comments={comments}
           onOpenEditor={onOpenEditor}
           showEditor={showEditor}
+          animate={true}
         />
       )}
     </>
@@ -107,6 +113,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
 interface DiscussionProps extends CodeDiscussionViewProps {
   discussionRef: React.RefObject<HTMLDivElement>;
   className: string;
+  animate?: boolean;
 }
 
 export const Discussion: React.FC<DiscussionProps> = ({
@@ -115,7 +122,17 @@ export const Discussion: React.FC<DiscussionProps> = ({
   comments,
   onOpenEditor,
   showEditor,
+  animate,
 }) => {
+  useEffect(
+    () => {
+      if (animate) {
+        discussionRef.current!.classList.add("is-open");
+      }
+    },
+    [showEditor]
+  );
+
   return (
     <DiscussionContainer
       ref={discussionRef}
