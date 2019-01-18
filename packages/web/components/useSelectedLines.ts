@@ -61,7 +61,7 @@ export const useSelectedLines = (
 
   const updateStart = useCallback((val: any) => {
     if (typeof val != "number") {
-      const input = val.currentTarget;
+      const input = val.currentTarget || val.target;
       val = input.validity.valid ? input.value : end;
     }
     startingLineNumChange(prev => {

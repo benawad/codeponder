@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useRef, useEffect } from "react";
+import { DebounceInput } from "react-debounce-input";
 
 import { useSelectedLines, cleanSelectedLines } from "./useSelectedLines";
 import { useInputValue } from "../utils/useInputValue";
@@ -128,7 +129,7 @@ export const TextEditor = (props: TextEditorProps) => {
 
   // focus title / textarea
   useEffect(() => {
-    if (inputRef.current) {
+    if (view == "code-view" && inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
@@ -178,8 +179,10 @@ export const TextEditor = (props: TextEditorProps) => {
       {// show title only for question
       !isReply && (
         <FormRow>
-          <FormInput
-            ref={inputRef}
+          <DebounceInput
+            inputRef={inputRef}
+            element={FormInput}
+            debounceTimeout={300}
             placeholder="Title"
             name="title"
             value={title}
@@ -192,9 +195,11 @@ export const TextEditor = (props: TextEditorProps) => {
         <>
           <FormRow>
             <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
-            <FormInput
+            <DebounceInput
+              element={FormInput}
+              debounceTimeout={view == "code-view" ? 100 : 300}
+              inputRef={startInput}
               className="start-tooltip"
-              ref={startInput}
               name="startingLineNum"
               min="1"
               max={Math.min(endingLineNum!, totalLines!)}
@@ -208,8 +213,10 @@ export const TextEditor = (props: TextEditorProps) => {
               the mouse
             </Label>
             <span style={{ padding: "0px 1rem" }}>–</span>
-            <FormInput
-              ref={endInput}
+            <DebounceInput
+              element={FormInput}
+              debounceTimeout={300}
+              inputRef={endInput}
               disabled={view == "code-view"}
               name="endingLineNum"
               min={Math.min(start, totalLines!)}
@@ -225,8 +232,10 @@ export const TextEditor = (props: TextEditorProps) => {
       )}
 
       <FormRow>
-        <FormInput
-          ref={isReply ? inputRef : null}
+        <DebounceInput
+          element={FormInput}
+          debounceTimeout={300}
+          inputRef={isReply ? inputRef : null}
           minHeight="100px"
           name="question"
           placeholder={isReply ? "Type your Reply" : "Type your Question"}
