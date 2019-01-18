@@ -9,7 +9,7 @@ import {
 } from "./apollo-components";
 import { getHighlightedCode } from "../utils/highlightCode";
 import { RenderLine } from "./CodeLine";
-import { CodeFileContext } from "./CodeFileContext";
+import { PostContext } from "./PostContext";
 
 interface Comments {
   [key: number]: CommentProps[];
@@ -122,7 +122,7 @@ const useHighlight = (lang: string, code: string) => {
 };
 
 export const CodeFile: React.FC = () => {
-  const { code, lang, owner, path, postId } = useContext(CodeFileContext);
+  const { code, lang, owner, path, postId } = useContext(PostContext);
   const highlightCode = useHighlight(lang, code || "");
   const variables = {
     path,
