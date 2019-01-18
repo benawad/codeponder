@@ -3,6 +3,11 @@ import {
   QuestionReplyInfoFragment,
 } from "../components/apollo-components";
 
+export interface EditorSubmitProps {
+  submitted: boolean;
+  response?: CodeReviewQuestionInfoFragment | QuestionReplyInfoFragment | void;
+}
+
 type KeysToExclude = {
   replies: true;
 };

@@ -1,15 +1,8 @@
 import React, { useContext } from "react";
-import {
-  CreateCodeReviewQuestionComponent,
-  CodeReviewQuestionInfoFragment,
-} from "./apollo-components";
+import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 import { PostContext } from "./PostContext";
-
-interface EditorSubmitProps {
-  submitted: boolean;
-  response?: CodeReviewQuestionInfoFragment | void;
-}
+import { EditorSubmitProps } from "../types/questionReplyTypes";
 
 export interface CreateQuestionProps {
   onEditorSubmit: (T: EditorSubmitProps) => void;
@@ -45,7 +38,8 @@ export const CreateQuestion = ({
                         .split("\n")
                         .slice(startingLineNum - 1, endingLineNum)
                         .join("\n"),
-                  text: text,
+                  text,
+                  /* TODO add title to code_review_question */
                   path,
                   postId,
                   programmingLanguage: lang,

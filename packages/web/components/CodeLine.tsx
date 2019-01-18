@@ -1,18 +1,9 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { CodeDiscussionView } from "./Discussion";
 import { AddComment } from "./CommentSection";
-import { CommentProps } from "../types/questionReplyTypes";
+import { CommentProps, EditorSubmitProps } from "../types/questionReplyTypes";
 import { PostContext } from "./PostContext";
 import { getScrollY } from "../utils/domScrollUtils";
-import {
-  CodeReviewQuestionInfoFragment,
-  QuestionReplyInfoFragment,
-} from "./apollo-components";
-
-interface EditorSubmitProps {
-  submitted: boolean;
-  response?: CodeReviewQuestionInfoFragment | QuestionReplyInfoFragment;
-}
 
 interface RenderLineProps {
   comments: CommentProps[];
