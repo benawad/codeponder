@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useInputValue } from "../utils/useInputValue";
 
 interface TreeElement extends HTMLElement {
@@ -23,6 +23,10 @@ interface endReturnValue {
 const getHoveredLine = ({ target: elm, currentTarget: parent, type }: any) => {
   let isOverLine = false;
   while (elm && elm != parent && !elm.classList.contains("token-line")) {
+    const name = elm.classList[0];
+    if (name && name.match(/CommentBoxContainer/)) {
+      break;
+    }
     elm = elm.parentNode || null;
   }
   if (elm && parent) {
@@ -32,27 +36,40 @@ const getHoveredLine = ({ target: elm, currentTarget: parent, type }: any) => {
 };
 
 export const cleanSelectedLines = (
+  lineNum: number,
   parentElm = document.querySelector(".code-content")
 ) => {
   parentElm!
-    .querySelectorAll(".is-selected")
-    .forEach(elm => elm.classList.remove("is-selected"));
+    .querySelectorAll(`.is-selected-${lineNum}`)
+    .forEach(elm => elm.classList.remove(`is-selected-${lineNum}`));
 };
 
 export const useSelectedLines = (
-  startingLineNum: number | undefined,
-  endingLineNum: number,
+  startingLineNum: number = 0,
+  endingLineNum: number = 0,
   view: string
 ): [startReturnValue, endReturnValue] => {
   const parentElm = document.querySelector(".code-content");
   const startInput = useRef<HTMLInputElement>(null);
   const endInput = useRef<HTMLInputElement>(null);
-  const [start, startingLineNumChange] = useInputValue(
+  const [start, startingLineNumChange] = useState(
     startingLineNum || endingLineNum
   );
   const [end, endingLineNumChange] = useInputValue(endingLineNum);
 
-  const applyEffect = view == "in-code";
+  const applyEffect = view == "code-view";
+
+  const updateStart = useCallback((val: any) => {
+    if (typeof val != "number") {
+      const input = val.currentTarget || val.target;
+      val = input.validity.valid ? input.value : end;
+    }
+    startingLineNumChange(prev => {
+      updateSelectedLines(+prev, +val);
+      return val;
+    });
+  }, []);
+
   // listening to mouse move when start input is focused
   useEffect(() => {
     const input = startInput.current;
@@ -65,7 +82,7 @@ export const useSelectedLines = (
       const endVal = +endInput.current!.value;
       const hoveredLine = getHoveredLine(e);
       if (hoveredLine && hoveredLine != startVal && hoveredLine <= endVal) {
-        startingLineNumChange({ currentTarget: { value: hoveredLine } });
+        updateStart(hoveredLine);
       }
     };
     const onFocus = () => {
@@ -82,6 +99,7 @@ export const useSelectedLines = (
     };
 
     input.addEventListener("focus", onFocus);
+    updateSelectedLines(end + 1, end);
     return () => {
       input.removeEventListener("focus", onFocus);
       onBlur();
@@ -89,30 +107,29 @@ export const useSelectedLines = (
   }, []);
 
   // Styles lines between start - end when start field change
-  useEffect(
-    () => {
-      const input = startInput.current;
-      if (!applyEffect || !input || !parentElm) {
-        return;
-      }
+  const updateSelectedLines = useCallback((prev: number, current: number) => {
+    if (!applyEffect || !parentElm || current > end) {
+      return;
+    }
 
-      const currentLine = input.validity.valid ? input.value : end;
-      let numberElm = parentElm.querySelector(
-        `[data-line-number="${currentLine}"]`
-      ) as TreeElement;
-      if (numberElm && currentLine <= end) {
-        cleanSelectedLines(parentElm);
-        while (numberElm && Number(numberElm.dataset.lineNumber) <= end) {
-          numberElm.parentNode.classList.add("is-selected");
-          numberElm = numberElm.parentNode.nextSibling.childNodes[0];
-        }
+    const first = Math.min(prev, current);
+    const last = Math.max(prev, current);
+    let numberElm = parentElm.querySelector(
+      `[data-line-number="${first}"]`
+    ) as TreeElement;
+    if (numberElm) {
+      while (numberElm && Number(numberElm.dataset.lineNumber) < last) {
+        numberElm.parentNode.classList.toggle(
+          `is-selected-${end}`,
+          current <= prev
+        );
+        numberElm = numberElm.parentNode.nextSibling.childNodes[0];
       }
-    },
-    [start]
-  );
+    }
+  }, []);
 
   return [
-    { start, startingLineNumChange, startInput },
+    { start, startingLineNumChange: updateStart, startInput },
     { end, endingLineNumChange, endInput },
   ];
 };

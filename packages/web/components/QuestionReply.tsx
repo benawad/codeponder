@@ -1,45 +1,21 @@
-import { useInputValue } from "../utils/useInputValue";
-import { CreateQuestionReplyComponent } from "./apollo-components";
+import {
+  CreateQuestionReplyComponent,
+  QuestionReplyInfoFragment,
+} from "./apollo-components";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 
-interface Props {
-  questionId: string;
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: QuestionReplyInfoFragment | void;
 }
 
-export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
-  const [value, onChange] = useInputValue("");
-
-  return (
-    <CreateQuestionReplyComponent>
-      {mutate => (
-        <form
-          onSubmit={async e => {
-            e.preventDefault();
-            const response = await mutate({
-              variables: {
-                questionReply: {
-                  questionId,
-                  text: value,
-                },
-              },
-            });
-
-            console.log(response);
-          }}
-        >
-          <input value={value} onChange={onChange} placeholder="...reply" />
-        </form>
-      )}
-    </CreateQuestionReplyComponent>
-  );
-};
-
 interface QuestionReplyProps {
-  isReplay: boolean;
+  isReply: boolean;
   startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
-  onEditorSubmit: (T?: any) => void;
+  onEditorSubmit: (T: EditorSubmitProps) => void;
   questionId: string;
+  view: "code-view" | "repo-view";
 }
 
 export const CreateQuestionReply = ({
@@ -52,14 +28,12 @@ export const CreateQuestionReply = ({
       const submitForm = async ({ cancel, text }: TextEditorResult) => {
         if (!cancel) {
           // save result
-          const questionReply = {
-            questionId,
-            text,
-          };
-
           const response = await mutate({
             variables: {
-              questionReply,
+              questionReply: {
+                questionId,
+                text,
+              },
             },
           });
 
@@ -67,18 +41,14 @@ export const CreateQuestionReply = ({
 
           onEditorSubmit({
             submitted: true,
-            response,
-            data: { type: "reply", ...questionReply },
+            response:
+              response && response.data!.createQuestionReply.questionReply,
           });
         } else {
           onEditorSubmit({ submitted: false });
         }
       };
-      return (
-        <TextEditor
-          {...{ ...props, submitForm, type: "reply", view: "in-code" }}
-        />
-      );
+      return <TextEditor {...props} submitForm={submitForm} />;
     }}
   </CreateQuestionReplyComponent>
 );

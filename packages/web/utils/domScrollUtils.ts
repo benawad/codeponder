@@ -19,3 +19,34 @@ export function getScrollY() {
   const doc = document.documentElement;
   return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 }
+
+export const scrollToView = (elm: HTMLElement, duration: number) => {
+  let start = 0;
+  const baseY = getScrollY();
+  const step = (timestamp: number) => {
+    if (!start) start = timestamp;
+    const deltaTime = timestamp - start;
+    const { offsetBottom = 0 } = isScrolledIntoView(elm);
+    if (offsetBottom > 0) {
+      const extraOffset = (50 * deltaTime) / duration;
+      smoothScroll(baseY, offsetBottom + extraOffset);
+    }
+    if (deltaTime < duration) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+};
+
+const smoothScroll = (baseY: number, distance: number) => {
+  let start = 0;
+  const step = (timestamp: number) => {
+    if (!start) start = timestamp;
+    const delta = timestamp - start;
+    window.scrollTo(0, baseY + delta);
+    if (delta < distance) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+};

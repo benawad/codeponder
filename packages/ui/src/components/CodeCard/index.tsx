@@ -31,7 +31,10 @@ const Pre = styled.pre`
   }
 
   & .token-line {
-    &.is-selected {
+    display: flex;
+    flex-direction: column;
+
+    &[class*="is-selected"] {
       background: hsla(24, 20%, 50%, 0.08);
       background: linear-gradient(
         to right,
@@ -41,8 +44,8 @@ const Pre = styled.pre`
     }
 
     & .token-html {
-      padding-left: 0.625em;
-      padding-right: 0.625em;
+      padding-left: 0.9rem;
+      padding-right: 0.9rem;
 
       /* line-number */
       &::before {
@@ -99,7 +102,7 @@ const Pre = styled.pre`
   }
 
   &:not(.js-select-line) {
-    & .token-line:not(.is-selected).is-hovered {
+    & .token-line:not([class*="is-selected"]).is-hovered {
       & .btn-open-edit {
         opacity: 1;
         cursor: pointer;
@@ -108,23 +111,6 @@ const Pre = styled.pre`
       & .btn-open-edit:hover {
         transform: scale(1);
       }
-    }
-  }
-
-  & .discussion-container {
-    background: #ffffff;
-
-    & .discussion-inner-box {
-      border-top: 1px solid #dfe2e5;
-      border-bottom: 1px solid #dfe2e5;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 400ms, opacity 600ms ease;
-    }
-
-    &.is-open > .discussion-inner-box {
-      max-height: 2000px;
-      opacity: 1;
     }
   }
 
@@ -163,6 +149,17 @@ const Pre = styled.pre`
 
     &.is-open .badge-icon {
       transform: rotate(0.5turn);
+    }
+  }
+
+  & .inner-animate-box {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 400ms ease-in-out, opacity 600ms ease-in-out;
+
+    &.is-open {
+      max-height: 2000px;
+      opacity: 1;
     }
   }
 

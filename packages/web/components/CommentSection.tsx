@@ -1,28 +1,31 @@
-import { CreateQuestion } from "./QuestionForm";
-import { CommentProps } from "./commentUI";
+import { CreateQuestion } from "./Question";
+import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
 import { CreateQuestionReply } from "./QuestionReply";
 
 interface AddCommentProps {
-  onEditorSubmit: (T?: any) => void;
+  onEditorSubmit: (T: any) => void;
   comments: CommentProps[];
   line: number;
+  view: "code-view" | "repo-view";
 }
 
 export const AddComment: React.SFC<AddCommentProps> = ({
   comments,
   line,
   onEditorSubmit,
+  view,
 }) => {
-  const isReplay = comments.length > 0;
-  const question = isReplay ? comments[0] : undefined;
+  const isReply = comments.length > 0;
+  const question = isReply ? (comments[0] as QuestionProps) : undefined;
 
   const commentProps = {
-    isReplay,
+    isReply,
     endingLineNum: line,
     onEditorSubmit,
+    view,
   };
 
-  return isReplay ? (
+  return isReply ? (
     <CreateQuestionReply
       {...commentProps}
       startingLineNum={question!.startingLineNum}

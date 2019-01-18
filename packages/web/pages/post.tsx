@@ -13,7 +13,7 @@ import {
 } from "../components/github-apollo-components";
 import { Link } from "../server/routes";
 import { CodeFile } from "../components/CodeFile";
-import { CodeFileContext, ContextProps } from "../components/CodeFileContext";
+import { PostContext, ContextProps } from "../components/PostContext";
 import { filenameToLang } from "../utils/filenameToLang";
 import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
 import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
@@ -103,6 +103,12 @@ export default class Post extends React.PureComponent<Props> {
 
   render() {
     const { owner, path, name, expression, id, topics } = this.props;
+    const context: ContextProps = {
+      lang: path ? filenameToLang(path) : "",
+      owner,
+      path,
+      postId: id,
+    };
     return (
       // @ts-ignore
       <Layout title={`Code Review Post: ${name}`}>
@@ -139,22 +145,16 @@ export default class Post extends React.PureComponent<Props> {
               const { object } = data.repository;
 
               if (object.__typename === "Blob") {
-                const context: ContextProps = {
-                  code: object.text,
-                  lang: path ? filenameToLang(path) : "",
-                  owner,
-                  path,
-                  postId: id,
-                  totalLines: (object.text || "").split("\n").length,
-                };
+                context.code = object.text;
+                context.totalLines = (object.text || "").split("\n").length;
                 return (
                   <>
                     {this.renderFilePath(name, path)}
                     {/*
                     // @ts-ignore */}
-                    <CodeFileContext.Provider value={context}>
+                    <PostContext.Provider value={context}>
                       <CodeFile />
-                    </CodeFileContext.Provider>
+                    </PostContext.Provider>
                   </>
                 );
               }
@@ -193,12 +193,13 @@ export default class Post extends React.PureComponent<Props> {
             }}
           </GetRepoObjectComponent>
           {path ? null : (
-            <QuestionSection
-              variables={{
-                postId: id,
-              }}
-              postId={id}
-            />
+            <PostContext.Provider value={context}>
+              <QuestionSection
+                variables={{
+                  postId: id,
+                }}
+              />
+            </PostContext.Provider>
           )}
         </BigCard>
       </Layout>

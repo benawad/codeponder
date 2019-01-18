@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useRef, useEffect } from "react";
+import { DebounceInput } from "react-debounce-input";
 
 import { useSelectedLines, cleanSelectedLines } from "./useSelectedLines";
 import { useInputValue } from "../utils/useInputValue";
-import { isScrolledIntoView, getScrollY } from "../utils/domScrollUtils";
+import { scrollToView } from "../utils/domScrollUtils";
 import { MyButton, styled, Label, BlueInput } from "@codeponder/ui";
-import { CommentBoxContainer } from "./commentUI";
-import { CodeFileContext } from "./CodeFileContext";
+import { PostContext } from "./PostContext";
 
 interface FormInputProps {
   minHeight?: string;
@@ -39,7 +39,7 @@ const FormInput = styled(BlueInput)`
 `;
 
 const FormRow = styled.div`
-  padding: 1rem 0.5em;
+  padding: 1rem 0.9rem;
 `;
 
 const Separator = styled.div`
@@ -49,9 +49,13 @@ const Separator = styled.div`
 `;
 
 const FormContainer = styled.div`
+  background-color: #ffffff;
+  border-top: ${(p: { isReply: boolean; view: string }) =>
+    p.isReply ? "none" : "1px solid #d1d5da"};
+  border-bottom: ${p => (p.view ? "none" : "1px solid #d1d5da")};
   display: flex;
   flex-direction: column;
-  margin: 0.625em;
+  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
 
   & .btn-box {
     display: flex;
@@ -81,12 +85,11 @@ const FormContainer = styled.div`
 `;
 
 export interface TextEditorProps {
-  isReplay: boolean;
+  isReply: boolean;
   startingLineNum?: number;
-  endingLineNum: number;
+  endingLineNum?: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
-  type: "reply" | "question";
-  view: "in-code" | "in-tree";
+  view: "code-view" | "repo-view";
 }
 
 export interface TextEditorResult {
@@ -98,20 +101,13 @@ export interface TextEditorResult {
 }
 
 export const TextEditor = (props: TextEditorProps) => {
-  const {
-    isReplay,
-    startingLineNum,
-    endingLineNum,
-    submitForm,
-    type,
-    view,
-  } = props;
+  const { isReply, startingLineNum, endingLineNum, submitForm, view } = props;
 
   const formRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, titleChange] = useInputValue("");
   const [text, textChange] = useInputValue("");
-  const { totalLines } = useContext(CodeFileContext);
+  const { totalLines } = useContext(PostContext);
 
   // listening to mouse move when start input is focused
   // Styles lines between start - end when start change
@@ -127,26 +123,29 @@ export const TextEditor = (props: TextEditorProps) => {
     !startInput.current ||
     !endInput.current ||
     (startInput.current!.validity.valid && endInput.current!.validity.valid);
-  const isValidForm = isReplay
+  const isValidForm = isReply
     ? textTrimmed
     : titleTrimmed && textTrimmed && validateStartEnd;
 
   // focus title / textarea
   useEffect(() => {
-    if (inputRef) {
-      inputRef.current!.focus();
+    if (view == "code-view" && inputRef.current) {
+      inputRef.current.focus();
     }
   }, []);
 
   // make sure the editor is fully visible
   useEffect(() => {
-    if (view == "in-code") {
-      const elm = formRef.current!.parentElement!.parentElement;
-      const { offsetBottom = 0 } = isScrolledIntoView(elm);
-      if (offsetBottom > 0) {
-        window.scrollTo(0, getScrollY() + offsetBottom + 50);
-      }
+    formRef.current!.classList.add("is-open");
+    if (view == "code-view" && formRef.current) {
+      scrollToView(formRef.current, 400);
     }
+  }, []);
+
+  const clearForm = useCallback(() => {
+    const value = { currentTarget: { value: "" } };
+    titleChange(value);
+    textChange(value);
   }, []);
 
   // close editor with Esc if user did not start editing
@@ -160,97 +159,119 @@ export const TextEditor = (props: TextEditorProps) => {
   );
 
   const onCancel = useCallback(() => {
-    cleanSelectedLines();
-    submitForm({ cancel: true } as TextEditorResult);
+    if (view == "repo-view") {
+      clearForm();
+    } else {
+      cleanSelectedLines(end);
+      formRef.current!.classList.remove("is-open");
+      submitForm({ cancel: true } as TextEditorResult);
+    }
   }, []);
 
   return (
-    <CommentBoxContainer>
-      <FormContainer ref={formRef} onKeyDown={onKeyDown}>
-        {// hide title and line numbers on reply
-        !isReplay && (
-          <>
-            <FormRow>
-              <FormInput
-                ref={inputRef}
-                placeholder="Title"
-                name="title"
-                value={title}
-                onChange={titleChange}
-              />
-            </FormRow>
-            <FormRow>
-              <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
-              <FormInput
-                className="start-tooltip"
-                ref={startInput}
-                name="startingLineNum"
-                min="1"
-                max={Math.min(endingLineNum, totalLines)}
-                type="number"
-                value={start}
-                width="5em"
-                onChange={startingLineNumChange}
-              />
-              <Label className="tooltiptext" as="span">
-                You can type a number, use up/down arrows or select a line with
-                the mouse
-              </Label>
-              <span style={{ padding: "0px 1rem" }}>–</span>
-              <FormInput
-                ref={endInput}
-                disabled={view == "in-code"}
-                name="endingLineNum"
-                min={Math.min(start, totalLines)}
-                max={totalLines}
-                type="number"
-                value={end}
-                width="5em"
-                onChange={endingLineNumChange}
-              />
-            </FormRow>
-            <Separator />
-          </>
-        )}
-
+    <FormContainer
+      ref={formRef}
+      onKeyDown={onKeyDown}
+      isReply={isReply}
+      view={view}
+      className={`${view == "code-view" ? "inner-animate-box" : ""}`}
+    >
+      {// show title only for question
+      !isReply && (
         <FormRow>
-          <FormInput
-            ref={isReplay ? inputRef : null}
-            minHeight="100px"
-            name="question"
-            placeholder={
-              type == "reply" ? "Type your Reply" : "Type your Question"
-            }
-            value={text}
-            onChange={textChange}
-            as="textarea"
+          <DebounceInput
+            inputRef={inputRef}
+            element={FormInput}
+            debounceTimeout={300}
+            placeholder="Title"
+            name="title"
+            value={title}
+            onChange={titleChange}
           />
         </FormRow>
-        <Separator />
-        <div className="btn-box">
-          <MyButton variant="form" className="btn" onClick={onCancel}>
-            Cancel
-          </MyButton>
-          <MyButton
-            variant="form"
-            disabled={!isValidForm}
-            className={`primary ${isValidForm ? "" : "disabled"}`}
-            onClick={() => {
-              if (isValidForm) {
-                submitForm({
-                  cancel: false,
-                  startingLineNum: start,
-                  endingLineNum: end,
-                  title: titleTrimmed,
-                  text: textTrimmed,
-                });
+      )}
+      {// show line numbers for question associated to a file
+      !isReply && view != "repo-view" && (
+        <>
+          <FormRow>
+            <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
+            <DebounceInput
+              element={FormInput}
+              debounceTimeout={view == "code-view" ? 100 : 300}
+              inputRef={startInput}
+              className="start-tooltip"
+              name="startingLineNum"
+              min="1"
+              max={Math.min(endingLineNum!, totalLines!)}
+              type="number"
+              value={start}
+              width="5em"
+              onChange={startingLineNumChange}
+            />
+            <Label className="tooltiptext" as="span">
+              You can type a number, use up/down arrows or select a line with
+              the mouse
+            </Label>
+            <span style={{ padding: "0px 1rem" }}>–</span>
+            <DebounceInput
+              element={FormInput}
+              debounceTimeout={300}
+              inputRef={endInput}
+              disabled={view == "code-view"}
+              name="endingLineNum"
+              min={Math.min(start, totalLines!)}
+              max={totalLines}
+              type="number"
+              value={end}
+              width="5em"
+              onChange={endingLineNumChange}
+            />
+          </FormRow>
+          <Separator />
+        </>
+      )}
+
+      <FormRow>
+        <DebounceInput
+          element={FormInput}
+          debounceTimeout={300}
+          inputRef={isReply ? inputRef : null}
+          minHeight="100px"
+          name="question"
+          placeholder={isReply ? "Type your Reply" : "Type your Question"}
+          value={text}
+          onChange={textChange}
+          as="textarea"
+        />
+      </FormRow>
+      <Separator />
+      <div className="btn-box">
+        <MyButton variant="form" className="btn" onClick={onCancel}>
+          {view == "repo-view" ? "Clear" : "Cancel"}
+        </MyButton>
+        <MyButton
+          variant="form"
+          disabled={!isValidForm}
+          className={`primary ${isValidForm ? "" : "disabled"}`}
+          onClick={() => {
+            if (isValidForm) {
+              formRef.current!.classList.remove("is-open");
+              submitForm({
+                cancel: false,
+                startingLineNum: start,
+                endingLineNum: end,
+                title: titleTrimmed,
+                text: textTrimmed,
+              });
+              if (view == "repo-view") {
+                clearForm();
               }
-            }}
-          >
-            Save
-          </MyButton>
-        </div>
-      </FormContainer>
-    </CommentBoxContainer>
+            }
+          }}
+        >
+          Save
+        </MyButton>
+      </div>
+    </FormContainer>
   );
 };

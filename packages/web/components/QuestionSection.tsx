@@ -1,59 +1,66 @@
-import * as React from "react";
+import React, { useCallback, useState } from "react";
 import { Question } from "@codeponder/ui";
 
 import {
   FindCodeReviewQuestionsComponent,
   FindCodeReviewQuestionsVariables,
+  CodeReviewQuestionInfoFragment,
 } from "./apollo-components";
-import { QuestionForm, QuestionFormProps } from "./QuestionForm";
+import { CreateQuestion } from "./Question";
+import { EditorSubmitProps } from "../types/questionReplyTypes";
 
-interface Props extends QuestionFormProps {
+interface Props {
   variables: FindCodeReviewQuestionsVariables;
-  startLinesSelection: number;
-  endLinesSelection: number;
-  handleLinesSelection: (event: any, inputNumber: number) => void;
 }
 
-export const QuestionSection = ({
-  variables,
-  code,
-  postId,
-  path,
-  programmingLanguage,
-  startLinesSelection,
-  endLinesSelection,
-  handleLinesSelection,
-}: Props) => {
+interface QuestionListProps {
+  list: CodeReviewQuestionInfoFragment[];
+}
+
+const InnerQuestionSection: React.FC<QuestionListProps> = ({ list }) => {
+  const [questions, updateQuestions] = useState(list);
+
+  const onEditorSubmit = useCallback(
+    ({ submitted, response }: EditorSubmitProps) => {
+      if (submitted && response) {
+        updateQuestions([
+          ...questions,
+          response as CodeReviewQuestionInfoFragment,
+        ]);
+      }
+    },
+    [questions]
+  );
+
+  return (
+    <>
+      <CreateQuestion
+        onEditorSubmit={onEditorSubmit}
+        isReply={false}
+        view="repo-view"
+      />
+      <div
+        style={{
+          border: "1px solid #F2F2F2",
+          borderRadius: "5px",
+        }}
+      >
+        {questions.map(crq => (
+          <Question key={crq.id} {...crq} />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export const QuestionSection = ({ variables }: Props) => {
   return (
     <FindCodeReviewQuestionsComponent variables={variables}>
       {({ data, loading }) => {
         if (!data || loading) {
           return null;
         }
-
-        return (
-          <>
-            <QuestionForm
-              code={code || ""}
-              postId={postId}
-              path={path}
-              programmingLanguage={programmingLanguage}
-              startLinesSelection={startLinesSelection}
-              endLinesSelection={endLinesSelection}
-              handleLinesSelection={handleLinesSelection}
-            />
-            <div
-              style={{
-                border: "1px solid #F2F2F2",
-                borderRadius: "5px",
-              }}
-            >
-              {data.findCodeReviewQuestions.map(crq => (
-                <Question key={crq.id} {...crq} />
-              ))}
-            </div>
-          </>
-        );
+        return <InnerQuestionSection list={data.findCodeReviewQuestions} />;
       }}
     </FindCodeReviewQuestionsComponent>
   );

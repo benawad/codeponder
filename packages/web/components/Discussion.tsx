@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { CommentProps, CommentBox } from "./commentUI";
-import { styled } from "@codeponder/ui";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
+import { styled, CommentCard } from "@codeponder/ui";
 
-interface DiscussionProps {
+interface CodeDiscussionViewProps {
   comments: CommentProps[];
   onOpenEditor: (props: any) => any;
+  showEditor: boolean;
 }
 
 const DiscussionNavBar = styled.div`
@@ -29,10 +30,18 @@ const DiscussionNavBar = styled.div`
   }
 `;
 
+const DiscussionContainer = styled.div`
+  background-color: #ffffff;
+  border-top: 1px solid #dfe2e5;
+  border-bottom: ${(p: { showEditor: boolean }) =>
+    p.showEditor ? "none" : "1px solid #dfe2e5"};
+  margin-bottom: ${p => (p.showEditor ? "-0.5em" : "0")};
+`;
+
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
 
-const lineNumbers = (comment: CommentProps) => {
+const lineNumbers = (comment: QuestionProps) => {
   const { startingLineNum, endingLineNum } = comment;
   if (startingLineNum == endingLineNum) {
     return `Line ${startingLineNum}`;
@@ -40,65 +49,108 @@ const lineNumbers = (comment: CommentProps) => {
   return `Lines ${startingLineNum} - ${endingLineNum}`;
 };
 
-export const Discussion: React.FC<DiscussionProps> = ({
+export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   comments,
   onOpenEditor,
+  showEditor,
 }) => {
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const discussionRef = useRef<HTMLDivElement>(null);
+  const newQuestionRef = useRef(false);
   const [showDiscussion, setShowDiscussion] = useState(false);
 
-  const onToggleDiscussion = useCallback(({ target: elm }: any) => {
-    if (elm.classList.contains("discussion-badge")) {
-      elm.classList.toggle("is-open");
-      if (discussionRef.current) {
+  const onToggleDiscussion = useCallback(
+    ({ target: elm }: any = {}) => {
+      elm && elm.classList.toggle("is-open");
+      if (showDiscussion) {
+        newQuestionRef.current = false;
         discussionRef.current!.classList.remove("is-open");
-        // remove the component after the transition ends
         setTimeout(() => {
           setShowDiscussion(false);
         }, 400);
       } else {
         setShowDiscussion(true);
       }
-    }
-  }, []);
-
-  useEffect(
-    () => {
-      if (showDiscussion) {
-        discussionRef.current!.classList.add("is-open");
-      }
     },
     [showDiscussion]
   );
 
+  // show new question immediately
+  useEffect(() => {
+    if (comments.length == 1 && comments[0].newComment) {
+      newQuestionRef.current = true;
+      onToggleDiscussion({ target: toggleButtonRef.current });
+    }
+  }, []);
+
   return (
     <>
       <button
+        ref={toggleButtonRef}
         className="token-btn discussion-badge"
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={onToggleDiscussion}
       >
-        <span className="badge-counter">{comments.length}</span>
+        <span className="badge-counter">{comments.length - 1}</span>
         <span className="badge-icon">▾</span>
       </button>
       {showDiscussion && (
-        <div ref={discussionRef} className="discussion-container">
-          <div className="discussion-inner-box">
-            <DiscussionNavBar>
-              <h2 className="header-title">
-                <span className="discussion-title">Title placeholder</span>{" "}
-                <span className="header-sub-title">#???</span>
-              </h2>
-              <span className="header-sub-title">
-                {lineNumbers(comments[0])}
-              </span>
-            </DiscussionNavBar>
-            {comments.map((comment, key) => {
-              return <CommentBox {...{ ...comment, key, onOpenEditor }} />;
-            })}
-          </div>
-        </div>
+        <Discussion
+          discussionRef={discussionRef}
+          className={`inner-animate-box${
+            newQuestionRef.current ? " is-open" : ""
+          }`}
+          comments={comments}
+          onOpenEditor={onOpenEditor}
+          showEditor={showEditor}
+          animate={true}
+        />
       )}
     </>
+  );
+};
+
+interface DiscussionProps extends CodeDiscussionViewProps {
+  discussionRef: React.RefObject<HTMLDivElement>;
+  className: string;
+  animate?: boolean;
+}
+
+export const Discussion: React.FC<DiscussionProps> = ({
+  discussionRef,
+  className,
+  comments,
+  onOpenEditor,
+  showEditor,
+  animate,
+}) => {
+  useEffect(
+    () => {
+      if (animate) {
+        discussionRef.current!.classList.add("is-open");
+      }
+    },
+    [showEditor]
+  );
+
+  return (
+    <DiscussionContainer
+      ref={discussionRef}
+      className={className}
+      showEditor={showEditor}
+    >
+      <DiscussionNavBar>
+        <h2 className="header-title">
+          <span className="discussion-title">Title placeholder</span>{" "}
+          <span className="header-sub-title">#???</span>
+        </h2>
+        <span className="header-sub-title">
+          {lineNumbers(comments[0] as QuestionProps)}
+        </span>
+      </DiscussionNavBar>
+      {comments.map((comment, key) => {
+        return <CommentCard {...{ ...comment, key, onOpenEditor }} />;
+      })}
+    </DiscussionContainer>
   );
 };
