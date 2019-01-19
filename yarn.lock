@@ -3115,10 +3115,10 @@
     "@types/react" "*"
     csstype "^2.2.0"
 
-"@types/styled-system@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-3.1.1.tgz#ff4430f5b5fe21e6f0dee49fdbf6f7a993bdb502"
-  integrity sha512-jyUmr/I/tMDG4COSLHE4DXzGcGGRxRvSUjLGPV1Xy5jZ3+KLg+EJ+e04rOrw0AzLaKHSnZCM/P1iUwKq6b6cnQ==
+"@types/styled-system@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-3.1.2.tgz#968d5d073858cc0d82511e1b0c37ccdbd3757416"
+  integrity sha512-yXXxIp3jeGpp6ENvqB2mhNXxsZJHYSZKGi8yO/uxK+TqlG+wdZqdeY+hx9rRwqSBRLzYuq5y5l6YFi/p8oqfJw==
   dependencies:
     csstype "^2.2.0"
 
@@ -10055,10 +10055,10 @@ invert-kv@^2.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
 
-ioredis@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.3.0.tgz#a92850dd8794eaee4f38a265c830ca823a09d345"
-  integrity sha512-TwTp93UDKlKVQeg9ThuavNh4Vs31JTlqn+cI/J6z21OtfghyJm5I349ZlsKobOeEyS4INITMLQ1fhR7xwf9Fxg==
+ioredis@4.5.1:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.5.1.tgz#b1c1c1657697caa3a617acb9370e3c0694edb775"
+  integrity sha512-p1BblrFZdb5Oc5EBsEb4EoycDqn7xi/NTNT4bDvo/w6B08eMNO1E7RAOOEA1GAb65+8Hbs2LgUyz3cZOTiP3xg==
   dependencies:
     cluster-key-slot "^1.0.6"
     debug "^3.1.0"
@@ -15201,10 +15201,10 @@ react-addons-create-fragment@^15.5.3:
     loose-envify "^1.3.1"
     object-assign "^4.1.0"
 
-react-apollo@2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.3.3.tgz#a4609f3112d4351a1e363090d8cd363b04e2cc91"
-  integrity sha512-y4CwwmJjp0De/An7vrvEWOJ27lxmS/SXT8z22I8aOEBC2wzdcavDPjKzeLYJKs+hv1MGS3h84PSwFtlU4Em/bA==
+react-apollo@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.4.0.tgz#22f68c429120d3c332adaef0d02c60771055d9ea"
+  integrity sha512-m3wJ/NFKMsxNTp0CNlQDUMkOxTY9imVEh72+N6r7jULjO5DimCQkUXQyHP8IzInCEYoEJAx3r0xLPm/qPsqIoA==
   dependencies:
     fbjs "^1.0.0"
     hoist-non-react-statics "^3.0.0"
