@@ -3924,14 +3924,14 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
-apollo-boost@0.1.26:
-  version "0.1.26"
-  resolved "https://registry.yarnpkg.com/apollo-boost/-/apollo-boost-0.1.26.tgz#e74364483226ea04462a5505f5c3c24cd8fca624"
-  integrity sha512-gj7cyurrf5O5wQoFB+l+c+BPQvOGToC1mHPnXitDUR0dow2/6w6Kr2lnHk/F9AxNjv1ZTaID+xCtqNpDWnTmvQ==
+apollo-boost@0.1.27:
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/apollo-boost/-/apollo-boost-0.1.27.tgz#77cc796359503a330d5b31780043430afed47899"
+  integrity sha512-z6h4SKVR9H17sm6+aGsjhw1fPK6dmuNQbAue5YwCOrMUCQLHkP3gXvCnBXsOCF3RyWkYVygu/gjrLJtvoq14XA==
   dependencies:
     apollo-cache "^1.1.25"
     apollo-cache-inmemory "^1.4.2"
-    apollo-client "^2.4.11"
+    apollo-client "^2.4.12"
     apollo-link "^1.0.6"
     apollo-link-error "^1.0.3"
     apollo-link-http "^1.3.1"
@@ -3965,10 +3965,10 @@ apollo-cache@1.1.25, apollo-cache@^1.1.25:
     apollo-utilities "^1.1.2"
     tslib "^1.9.3"
 
-apollo-client@^2.4.11:
-  version "2.4.11"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.4.11.tgz#90abc4cb6cd6e00cca6745cdf6d1d6667e1b11a1"
-  integrity sha512-sySR4+k9CbMVHy0Yj3jjbCq+DKsRlCcjW8UBiOzWOhkcfvMBo27TYR2xPfzFLj3YZtfzeDkx6O9GiHJ8FY+6uA==
+apollo-client@^2.4.12:
+  version "2.4.12"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.4.12.tgz#9fa15f502d04f8cc788a9fbb825163b437681504"
+  integrity sha512-E5ClFSB9btJLYibLKwLDSCg+w9tI+25eZgXOM+DClawu7of4d/xhuV/xvpuZpsMP3qwrp0QPacBnfG4tUJs3/w==
   dependencies:
     "@types/zen-observable" "^0.8.0"
     apollo-cache "1.1.25"
