@@ -2858,10 +2858,10 @@
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.3.tgz#389e2e5b83ecdb376d9f98fae2094297bc112c1c"
   integrity sha512-TcFkpEjcQK7w8OcrQcd7iIBPjU0rdyi3ldj6d0iJ4PPSzbWqPBvXj9KSwO14hTOX2dm9RoiH7VuxksJLNYdXUQ==
 
-"@types/ioredis@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.0.4.tgz#c0a809064c05e4c2663803128d46042e73c92558"
-  integrity sha512-QdJTMFrmKkphjoGIxItTMhP++8/6INLbgSIxB8kd9N+3OuiuiaZ2knt+OR4gFQrloac/ctwaQA1PCzISmD9afQ==
+"@types/ioredis@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.0.5.tgz#248b2a9852de229d9e89ec757cd03dc39b884e21"
+  integrity sha512-ZjmiEJyrNrOBczf+eyrb4ae8toBnSgjgDZ38AJMPRTIQkuqyAEcKCBcyVrhoQue+F1UFcA7CXckMi41bjxUEtQ==
   dependencies:
     "@types/node" "*"
 
@@ -3175,10 +3175,10 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/yup@0.26.4":
-  version "0.26.4"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.4.tgz#b6527d1ea167ac8049b6d62b45cff8eadfe883c5"
-  integrity sha512-R6Mgx+puMTwst8jX3rJDN2Ncu9jF8P/88NOPa8DeCx3OU6Md+Fuo8AV4+WqNCujWNp/XjJtQd4o3fH0/9O19yw==
+"@types/yup@0.26.5":
+  version "0.26.5"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.5.tgz#ab47c03965d775cdc9228b699bf46331068db367"
+  integrity sha512-Hw+KmbYJHziqrojNAoEGTLdQ77+GUAkbHm+Ch/4adYGYj4I1RDqbNJ8XmdnFv5reUcl4orDD/M3RjOBxlz6R7w==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
