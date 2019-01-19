@@ -107,11 +107,8 @@ const useHighlight = (lang: string, code: string) => {
     if (!hasLoadedLanguage.current) {
       getHighlightedCode(code, lang).then(highlightedCode => {
         hasLoadedLanguage.current = true;
-        const PlusButton = PLUSBUTTON.split("\n")
-          .map(item => item.trim())
-          .join("");
         const tokens = highlightedCode.split("\n").map(line => {
-          return `${PlusButton}${line}`;
+          return `${PLUSBUTTON}${line}`;
         });
 
         setHighlightCode({ pending: false, resolved: tokens });
@@ -141,7 +138,6 @@ export const CodeFile: React.FC = () => {
         const comments = getCommentsForFile(questions, owner);
 
         const onMouseOverAndOut = setIsHovered.bind(null, questions);
-
         return (
           <CodeCard
             lang={lang}

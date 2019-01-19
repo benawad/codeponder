@@ -42,7 +42,7 @@ interface BaseProps extends Props {
   variant: "outline" | "flat";
 }
 
-const CommentContainer = styled(Card)`
+const CommentContainer = styled(Card as any)`
   background-color: #fff;
   border: 1px solid #d1d5da;
   border-radius: 3px;

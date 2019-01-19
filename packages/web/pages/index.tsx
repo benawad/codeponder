@@ -1,5 +1,6 @@
 import * as React from "react";
 import { PostRow, MyButton, Topic, SidebarCard } from "@codeponder/ui";
+import { Box } from "rebass";
 
 import {
   FindCodeReviewPostComponent,
@@ -7,7 +8,6 @@ import {
 } from "../components/apollo-components";
 import { Link } from "../server/routes";
 import { Layout } from "../components/Layout";
-import { Box } from "rebass";
 import { findCodeReviewPostQuery } from "../graphql/code-review-post/queries/findCodeReviewPost";
 
 interface State {

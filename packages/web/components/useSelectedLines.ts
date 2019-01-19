@@ -57,10 +57,10 @@ export const useSelectedLines = (
   );
   const [end, endingLineNumChange] = useInputValue(endingLineNum);
 
-  const applyEffect = view == "code-view";
+  const applyEffect = view === "code-view";
 
   const updateStart = useCallback((val: any) => {
-    if (typeof val != "number") {
+    if (typeof val !== "number") {
       const input = val.currentTarget || val.target;
       val = input.validity.valid ? input.value : end;
     }

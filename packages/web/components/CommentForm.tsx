@@ -117,8 +117,8 @@ export const TextEditor = (props: TextEditorProps) => {
   ] = useSelectedLines(startingLineNum, endingLineNum, view);
 
   // validate fields
-  const titleTrimmed = (() => title.trim())();
-  const textTrimmed = (() => text.trim())();
+  const titleTrimmed = title.trim();
+  const textTrimmed = text.trim();
   const validateStartEnd =
     !startInput.current ||
     !endInput.current ||
