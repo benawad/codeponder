@@ -1,251 +1,129 @@
-import { useRef, useState, useEffect } from "react";
-import * as Prism from "prismjs";
-import "prismjs/themes/prism-coy.css";
-import Highlight from "prism-react-renderer";
-import { IconButton, styled, css } from "@codeponder/ui";
-import { CommentBox, CommentProps, LineNo } from "./commnetUI";
+import { useContext, useRef, useState, useEffect } from "react";
+import { css, CodeCard } from "@codeponder/ui";
+import { CommentProps, QuestionInfo } from "../types/questionReplyTypes";
 
 import {
   FindCodeReviewQuestionsComponent,
-  FindCodeReviewQuestionsQuery,
   CodeReviewQuestionInfoFragment,
   QuestionReplyInfoFragment,
 } from "./apollo-components";
-import { filenameToLang } from "../utils/filenameToLang";
-import { loadLanguage } from "../utils/loadLanguage";
-import { CreateQuestion, QuestionProps } from "./QuestionForm";
-import { CreateQuestionReply } from "./QuestionReply";
-
-interface Props {
-  code: string | null;
-  path?: string;
-  postId: string;
-}
-/*
- * *Styles for the line numbers coming from the server
- *
- * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
- * Or the two in a more general utils?
- */
-const SelectLines = (prop: FindCodeReviewQuestionsQuery) => {
-  const styles = prop.findCodeReviewQuestions.reduce((total, current) => {
-    return (total += `
-     & .token-line:nth-child(n+${current.startingLineNum}):nth-child(-n+${
-      current.endingLineNum
-    }) {
-      background: hsla(24, 20%, 50%,.08);
-      background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
-    }
-     `);
-  }, "");
-  return css`
-    ${styles}
-  `;
-};
-
-/*
- *Styles for the onClick line numbers
- *
- * TODO: Perhaps refactor SelectLinesMouse as a 'sub function' of SelectLines?
- * Or the two in a more general utils?
- */
-/* const SelectLinesMouse = (arg: number[]) => {
-  // establishing defaults
-  // The lenght of the args array can be variable
-  const startLine = arg[0] || 0;
-  const endLine = arg[1] || startLine;
-
-  const styles = `
-     & .token-line:nth-child(n+${startLine}):nth-child(-n+${endLine}) {
-      background-color: #ffddbb;
-    }
-     `;
-  return css`
-    ${styles}
-  `;
-}; */
+import { getHighlightedCode } from "../utils/highlightCode";
+import { RenderLine } from "./CodeLine";
+import { PostContext } from "./PostContext";
 
 interface Comments {
   [key: number]: CommentProps[];
 }
 
-const getCommentsForFile = (prop: FindCodeReviewQuestionsQuery): Comments => {
-  const comment = ({
-    id,
-    text,
-    creator,
-    __typename,
-  }:
-    | CodeReviewQuestionInfoFragment
-    | QuestionReplyInfoFragment): CommentProps => ({
-    id,
-    text,
-    username: creator.username,
-    isOwner: true, // Todo: need to get real value
-    type: (__typename || "").includes("Reply") ? "reply" : "question",
-  });
+interface loadingCodeState {
+  pending: boolean;
+  resolved?: string[];
+}
 
-  return prop.findCodeReviewQuestions.reduce((comments: Comments, props) => {
-    const startingLineNum = props.startingLineNum;
-    const endingLineNum = props.endingLineNum;
-    const key = endingLineNum;
+/*
+ * *Styles for the line numbers coming from the server
+ *
+ */
+const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
+  const styles = prop.reduce((total, current) => {
+    const { startingLineNum, endingLineNum } = current;
+    total += `
+     & .token-line:nth-child(n+${startingLineNum}):nth-child(-n+${endingLineNum}) {
+      background: hsla(24, 20%, 50%,.08);
+      background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+    }
+     `;
+    return total;
+  }, "");
+
+  return css`
+    ${styles}
+  `;
+};
+
+const getCommentsForFile = (
+  prop: CodeReviewQuestionInfoFragment[],
+  owner: string
+): Comments => {
+  const comment = (
+    data: QuestionInfo | QuestionReplyInfoFragment
+  ): CommentProps => {
+    return { ...data, isOwner: data.creator.username == owner };
+  };
+  return prop.reduce((comments: Comments, props) => {
+    const { replies, ...question } = props;
+    const key = question.endingLineNum;
     comments[key] = comments[key] || [];
     comments[key].push({
-      startingLineNum,
-      endingLineNum,
-      ...comment(props),
+      ...comment(question),
     });
-    props.replies.forEach(reply => comments[key].push(comment(reply)));
+    replies.forEach(reply => comments[key].push(comment(reply)));
     return comments;
   }, {});
 };
 
 const setIsHovered = (
-  { current }: React.RefObject<HTMLElement>,
-  { target: elm }: any,
-  showButton: boolean
+  questions: CodeReviewQuestionInfoFragment[],
+  { target: elm, currentTarget: parent, type }: any
 ) => {
-  while (elm && elm != current && !elm.classList.contains("token-line")) {
-    // hide the button when user hover over commets or line-number
-    const name = elm.classList[0];
-    if (name && name.match(/CommentBoxContainer|LineNo/)) {
-      showButton = false;
-    }
+  // let the comment form handle the event
+  if (parent.classList.contains("js-select-line")) {
+    return;
+  }
+  while (elm && elm != parent && !elm.classList.contains("token-line")) {
     elm = elm.parentNode || null;
   }
-  if (elm && current) {
-    current
+  if (elm && parent) {
+    let isOverLine =
+      type == "mouseover" && elm.classList.contains("token-line");
+
+    let numberElm = elm.childNodes[0];
+    const currentLine = +numberElm.dataset.lineNumber;
+    // we only allow one question on lines range
+    if (isOverLine && questions.length > 0) {
+      isOverLine = !questions.some(
+        q => currentLine >= q.startingLineNum && currentLine <= q.endingLineNum
+      );
+    }
+
+    parent
       .querySelectorAll(".is-hovered")
-      .forEach(button => button.classList.toggle("is-hovered", false));
-    if (showButton) {
-      elm.childNodes[1].classList.add("is-hovered");
+      .forEach((elm: Element) => elm.classList.remove("is-hovered"));
+    if (isOverLine) {
+      elm.classList.add("is-hovered");
     }
   }
 };
 
-interface HighlightProps {
-  code: string;
-  lang: string;
-  data: FindCodeReviewQuestionsQuery;
-  postId: string;
-  path?: string;
-}
+const PLUSBUTTON = `<button class="btn-open-edit token-btn hidden"><span>+</span></button>`;
 
-const HighlightCode: React.SFC<HighlightProps> = ({
-  code,
-  lang,
-  data,
-  postId,
-  path,
-}) => {
+const useHighlight = (lang: string, code: string) => {
   const hasLoadedLanguage = useRef(false);
-  const codeRef = useRef<HTMLElement>(null);
-  const [loading, setloading] = useState(true);
-  const [showEditor, setShowEditor] = useState(0);
+  const [highlightCode, setHighlightCode] = useState<loadingCodeState>({
+    pending: true,
+  });
 
   useEffect(() => {
     if (!hasLoadedLanguage.current) {
-      loadLanguage(lang)
-        .then(() => {
-          setloading(false);
-          hasLoadedLanguage.current = true;
-        })
-        .catch(() => {});
+      getHighlightedCode(code, lang).then(highlightedCode => {
+        hasLoadedLanguage.current = true;
+        const PlusButton = PLUSBUTTON.split("\n")
+          .map(item => item.trim())
+          .join("");
+        const tokens = highlightedCode.split("\n").map(line => {
+          return `${PlusButton}${line}`;
+        });
+
+        setHighlightCode({ pending: false, resolved: tokens });
+      });
     }
   }, []);
-
-  if (loading) {
-    return null;
-  }
-
-  const Pre = styled.pre`
-    & code[class*="language-"] {
-      padding-left: 0;
-    }
-
-    ${SelectLines(data)};
-  `;
-
-  return (
-    <Highlight Prism={Prism} code={code} language={lang}>
-      {({ className, style, tokens, getLineProps, getTokenProps }) => {
-        const comments = getCommentsForFile(data);
-        return (
-          <Pre className={className} style={style}>
-            <code
-              className={`code-content ${className}`}
-              ref={codeRef}
-              onMouseOut={(e: any): void => {
-                setIsHovered(codeRef, e, false);
-              }}
-              onMouseOver={(e: any): void => {
-                setIsHovered(codeRef, e, true);
-              }}
-            >
-              {tokens.map((line, i) => (
-                <div {...getLineProps({ line, key: i })}>
-                  <LineNo>{i + 1}</LineNo>
-                  <IconButton
-                    style={{ margin: "-2px 0px -2px -20px" }}
-                    variant="primary"
-                    icon="plus"
-                    className="hidden"
-                    onClick={() => {
-                      setShowEditor(i);
-                    }}
-                  />
-                  {line.map((token, key) => (
-                    <span {...getTokenProps({ token, key })} />
-                  ))}
-                  {comments[i + 1] &&
-                    comments[i + 1].map((comment, key) => (
-                      <CommentBox
-                        {...comment}
-                        key={i * 1000 + key}
-                        onReply={() => {
-                          setShowEditor(i);
-                        }}
-                      />
-                    ))}
-                  {showEditor && i == showEditor ? (
-                    <AddComment
-                      isReplay={!!comments[i + 1]}
-                      questionId={comments[i + 1] && comments[i + 1][0].id}
-                      startingLineNum={
-                        comments[i + 1] && comments[i + 1][0].startingLineNum
-                      }
-                      endingLineNum={i + 1}
-                      closeCommentEditor={() => setShowEditor(0)}
-                      code={code}
-                      programmingLanguage={lang}
-                      postId={postId}
-                      path={path}
-                    />
-                  ) : null}
-                </div>
-              ))}
-            </code>
-          </Pre>
-        );
-      }}
-    </Highlight>
-  );
+  return highlightCode;
 };
 
-interface AddCommentProps extends QuestionProps {
-  questionId: string;
-}
-
-const AddComment: React.SFC<AddCommentProps> = ({ ...props }) => {
-  return props.isReplay ? (
-    <CreateQuestionReply {...props} />
-  ) : (
-    <CreateQuestion {...props} />
-  );
-};
-
-export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
-  const lang = path ? filenameToLang(path) : "";
+export const CodeFile: React.FC = () => {
+  const { code, lang, owner, path, postId } = useContext(PostContext);
+  const highlightCode = useHighlight(lang, code || "");
   const variables = {
     path,
     postId,
@@ -254,18 +132,32 @@ export const CodeFile: React.SFC<Props> = ({ code, path, postId }) => {
   return (
     <FindCodeReviewQuestionsComponent variables={variables}>
       {({ data, loading }) => {
-        if (!data || loading) {
+        if (!data || loading || highlightCode.pending) {
           return null;
         }
 
+        const highlightedCode = highlightCode.resolved!;
+        const questions = data.findCodeReviewQuestions;
+        const comments = getCommentsForFile(questions, owner);
+
+        const onMouseOverAndOut = setIsHovered.bind(null, questions);
+
         return (
-          <HighlightCode
-            code={code || ""}
+          <CodeCard
             lang={lang}
-            data={data}
-            postId={postId}
-            path={path}
-          />
+            selectedLines={SelectLines(questions)}
+            onMouseOut={onMouseOverAndOut}
+            onMouseOver={onMouseOverAndOut}
+          >
+            {highlightedCode.map((line, index) => (
+              <RenderLine
+                key={index}
+                comments={comments[index + 1]}
+                line={line}
+                lineNum={index + 1}
+              />
+            ))}
+          </CodeCard>
         );
       }}
     </FindCodeReviewQuestionsComponent>

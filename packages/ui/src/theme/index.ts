@@ -123,6 +123,10 @@ const theme: ITheme = {
       fontSize: "1em",
       marginRight: "1em",
       padding: "0.375em 0.75em",
+      cursor: "pointer",
+      "&.disabled": {
+        cursor: "not-allowed",
+      },
       "&:hover": {
         backgroundColor: "#e6ebf1",
         backgroundImage: "linear-gradient(-180deg, #f0f3f6, #e6ebf1 90%)",

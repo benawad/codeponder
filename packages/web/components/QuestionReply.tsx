@@ -1,54 +1,26 @@
-import { useInputValue } from "../utils/useInputValue";
-import { CreateQuestionReplyComponent } from "./apollo-components";
-import { TextEditorResult, TextEditor } from "./CommentForm";
-import { wrapEditor } from "./commnetUI";
+import {
+  CreateQuestionReplyComponent,
+  QuestionReplyInfoFragment,
+} from "./apollo-components";
+import { TextEditor, TextEditorResult } from "./CommentForm";
 
-interface Props {
-  questionId: string;
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: QuestionReplyInfoFragment | void;
 }
-
-export const QuestionReply: React.SFC<Props> = ({ questionId }) => {
-  const [value, onChange] = useInputValue("");
-  console.log("questionId", questionId);
-
-  return (
-    <CreateQuestionReplyComponent>
-      {mutate => (
-        <form
-          onSubmit={async e => {
-            e.preventDefault();
-            const response = await mutate({
-              variables: {
-                questionReply: {
-                  questionId,
-                  text: value,
-                },
-              },
-            });
-
-            console.log(response);
-          }}
-        >
-          <input value={value} onChange={onChange} placeholder="...reply" />
-        </form>
-      )}
-    </CreateQuestionReplyComponent>
-  );
-};
 
 interface QuestionReplyProps {
-  isReplay: boolean;
-  startingLineNum?: number; // not exist before the first commnet created
+  isReply: boolean;
+  startingLineNum?: number; // not exist before the first comment created
   endingLineNum: number;
-  closeCommentEditor: Function;
+  onEditorSubmit: (T: EditorSubmitProps) => void;
   questionId: string;
+  view: "code-view" | "repo-view";
 }
-
-const WrappedTextEditor = wrapEditor(TextEditor);
 
 export const CreateQuestionReply = ({
   questionId,
-  closeCommentEditor,
+  onEditorSubmit,
   ...props
 }: QuestionReplyProps) => (
   <CreateQuestionReplyComponent>
@@ -64,11 +36,19 @@ export const CreateQuestionReply = ({
               },
             },
           });
+
           console.log(response);
+
+          onEditorSubmit({
+            submitted: true,
+            response:
+              response && response.data!.createQuestionReply.questionReply,
+          });
+        } else {
+          onEditorSubmit({ submitted: false });
         }
-        closeCommentEditor();
       };
-      return <WrappedTextEditor {...{ ...props, submitForm }} />;
+      return <TextEditor {...props} submitForm={submitForm} />;
     }}
   </CreateQuestionReplyComponent>
 );
