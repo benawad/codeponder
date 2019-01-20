@@ -95,7 +95,7 @@ const setIsHovered = (
   }
 };
 
-const PLUSBUTTON = `<button class="btn-open-edit token-btn hidden"><span>+</span></button>`;
+const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
 
 const useHighlight = (lang: string, code: string) => {
   const hasLoadedLanguage = useRef(false);

@@ -121,9 +121,11 @@ const theme: ITheme = {
       borderRadius: "0.25em",
       color: "rgb(36, 41, 46)",
       fontSize: "1em",
-      marginRight: "1em",
       padding: "0.375em 0.75em",
       cursor: "pointer",
+      "&:not(:last-child)": {
+        marginRight: "1rem",
+      },
       "&.disabled": {
         cursor: "not-allowed",
       },

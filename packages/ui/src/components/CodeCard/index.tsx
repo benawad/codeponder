@@ -84,15 +84,10 @@ const Pre = styled.pre`
     transform: scale(0.8);
     transition: transform 0.1s ease-in-out;
 
-    &.hidden {
-      opacity: 0;
-    }
-
-    & span {
-      font-size: 16px;
-      line-height: 1;
-      vertical-align: middle;
-    }
+    opacity: 0;
+    font-size: 16px;
+    line-height: 1;
+    vertical-align: middle;
   }
 
   &.js-select-line {
@@ -141,7 +136,7 @@ const Pre = styled.pre`
     }
 
     & .badge-icon {
-      display: inline-block;
+      display: inline;
       font-size: 20px;
       vertical-align: middle;
       transition: transform 0.3s ease-in-out;
