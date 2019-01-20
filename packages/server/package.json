@@ -33,7 +33,7 @@
     "pg": "7.8.0",
     "reflect-metadata": "0.1.13",
     "type-graphql": "0.16.0",
-    "typeorm": "0.2.11",
+    "typeorm": "0.2.12",
     "uuid": "3.3.2"
   },
   "scripts": {
