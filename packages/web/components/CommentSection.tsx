@@ -56,7 +56,7 @@ export const AddComment: React.SFC<AddCommentProps> = ({
         setShowEditor(false);
       } else {
         // wait until close animation is finished
-        setTimeout(() => setShowEditor(false), 400);
+        setTimeout(() => setShowEditor(false), 200);
       }
     },
     [comments]
