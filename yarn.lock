@@ -2878,10 +2878,10 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/yup@0.26.5":
-  version "0.26.5"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.5.tgz#ab47c03965d775cdc9228b699bf46331068db367"
-  integrity sha512-Hw+KmbYJHziqrojNAoEGTLdQ77+GUAkbHm+Ch/4adYGYj4I1RDqbNJ8XmdnFv5reUcl4orDD/M3RjOBxlz6R7w==
+"@types/yup@0.26.6":
+  version "0.26.6"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.6.tgz#3197372455af255c48732f2e3b336b415e025701"
+  integrity sha512-B5Wy5IcmI+mISP2O8Y4J4e4+XVdpMgo9mLQ5mOUvjNYBWWqVxtfB6KkJO+MTfZ/KbwDaXsWtYM6xQnNo/tYI7w==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
