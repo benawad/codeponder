@@ -5,10 +5,14 @@ export const createTypeormConn = async () => {
   while (retries) {
     try {
       const config = await getConnectionOptions(process.env.NODE_ENV);
-      return createConnection({
+      const secureConfig = {
         ...config,
-        name: "default"
-      });
+        name: "default",
+        username: process.env.DB_USER,
+        password: process.env.DB_PASS,
+      };
+      console.log(secureConfig);
+      return createConnection(secureConfig);
     } catch (err) {
       console.log(err);
       retries -= 1;
