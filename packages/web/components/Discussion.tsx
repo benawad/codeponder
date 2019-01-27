@@ -1,6 +1,6 @@
+import { CommentCard, styled } from "@codeponder/ui";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
-import { styled, CommentCard } from "@codeponder/ui";
 
 interface CodeDiscussionViewProps {
   comments: CommentProps[];

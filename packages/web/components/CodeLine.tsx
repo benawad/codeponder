@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react";
-import { CodeDiscussionView } from "./Discussion";
-import { AddComment } from "./CommentSection";
 import { CommentProps } from "../types/questionReplyTypes";
+import { AddComment } from "./CommentSection";
+import { CodeDiscussionView } from "./Discussion";
 
 interface RenderLineProps {
   comments: CommentProps[];
@@ -15,13 +15,12 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
     const [commentsForRow, setCommentsForRow] = useState(comments || []);
 
     const onOpenEditor = useCallback(
-    ({ target: elm }: any) => {
-      if (
-        !showEditor &&
-        ((elm.classList.contains("btn-open-edit") &&
-          elm.parentNode.parentNode.classList.contains("is-hovered")) ||
-          elm.classList.contains("btn-reply"))
-      ) {
+      ({ target: elm }: any) => {
+        if (
+          !showEditor &&
+          elm.classList.contains("btn-open-edit") &&
+          elm.parentNode.parentNode.classList.contains("is-hovered")
+        ) {
           setShowEditor(true);
         }
       },
@@ -39,7 +38,7 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
         {commentsForRow.length > 0 && (
           <CodeDiscussionView
             comments={commentsForRow}
-            onOpenEditor={onOpenEditor}
+            onOpenEditor={() => !showEditor && setShowEditor(true)}
             showEditor={showEditor}
           />
         )}

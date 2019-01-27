@@ -1,13 +1,12 @@
-import { useContext, useRef, useState, useEffect } from "react";
-import { css, CodeCard } from "@codeponder/ui";
+import { CodeCard, css } from "@codeponder/ui";
+import { useContext, useEffect, useState } from "react";
 import { CommentProps, QuestionInfo } from "../types/questionReplyTypes";
-
+import { getHighlightedCode } from "../utils/highlightCode";
 import {
-  FindCodeReviewQuestionsComponent,
   CodeReviewQuestionInfoFragment,
+  FindCodeReviewQuestionsComponent,
   QuestionReplyInfoFragment,
 } from "./apollo-components";
-import { getHighlightedCode } from "../utils/highlightCode";
 import { RenderLine } from "./CodeLine";
 import { PostContext } from "./PostContext";
 
@@ -98,22 +97,20 @@ const setIsHovered = (
 const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
 
 const useHighlight = (lang: string, code: string) => {
-  const hasLoadedLanguage = useRef(false);
   const [highlightCode, setHighlightCode] = useState<loadingCodeState>({
     pending: true,
   });
 
   useEffect(() => {
-    if (!hasLoadedLanguage.current) {
-      getHighlightedCode(code, lang).then(highlightedCode => {
-        hasLoadedLanguage.current = true;
-        const tokens = highlightedCode.split("\n").map(line => {
-          return `${PLUSBUTTON}${line}`;
-        });
-
-        setHighlightCode({ pending: false, resolved: tokens });
+    getHighlightedCode(code, lang).then(highlightedCode => {
+      const tokens = highlightedCode.split("\n").map(line => {
+        return `${PLUSBUTTON}${line}`;
       });
-    }
+
+      setHighlightCode({ pending: false, resolved: tokens });
+    });
+
+    return () => {};
   }, []);
   return highlightCode;
 };

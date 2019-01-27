@@ -1,24 +1,23 @@
-import * as React from "react";
-import { FolderTree, BigCard, Topic } from "@codeponder/ui";
-import "prismjs";
-import { Heading, Box } from "rebass";
+import { BigCard, FolderTree, Topic } from "@codeponder/ui";
 import { orderBy } from "lodash";
-
-import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
-import { NextContextWithApollo } from "../types/NextContextWithApollo";
+import "prismjs";
+import * as React from "react";
+import { Box, Heading } from "rebass";
+import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
+import { CodeFile } from "../components/CodeFile";
 import {
   GetRepoObjectComponent,
-  GetRepoObjectTreeInlineFragment,
   GetRepoObjectDocument,
+  GetRepoObjectTreeInlineFragment,
 } from "../components/github-apollo-components";
-import { Link } from "../server/routes";
-import { CodeFile } from "../components/CodeFile";
-import { PostContext, ContextProps } from "../components/PostContext";
-import { filenameToLang } from "../utils/filenameToLang";
-import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
-import { GetCodeReviewPostByIdQuery } from "../components/apollo-components";
+import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
 import { Layout } from "../components/Layout";
+import { ContextProps, PostContext } from "../components/PostContext";
 import { QuestionSection } from "../components/QuestionSection";
+import { getCodeReviewPostByIdQuery } from "../graphql/code-review-post/queries/getCodeReviewPostById";
+import { Link } from "../server/routes";
+import { NextContextWithApollo } from "../types/NextContextWithApollo";
+import { filenameToLang } from "../utils/filenameToLang";
 
 interface Props {
   id: string;
