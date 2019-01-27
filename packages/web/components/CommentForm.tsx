@@ -138,7 +138,7 @@ export const TextEditor = (props: TextEditorProps) => {
   useEffect(() => {
     formRef.current!.classList.add("is-open");
     if (view == "code-view" && formRef.current) {
-      scrollToView(formRef.current, 400);
+      scrollToView(formRef.current, 200);
     }
   }, []);
 

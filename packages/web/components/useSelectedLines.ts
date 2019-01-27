@@ -123,7 +123,8 @@ export const useSelectedLines = (
           `is-selected-${end}`,
           current <= prev
         );
-        numberElm = numberElm.parentNode.nextSibling.childNodes[0];
+        const next = numberElm.parentNode.nextSibling;
+        numberElm = next && next.childNodes[0];
       }
     }
   }, []);

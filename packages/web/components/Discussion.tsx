@@ -64,10 +64,11 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
       elm && elm.classList.toggle("is-open");
       if (showDiscussion) {
         newQuestionRef.current = false;
+        discussionRef.current!.style.maxHeight = "2000px";
         discussionRef.current!.classList.remove("is-open");
         setTimeout(() => {
           setShowDiscussion(false);
-        }, 400);
+        }, 200);
       } else {
         setShowDiscussion(true);
       }
@@ -132,6 +133,12 @@ export const Discussion: React.FC<DiscussionProps> = ({
     },
     [showEditor]
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      discussionRef.current!.style.maxHeight = "none";
+    }, 200);
+  }, []);
 
   return (
     <DiscussionContainer
