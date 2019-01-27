@@ -1,25 +1,23 @@
-import "reflect-metadata";
-require("dotenv-safe").config();
-import { ApolloServer, ApolloError } from "apollo-server-express";
-import { v4 } from "uuid";
-import { GraphQLError } from "graphql";
-import * as session from "express-session";
+import { ApolloError, ApolloServer } from "apollo-server-express";
 import * as connectRedis from "connect-redis";
+import * as cors from "cors";
 import * as express from "express";
-import { buildSchema } from "type-graphql";
+import * as session from "express-session";
+import { GraphQLError } from "graphql";
 import * as passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github";
-import * as cors from "cors";
-
-import { redis } from "./redis";
-
+import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import { v4 } from "uuid";
 import { createTypeormConn } from "./createTypeormConn";
-import { createUser } from "./utils/createUser";
 import { User } from "./entity/User";
-import { userLoader } from "./loaders/userLoader";
 import { questionReplyLoader } from "./loaders/questionReplyLoader";
+import { userLoader } from "./loaders/userLoader";
+import { redis } from "./redis";
+import { createUser } from "./utils/createUser";
+require("dotenv-safe").config();
 
-const SESSION_SECRET = "ajslkjalksjdfkl";
+const SESSION_SECRET = process.env.SESSION_SECRET; 
 const RedisStore = connectRedis(session as any);
 
 const startServer = async () => {
