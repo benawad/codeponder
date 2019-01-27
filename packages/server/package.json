@@ -15,7 +15,6 @@
     "cross-env": "5.2.0",
     "nodemon": "1.18.9",
     "ts-node": "8.0.2",
-    "ts-node-dev": "^1.0.0-pre.32",
     "tslint": "5.12.1",
     "typescript": "3.2.4"
   },
@@ -38,7 +37,7 @@
     "uuid": "3.3.2"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development ts-node-dev --respawn src/index.ts",
+    "start": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "generate": "gql-gen"
   },
   "workspaces": {
