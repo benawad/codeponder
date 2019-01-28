@@ -52,7 +52,7 @@ const FormContainer = styled.div`
   background-color: #ffffff;
   border-top: ${(p: { isReply: boolean; view: string }) =>
     p.isReply ? "none" : "1px solid #d1d5da"};
-  border-bottom: ${p => (p.view ? "none" : "1px solid #d1d5da")};
+  border-bottom: ${p => (p.view == "repo-view" ? "none" : "1px solid #d1d5da")};
   display: flex;
   flex-direction: column;
   padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};

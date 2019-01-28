@@ -60,7 +60,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   const [showDiscussion, setShowDiscussion] = useState(false);
 
   const onToggleDiscussion = useCallback(
-    ({ target: elm }: any = {}) => {
+    ({ currentTarget: elm }: any = {}) => {
       elm && elm.classList.toggle("is-open");
       if (showDiscussion) {
         newQuestionRef.current = false;
@@ -80,7 +80,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   useEffect(() => {
     if (comments.length == 1 && comments[0].newComment) {
       newQuestionRef.current = true;
-      onToggleDiscussion({ target: toggleButtonRef.current });
+      onToggleDiscussion({ currentTarget: toggleButtonRef.current });
     }
   }, []);
 

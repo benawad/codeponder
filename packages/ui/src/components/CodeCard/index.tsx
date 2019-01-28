@@ -113,6 +113,7 @@ const Pre = styled.pre`
     background-color: transparent;
     color: ${p => p.theme.colors.primary[2]};
     cursor: pointer;
+    display: flex;
     width: 36px;
     height: 22px;
     line-height: 1;
@@ -127,7 +128,6 @@ const Pre = styled.pre`
     & .badge-counter {
       background-color: ${p => p.theme.colors.primary[3]};
       border-radius: 50%;
-      display: inline-block;
       font-size: 10px;
       margin: 0;
       padding: 5.5px 0;
@@ -136,7 +136,6 @@ const Pre = styled.pre`
     }
 
     & .badge-icon {
-      display: inline;
       font-size: 20px;
       vertical-align: middle;
       transition: transform 0.3s ease-in-out;
