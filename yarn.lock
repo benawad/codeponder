@@ -12451,10 +12451,10 @@ next-images@1.0.4:
     file-loader "^3.0.1"
     url-loader "^1.1.2"
 
-next-plugin-transpile-modules@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/next-plugin-transpile-modules/-/next-plugin-transpile-modules-1.0.0.tgz#435436ded5316cef76ed333af01bacc0806de414"
-  integrity sha512-fRIjGPmPPeU6itJITqS8FPNQGwxqHhfh1K+dVaKKMDOa6Yf4EN+1QktG9FALje10zUUrHCc6Om3rwHGCdn3hjA==
+next-plugin-transpile-modules@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/next-plugin-transpile-modules/-/next-plugin-transpile-modules-1.1.0.tgz#1b3e4235a839f31f48e5a8ae1e2e2e23bccee6cd"
+  integrity sha512-/XksdNn/7ajcbaXbOb/3fYHt8nmRiVvUh9wQ3Hk8Saxsw2egnolawOYDPa97XuKozcSoH/vh4estszHOK/FbBQ==
 
 next-routes@1.4.2:
   version "1.4.2"
@@ -15259,7 +15259,7 @@ react-docgen@3.0.0-rc.2, react-docgen@^3.0.0-rc.1:
     node-dir "^0.1.10"
     recast "^0.16.0"
 
-react-dom@16.8.0-alpha.1, react-dom@^16.6.3, react-dom@^16.7.0:
+react-dom@16.8.0-alpha.1:
   version "16.8.0-alpha.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.0-alpha.1.tgz#dab73b8354ba2e498e3127d18e29d4546cea889e"
   integrity sha512-tZCUM8BpnwUHJmLnUWP9c3vVZxnCqYotj7s4tx7umojG6BKv745KIBtuPTzt0EI0q50GMLEpmT/CPQ8iA61TwQ==
@@ -15268,6 +15268,16 @@ react-dom@16.8.0-alpha.1, react-dom@^16.6.3, react-dom@^16.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.13.0-alpha.1"
+
+react-dom@^16.6.3, react-dom@^16.7.0:
+  version "16.7.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0.tgz#a17b2a7ca89ee7390bc1ed5eb81783c7461748b8"
+  integrity sha512-D0Ufv1ExCAmF38P2Uh1lwpminZFRXEINJe53zRAbm4KPwSyd6DY/uDoS0Blj9jvPpn1+wivKpZYc8aAAN/nAkg==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.12.0"
 
 react-error-overlay@4.0.0:
   version "4.0.0"
@@ -15563,7 +15573,7 @@ react-treebeard@^3.1.0:
     shallowequal "^1.1.0"
     velocity-react "^1.4.1"
 
-react@16.8.0-alpha.1, react@^16.6.3, react@^16.7.0:
+react@16.8.0-alpha.1:
   version "16.8.0-alpha.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.0-alpha.1.tgz#c2b32689f3b466d3ce85a634dd9035f789d2cd97"
   integrity sha512-vLwwnhM2dXrCsiQmcSxF2UdZVV5xsiXjK5Yetmy8dVqngJhQ3aw3YJhZN/YmyonxwdimH40wVqFQfsl4gSu2RA==
@@ -15572,6 +15582,16 @@ react@16.8.0-alpha.1, react@^16.6.3, react@^16.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.13.0-alpha.1"
+
+react@^16.6.3, react@^16.7.0:
+  version "16.7.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0.tgz#b674ec396b0a5715873b350446f7ea0802ab6381"
+  integrity sha512-StCz3QY8lxTb5cl2HJxjwLFOXPIFQp+p+hxQfc8WE0QiLfCtIlKj8/+5tjjKm8uSTlAW+fCPaavGFS06V9Ar3A==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.12.0"
 
 read-cmd-shim@^1.0.1:
   version "1.0.1"
@@ -16396,6 +16416,14 @@ saxes@^3.1.4:
   integrity sha512-LAYs+lChg1v5uKNzPtsgTxSS5hLo8aIhSMCJt1WMpefAxm3D1RTpMwSpb6ebdL31cubiLTnhokVktBW+cv9Y9w==
   dependencies:
     xmlchars "^1.3.1"
+
+scheduler@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.12.0.tgz#8ab17699939c0aedc5a196a657743c496538647b"
+  integrity sha512-t7MBR28Akcp4Jm+QoR63XgAi9YgCUmgvDHqf5otgAj4QvdoBE4ImCX0ffehefePPG+aitiYHp0g/mW6s4Tp+dw==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
 
 scheduler@^0.13.0-alpha.1:
   version "0.13.0-alpha.1"
