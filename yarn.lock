@@ -2921,10 +2921,10 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/yup@0.26.6":
-  version "0.26.6"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.6.tgz#3197372455af255c48732f2e3b336b415e025701"
-  integrity sha512-B5Wy5IcmI+mISP2O8Y4J4e4+XVdpMgo9mLQ5mOUvjNYBWWqVxtfB6KkJO+MTfZ/KbwDaXsWtYM6xQnNo/tYI7w==
+"@types/yup@0.26.7":
+  version "0.26.7"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.7.tgz#d6f4118a7284d6632e80708f24b13b947dc0c35d"
+  integrity sha512-+ClhJsLEfYU6yD3heB3bLx+O8mnzAITO5IM9L79HobyX+glcbyya448ovedUGUSMroraz55oATbb1eXOyDwczw==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
