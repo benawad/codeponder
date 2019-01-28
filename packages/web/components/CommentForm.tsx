@@ -1,11 +1,9 @@
-import React, { useCallback, useContext, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import { DebounceInput } from "react-debounce-input";
 
-import { useSelectedLines, cleanSelectedLines } from "./useSelectedLines";
 import { useInputValue } from "../utils/useInputValue";
 import { scrollToView } from "../utils/domScrollUtils";
-import { MyButton, styled, Label, BlueInput } from "@codeponder/ui";
-import { PostContext } from "./PostContext";
+import { MyButton, styled, BlueInput } from "@codeponder/ui";
 
 interface FormInputProps {
   minHeight?: string;
@@ -26,7 +24,7 @@ const FormInput = styled(BlueInput)`
       0 0 0 0.2em rgba(3, 102, 214, 0.3);
   }
 
-  /* hide spinners on number input field */
+  /* hide spinners on number input field
   &[type="number"]::-webkit-inner-spin-button,
   &[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -36,6 +34,7 @@ const FormInput = styled(BlueInput)`
   &[type="number"] {
     -moz-appearance: textfield;
   }
+  */
 `;
 
 const FormRow = styled.div`
@@ -55,7 +54,11 @@ const FormContainer = styled.div`
   border-bottom: ${p => (p.view == "repo-view" ? "none" : "1px solid #d1d5da")};
   display: flex;
   flex-direction: column;
-  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
+  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0 0.9rem")};
+
+  &.is-open {
+    padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
+  }
 
   & .btn-box {
     display: flex;
@@ -100,6 +103,28 @@ export interface TextEditorResult {
   text: string;
 }
 
+const cleanSelectedLines = (
+  lineNum: number,
+  parentElm = document.querySelector(".code-content")
+) => {
+  console.log("cleanSelectedLines", lineNum);
+  parentElm!
+    .querySelectorAll(`.is-selected-${lineNum}`)
+    .forEach(elm => elm.classList.remove(`is-selected-${lineNum}`));
+};
+
+const highlightSelectedLines = (
+  lineNum: number,
+  parentElm = document.querySelector(".code-content")
+) => {
+  let numberElm: HTMLElement | null =
+    parentElm && parentElm.querySelector(`[data-line-number="${lineNum}"]`);
+  numberElm &&
+    (numberElm.parentNode as HTMLElement).classList.add(
+      `is-selected-${lineNum}`
+    );
+};
+
 export const TextEditor = (props: TextEditorProps) => {
   const { isReply, startingLineNum, endingLineNum, submitForm, view } = props;
 
@@ -107,6 +132,7 @@ export const TextEditor = (props: TextEditorProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, titleChange] = useInputValue("");
   const [text, textChange] = useInputValue("");
+  /*
   const { totalLines } = useContext(PostContext);
 
   // listening to mouse move when start input is focused
@@ -115,10 +141,14 @@ export const TextEditor = (props: TextEditorProps) => {
     { start, startingLineNumChange, startInput },
     { end, endingLineNumChange, endInput },
   ] = useSelectedLines(startingLineNum, endingLineNum, view);
+  */
+  const end = endingLineNum || 0;
+  const start = startingLineNum || end;
 
   // validate fields
   const titleTrimmed = title.trim();
   const textTrimmed = text.trim();
+  /*
   const validateStartEnd =
     !startInput.current ||
     !endInput.current ||
@@ -126,6 +156,12 @@ export const TextEditor = (props: TextEditorProps) => {
   const isValidForm = isReply
     ? textTrimmed
     : titleTrimmed && textTrimmed && validateStartEnd;
+  */
+  const isValidForm = isReply ? textTrimmed : titleTrimmed && textTrimmed;
+
+  useEffect(() => {
+    highlightSelectedLines(end);
+  }, []);
 
   // focus title / textarea
   useEffect(() => {
@@ -190,7 +226,7 @@ export const TextEditor = (props: TextEditorProps) => {
           />
         </FormRow>
       )}
-      {// show line numbers for question associated to a file
+      {/*// show line numbers for question associated to a file
       !isReply && view != "repo-view" && (
         <>
           <FormRow>
@@ -229,7 +265,7 @@ export const TextEditor = (props: TextEditorProps) => {
           </FormRow>
           <Separator />
         </>
-      )}
+      )*/}
 
       <FormRow>
         <DebounceInput
