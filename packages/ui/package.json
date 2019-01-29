@@ -39,7 +39,7 @@
     "@storybook/react": "4.1.11",
     "@types/material-ui": "0.21.5",
     "@types/react-modal": "3.8.0",
-    "@types/rebass": "0.3.4",
+    "@types/rebass": "3.0.0",
     "@types/storybook__addon-actions": "3.4.1",
     "@types/storybook__addon-info": "3.4.2",
     "@types/storybook__addon-links": "3.3.3",
