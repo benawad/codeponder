@@ -20,7 +20,7 @@
     "typescript": "3.2.4"
   },
   "dependencies": {
-    "apollo-server-express": "2.3.2",
+    "apollo-server-express": "2.3.3",
     "connect-redis": "3.4.0",
     "cors": "2.8.5",
     "dataloader": "1.4.0",
