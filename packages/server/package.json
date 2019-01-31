@@ -17,7 +17,7 @@
     "ts-node": "8.0.2",
     "ts-node-dev": "^1.0.0-pre.32",
     "tslint": "5.12.1",
-    "typescript": "3.2.4"
+    "typescript": "3.3.1"
   },
   "dependencies": {
     "apollo-server-express": "2.3.2",
