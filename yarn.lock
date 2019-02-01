@@ -2631,10 +2631,10 @@
     "@types/react" "*"
     "@types/react-loadable" "*"
 
-"@types/next@7.0.6":
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/@types/next/-/next-7.0.6.tgz#c4dabfe8707404160651ecf1fa35fd33cc566cdb"
-  integrity sha512-umm6e2UcVxO5HFZCpvFbedIW62Dv+6TS64hPdtgnzvlwsTNcILTXdq7virH+UWWDI/qdMQiiZHcqbXDzF0AUzA==
+"@types/next@7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@types/next/-/next-7.0.8.tgz#f7d92b9cc8bc6914a52700b455dd79a532796e11"
+  integrity sha512-k9rznM9ebpna8n9g71iljRew5c0FNiG3QQ3/iU6Y75se8dXp52bGv2srf8VmPHpiHDmTCZZ/iMz14E/lD6HEIQ==
   dependencies:
     "@types/next-server" "*"
     "@types/node" "*"
