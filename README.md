@@ -4,7 +4,7 @@
 
 ### A Marketplace for Code Reviews
 
-A project that I'm live coding daily on [Twitch](https://www.twitch.tv/benawad) at 6pm CT.
+A project that I'm live coding daily on [Twitch](https://www.twitch.tv/benawad).
 
 ## Contributing
 
