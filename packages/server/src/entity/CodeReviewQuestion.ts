@@ -1,17 +1,17 @@
+import { Field, ID, Int, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
   BaseEntity,
-  ManyToOne,
+  Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  ManyToOne,
   OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
-import { ObjectType, Field, ID, Int } from "type-graphql";
-import { User } from "./User";
-import { QuestionReply } from "./QuestionReply";
 import { CodeReviewPost } from "./CodeReviewPost";
+import { QuestionReply } from "./QuestionReply";
+import { User } from "./User";
 
 @Entity()
 @ObjectType()
@@ -19,6 +19,10 @@ export class CodeReviewQuestion extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
+
+  @Field()
+  @Column({ type: "text", default: "" })
+  title: string;
 
   @Field(() => Int)
   @Column({ type: "int" })

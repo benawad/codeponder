@@ -1,19 +1,20 @@
 import {
-  Resolver,
   Arg,
-  Query,
-  Root,
-  FieldResolver,
   Ctx,
+  FieldResolver,
   Int,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
 } from "type-graphql";
-import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { FindConditions, getConnection } from "typeorm";
-import { CreateCodeReviewQuestionResponse } from "./createResponse";
-import { CreateCodeReviewQuestionInput } from "./createInput";
-import { createBaseResolver } from "../shared/createBaseResolver";
+import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { QuestionReply } from "../../entity/QuestionReply";
 import { MyContext } from "../../types/Context";
+import { createBaseResolver } from "../shared/createBaseResolver";
+import { CreateCodeReviewQuestionInput } from "./createInput";
+import { CreateCodeReviewQuestionResponse } from "./createResponse";
 
 const CodeReviewQuestionBaseResolver = createBaseResolver(
   "CodeReviewQuestion",
@@ -28,6 +29,22 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
   @FieldResolver()
   numReplies(@Root() root: CodeReviewQuestion) {
     return QuestionReply.count({ where: { questionId: root.id } });
+  }
+
+  @Mutation(() => CodeReviewQuestion)
+  async updateCodeReviewQuestionTitle(
+    @Arg("id") id: string,
+    @Arg("title") title: string
+  ) {
+    const q = await CodeReviewQuestion.findOne(id);
+
+    if (!q) {
+      throw new Error("could not find question");
+    }
+
+    q.title = title;
+
+    return q;
   }
 
   @Query(() => [CodeReviewQuestion])
