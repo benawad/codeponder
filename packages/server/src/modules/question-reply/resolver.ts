@@ -1,7 +1,6 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { QuestionReply } from "../../entity/QuestionReply";
 import { MyContext } from "../../types/Context";
 import { isAuthenticated } from "../shared/middleware/isAuthenticated";
@@ -12,18 +11,20 @@ import { QuestionReplyResponse } from "./response";
 export class QuestionReplyResolver {
   constructor(
     @InjectRepository(QuestionReply)
-    private readonly replyRepo: Repository<CodeReviewQuestion>
+    private readonly replyRepo: Repository<QuestionReply>
   ) {}
 
   @Mutation(() => QuestionReplyResponse)
   @UseMiddleware(isAuthenticated)
   async createQuestionReply(
-    @Arg("input") input: CreateQuestionReplyInput,
+    @Arg("questionReply") input: CreateQuestionReplyInput,
     @Ctx() { req }: MyContext
-  ) {
-    return this.replyRepo.save({
-      ...input,
-      creatorId: req.session!.userId,
-    });
+  ): Promise<QuestionReplyResponse> {
+    return {
+      questionReply: await this.replyRepo.save({
+        ...input,
+        creatorId: req.session!.userId,
+      }),
+    };
   }
 }

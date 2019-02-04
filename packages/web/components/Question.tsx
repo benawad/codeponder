@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
+import { EditorSubmitProps } from "../types/questionReplyTypes";
 import { CreateCodeReviewQuestionComponent } from "./apollo-components";
 import { TextEditor, TextEditorResult } from "./CommentForm";
 import { PostContext } from "./PostContext";
-import { EditorSubmitProps } from "../types/questionReplyTypes";
 
 export interface CreateQuestionProps {
   onEditorSubmit: (T: EditorSubmitProps) => void;
   isReply: boolean;
-  endingLineNum?: number;
+  lineNum?: number;
   view: "code-view" | "repo-view";
 }
 
@@ -21,8 +21,7 @@ export const CreateQuestion = ({
       {mutate => {
         const submitForm = async ({
           cancel,
-          startingLineNum,
-          endingLineNum,
+          lineNum,
           text,
         }: TextEditorResult) => {
           if (!cancel) {
@@ -30,14 +29,17 @@ export const CreateQuestion = ({
             const response = await mutate({
               variables: {
                 codeReviewQuestion: {
-                  startingLineNum,
-                  endingLineNum,
-                  codeSnippet: !code
-                    ? null
-                    : code
-                        .split("\n")
-                        .slice(startingLineNum - 1, endingLineNum)
-                        .join("\n"),
+                  lineNum,
+                  codeSnippet:
+                    !code || !lineNum
+                      ? null
+                      : code
+                          .split("\n")
+                          .slice(
+                            Math.max(1, lineNum - 5),
+                            Math.min(code.length, lineNum + 5)
+                          )
+                          .join("\n"),
                   text,
                   /* TODO add title to code_review_question */
                   path,

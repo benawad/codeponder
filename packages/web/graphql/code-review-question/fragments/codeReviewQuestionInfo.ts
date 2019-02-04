@@ -5,8 +5,7 @@ import { userInfoFragment } from "../../user/fragments/UserInfo";
 export const codeReviewQuestionInfoFragment = gql`
   fragment CodeReviewQuestionInfo on CodeReviewQuestion {
     id
-    startingLineNum
-    endingLineNum
+    lineNum
     text
     programmingLanguage
     codeSnippet

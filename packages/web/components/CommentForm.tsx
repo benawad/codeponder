@@ -1,9 +1,8 @@
-import React, { useCallback, useRef, useEffect } from "react";
+import { BlueInput, MyButton, styled } from "@codeponder/ui";
+import React, { useCallback, useEffect, useRef } from "react";
 import { DebounceInput } from "react-debounce-input";
-
-import { useInputValue } from "../utils/useInputValue";
 import { scrollToView } from "../utils/domScrollUtils";
-import { MyButton, styled, BlueInput } from "@codeponder/ui";
+import { useInputValue } from "../utils/useInputValue";
 
 interface FormInputProps {
   minHeight?: string;
@@ -89,16 +88,14 @@ const FormContainer = styled.div`
 
 export interface TextEditorProps {
   isReply: boolean;
-  startingLineNum?: number;
-  endingLineNum?: number;
+  lineNum?: number;
   submitForm: (props: TextEditorResult) => Promise<void>;
   view: "code-view" | "repo-view";
 }
 
 export interface TextEditorResult {
   cancel: boolean;
-  startingLineNum: number;
-  endingLineNum: number;
+  lineNum?: number;
   title: string;
   text: string;
 }
@@ -126,41 +123,23 @@ const highlightSelectedLines = (
 };
 
 export const TextEditor = (props: TextEditorProps) => {
-  const { isReply, startingLineNum, endingLineNum, submitForm, view } = props;
+  const { isReply, lineNum, submitForm, view } = props;
 
   const formRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, titleChange] = useInputValue("");
   const [text, textChange] = useInputValue("");
-  /*
-  const { totalLines } = useContext(PostContext);
-
-  // listening to mouse move when start input is focused
-  // Styles lines between start - end when start change
-  const [
-    { start, startingLineNumChange, startInput },
-    { end, endingLineNumChange, endInput },
-  ] = useSelectedLines(startingLineNum, endingLineNum, view);
-  */
-  const end = endingLineNum || 0;
-  const start = startingLineNum || end;
 
   // validate fields
   const titleTrimmed = title.trim();
   const textTrimmed = text.trim();
-  /*
-  const validateStartEnd =
-    !startInput.current ||
-    !endInput.current ||
-    (startInput.current!.validity.valid && endInput.current!.validity.valid);
-  const isValidForm = isReply
-    ? textTrimmed
-    : titleTrimmed && textTrimmed && validateStartEnd;
-  */
+
   const isValidForm = isReply ? textTrimmed : titleTrimmed && textTrimmed;
 
   useEffect(() => {
-    highlightSelectedLines(end);
+    if (lineNum) {
+      highlightSelectedLines(lineNum);
+    }
   }, []);
 
   // focus title / textarea
@@ -198,7 +177,9 @@ export const TextEditor = (props: TextEditorProps) => {
     if (view == "repo-view") {
       clearForm();
     } else {
-      cleanSelectedLines(end);
+      if (lineNum) {
+        cleanSelectedLines(lineNum);
+      }
       formRef.current!.classList.remove("is-open");
       submitForm({ cancel: true } as TextEditorResult);
     }
@@ -226,47 +207,6 @@ export const TextEditor = (props: TextEditorProps) => {
           />
         </FormRow>
       )}
-      {/*// show line numbers for question associated to a file
-      !isReply && view != "repo-view" && (
-        <>
-          <FormRow>
-            <Label style={{ paddingBottom: ".4rem" }}>Line numbers</Label>
-            <DebounceInput
-              element={FormInput}
-              debounceTimeout={view == "code-view" ? 100 : 300}
-              inputRef={startInput}
-              className="start-tooltip"
-              name="startingLineNum"
-              min="1"
-              max={Math.min(endingLineNum!, totalLines!)}
-              type="number"
-              value={start}
-              width="5em"
-              onChange={startingLineNumChange}
-            />
-            <Label className="tooltiptext" as="span">
-              You can type a number, use up/down arrows or select a line with
-              the mouse
-            </Label>
-            <span style={{ padding: "0px 1rem" }}>–</span>
-            <DebounceInput
-              element={FormInput}
-              debounceTimeout={300}
-              inputRef={endInput}
-              disabled={view == "code-view"}
-              name="endingLineNum"
-              min={Math.min(start, totalLines!)}
-              max={totalLines}
-              type="number"
-              value={end}
-              width="5em"
-              onChange={endingLineNumChange}
-            />
-          </FormRow>
-          <Separator />
-        </>
-      )*/}
-
       <FormRow>
         <DebounceInput
           element={FormInput}
@@ -294,8 +234,7 @@ export const TextEditor = (props: TextEditorProps) => {
               formRef.current!.classList.remove("is-open");
               submitForm({
                 cancel: false,
-                startingLineNum: start,
-                endingLineNum: end,
+                lineNum,
                 title: titleTrimmed,
                 text: textTrimmed,
               });

@@ -24,9 +24,9 @@ export class CodeReviewQuestion {
   @Column({ type: "text", default: "" })
   title: string;
 
-  @Field(() => Int)
-  @Column({ type: "int" })
-  lineNum: number;
+  @Field(() => Int, { nullable: true })
+  @Column({ type: "int", nullable: true })
+  lineNum?: number;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "text", nullable: true })

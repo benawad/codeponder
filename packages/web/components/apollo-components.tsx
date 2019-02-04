@@ -8,28 +8,6 @@ export interface FindCodeReviewPostInput {
   limit: number;
 }
 
-export interface CreateQuestionReplyInput {
-  text: string;
-
-  questionId: string;
-}
-
-export interface CreateCodeReviewQuestionInput {
-  startingLineNum: number;
-
-  endingLineNum: number;
-
-  text: string;
-
-  postId: string;
-
-  path?: Maybe<string>;
-
-  codeSnippet?: Maybe<string>;
-
-  programmingLanguage?: Maybe<string>;
-}
-
 export interface CreateCodeReviewPostInput {
   topics: string[];
 
@@ -42,6 +20,26 @@ export interface CreateCodeReviewPostInput {
   commitId: string;
 
   repoOwner: string;
+}
+
+export interface CreateCodeReviewQuestionInput {
+  lineNum?: Maybe<number>;
+
+  text: string;
+
+  postId: string;
+
+  path?: Maybe<string>;
+
+  codeSnippet?: Maybe<string>;
+
+  programmingLanguage?: Maybe<string>;
+}
+
+export interface CreateQuestionReplyInput {
+  text: string;
+
+  questionId: string;
 }
 
 /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
@@ -62,7 +60,7 @@ export type FindOrCreateCodeReviewPostMutation = {
 };
 
 export type FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost = {
-  __typename?: "CreateCodeReviewPostResponse";
+  __typename?: "CodeReviewPostResponse";
 
   codeReviewPost: FindOrCreateCodeReviewPostCodeReviewPost;
 };
@@ -112,7 +110,7 @@ export type CreateCodeReviewQuestionMutation = {
 };
 
 export type CreateCodeReviewQuestionCreateCodeReviewQuestion = {
-  __typename?: "CreateCodeReviewQuestionResponse";
+  __typename?: "CodeReviewQuestionResponse";
 
   codeReviewQuestion: CreateCodeReviewQuestionCodeReviewQuestion;
 };
@@ -176,7 +174,7 @@ export type CreateQuestionReplyMutation = {
 };
 
 export type CreateQuestionReplyCreateQuestionReply = {
-  __typename?: "CreateQuestionReplyResponse";
+  __typename?: "QuestionReplyResponse";
 
   questionReply: CreateQuestionReplyQuestionReply;
 };
@@ -230,9 +228,7 @@ export type CodeReviewQuestionInfoFragment = {
 
   id: string;
 
-  startingLineNum: number;
-
-  endingLineNum: number;
+  lineNum: Maybe<number>;
 
   text: string;
 
@@ -336,8 +332,7 @@ export const QuestionReplyInfoFragmentDoc = gql`
 export const CodeReviewQuestionInfoFragmentDoc = gql`
   fragment CodeReviewQuestionInfo on CodeReviewQuestion {
     id
-    startingLineNum
-    endingLineNum
+    lineNum
     text
     programmingLanguage
     codeSnippet

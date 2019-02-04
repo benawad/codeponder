@@ -38,7 +38,7 @@ export class CodeReviewQuestionResolver {
   @Mutation(() => CodeReviewQuestionResponse)
   @UseMiddleware(isAuthenticated)
   async createCodeReviewQuestion(
-    @Arg("input") input: CreateCodeReviewQuestionInput,
+    @Arg("codeReviewQuestion") input: CreateCodeReviewQuestionInput,
     @Ctx() ctx: MyContext
   ): Promise<CodeReviewQuestionResponse> {
     const q = await this.questionRepo.add({

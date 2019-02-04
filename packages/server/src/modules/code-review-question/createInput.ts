@@ -4,8 +4,8 @@ import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 @InputType()
 export class CreateCodeReviewQuestionInput
   implements Partial<CodeReviewQuestion> {
-  @Field(() => Int)
-  lineNum: number;
+  @Field(() => Int, { nullable: true })
+  lineNum?: number;
 
   @Field()
   text: string;
