@@ -1,15 +1,14 @@
 import * as DataLoader from "dataloader";
-import { In } from "typeorm";
-
+import { getRepository, In } from "typeorm";
 import { QuestionReply } from "../entity/QuestionReply";
 
 export const questionReplyLoader = () =>
   new DataLoader(async (keys: string[]) => {
     // code review question ids
-    const questionReplies = await QuestionReply.find({
+    const questionReplies = await getRepository(QuestionReply).find({
       where: {
-        questionId: In(keys)
-      }
+        questionId: In(keys),
+      },
     });
 
     const qrMap: { [key: string]: QuestionReply[] } = {};

@@ -1,25 +1,31 @@
 import {
-  Resolver,
-  Query,
   Ctx,
   FieldResolver,
   Mutation,
-  Authorized,
+  Query,
+  Resolver,
+  UseMiddleware,
 } from "type-graphql";
+import { Repository } from "typeorm";
+import { InjectRepository } from "typeorm-typedi-extensions";
 import { User } from "../../entity/User";
 import { MyContext } from "../../types/Context";
+import { isAuthenticated } from "../shared/middleware/isAuthenticated";
 
 @Resolver(User)
 export class UserResolver {
-  constructor() {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>
+  ) {}
 
   @FieldResolver()
   accessToken(@Ctx() ctx: MyContext) {
     return ctx.req.session!.accessToken;
   }
 
-  @Authorized()
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuthenticated)
   async logout(
     @Ctx()
     ctx: MyContext
@@ -38,6 +44,6 @@ export class UserResolver {
     ctx: MyContext
   ) {
     const { userId } = ctx.req.session!;
-    return userId ? User.findOne(userId) : null;
+    return userId ? this.userRepo.findOne(userId) : null;
   }
 }

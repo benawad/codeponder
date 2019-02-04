@@ -1,40 +1,70 @@
-import { Resolver, Query, Arg, FieldResolver, Root } from "type-graphql";
-import { getConnection } from "typeorm";
 import { ApolloError } from "apollo-server-core";
-
-import { CreateCodeReviewPostInput } from "./createInput";
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+  UseMiddleware,
+} from "type-graphql";
+import { InjectRepository } from "typeorm-typedi-extensions";
 import { CodeReviewPost } from "../../entity/CodeReviewPost";
-import { CreateCodeReviewPostResponse } from "./createResponse";
-import { findOrCreateResolver } from "../shared/find-or-create-resolver";
-import { loadCreatorResolver } from "../shared/load-creator-resolver";
-import { getByIdResolver } from "../shared/get-by-id-resolver";
+import { CodeReviewPostRepository } from "../../repositories/CodeReviewPostRepo";
+import { CodeReviewQuestionRepository } from "../../repositories/CodeReviewQuestionRepo";
+import { MyContext } from "../../types/Context";
+import { isAuthenticated } from "../shared/middleware/isAuthenticated";
+import { CreateCodeReviewPostInput } from "./createInput";
 import { FindCodeReviewPostInput } from "./findInput";
-import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { FindCodeReviewPostResponse } from "./findResponse";
-
-const suffix = "CodeReviewPost";
-
-export const findOrCreateCodeReviewPost = findOrCreateResolver(
-  suffix,
-  CreateCodeReviewPostInput,
-  CodeReviewPost,
-  CreateCodeReviewPostResponse,
-  ["commitId", "repo", "repoOwner"] as any
-);
-
-export const loadCreatorForCodeReviewPost = loadCreatorResolver(CodeReviewPost);
-
-export const getCodeReviewPostById = getByIdResolver(
-  suffix,
-  CodeReviewPost,
-  CodeReviewPost
-);
+import { CodeReviewPostResponse } from "./response";
 
 @Resolver(CodeReviewPost)
 export class CodeReviewPostResolvers {
+  constructor(
+    @InjectRepository(CodeReviewQuestionRepository)
+    private readonly questionRepo: CodeReviewQuestionRepository,
+    @InjectRepository(CodeReviewPostRepository)
+    private readonly postRepo: CodeReviewPostRepository
+  ) {}
+
+  @Mutation(() => CodeReviewPostResponse)
+  @UseMiddleware(isAuthenticated)
+  async findOrCreateCodeReviewPost(
+    @Arg("codeReviewPost") input: CreateCodeReviewPostInput,
+    @Ctx() { req }: MyContext
+  ): Promise<CodeReviewPostResponse> {
+    let value = await this.postRepo.findOne({
+      where: {
+        commitId: input.commitId,
+        repo: input.repo,
+        repoOwner: input.repoOwner,
+      },
+    });
+
+    if (!value) {
+      value = await this.postRepo.save({
+        ...input,
+        creatorId: req.session!.userId,
+      });
+    }
+
+    return {
+      codeReviewPost: value,
+    };
+  }
+
+  @Query(() => CodeReviewPost, {
+    nullable: true,
+  })
+  async getCodeReviewPostById(@Arg("id") id: string) {
+    return this.postRepo.findOne(id);
+  }
+
   @FieldResolver()
   numQuestions(@Root() root: CodeReviewPost) {
-    return CodeReviewQuestion.count({ where: { postId: root.id } });
+    return this.questionRepo.count({ where: { postId: root.id } });
   }
 
   @Query(() => FindCodeReviewPostResponse)
@@ -48,24 +78,10 @@ export class CodeReviewPostResolvers {
       throw new ApolloError("max limit of 6");
     }
 
-    let where: any = {};
-
-    if (topics) {
-      where.topics = topics;
-    }
-
-    const posts = await getConnection()
-      .getRepository(CodeReviewPost)
-      .createQueryBuilder("crp")
-      .where("topics @> :topics", { topics })
-      .skip(offset)
-      .take(limit + 1)
-      .orderBy('"createdAt"', "DESC")
-      .getMany();
-
-    return {
-      hasMore: posts.length === limit + 1,
-      posts: posts.slice(0, limit),
-    };
+    return this.postRepo.findByTopics({
+      limit,
+      offset,
+      topics,
+    });
   }
 }

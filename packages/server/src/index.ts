@@ -7,18 +7,24 @@ import { GraphQLError } from "graphql";
 import * as passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github";
 import "reflect-metadata";
-import { buildSchema } from "type-graphql";
+import { buildSchema, useContainer } from "type-graphql";
+import { Container } from "typedi";
+import * as typeorm from "typeorm";
 import { v4 } from "uuid";
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "./entity/User";
+import { DisplayError } from "./errors/DisplayError";
 import { questionReplyLoader } from "./loaders/questionReplyLoader";
 import { userLoader } from "./loaders/userLoader";
 import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
 require("dotenv-safe").config();
 
-const SESSION_SECRET = process.env.SESSION_SECRET; 
+const SESSION_SECRET = process.env.SESSION_SECRET;
 const RedisStore = connectRedis(session as any);
+
+useContainer(Container);
+typeorm.useContainer(Container);
 
 const startServer = async () => {
   const conn = await createTypeormConn();
@@ -31,9 +37,6 @@ const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [__dirname + "/modules/**/resolver.*"],
-      authChecker: ({ context }) => {
-        return context.req.session && context.req.session.userId; // or false if access denied
-      },
     }),
     context: ({ req }: any) => ({
       req,
@@ -41,7 +44,10 @@ const startServer = async () => {
       questionReplyLoader: questionReplyLoader(),
     }),
     formatError: (error: GraphQLError) => {
-      if (error.originalError instanceof ApolloError) {
+      if (
+        error.originalError instanceof ApolloError ||
+        error.originalError instanceof DisplayError
+      ) {
         return error;
       }
 
@@ -72,7 +78,7 @@ const startServer = async () => {
       try {
         const qid = authorization.split(" ")[1];
         req.headers.cookie = `qid=${qid}`;
-      } catch (_) {}
+      } catch {}
     }
 
     return next();
@@ -103,7 +109,9 @@ const startServer = async () => {
         callbackURL: "http://localhost:4000/oauth/github",
       },
       async (accessToken, refreshToken, profile: any, cb) => {
-        let user = await User.findOne({ where: { githubId: profile.id } });
+        let user = await typeorm
+          .getRepository(User)
+          .findOne({ where: { githubId: profile.id } });
         if (!user) {
           user = await createUser({
             username: profile.username,

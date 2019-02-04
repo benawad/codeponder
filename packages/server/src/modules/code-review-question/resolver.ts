@@ -7,28 +7,52 @@ import {
   Query,
   Resolver,
   Root,
+  UseMiddleware,
 } from "type-graphql";
-import { FindConditions, getConnection } from "typeorm";
+import { FindConditions, getConnection, Repository } from "typeorm";
+import { InjectRepository } from "typeorm-typedi-extensions";
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { QuestionReply } from "../../entity/QuestionReply";
+import { DisplayError } from "../../errors/DisplayError";
+import { CodeReviewQuestionRepository } from "../../repositories/CodeReviewQuestionRepo";
 import { MyContext } from "../../types/Context";
-import { createBaseResolver } from "../shared/createBaseResolver";
+import { isAuthenticated } from "../shared/middleware/isAuthenticated";
 import { CreateCodeReviewQuestionInput } from "./createInput";
-import { CreateCodeReviewQuestionResponse } from "./createResponse";
-
-const CodeReviewQuestionBaseResolver = createBaseResolver(
-  "CodeReviewQuestion",
-  CreateCodeReviewQuestionInput,
-  CodeReviewQuestion,
-  CreateCodeReviewQuestionResponse
-);
+import { CodeReviewQuestionResponse } from "./response";
 
 const PAGE_SIZE = 6;
 @Resolver(CodeReviewQuestion)
-export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
+export class CodeReviewQuestionResolver {
+  constructor(
+    @InjectRepository(CodeReviewQuestionRepository)
+    private readonly questionRepo: CodeReviewQuestionRepository,
+    @InjectRepository(QuestionReply)
+    private readonly replyRepo: Repository<CodeReviewQuestion>
+  ) {}
+
   @FieldResolver()
   numReplies(@Root() root: CodeReviewQuestion) {
-    return QuestionReply.count({ where: { questionId: root.id } });
+    return this.replyRepo.count({ where: { questionId: root.id } });
+  }
+
+  @Mutation(() => CodeReviewQuestionResponse)
+  @UseMiddleware(isAuthenticated)
+  async createCodeReviewQuestion(
+    @Arg("input") input: CreateCodeReviewQuestionInput,
+    @Ctx() ctx: MyContext
+  ): Promise<CodeReviewQuestionResponse> {
+    const q = await this.questionRepo.add({
+      ...input,
+      creatorId: ctx.req.session!.userId,
+    });
+
+    if (!q) {
+      throw new DisplayError("someone already added a question on that line");
+    }
+
+    return {
+      codeReviewQuestion: q,
+    };
   }
 
   @Mutation(() => CodeReviewQuestion)
@@ -36,7 +60,7 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
     @Arg("id") id: string,
     @Arg("title") title: string
   ) {
-    const q = await CodeReviewQuestion.findOne(id);
+    const q = await this.questionRepo.findOne(id);
 
     if (!q) {
       throw new Error("could not find question");
@@ -60,7 +84,7 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
       where.path = path;
     }
 
-    return CodeReviewQuestion.find({
+    return this.questionRepo.find({
       where,
     });
   }
@@ -82,7 +106,7 @@ export class CodeReviewQuestionResolver extends CodeReviewQuestionBaseResolver {
       [offset, limit]
     );
 
-    return questions.map((q: any) => CodeReviewQuestion.create(q));
+    return questions;
   }
 
   @FieldResolver(() => [QuestionReply])

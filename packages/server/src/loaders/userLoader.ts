@@ -1,9 +1,10 @@
 import * as DataLoader from "dataloader";
+import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 
 export const userLoader = () =>
   new DataLoader(async (keys: string[]) => {
-    const users = await User.findByIds(keys);
+    const users = await getRepository(User).findByIds(keys);
 
     const userMap: { [key: string]: User } = {};
 

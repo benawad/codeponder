@@ -1,3 +1,4 @@
+import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 
 export const createUser = async ({
@@ -5,7 +6,7 @@ export const createUser = async ({
   githubId,
   pictureUrl,
   bio,
-  name
+  name,
 }: {
   username: string;
   githubId: string;
@@ -18,13 +19,13 @@ export const createUser = async ({
 
   while (times < 100) {
     try {
-      user = await User.create({
+      user = await getRepository(User).save({
         username: times ? `${username}${times}` : username,
         githubId,
         pictureUrl,
         bio,
-        name
-      }).save();
+        name,
+      });
       break;
     } catch (err) {
       if (!err.detail.includes("already exists")) {

@@ -1,6 +1,5 @@
-import { Field, ID, Int, ObjectType } from "type-graphql";
+import { Ctx, Field, ID, Int, ObjectType } from "type-graphql";
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,13 +8,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { MyContext } from "../types/Context";
 import { CodeReviewPost } from "./CodeReviewPost";
 import { QuestionReply } from "./QuestionReply";
 import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class CodeReviewQuestion extends BaseEntity {
+export class CodeReviewQuestion {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -26,11 +26,7 @@ export class CodeReviewQuestion extends BaseEntity {
 
   @Field(() => Int)
   @Column({ type: "int" })
-  startingLineNum: number;
-
-  @Field(() => Int)
-  @Column({ type: "int" })
-  endingLineNum: number;
+  lineNum: number;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "text", nullable: true })
@@ -52,9 +48,13 @@ export class CodeReviewQuestion extends BaseEntity {
   @Column("uuid")
   creatorId: string;
 
-  @Field(() => User)
   @ManyToOne(() => User, user => user.codeReviewQuestions)
-  creator: Promise<User>;
+  creatorConnection: Promise<User>;
+
+  @Field(() => User)
+  creator(@Ctx() { userLoader }: MyContext): Promise<User> {
+    return userLoader.load(this.creatorId);
+  }
 
   @Field()
   @Column("uuid")

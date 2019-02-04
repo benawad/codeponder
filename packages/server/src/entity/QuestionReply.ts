@@ -1,19 +1,19 @@
+import { Ctx, Field, ID, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  BaseEntity,
-  ManyToOne,
   CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
-import { User } from "./User";
+import { MyContext } from "../types/Context";
 import { CodeReviewQuestion } from "./CodeReviewQuestion";
+import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class QuestionReply extends BaseEntity {
+export class QuestionReply {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -33,9 +33,13 @@ export class QuestionReply extends BaseEntity {
   @Column("uuid")
   creatorId: string;
 
-  @Field(() => User)
   @ManyToOne(() => User, user => user.questionReply)
-  creator: Promise<User>;
+  creatorConnection: Promise<User>;
+
+  @Field(() => User)
+  creator(@Ctx() { userLoader }: MyContext): Promise<User> {
+    return userLoader.load(this.creatorId);
+  }
 
   @Field()
   @CreateDateColumn({ type: "timestamp with time zone" })

@@ -1,14 +1,11 @@
-import { InputType, Field, Int } from "type-graphql";
+import { Field, InputType, Int } from "type-graphql";
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 
 @InputType()
 export class CreateCodeReviewQuestionInput
   implements Partial<CodeReviewQuestion> {
   @Field(() => Int)
-  startingLineNum: number;
-
-  @Field(() => Int)
-  endingLineNum: number;
+  lineNum: number;
 
   @Field()
   text: string;

@@ -1,8 +1,8 @@
-import { ObjectType, Field } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import { QuestionReply } from "../../entity/QuestionReply";
 
 @ObjectType()
-export class CreateQuestionReplyResponse {
+export class QuestionReplyResponse {
   @Field()
   questionReply: QuestionReply;
 }

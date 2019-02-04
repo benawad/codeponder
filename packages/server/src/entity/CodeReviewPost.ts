@@ -1,20 +1,20 @@
+import { Ctx, Field, ID, Int, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  BaseEntity,
-  ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  ManyToOne,
   OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
-import { ObjectType, Field, ID, Int } from "type-graphql";
-import { User } from "./User";
+import { MyContext } from "../types/Context";
 import { CodeReviewQuestion } from "./CodeReviewQuestion";
+import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class CodeReviewPost extends BaseEntity {
+export class CodeReviewPost {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -43,16 +43,20 @@ export class CodeReviewPost extends BaseEntity {
   @Column({ type: "text" })
   repoOwner: string;
 
+  @OneToMany(() => CodeReviewQuestion, crq => crq.post)
+  questions: Promise<CodeReviewQuestion[]>;
+
   @Field()
   @Column("uuid")
   creatorId: string;
 
-  @OneToMany(() => CodeReviewQuestion, crq => crq.post)
-  questions: Promise<CodeReviewQuestion[]>;
+  @ManyToOne(() => User, user => user.codeReviewQuestions)
+  creatorConnection: Promise<User>;
 
   @Field(() => User)
-  @ManyToOne(() => User, user => user.codeReviewQuestions)
-  creator: Promise<User>;
+  creator(@Ctx() { userLoader }: MyContext): Promise<User> {
+    return userLoader.load(this.creatorId);
+  }
 
   @Field()
   @CreateDateColumn({ type: "timestamp with time zone" })

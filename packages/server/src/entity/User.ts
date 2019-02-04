@@ -1,18 +1,12 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  OneToMany,
-} from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { CodeReviewPost } from "./CodeReviewPost";
 import { CodeReviewQuestion } from "./CodeReviewQuestion";
 import { QuestionReply } from "./QuestionReply";
-import { CodeReviewPost } from "./CodeReviewPost";
 
 @Entity()
 @ObjectType()
-export class User extends BaseEntity {
+export class User {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -36,13 +30,13 @@ export class User extends BaseEntity {
   @Column({ type: "text" })
   bio: string;
 
-  @OneToMany(() => CodeReviewQuestion, crq => crq.creator)
+  @OneToMany(() => CodeReviewQuestion, crq => crq.creatorConnection)
   codeReviewQuestions: Promise<CodeReviewQuestion[]>;
 
-  @OneToMany(() => CodeReviewPost, crp => crp.creator)
+  @OneToMany(() => CodeReviewPost, crp => crp.creatorConnection)
   codeReviewPosts: Promise<CodeReviewPost[]>;
 
-  @OneToMany(() => QuestionReply, qr => qr.creator)
+  @OneToMany(() => QuestionReply, qr => qr.creatorConnection)
   questionReply: Promise<QuestionReply[]>;
 
   @Field(() => String, { nullable: true })
