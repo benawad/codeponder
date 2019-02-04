@@ -1,5 +1,4 @@
 import { MyButton, PostRow, SidebarCard, Topic } from "@codeponder/ui";
-import { Layout } from "antd";
 import * as React from "react";
 import { Box } from "rebass";
 import {
@@ -8,6 +7,7 @@ import {
 } from "../../../generated/apollo-components";
 import { findCodeReviewPostQuery } from "../../../graphql/code-review-post/queries/findCodeReviewPost";
 import { Link } from "../../../server/routes";
+import { Layout } from "../../shared/Layout";
 
 interface State {
   limit: number;
@@ -37,7 +37,6 @@ export class HomeView extends React.Component<{}, State> {
 
   render() {
     return (
-      // @ts-ignore
       <Layout title="Code Ponder">
         <FindCodeReviewPostComponent
           variables={{
