@@ -5,11 +5,8 @@ import NextLink from "next/link";
 import * as React from "react";
 import { Flex, Link } from "rebass";
 import styled from "styled-components";
-import Logo from "../../../assets/logo/logo2.png";
-import {
-  LogoutComponent,
-  MeComponent,
-} from "../../generated/apollo-components";
+import Logo from "../../../../assets/logo/logo2.png";
+import { LogoutComponent, MeComponent } from "../../generated/apollo-components";
 import { CreateCodeReviewModal } from "./CreateCodeReviewModal";
 
 const Container = styled(Flex)`
