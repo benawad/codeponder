@@ -1,8 +1,8 @@
 import { BlueInput, MyButton, styled } from "@codeponder/ui";
 import React, { useCallback, useEffect, useRef } from "react";
 import { DebounceInput } from "react-debounce-input";
-import { scrollToView } from "../utils/domScrollUtils";
-import { useInputValue } from "../utils/useInputValue";
+import { scrollToView } from "../../../../utils/domScrollUtils";
+import { useInputValue } from "../../../../utils/useInputValue";
 
 interface FormInputProps {
   minHeight?: string;

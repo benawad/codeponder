@@ -1,7 +1,7 @@
 import {
   CodeReviewQuestionInfoFragment,
   QuestionReplyInfoFragment,
-} from "../components/apollo-components";
+} from "../generated/apollo-components";
 
 export interface EditorSubmitProps {
   submitted: boolean;

@@ -1,6 +1,6 @@
-import * as React from "react";
-import Head from "next/head";
 import { Wrapper } from "@codeponder/ui";
+import Head from "next/head";
+import * as React from "react";
 import { NavBar } from "./NavBar";
 
 type Props = {

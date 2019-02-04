@@ -1,20 +1,19 @@
-import React from "react";
-import cookie from "cookie";
-import PropTypes from "prop-types";
-import { getDataFromTree } from "react-apollo";
-import Head from "next/head";
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import { IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
+import cookie from "cookie";
+import Head from "next/head";
+import PropTypes from "prop-types";
+import React from "react";
+import { getDataFromTree } from "react-apollo";
+import { MeQuery } from "../generated/apollo-components";
+import { meQuery } from "../graphql/user/query/me";
 import introspectionQueryResultData from "./github-api-fragments.json";
+import initApollo from "./init-apollo";
+import { isBrowser } from "./isBrowser";
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: introspectionQueryResultData as any,
 });
-
-import initApollo from "./init-apollo";
-import { isBrowser } from "./isBrowser";
-import { NormalizedCacheObject, ApolloClient } from "apollo-boost";
-import { meQuery } from "../graphql/user/query/me";
-import { MeQuery } from "../components/apollo-components";
 
 function parseCookies(req?: any, options = {}) {
   return cookie.parse(
@@ -61,7 +60,7 @@ export default (App: any) => {
         {},
         {
           getToken: () => {
-            return me ? me.accessToken : "";
+            return me ? me.accessToken || "" : "";
           },
         },
         { fragmentMatcher }

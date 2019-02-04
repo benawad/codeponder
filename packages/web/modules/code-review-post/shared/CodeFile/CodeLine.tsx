@@ -1,5 +1,5 @@
 import { memo, useCallback, useState } from "react";
-import { CommentProps } from "../types/questionReplyTypes";
+import { CommentProps } from "../../../../types/questionReplyTypes";
 import { AddComment } from "./CommentSection";
 import { CodeDiscussionView } from "./Discussion";
 

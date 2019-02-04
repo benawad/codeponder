@@ -1,13 +1,13 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
-import { CreateQuestion } from "./Question";
 import {
   CommentProps,
-  QuestionProps,
   EditorSubmitProps,
-} from "../types/questionReplyTypes";
-import { CreateQuestionReply } from "./QuestionReply";
-import { getScrollY } from "../utils/domScrollUtils";
-import { PostContext } from "./PostContext";
+  QuestionProps,
+} from "../../../../types/questionReplyTypes";
+import { getScrollY } from "../../../../utils/domScrollUtils";
+import { PostContext } from "../PostContext";
+import { CreateQuestionReply } from "../QuestionReply";
+import { CreateQuestion } from "../QuestionSection/CreateQuestion";
 
 interface AddCommentProps {
   comments: CommentProps[];
@@ -62,13 +62,10 @@ export const AddComment: React.SFC<AddCommentProps> = ({
     [comments]
   );
 
-  useEffect(
-    () => {
-      // clear stopScroll
-      preventScrollRef.current();
-    },
-    [comments]
-  );
+  useEffect(() => {
+    // clear stopScroll
+    preventScrollRef.current();
+  }, [comments]);
 
   const commentProps = {
     isReply,
@@ -80,7 +77,7 @@ export const AddComment: React.SFC<AddCommentProps> = ({
   return isReply ? (
     <CreateQuestionReply
       {...commentProps}
-      startingLineNum={question!.startingLineNum}
+      lineNum={question!.lineNum || undefined}
       questionId={question!.id}
     />
   ) : (

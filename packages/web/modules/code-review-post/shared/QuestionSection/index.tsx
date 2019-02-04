@@ -1,13 +1,12 @@
-import React, { useCallback, useState } from "react";
 import { Question } from "@codeponder/ui";
-
+import React, { useCallback, useState } from "react";
 import {
+  CodeReviewQuestionInfoFragment,
   FindCodeReviewQuestionsComponent,
   FindCodeReviewQuestionsVariables,
-  CodeReviewQuestionInfoFragment,
-} from "./apollo-components";
-import { CreateQuestion } from "./Question";
-import { EditorSubmitProps } from "../types/questionReplyTypes";
+} from "../../../../generated/apollo-components";
+import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
+import { CreateQuestion } from "./CreateQuestion";
 
 interface Props {
   variables: FindCodeReviewQuestionsVariables;

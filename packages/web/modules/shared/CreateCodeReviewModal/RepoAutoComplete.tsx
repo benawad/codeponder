@@ -1,10 +1,10 @@
 import React from "react";
 import Select from "react-select";
-import { GitHubApolloClientContext } from "./GithubApolloClientContext";
 import {
   GetViewerReposComponent,
   GetViewerReposEdges,
-} from "./github-apollo-components";
+} from "../../../generated/github-apollo-components";
+import { GitHubApolloClientContext } from "../GithubApolloClientContext";
 
 interface Props {
   onChange: (data: GetViewerReposEdges | null) => void;

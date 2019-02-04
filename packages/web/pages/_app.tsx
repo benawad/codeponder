@@ -1,13 +1,11 @@
+import { GlobalStyle, theme, ThemeProvider } from "@codeponder/ui";
 import App, { Container } from "next/app";
 import React from "react";
-import { ThemeProvider, theme, GlobalStyle } from "@codeponder/ui";
 import { ApolloProvider } from "react-apollo";
 import ReactModal from "react-modal";
-
-import withApolloClient from "../lib/with-apollo-client";
-import { GitHubApolloClientContext } from "../components/GithubApolloClientContext";
-
 import "../empty.css";
+import withApolloClient from "../lib/with-apollo-client";
+import { GitHubApolloClientContext } from "../modules/shared/GithubApolloClientContext";
 
 if (typeof window !== "undefined") {
   ReactModal.setAppElement("body");
@@ -20,11 +18,7 @@ class MyApp extends App {
     return (
       <Container>
         <GlobalStyle />
-        {/*
-          // @ts-ignore */}
         <ThemeProvider theme={theme}>
-          {/*
-          // @ts-ignore */}
           <GitHubApolloClientContext.Provider value={githubApolloClient}>
             <ApolloProvider client={apolloClient}>
               <Component {...pageProps} />

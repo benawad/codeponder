@@ -1,8 +1,8 @@
 import {
   CreateQuestionReplyComponent,
   QuestionReplyInfoFragment,
-} from "./apollo-components";
-import { TextEditor, TextEditorResult } from "./CommentForm";
+} from "../../../generated/apollo-components";
+import { TextEditor, TextEditorResult } from "./QuestionSection/CommentForm";
 
 interface EditorSubmitProps {
   submitted: boolean;
@@ -11,8 +11,7 @@ interface EditorSubmitProps {
 
 interface QuestionReplyProps {
   isReply: boolean;
-  startingLineNum?: number; // not exist before the first comment created
-  endingLineNum: number;
+  lineNum?: number;
   onEditorSubmit: (T: EditorSubmitProps) => void;
   questionId: string;
   view: "code-view" | "repo-view";

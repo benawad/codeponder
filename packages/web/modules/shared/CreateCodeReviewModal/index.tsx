@@ -1,15 +1,15 @@
+import { Icon, Input, MyButton } from "@codeponder/ui";
+import { get } from "lodash";
 import * as React from "react";
 import Modal from "react-modal";
-import { Input, MyButton, Icon } from "@codeponder/ui";
 import { Heading } from "rebass";
+import { FindOrCreateCodeReviewPostComponent } from "../../../generated/apollo-components";
+import { GetViewerReposEdges } from "../../../generated/github-apollo-components";
+import { findCodeReviewPostQuery } from "../../../graphql/code-review-post/queries/findCodeReviewPost";
+import { Router } from "../../../server/routes";
+import { removeDuplicates } from "../../../utils/removeDuplicates";
+import { useInputValue } from "../../../utils/useInputValue";
 import { RepoAutoComplete } from "./RepoAutoComplete";
-import { FindOrCreateCodeReviewPostComponent } from "./apollo-components";
-import { get } from "lodash";
-import { useInputValue } from "../utils/useInputValue";
-import { removeDuplicates } from "../utils/removeDuplicates";
-import { GetViewerReposEdges } from "./github-apollo-components";
-import { Router } from "../server/routes";
-import { findCodeReviewPostQuery } from "../graphql/code-review-post/queries/findCodeReviewPost";
 
 const customStyles = {
   content: {

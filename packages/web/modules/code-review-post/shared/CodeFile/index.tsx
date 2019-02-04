@@ -1,14 +1,17 @@
 import { CodeCard, css } from "@codeponder/ui";
 import { useContext, useEffect, useState } from "react";
-import { CommentProps, QuestionInfo } from "../types/questionReplyTypes";
-import { getHighlightedCode } from "../utils/highlightCode";
 import {
   CodeReviewQuestionInfoFragment,
   FindCodeReviewQuestionsComponent,
   QuestionReplyInfoFragment,
-} from "./apollo-components";
+} from "../../../../generated/apollo-components";
+import {
+  CommentProps,
+  QuestionInfo,
+} from "../../../../types/questionReplyTypes";
+import { getHighlightedCode } from "../../../../utils/highlightCode";
+import { PostContext } from ".././PostContext";
 import { RenderLine } from "./CodeLine";
-import { PostContext } from "./PostContext";
 
 interface Comments {
   [key: number]: CommentProps[];
@@ -25,9 +28,9 @@ interface loadingCodeState {
  */
 const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
   const styles = prop.reduce((total, current) => {
-    const { startingLineNum, endingLineNum } = current;
+    const { lineNum } = current;
     total += `
-     & .token-line:nth-child(n+${startingLineNum}):nth-child(-n+${endingLineNum}) {
+     & .token-line:nth-child(n+${lineNum}):nth-child(-n+${lineNum}) {
       background: hsla(24, 20%, 50%,.08);
       background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
     }
@@ -51,47 +54,16 @@ const getCommentsForFile = (
   };
   return prop.reduce((comments: Comments, props) => {
     const { replies, ...question } = props;
-    const key = question.endingLineNum;
-    comments[key] = comments[key] || [];
-    comments[key].push({
-      ...comment(question),
-    });
-    replies.forEach(reply => comments[key].push(comment(reply)));
+    const key = question.lineNum;
+    if (key) {
+      comments[key] = comments[key] || [];
+      comments[key].push({
+        ...comment(question),
+      });
+      replies.forEach(reply => comments[key].push(comment(reply)));
+    }
     return comments;
   }, {});
-};
-
-const setIsHovered = (
-  questions: CodeReviewQuestionInfoFragment[],
-  { target: elm, currentTarget: parent, type }: any
-) => {
-  // let the comment form handle the event
-  if (parent.classList.contains("js-select-line")) {
-    return;
-  }
-  while (elm && elm != parent && !elm.classList.contains("token-line")) {
-    elm = elm.parentNode || null;
-  }
-  if (elm && parent) {
-    let isOverLine =
-      type == "mouseover" && elm.classList.contains("token-line");
-
-    let numberElm = elm.childNodes[0];
-    const currentLine = +numberElm.dataset.lineNumber;
-    // we only allow one question on lines range
-    if (isOverLine && questions.length > 0) {
-      isOverLine = !questions.some(
-        q => currentLine >= q.startingLineNum && currentLine <= q.endingLineNum
-      );
-    }
-
-    parent
-      .querySelectorAll(".is-hovered")
-      .forEach((elm: Element) => elm.classList.remove("is-hovered"));
-    if (isOverLine) {
-      elm.classList.add("is-hovered");
-    }
-  }
 };
 
 const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
@@ -134,14 +106,8 @@ export const CodeFile: React.FC = () => {
         const questions = data.findCodeReviewQuestions;
         const comments = getCommentsForFile(questions, owner);
 
-        const onMouseOverAndOut = setIsHovered.bind(null, questions);
         return (
-          <CodeCard
-            lang={lang}
-            selectedLines={SelectLines(questions)}
-            onMouseOut={onMouseOverAndOut}
-            onMouseOver={onMouseOverAndOut}
-          >
+          <CodeCard lang={lang} selectedLines={SelectLines(questions)}>
             {highlightedCode.map((line, index) => (
               <RenderLine
                 key={index}

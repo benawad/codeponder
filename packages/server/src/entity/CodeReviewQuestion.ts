@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -56,13 +57,13 @@ export class CodeReviewQuestion {
     return userLoader.load(this.creatorId);
   }
 
+  @Field(() => CodeReviewPost)
+  @ManyToOne(() => CodeReviewPost, crp => crp.questions)
+  @JoinColumn({ name: "postId" })
+  post: Promise<User>;
   @Field()
   @Column("uuid")
   postId: string;
-
-  @Field(() => CodeReviewPost)
-  @ManyToOne(() => CodeReviewPost, crp => crp.questions)
-  post: Promise<User>;
 
   @Field(() => [QuestionReply])
   @OneToMany(() => QuestionReply, qr => qr.question)

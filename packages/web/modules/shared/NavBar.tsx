@@ -1,13 +1,15 @@
-import * as React from "react";
-import { Link, Flex } from "rebass";
-import NextLink from "next/link";
-import get from "lodash.get";
 import { Avatar, GitHubButton } from "@codeponder/ui";
+import { Dropdown, Menu } from "antd";
+import get from "lodash.get";
+import NextLink from "next/link";
+import * as React from "react";
+import { Flex, Link } from "rebass";
 import styled from "styled-components";
-import { Menu, Dropdown } from "antd";
 import Logo from "../../../assets/logo/logo2.png";
-
-import { MeComponent, LogoutComponent } from "./apollo-components";
+import {
+  LogoutComponent,
+  MeComponent,
+} from "../../generated/apollo-components";
 import { CreateCodeReviewModal } from "./CreateCodeReviewModal";
 
 const Container = styled(Flex)`

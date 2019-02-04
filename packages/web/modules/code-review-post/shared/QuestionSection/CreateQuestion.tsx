@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { EditorSubmitProps } from "../types/questionReplyTypes";
-import { CreateCodeReviewQuestionComponent } from "./apollo-components";
+import { CreateCodeReviewQuestionComponent } from "../../../../generated/apollo-components";
+import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
+import { PostContext } from "../PostContext";
 import { TextEditor, TextEditorResult } from "./CommentForm";
-import { PostContext } from "./PostContext";
 
 export interface CreateQuestionProps {
   onEditorSubmit: (T: EditorSubmitProps) => void;

@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -22,19 +23,18 @@ export class QuestionReply {
   @Column({ type: "text" })
   text: string;
 
+  @ManyToOne(() => CodeReviewQuestion, crq => crq.replies)
+  question: Promise<CodeReviewQuestion>;
   @Field()
   @Column("uuid")
   questionId: string;
 
-  @ManyToOne(() => CodeReviewQuestion, crq => crq.replies)
-  question: Promise<CodeReviewQuestion>;
-
+  @ManyToOne(() => User, user => user.questionReply)
+  @JoinColumn({ name: "creatorId" })
+  creatorConnection: Promise<User>;
   @Field()
   @Column("uuid")
   creatorId: string;
-
-  @ManyToOne(() => User, user => user.questionReply)
-  creatorConnection: Promise<User>;
 
   @Field(() => User)
   creator(@Ctx() { userLoader }: MyContext): Promise<User> {

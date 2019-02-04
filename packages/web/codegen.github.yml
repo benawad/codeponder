@@ -2,7 +2,7 @@ schema: github-schema2.json
 documents: ./graphql/**/*.github.{ts,tsx}
 overwrite: true
 generates:
-  ./components/github-apollo-components.tsx:
+  ./generated/github-apollo-components.tsx:
     config:
       noNamespaces: true
     plugins:

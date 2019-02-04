@@ -1,6 +1,9 @@
 import { CommentCard, styled } from "@codeponder/ui";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CommentProps, QuestionProps } from "../types/questionReplyTypes";
+import {
+  CommentProps,
+  QuestionProps,
+} from "../../../../types/questionReplyTypes";
 
 interface CodeDiscussionViewProps {
   comments: CommentProps[];
@@ -40,14 +43,6 @@ const DiscussionContainer = styled.div`
 
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
-
-const lineNumbers = (comment: QuestionProps) => {
-  const { startingLineNum, endingLineNum } = comment;
-  if (startingLineNum == endingLineNum) {
-    return `Line ${startingLineNum}`;
-  }
-  return `Lines ${startingLineNum} - ${endingLineNum}`;
-};
 
 export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   comments,
@@ -125,14 +120,11 @@ export const Discussion: React.FC<DiscussionProps> = ({
   showEditor,
   animate,
 }) => {
-  useEffect(
-    () => {
-      if (animate) {
-        discussionRef.current!.classList.add("is-open");
-      }
-    },
-    [showEditor]
-  );
+  useEffect(() => {
+    if (animate) {
+      discussionRef.current!.classList.add("is-open");
+    }
+  }, [showEditor]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -152,7 +144,7 @@ export const Discussion: React.FC<DiscussionProps> = ({
           <span className="header-sub-title">#???</span>
         </h2>
         <span className="header-sub-title">
-          {lineNumbers(comments[0] as QuestionProps)}
+          {(comments[0] as QuestionProps).lineNum}
         </span>
       </DiscussionNavBar>
       {comments.map((comment, key) => {
