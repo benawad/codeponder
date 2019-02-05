@@ -10,6 +10,7 @@ import {
   GetRepoObjectTreeInlineFragment,
 } from "../../../generated/github-apollo-components";
 import { getCodeReviewPostByIdQuery } from "../../../graphql/code-review-post/queries/getCodeReviewPostById";
+import redirect from "../../../lib/redirect";
 import { Link } from "../../../server/routes";
 import { NextContextWithApollo } from "../../../types/NextContextWithApollo";
 import { filenameToLang } from "../../../utils/filenameToLang";
@@ -34,6 +35,7 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
     query: { id, path },
     githubApolloClient,
     apolloClient,
+    ...ctx
   }: NextContextWithApollo) {
     const response = await apolloClient.query<GetCodeReviewPostByIdQuery>({
       query: getCodeReviewPostByIdQuery,
@@ -44,13 +46,18 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
 
     const { getCodeReviewPostById } = response.data;
 
-    const expression = `${getCodeReviewPostById!.commitId}:${path || ""}`;
+    if (!getCodeReviewPostById) {
+      redirect(ctx, "/not-found");
+      return {};
+    }
+
+    const expression = `${getCodeReviewPostById.commitId}:${path || ""}`;
 
     await githubApolloClient.query({
       query: GetRepoObjectDocument,
       variables: {
-        name: getCodeReviewPostById!.repo,
-        owner: getCodeReviewPostById!.repoOwner,
+        name: getCodeReviewPostById.repo,
+        owner: getCodeReviewPostById.repoOwner,
         expression,
       },
     });
@@ -59,9 +66,9 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
       id,
       path,
       expression,
-      name: getCodeReviewPostById!.repo,
-      owner: getCodeReviewPostById!.repoOwner,
-      topics: getCodeReviewPostById!.topics,
+      name: getCodeReviewPostById.repo,
+      owner: getCodeReviewPostById.repoOwner,
+      topics: getCodeReviewPostById.topics,
     };
   }
 
