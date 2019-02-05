@@ -144,7 +144,7 @@ const startServer = async () => {
         req.session.accessToken = req.user.accessToken;
         req.session.refreshToken = req.user.refreshToken;
       }
-      res.redirect("http://localhost:3000/pick-repo");
+      res.redirect("http://localhost:3000/");
     }
   );
 
