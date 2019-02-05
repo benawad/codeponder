@@ -1,12 +1,11 @@
-import { Avatar, GitHubButton } from "@codeponder/ui";
-import { Dropdown, Menu } from "antd";
+import { Avatar, GitHubButton, Icon, Menu } from "@codeponder/ui";
 import get from "lodash.get";
 import NextLink from "next/link";
 import * as React from "react";
 import { Flex, Link } from "rebass";
 import styled from "styled-components";
 import Logo from "../../../../assets/logo/logo2.png";
-import { LogoutComponent, MeComponent } from "../../generated/apollo-components";
+import { MeComponent } from "../../generated/apollo-components";
 import { CreateCodeReviewModal } from "./CreateCodeReviewModal";
 
 const Container = styled(Flex)`
@@ -41,31 +40,17 @@ export const NavBar = () => {
             return (
               <Flex alignItems="center">
                 <CreateCodeReviewModal />
-                <LogoutComponent>
-                  {(mutate, { client }) => (
-                    <Dropdown
-                      placement="bottomRight"
-                      overlay={
-                        <Menu>
-                          <Menu.Item
-                            onClick={async () => {
-                              await mutate();
-                              await client.resetStore();
-                            }}
-                          >
-                            logout
-                          </Menu.Item>
-                        </Menu>
-                      }
-                    >
-                      <Avatar
-                        size={32}
-                        src={data!.me!.pictureUrl}
-                        alt="avatar"
-                      />
-                    </Dropdown>
+                <Menu
+                  options={["logout"]}
+                  renderOption={({ Anchor }) => (
+                    <NextLink href="/logout">{Anchor}</NextLink>
                   )}
-                </LogoutComponent>
+                >
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Avatar size={32} src={data!.me!.pictureUrl} alt="avatar" />
+                    <Icon fill="#333" name="downArrow" />
+                  </div>
+                </Menu>
               </Flex>
             );
           }

@@ -1,7 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import FolderIcon from "@material-ui/icons/Folder";
-import FileIcon from "@material-ui/icons/InsertDriveFile";
+import { Icon } from "../Icon";
 
 interface TreeItem {
   name: string;
@@ -31,12 +30,13 @@ const A = styled.a`
 `;
 
 const iconProps = {
-  style: {
-    color: "#78909C",
-    height: "1.6rem",
-    width: "1.6rem",
-  },
-  fontSize: "small" as "small",
+  fill: "#78909C",
+  // style: {
+  //   color: "#78909C",
+  //   height: "1.6rem",
+  //   width: "1.6rem",
+  // },
+  // fontSize: "small" as "small",
 };
 
 export const FolderTree: React.FunctionComponent<Props> = ({
@@ -59,9 +59,9 @@ export const FolderTree: React.FunctionComponent<Props> = ({
           }}
         >
           {item.type === "tree" ? (
-            <FolderIcon {...iconProps} />
+            <Icon {...iconProps} name="folder" />
           ) : (
-            <FileIcon {...iconProps} />
+            <Icon {...iconProps} name="file" />
           )}
 
           <Link {...getLinkProps(item.name)}>
