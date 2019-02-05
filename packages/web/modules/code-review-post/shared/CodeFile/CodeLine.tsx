@@ -45,7 +45,7 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
         {showEditor && (
           <AddComment
             comments={commentsForRow}
-            line={lineNum}
+            lineNum={lineNum}
             setComments={setCommentsForRow}
             setShowEditor={setShowEditor}
             view="code-view"
