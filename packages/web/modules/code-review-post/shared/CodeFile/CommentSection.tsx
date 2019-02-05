@@ -11,7 +11,7 @@ import { CreateQuestion } from "../QuestionSection/CreateQuestion";
 
 interface AddCommentProps {
   comments: CommentProps[];
-  line: number;
+  lineNum: number;
   setComments: React.Dispatch<React.SetStateAction<CommentProps[]>>;
   setShowEditor: React.Dispatch<React.SetStateAction<boolean>>;
   view: "code-view" | "repo-view";
@@ -33,7 +33,7 @@ const preventScroll = (ref: React.MutableRefObject<() => void>) => {
 
 export const AddComment: React.SFC<AddCommentProps> = ({
   comments,
-  line,
+  lineNum,
   setComments,
   setShowEditor,
   view,
@@ -69,17 +69,13 @@ export const AddComment: React.SFC<AddCommentProps> = ({
 
   const commentProps = {
     isReply,
-    lineNum: line,
+    lineNum,
     onEditorSubmit,
     view,
   };
 
   return isReply ? (
-    <CreateQuestionReply
-      {...commentProps}
-      lineNum={question!.lineNum || undefined}
-      questionId={question!.id}
-    />
+    <CreateQuestionReply {...commentProps} questionId={question!.id} />
   ) : (
     <CreateQuestion {...commentProps} />
   );
