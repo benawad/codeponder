@@ -41,7 +41,7 @@
     "@types/react-modal": "3.8.0",
     "@types/rebass": "0.3.4",
     "@types/storybook__addon-actions": "3.4.1",
-    "@types/storybook__addon-info": "3.4.2",
+    "@types/storybook__addon-info": "3.4.3",
     "@types/storybook__addon-links": "3.3.3",
     "@types/storybook__react": "4.0.0",
     "@types/styled-components": "4.1.6",
