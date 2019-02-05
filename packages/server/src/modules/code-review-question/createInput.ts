@@ -8,6 +8,9 @@ export class CreateCodeReviewQuestionInput
   lineNum?: number;
 
   @Field()
+  title: string;
+
+  @Field()
   text: string;
 
   @Field()

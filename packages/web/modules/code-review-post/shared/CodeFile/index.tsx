@@ -136,7 +136,6 @@ export const CodeFile: React.FC = () => {
         const highlightedCode = highlightCode.resolved!;
         const questions = data.findCodeReviewQuestions;
         const comments = getCommentsForFile(questions, owner);
-
         const onMouseOverAndOut = setIsHovered.bind(null, questions);
 
         return (

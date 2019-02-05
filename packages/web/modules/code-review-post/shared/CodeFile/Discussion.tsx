@@ -140,8 +140,9 @@ export const Discussion: React.FC<DiscussionProps> = ({
     >
       <DiscussionNavBar>
         <h2 className="header-title">
-          <span className="discussion-title">Title placeholder</span>{" "}
-          <span className="header-sub-title">#???</span>
+          <span className="discussion-title">
+            {(comments[0] as QuestionProps).title}
+          </span>
         </h2>
         <span className="header-sub-title">
           {(comments[0] as QuestionProps).lineNum}

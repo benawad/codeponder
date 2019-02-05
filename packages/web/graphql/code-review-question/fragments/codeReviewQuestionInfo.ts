@@ -6,6 +6,7 @@ export const codeReviewQuestionInfoFragment = gql`
   fragment CodeReviewQuestionInfo on CodeReviewQuestion {
     id
     lineNum
+    title
     text
     programmingLanguage
     codeSnippet

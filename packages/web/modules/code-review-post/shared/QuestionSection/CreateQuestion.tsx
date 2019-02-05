@@ -23,6 +23,7 @@ export const CreateQuestion = ({
           cancel,
           lineNum,
           text,
+          title,
         }: TextEditorResult) => {
           if (!cancel) {
             // save result
@@ -41,7 +42,7 @@ export const CreateQuestion = ({
                           )
                           .join("\n"),
                   text,
-                  /* TODO add title to code_review_question */
+                  title,
                   path,
                   postId,
                   programmingLanguage: lang,

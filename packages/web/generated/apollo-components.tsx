@@ -25,6 +25,8 @@ export interface CreateCodeReviewPostInput {
 export interface CreateCodeReviewQuestionInput {
   lineNum?: Maybe<number>;
 
+  title: string;
+
   text: string;
 
   postId: string;
@@ -230,6 +232,8 @@ export type CodeReviewQuestionInfoFragment = {
 
   lineNum: Maybe<number>;
 
+  title: string;
+
   text: string;
 
   programmingLanguage: Maybe<string>;
@@ -333,6 +337,7 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
   fragment CodeReviewQuestionInfo on CodeReviewQuestion {
     id
     lineNum
+    title
     text
     programmingLanguage
     codeSnippet

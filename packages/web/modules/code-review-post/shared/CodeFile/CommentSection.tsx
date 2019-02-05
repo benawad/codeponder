@@ -69,7 +69,7 @@ export const AddComment: React.SFC<AddCommentProps> = ({
 
   const commentProps = {
     isReply,
-    endingLineNum: line,
+    lineNum: line,
     onEditorSubmit,
     view,
   };
