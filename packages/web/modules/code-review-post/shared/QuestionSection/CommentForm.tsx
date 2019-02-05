@@ -222,9 +222,11 @@ export const TextEditor = (props: TextEditorProps) => {
       </FormRow>
       <Separator />
       <div className="btn-box">
-        <MyButton variant="form" className="btn" onClick={onCancel}>
-          {view == "repo-view" ? "Clear" : "Cancel"}
-        </MyButton>
+        {view === "code-view" && (
+          <MyButton variant="form" className="btn" onClick={onCancel}>
+            Cancel
+          </MyButton>
+        )}
         <MyButton
           variant="form"
           disabled={!isValidForm}
