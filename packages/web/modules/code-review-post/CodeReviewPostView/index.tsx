@@ -19,6 +19,7 @@ import { Layout } from "../../shared/Layout";
 import { CodeFile } from "../shared/CodeFile";
 import { ContextProps, PostContext } from "../shared/PostContext";
 import { QuestionSection } from "../shared/QuestionSection";
+import { FilePath } from "./FilePath";
 
 interface Props {
   id: string;
@@ -72,38 +73,6 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
     };
   }
 
-  renderFilePath = (name: string, path?: string) => {
-    if (!path) {
-      return null;
-    }
-
-    const parts = [name, ...path.split("/")];
-    const currentPath: string[] = [];
-
-    return parts.map((part, idx) => {
-      if (idx) {
-        currentPath.push(part);
-      }
-
-      return idx === parts.length - 1 ? (
-        <span key={part + idx}>{part}</span>
-      ) : (
-        <React.Fragment key={part + idx}>
-          <Link
-            route="post"
-            params={{
-              id: this.props.id,
-              path: [...currentPath] as any,
-            }}
-          >
-            <a>{part}</a>
-          </Link>
-          /
-        </React.Fragment>
-      );
-    });
-  };
-
   render() {
     const { owner, path, name, expression, id, topics } = this.props;
     const context: ContextProps = {
@@ -151,7 +120,7 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
                 context.totalLines = (object.text || "").split("\n").length;
                 return (
                   <>
-                    {this.renderFilePath(name, path)}
+                    <FilePath id={id} name={name} path={path} />
                     <PostContext.Provider value={context}>
                       <CodeFile />
                     </PostContext.Provider>
@@ -165,7 +134,7 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
                     .entries || [];
                 return (
                   <>
-                    {this.renderFilePath(name, path)}
+                    <FilePath id={id} name={name} path={path} />
                     <FolderTree
                       items={orderBy(
                         entries,
