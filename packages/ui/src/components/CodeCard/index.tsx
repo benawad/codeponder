@@ -1,9 +1,9 @@
+import "prismjs/themes/prism-coy.css";
 import * as React from "react";
 import styled, {
-  SimpleInterpolation,
   FlattenSimpleInterpolation,
+  SimpleInterpolation,
 } from "styled-components";
-import "prismjs/themes/prism-coy.css";
 
 interface Props extends React.HTMLAttributes<HTMLPreElement> {
   fontSize?: number;

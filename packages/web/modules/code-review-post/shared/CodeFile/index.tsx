@@ -66,6 +66,37 @@ const getCommentsForFile = (
   }, {});
 };
 
+const setIsHovered = (
+  questions: CodeReviewQuestionInfoFragment[],
+  { target: elm, currentTarget: parent, type }: any
+) => {
+  // let the comment form handle the event
+  if (parent.classList.contains("js-select-line")) {
+    return;
+  }
+  while (elm && elm != parent && !elm.classList.contains("token-line")) {
+    elm = elm.parentNode || null;
+  }
+  if (elm && parent) {
+    let isOverLine =
+      type == "mouseover" && elm.classList.contains("token-line");
+
+    let numberElm = elm.childNodes[0];
+    const currentLine = +numberElm.dataset.lineNumber;
+    // we only allow one question on lines range
+    if (isOverLine && questions.length > 0) {
+      isOverLine = !questions.some(q => currentLine === q.lineNum);
+    }
+
+    parent
+      .querySelectorAll(".is-hovered")
+      .forEach((elm: Element) => elm.classList.remove("is-hovered"));
+    if (isOverLine) {
+      elm.classList.add("is-hovered");
+    }
+  }
+};
+
 const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
 
 const useHighlight = (lang: string, code: string) => {
@@ -106,8 +137,15 @@ export const CodeFile: React.FC = () => {
         const questions = data.findCodeReviewQuestions;
         const comments = getCommentsForFile(questions, owner);
 
+        const onMouseOverAndOut = setIsHovered.bind(null, questions);
+
         return (
-          <CodeCard lang={lang} selectedLines={SelectLines(questions)}>
+          <CodeCard
+            lang={lang}
+            selectedLines={SelectLines(questions)}
+            onMouseOut={onMouseOverAndOut}
+            onMouseOver={onMouseOverAndOut}
+          >
             {highlightedCode.map((line, index) => (
               <RenderLine
                 key={index}
