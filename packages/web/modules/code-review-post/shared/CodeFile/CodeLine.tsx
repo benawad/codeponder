@@ -19,7 +19,11 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
           className="token-html"
           data-line-number={lineNum}
           dangerouslySetInnerHTML={{ __html: line }}
-          onClick={() => setShowEditor(true)}
+          onClick={e => {
+            if ((e.target as any).classList.contains("btn-open-edit")) {
+              setShowEditor(true);
+            }
+          }}
         />
         {comments.length > 0 && (
           <CodeDiscussionView
