@@ -17,7 +17,7 @@ interface Comments {
   [key: number]: CommentProps[];
 }
 
-interface loadingCodeState {
+interface LoadingCodeState {
   pending: boolean;
   resolved?: string[];
 }
@@ -26,7 +26,7 @@ interface loadingCodeState {
  * *Styles for the line numbers coming from the server
  *
  */
-const SelectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
+const selectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
   const styles = prop.reduce((total, current) => {
     const { lineNum } = current;
     total += `
@@ -66,41 +66,10 @@ const getCommentsForFile = (
   }, {});
 };
 
-const setIsHovered = (
-  questions: CodeReviewQuestionInfoFragment[],
-  { target: elm, currentTarget: parent, type }: any
-) => {
-  // let the comment form handle the event
-  if (parent.classList.contains("js-select-line")) {
-    return;
-  }
-  while (elm && elm != parent && !elm.classList.contains("token-line")) {
-    elm = elm.parentNode || null;
-  }
-  if (elm && parent) {
-    let isOverLine =
-      type == "mouseover" && elm.classList.contains("token-line");
-
-    let numberElm = elm.childNodes[0];
-    const currentLine = +numberElm.dataset.lineNumber;
-    // we only allow one question on lines range
-    if (isOverLine && questions.length > 0) {
-      isOverLine = !questions.some(q => currentLine === q.lineNum);
-    }
-
-    parent
-      .querySelectorAll(".is-hovered")
-      .forEach((elm: Element) => elm.classList.remove("is-hovered"));
-    if (isOverLine) {
-      elm.classList.add("is-hovered");
-    }
-  }
-};
-
 const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
 
 const useHighlight = (lang: string, code: string) => {
-  const [highlightCode, setHighlightCode] = useState<loadingCodeState>({
+  const [highlightCode, setHighlightCode] = useState<LoadingCodeState>({
     pending: true,
   });
 
@@ -121,38 +90,38 @@ const useHighlight = (lang: string, code: string) => {
 export const CodeFile: React.FC = () => {
   const { code, lang, owner, path, postId } = useContext(PostContext);
   const highlightCode = useHighlight(lang, code || "");
-  const variables = {
-    path,
-    postId,
-  };
 
   return (
-    <FindCodeReviewQuestionsComponent variables={variables}>
+    <FindCodeReviewQuestionsComponent
+      variables={{
+        path,
+        postId,
+      }}
+    >
       {({ data, loading }) => {
         if (!data || loading || highlightCode.pending) {
           return null;
         }
 
-        const highlightedCode = highlightCode.resolved!;
-        const questions = data.findCodeReviewQuestions;
-        const comments = getCommentsForFile(questions, owner);
-        const onMouseOverAndOut = setIsHovered.bind(null, questions);
-
+        const comments = getCommentsForFile(
+          data.findCodeReviewQuestions,
+          owner
+        );
         return (
           <CodeCard
             lang={lang}
-            selectedLines={SelectLines(questions)}
-            onMouseOut={onMouseOverAndOut}
-            onMouseOver={onMouseOverAndOut}
+            selectedLines={selectLines(data.findCodeReviewQuestions)}
           >
-            {highlightedCode.map((line, index) => (
-              <RenderLine
-                key={index}
-                comments={comments[index + 1]}
-                line={line}
-                lineNum={index + 1}
-              />
-            ))}
+            {highlightCode.resolved!.map((line, index) => {
+              return (
+                <RenderLine
+                  key={index}
+                  comments={comments[index + 1] || []}
+                  line={line}
+                  lineNum={index + 1}
+                />
+              );
+            })}
           </CodeCard>
         );
       }}

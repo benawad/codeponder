@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { CreateCodeReviewQuestionComponent } from "../../../../generated/apollo-components";
+import {
+  CreateCodeReviewQuestionComponent,
+  FindCodeReviewQuestionsQuery,
+  FindCodeReviewQuestionsVariables,
+} from "../../../../generated/apollo-components";
+import { findCodeReviewQuestionsQuery } from "../../../../graphql/code-review-question/query/findCodeReviewQuestions";
 import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
 import { PostContext } from "../PostContext";
 import { TextEditor, TextEditorResult } from "./CommentForm";
@@ -47,6 +52,40 @@ export const CreateQuestion = ({
                   postId,
                   programmingLanguage: lang,
                 },
+              },
+              update: (cache, { data }) => {
+                if (!data) {
+                  return;
+                }
+
+                const x = cache.readQuery<
+                  FindCodeReviewQuestionsQuery,
+                  FindCodeReviewQuestionsVariables
+                >({
+                  query: findCodeReviewQuestionsQuery,
+                  variables: {
+                    postId,
+                    path,
+                  },
+                });
+
+                cache.writeQuery<
+                  FindCodeReviewQuestionsQuery,
+                  FindCodeReviewQuestionsVariables
+                >({
+                  query: findCodeReviewQuestionsQuery,
+                  variables: {
+                    postId,
+                    path,
+                  },
+                  data: {
+                    __typename: "Query",
+                    findCodeReviewQuestions: [
+                      ...x!.findCodeReviewQuestions,
+                      data.createCodeReviewQuestion.codeReviewQuestion,
+                    ],
+                  },
+                });
               },
             });
 

@@ -1,7 +1,12 @@
+import { useContext } from "react";
 import {
   CreateQuestionReplyComponent,
+  FindCodeReviewQuestionsQuery,
+  FindCodeReviewQuestionsVariables,
   QuestionReplyInfoFragment,
 } from "../../../generated/apollo-components";
+import { findCodeReviewQuestionsQuery } from "../../../graphql/code-review-question/query/findCodeReviewQuestions";
+import { PostContext } from "./PostContext";
 import { TextEditor, TextEditorResult } from "./QuestionSection/CommentForm";
 
 interface EditorSubmitProps {
@@ -21,33 +26,76 @@ export const CreateQuestionReply = ({
   questionId,
   onEditorSubmit,
   ...props
-}: QuestionReplyProps) => (
-  <CreateQuestionReplyComponent>
-    {mutate => {
-      const submitForm = async ({ cancel, text }: TextEditorResult) => {
-        if (!cancel) {
-          // save result
-          const response = await mutate({
-            variables: {
-              questionReply: {
-                questionId,
-                text,
+}: QuestionReplyProps) => {
+  const { postId, path } = useContext(PostContext);
+
+  return (
+    <CreateQuestionReplyComponent>
+      {mutate => {
+        const submitForm = async ({ cancel, text }: TextEditorResult) => {
+          if (!cancel) {
+            // save result
+            const response = await mutate({
+              variables: {
+                questionReply: {
+                  questionId,
+                  text,
+                },
               },
-            },
-          });
+              update: (cache, { data }) => {
+                if (!data) {
+                  return;
+                }
 
-          console.log(response);
+                const x = cache.readQuery<
+                  FindCodeReviewQuestionsQuery,
+                  FindCodeReviewQuestionsVariables
+                >({
+                  query: findCodeReviewQuestionsQuery,
+                  variables: {
+                    postId,
+                    path,
+                  },
+                });
 
-          onEditorSubmit({
-            submitted: true,
-            response:
-              response && response.data!.createQuestionReply.questionReply,
-          });
-        } else {
-          onEditorSubmit({ submitted: false });
-        }
-      };
-      return <TextEditor {...props} submitForm={submitForm} />;
-    }}
-  </CreateQuestionReplyComponent>
-);
+                cache.writeQuery<
+                  FindCodeReviewQuestionsQuery,
+                  FindCodeReviewQuestionsVariables
+                >({
+                  query: findCodeReviewQuestionsQuery,
+                  variables: {
+                    postId,
+                    path,
+                  },
+                  data: {
+                    __typename: "Query",
+                    findCodeReviewQuestions: x!.findCodeReviewQuestions.map(q =>
+                      q.id === questionId
+                        ? {
+                            ...q,
+                            replies: [
+                              ...q.replies,
+                              data.createQuestionReply.questionReply,
+                            ],
+                          }
+                        : q
+                    ),
+                  },
+                });
+              },
+            });
+
+            onEditorSubmit({
+              submitted: true,
+              response:
+                response && response.data!.createQuestionReply.questionReply,
+            });
+          } else {
+            onEditorSubmit({ submitted: false });
+          }
+        };
+        return <TextEditor {...props} submitForm={submitForm} />;
+      }}
+    </CreateQuestionReplyComponent>
+  );
+};

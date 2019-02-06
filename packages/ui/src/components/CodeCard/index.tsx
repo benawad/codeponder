@@ -97,13 +97,10 @@ const Pre = styled.pre`
   }
 
   &:not(.js-select-line) {
-    & .token-line:not([class*="is-selected"]).is-hovered {
-      & .btn-open-edit {
+    & .token-line:not([class*="is-selected"]) {
+      & .btn-open-edit:hover {
         opacity: 1;
         cursor: pointer;
-      }
-
-      & .btn-open-edit:hover {
         transform: scale(1);
       }
     }
