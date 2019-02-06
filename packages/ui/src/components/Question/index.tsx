@@ -1,7 +1,6 @@
+import { distanceInWordsStrict } from "date-fns";
 import * as React from "react";
 import { Card, Flex, Text } from "rebass";
-import { distanceInWordsStrict } from "date-fns";
-
 import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Icon } from "../Icon";
@@ -147,7 +146,7 @@ const BaseCommentCard = ({
             </Flex>
           </Flex>
         </Flex>
-        {variant == "outline" && (
+        {variant === "outline" && (
           <MyButton
             variant="form"
             className="btn-reply"

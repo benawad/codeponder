@@ -1,16 +1,16 @@
 import { memo, useState } from "react";
-import { CommentProps } from "../../../../types/questionReplyTypes";
+import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
 import { AddComment } from "./CommentSection";
 import { CodeDiscussionView } from "./Discussion";
 
 interface RenderLineProps {
-  comments: CommentProps[];
+  question?: CodeReviewQuestionInfoFragment;
   line: string;
   lineNum: number;
 }
 
 export const RenderLine: React.FC<RenderLineProps> = memo(
-  ({ comments, line, lineNum }) => {
+  ({ question, line, lineNum }) => {
     const [showEditor, setShowEditor] = useState(false);
 
     return (
@@ -25,16 +25,16 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
             }
           }}
         />
-        {comments.length > 0 && (
+        {question && (
           <CodeDiscussionView
-            comments={comments}
-            onOpenEditor={() => !showEditor && setShowEditor(true)}
+            question={question}
+            toggleEditor={() => setShowEditor(!showEditor)}
             showEditor={showEditor}
           />
         )}
         {showEditor && (
           <AddComment
-            comments={comments}
+            question={question}
             lineNum={lineNum}
             setShowEditor={setShowEditor}
             view="code-view"

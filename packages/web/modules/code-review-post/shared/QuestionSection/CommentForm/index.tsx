@@ -1,90 +1,8 @@
-import { BlueInput, MyButton, styled } from "@codeponder/ui";
+import { MyButton } from "@codeponder/ui";
 import React, { useCallback, useEffect, useRef } from "react";
-import { DebounceInput } from "react-debounce-input";
-import { scrollToView } from "../../../../utils/domScrollUtils";
-import { useInputValue } from "../../../../utils/useInputValue";
-
-interface FormInputProps {
-  minHeight?: string;
-  width?: string;
-}
-
-const FormInput = styled(BlueInput)`
-  background: #f2f2f2;
-  border: 1px solid transparent;
-  font-size: 1em;
-  min-height: ${(p: FormInputProps) => p.minHeight};
-  padding: 0.6rem 1rem;
-  width: ${(p: FormInputProps) => p.width || "100%"};
-
-  &:focus {
-    border: 1px solid #2188ff;
-    box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075),
-      0 0 0 0.2em rgba(3, 102, 214, 0.3);
-  }
-
-  /* hide spinners on number input field
-  &[type="number"]::-webkit-inner-spin-button,
-  &[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-  */
-`;
-
-const FormRow = styled.div`
-  padding: 1rem 0.9rem;
-`;
-
-const Separator = styled.div`
-  width: 100%
-  height: 1;
-  background: #f2f2f2;
-`;
-
-const FormContainer = styled.div`
-  background-color: #ffffff;
-  border-top: ${(p: { isReply: boolean; view: string }) =>
-    p.isReply ? "none" : "1px solid #d1d5da"};
-  border-bottom: ${p => (p.view == "repo-view" ? "none" : "1px solid #d1d5da")};
-  display: flex;
-  flex-direction: column;
-  padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0 0.9rem")};
-
-  &.is-open {
-    padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
-  }
-
-  & .btn-box {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0.8em 0.4em;
-    & button {
-      min-width: 6em;
-    }
-  }
-
-  /* Tooltip text */
-  .start-tooltip + .tooltiptext {
-    border-radius: 3px;
-    background-color: #f4f6dd;
-    font-size: 1em;
-    padding: 0.6rem 1rem;
-    position: absolute;
-    left: 15em;
-    text-align: center;
-    visibility: hidden;
-    z-index: 1;
-  }
-
-  .start-tooltip:focus + .tooltiptext {
-    visibility: visible;
-  }
-`;
+import { scrollToView } from "../../../../../utils/domScrollUtils";
+import { useInputValue } from "../../../../../utils/useInputValue";
+import { FormContainer, FormInput, FormRow, Separator } from "./components";
 
 export interface TextEditorProps {
   isReply: boolean;
@@ -122,11 +40,10 @@ const highlightSelectedLines = (
     );
 };
 
-export const TextEditor = (props: TextEditorProps) => {
+export const CommentForm = (props: TextEditorProps) => {
   const { isReply, lineNum, submitForm, view } = props;
 
   const formRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const [title, titleChange] = useInputValue("");
   const [text, textChange] = useInputValue("");
 
@@ -142,17 +59,10 @@ export const TextEditor = (props: TextEditorProps) => {
     }
   }, []);
 
-  // focus title / textarea
-  useEffect(() => {
-    if (view == "code-view" && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
   // make sure the editor is fully visible
   useEffect(() => {
     formRef.current!.classList.add("is-open");
-    if (view == "code-view" && formRef.current) {
+    if (view === "code-view" && formRef.current) {
       scrollToView(formRef.current, 200);
     }
   }, []);
@@ -164,17 +74,14 @@ export const TextEditor = (props: TextEditorProps) => {
   }, []);
 
   // close editor with Esc if user did not start editing
-  const onKeyDown = useCallback(
-    ({ keyCode }: any) => {
-      if (keyCode == 27 && !titleTrimmed && !textTrimmed) {
-        onCancel();
-      }
-    },
-    [titleTrimmed, textTrimmed]
-  );
+  const onKeyDown = useCallback(({ keyCode }: any) => {
+    if (keyCode === 27 && !titleTrimmed && !textTrimmed) {
+      onCancel();
+    }
+  }, [titleTrimmed, textTrimmed]);
 
   const onCancel = useCallback(() => {
-    if (view == "repo-view") {
+    if (view === "repo-view") {
       clearForm();
     } else {
       if (lineNum) {
@@ -191,27 +98,23 @@ export const TextEditor = (props: TextEditorProps) => {
       onKeyDown={onKeyDown}
       isReply={isReply}
       view={view}
-      className={`${view == "code-view" ? "inner-animate-box" : ""}`}
+      className={`${view === "code-view" ? "inner-animate-box" : ""}`}
     >
       {// show title only for question
       !isReply && (
         <FormRow>
-          <DebounceInput
-            inputRef={inputRef}
-            element={FormInput}
-            debounceTimeout={300}
+          <FormInput
             placeholder="Title"
             name="title"
             value={title}
             onChange={titleChange}
+            autoFocus={!isReply}
           />
         </FormRow>
       )}
       <FormRow>
-        <DebounceInput
-          element={FormInput}
-          debounceTimeout={300}
-          inputRef={isReply ? inputRef : null}
+        <FormInput
+          autoFocus={isReply}
           minHeight="100px"
           name="question"
           placeholder={isReply ? "Type your Reply" : "Type your Question"}
@@ -240,7 +143,7 @@ export const TextEditor = (props: TextEditorProps) => {
                 title: titleTrimmed,
                 text: textTrimmed,
               });
-              if (view == "repo-view") {
+              if (view === "repo-view") {
                 clearForm();
               }
             }

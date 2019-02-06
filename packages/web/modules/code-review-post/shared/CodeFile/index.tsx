@@ -3,19 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import {
   CodeReviewQuestionInfoFragment,
   FindCodeReviewQuestionsComponent,
-  QuestionReplyInfoFragment,
 } from "../../../../generated/apollo-components";
-import {
-  CommentProps,
-  QuestionInfo,
-} from "../../../../types/questionReplyTypes";
 import { getHighlightedCode } from "../../../../utils/highlightCode";
 import { PostContext } from ".././PostContext";
 import { RenderLine } from "./CodeLine";
-
-interface Comments {
-  [key: number]: CommentProps[];
-}
 
 interface LoadingCodeState {
   pending: boolean;
@@ -43,29 +34,6 @@ const selectLines = (prop: CodeReviewQuestionInfoFragment[]) => {
   `;
 };
 
-const getCommentsForFile = (
-  prop: CodeReviewQuestionInfoFragment[],
-  owner: string
-): Comments => {
-  const comment = (
-    data: QuestionInfo | QuestionReplyInfoFragment
-  ): CommentProps => {
-    return { ...data, isOwner: data.creator.username == owner };
-  };
-  return prop.reduce((comments: Comments, props) => {
-    const { replies, ...question } = props;
-    const key = question.lineNum;
-    if (key) {
-      comments[key] = comments[key] || [];
-      comments[key].push({
-        ...comment(question),
-      });
-      replies.forEach(reply => comments[key].push(comment(reply)));
-    }
-    return comments;
-  }, {});
-};
-
 const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
 
 const useHighlight = (lang: string, code: string) => {
@@ -88,7 +56,7 @@ const useHighlight = (lang: string, code: string) => {
 };
 
 export const CodeFile: React.FC = () => {
-  const { code, lang, owner, path, postId } = useContext(PostContext);
+  const { code, lang, path, postId } = useContext(PostContext);
   const highlightCode = useHighlight(lang, code || "");
 
   return (
@@ -103,10 +71,14 @@ export const CodeFile: React.FC = () => {
           return null;
         }
 
-        const comments = getCommentsForFile(
-          data.findCodeReviewQuestions,
-          owner
-        );
+        const questionMap: Record<string, CodeReviewQuestionInfoFragment> = {};
+
+        data.findCodeReviewQuestions.map(q => {
+          if (q.lineNum) {
+            questionMap[q.lineNum] = q;
+          }
+        });
+
         return (
           <CodeCard
             lang={lang}
@@ -116,7 +88,7 @@ export const CodeFile: React.FC = () => {
               return (
                 <RenderLine
                   key={index}
-                  comments={comments[index + 1] || []}
+                  question={questionMap[index + 1]}
                   line={line}
                   lineNum={index + 1}
                 />

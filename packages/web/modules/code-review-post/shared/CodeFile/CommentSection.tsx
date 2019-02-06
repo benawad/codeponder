@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
-import {
-  CommentProps,
-  EditorSubmitProps,
-  QuestionProps,
-} from "../../../../types/questionReplyTypes";
+import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
+import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
 import { getScrollY } from "../../../../utils/domScrollUtils";
 import { CreateQuestionReply } from "../QuestionReply";
 import { CreateQuestion } from "../QuestionSection/CreateQuestion";
 
 interface AddCommentProps {
-  comments: CommentProps[];
+  question?: CodeReviewQuestionInfoFragment;
   lineNum: number;
   setShowEditor: React.Dispatch<React.SetStateAction<boolean>>;
   view: "code-view" | "repo-view";
@@ -30,14 +27,13 @@ const preventScroll = (ref: React.MutableRefObject<() => void>) => {
 };
 
 export const AddComment: React.SFC<AddCommentProps> = ({
-  comments,
+  question,
   lineNum,
   setShowEditor,
   view,
 }) => {
   const preventScrollRef = useRef(() => {});
-  const isReply = comments.length > 0;
-  const question = isReply ? (comments[0] as QuestionProps) : undefined;
+  const isReply = !!question;
 
   const onEditorSubmit = useCallback(({
     submitted,
@@ -47,15 +43,14 @@ export const AddComment: React.SFC<AddCommentProps> = ({
       preventScroll(preventScrollRef);
       setShowEditor(false);
     } else {
-      // wait until close animation is finished
-      setTimeout(() => setShowEditor(false), 200);
+      setShowEditor(false);
     }
-  }, [comments]);
+  }, [question]);
 
   useEffect(() => {
     // clear stopScroll
     preventScrollRef.current();
-  }, [comments]);
+  }, [question]);
 
   const commentProps = {
     isReply,

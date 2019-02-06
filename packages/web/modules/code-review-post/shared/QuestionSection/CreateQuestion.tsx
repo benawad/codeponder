@@ -7,7 +7,7 @@ import {
 import { findCodeReviewQuestionsQuery } from "../../../../graphql/code-review-question/query/findCodeReviewQuestions";
 import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
 import { PostContext } from "../PostContext";
-import { TextEditor, TextEditorResult } from "./CommentForm";
+import { CommentForm, TextEditorResult } from "./CommentForm";
 
 export interface CreateQuestionProps {
   onEditorSubmit: (T: EditorSubmitProps) => void;
@@ -101,7 +101,7 @@ export const CreateQuestion = ({
             onEditorSubmit({ submitted: false });
           }
         };
-        return <TextEditor {...props} submitForm={submitForm} />;
+        return <CommentForm {...props} submitForm={submitForm} />;
       }}
     </CreateCodeReviewQuestionComponent>
   );

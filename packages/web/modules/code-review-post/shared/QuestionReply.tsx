@@ -7,7 +7,7 @@ import {
 } from "../../../generated/apollo-components";
 import { findCodeReviewQuestionsQuery } from "../../../graphql/code-review-question/query/findCodeReviewQuestions";
 import { PostContext } from "./PostContext";
-import { TextEditor, TextEditorResult } from "./QuestionSection/CommentForm";
+import { CommentForm, TextEditorResult } from "./QuestionSection/CommentForm";
 
 interface EditorSubmitProps {
   submitted: boolean;
@@ -94,7 +94,7 @@ export const CreateQuestionReply = ({
             onEditorSubmit({ submitted: false });
           }
         };
-        return <TextEditor {...props} submitForm={submitForm} />;
+        return <CommentForm {...props} submitForm={submitForm} />;
       }}
     </CreateQuestionReplyComponent>
   );
