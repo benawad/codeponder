@@ -11,7 +11,6 @@ import { CommentForm, TextEditorResult } from "./CommentForm";
 
 export interface CreateQuestionProps {
   onEditorSubmit: (T: EditorSubmitProps) => void;
-  isReply: boolean;
   lineNum?: number;
   view: "code-view" | "repo-view";
 }
@@ -101,7 +100,9 @@ export const CreateQuestion = ({
             onEditorSubmit({ submitted: false });
           }
         };
-        return <CommentForm {...props} submitForm={submitForm} />;
+        return (
+          <CommentForm {...props} isReply={false} submitForm={submitForm} />
+        );
       }}
     </CreateCodeReviewQuestionComponent>
   );

@@ -15,7 +15,6 @@ interface EditorSubmitProps {
 }
 
 interface QuestionReplyProps {
-  isReply: boolean;
   lineNum?: number;
   onEditorSubmit: (T: EditorSubmitProps) => void;
   questionId: string;
@@ -94,7 +93,9 @@ export const CreateQuestionReply = ({
             onEditorSubmit({ submitted: false });
           }
         };
-        return <CommentForm {...props} submitForm={submitForm} />;
+        return (
+          <CommentForm {...props} isReply={true} submitForm={submitForm} />
+        );
       }}
     </CreateQuestionReplyComponent>
   );

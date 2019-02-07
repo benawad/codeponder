@@ -1,12 +1,14 @@
 import { CommentCard, styled } from "@codeponder/ui";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
 import { PostContext } from "../PostContext";
+import { CreateQuestionReply } from "../QuestionReply";
 
 interface CodeDiscussionViewProps {
   question: CodeReviewQuestionInfoFragment;
-  toggleEditor: () => void;
-  showEditor: boolean;
+  toggleDiscussion: () => void;
+  showDiscussion: boolean;
+  lineNum: number;
 }
 
 const DiscussionNavBar = styled.div`
@@ -44,60 +46,54 @@ const EXPANDED = "Expanded this discussion";
 
 export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   question,
-  toggleEditor,
-  showEditor,
+  toggleDiscussion,
+  showDiscussion,
+  lineNum,
 }) => {
+  const { owner } = useContext(PostContext);
+  const [showReply, setShowReply] = useState(false);
+
   return (
     <>
       <button
         className="token-btn discussion-badge"
-        title={showEditor ? COLLAPSE : EXPANDED}
-        onClick={toggleEditor}
+        title={showDiscussion ? COLLAPSE : EXPANDED}
+        onClick={toggleDiscussion}
       >
         <span className="badge-counter">{question.numReplies}</span>
         <span className="badge-icon">▾</span>
       </button>
-      {showEditor && (
-        <Discussion
-          className={"inner-animate-box is-open"}
-          question={question}
-          toggleEditor={toggleEditor}
-          showEditor={showEditor}
+      {showDiscussion && (
+        <DiscussionContainer
+          className="inner-animate-box is-open"
+          showEditor={showDiscussion}
+        >
+          <DiscussionNavBar>
+            <h2 className="header-title">
+              <span className="discussion-title">{question.title}</span>
+            </h2>
+            <span className="header-sub-title">{question.lineNum}</span>
+          </DiscussionNavBar>
+          {[question, ...question.replies].map((reply, key) => {
+            return (
+              <CommentCard
+                {...reply}
+                isOwner={reply.creator.id === owner}
+                key={key}
+                onReplyClick={() => setShowReply(true)}
+              />
+            );
+          })}
+        </DiscussionContainer>
+      )}
+      {showReply && (
+        <CreateQuestionReply
+          view="code-view"
+          onEditorSubmit={() => setShowReply(false)}
+          lineNum={lineNum}
+          questionId={question!.id}
         />
       )}
     </>
-  );
-};
-
-interface DiscussionProps extends CodeDiscussionViewProps {
-  className: string;
-}
-
-export const Discussion: React.FC<DiscussionProps> = ({
-  className,
-  question,
-  toggleEditor,
-  showEditor,
-}) => {
-  const { owner } = useContext(PostContext);
-  return (
-    <DiscussionContainer className={className} showEditor={showEditor}>
-      <DiscussionNavBar>
-        <h2 className="header-title">
-          <span className="discussion-title">{question.title}</span>
-        </h2>
-        <span className="header-sub-title">{question.lineNum}</span>
-      </DiscussionNavBar>
-      {[question, ...question.replies].map((reply, key) => {
-        return (
-          <CommentCard
-            {...reply}
-            isOwner={reply.creator.id === owner}
-            key={key}
-            onReplyClick={toggleEditor}
-          />
-        );
-      })}
-    </DiscussionContainer>
   );
 };

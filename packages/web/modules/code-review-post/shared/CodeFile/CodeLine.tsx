@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
-import { AddComment } from "./CommentSection";
-import { CodeDiscussionView } from "./Discussion";
+import { CreateQuestion } from "../QuestionSection/CreateQuestion";
+import { CodeDiscussionView } from "./CodeDiscussionView";
 
 interface RenderLineProps {
   question?: CodeReviewQuestionInfoFragment;
@@ -12,6 +12,7 @@ interface RenderLineProps {
 export const RenderLine: React.FC<RenderLineProps> = memo(
   ({ question, line, lineNum }) => {
     const [showEditor, setShowEditor] = useState(false);
+    const [showDiscussion, setShowDiscussion] = useState(false);
 
     return (
       <div key={lineNum} className="token-line">
@@ -28,15 +29,18 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
         {question && (
           <CodeDiscussionView
             question={question}
-            toggleEditor={() => setShowEditor(!showEditor)}
-            showEditor={showEditor}
+            toggleDiscussion={() => setShowDiscussion(!showDiscussion)}
+            showDiscussion={showDiscussion}
+            lineNum={lineNum}
           />
         )}
-        {showEditor && (
-          <AddComment
-            question={question}
+        {!question && showEditor && (
+          <CreateQuestion
             lineNum={lineNum}
-            setShowEditor={setShowEditor}
+            onEditorSubmit={() => {
+              setShowEditor(false);
+              setShowDiscussion(true);
+            }}
             view="code-view"
           />
         )}
