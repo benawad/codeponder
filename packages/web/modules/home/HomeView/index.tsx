@@ -1,4 +1,5 @@
 import { MyButton, PostRow, SidebarCard, Topic } from "@codeponder/ui";
+import { NextContext } from "next";
 import * as React from "react";
 import { Box } from "rebass";
 import {
@@ -14,12 +15,27 @@ interface State {
   offset: number;
   topics: string[];
 }
-export class HomeView extends React.Component<{}, State> {
-  state: State = {
-    topics: [],
-    limit: 6,
-    offset: 0,
-  };
+
+interface Props {
+  topic?: string;
+}
+export class HomeView extends React.Component<Props, State> {
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      topics: props.topic ? [props.topic] : [],
+      limit: 6,
+      offset: 0,
+    };
+  }
+
+  static getInitialProps({
+    query: { topic },
+  }: NextContext<{ topic?: string }>) {
+    return { topic };
+  }
 
   handleTopic = (topic: string) => {
     if (!this.state.topics.includes(topic)) {
@@ -49,12 +65,19 @@ export class HomeView extends React.Component<{}, State> {
           {({ data, fetchMore }) => {
             return (
               <div>
-                <div style={{ display: "flex", marginBottom: "6.4rem" }}>
+                <div>
                   {this.state.topics.map(topic => (
                     <Topic key={topic} onClick={() => this.removeTopic(topic)}>
                       {topic}
                     </Topic>
                   ))}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: "6.4rem",
+                  }}
+                >
                   <SidebarCard flex="1">
                     {data && data.findCodeReviewPost && (
                       <>

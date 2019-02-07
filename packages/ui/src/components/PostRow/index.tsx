@@ -1,10 +1,9 @@
-import * as React from "react";
-import { Card, Flex, Text, Box } from "rebass";
 import { distanceInWordsStrict } from "date-fns";
-
+import * as React from "react";
+import { Box, Card, Flex, Text } from "rebass";
+import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Topic } from "../Topic";
-import styled from "../../theme/styled-components";
 
 interface Props {
   id: string;
@@ -39,6 +38,7 @@ export const PostRow: React.SFC<Props> = ({
   getLinkProps,
   Link,
   createdAt,
+  onTopicClick,
 }) => {
   const linkProps = getLinkProps();
   const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
@@ -79,7 +79,16 @@ export const PostRow: React.SFC<Props> = ({
           </Link>
           <Box mt=".4rem">
             {topics.slice(0, 3).map(topic => (
-              <Topic key={topic}>{topic}</Topic>
+              <Topic
+                key={topic}
+                onClick={() => {
+                  if (onTopicClick) {
+                    onTopicClick(topic);
+                  }
+                }}
+              >
+                {topic}
+              </Topic>
             ))}
           </Box>
         </div>

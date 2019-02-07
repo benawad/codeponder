@@ -1,4 +1,4 @@
-import { BigCard, FolderTree, Topic } from "@codeponder/ui";
+import { BigCard, FolderTree } from "@codeponder/ui";
 import { orderBy } from "lodash";
 import "prismjs";
 import * as React from "react";
@@ -16,6 +16,7 @@ import { NextContextWithApollo } from "../../../types/NextContextWithApollo";
 import { filenameToLang } from "../../../utils/filenameToLang";
 import { GitHubApolloClientContext } from "../../shared/GithubApolloClientContext";
 import { Layout } from "../../shared/Layout";
+import { TopicLink } from "../../shared/TopicLink";
 import { CodeFile } from "../shared/CodeFile";
 import { ContextProps, PostContext } from "../shared/PostContext";
 import { QuestionSection } from "../shared/QuestionSection";
@@ -88,9 +89,11 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
             {owner}/{name}
           </Heading>
           <Box mt={10} mb={16}>
-            {topics.map(topic => (
-              <Topic key={topic}>{topic}</Topic>
-            ))}
+            {path ? (
+              <FilePath id={id} name={name} path={path} />
+            ) : (
+              topics.map(topic => <TopicLink key={topic} topic={topic} />)
+            )}
           </Box>
           <GetRepoObjectComponent
             variables={{
@@ -120,7 +123,6 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
                 context.totalLines = (object.text || "").split("\n").length;
                 return (
                   <>
-                    <FilePath id={id} name={name} path={path} />
                     <PostContext.Provider value={context}>
                       <CodeFile />
                     </PostContext.Provider>
@@ -134,7 +136,6 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
                     .entries || [];
                 return (
                   <>
-                    <FilePath id={id} name={name} path={path} />
                     <FolderTree
                       items={orderBy(
                         entries,
