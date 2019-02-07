@@ -163,6 +163,16 @@ export const CodeCard: React.FunctionComponent<Props> = ({
   ...props
 }) => (
   <Pre className={`code-content language-${lang}`} {...props}>
-    <code className={`language-${lang}`}>{children}</code>
+    {/* backgroundImage: "" removes stripes */}
+    <code
+      style={{
+        overflowX: "auto",
+        backgroundColor: "#fafafa",
+        backgroundImage: "",
+      }}
+      className={`language-${lang}`}
+    >
+      {children}
+    </code>
   </Pre>
 );
