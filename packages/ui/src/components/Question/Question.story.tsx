@@ -1,7 +1,6 @@
-import * as React from "react";
-
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
+import * as React from "react";
 import { CommentCard, Question } from ".";
 
 const data = {
@@ -33,7 +32,7 @@ storiesOf("Question", module).add("comment example", () => (
       <CommentCard
         {...data}
         isOwner={true}
-        onOpenEditor={action("reply button click")}
+        onReplyClick={action("reply button click")}
       />
     </code>
   </pre>

@@ -10,7 +10,7 @@ export const Separator = styled.div`
   background: #f2f2f2;
 `;
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   background-color: #ffffff;
   border-top: ${(p: { isReply: boolean; view: string }) =>
     p.isReply ? "none" : "1px solid #d1d5da"};

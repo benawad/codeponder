@@ -15,7 +15,11 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
     const [showDiscussion, setShowDiscussion] = useState(false);
 
     return (
-      <div key={lineNum} className="token-line">
+      <div
+        style={{ backgroundColor: "#fafafa" }}
+        key={lineNum}
+        className="token-line"
+      >
         <span
           className="token-html"
           data-line-number={lineNum}

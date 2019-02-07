@@ -24,7 +24,6 @@ const cleanSelectedLines = (
   lineNum: number,
   parentElm = document.querySelector(".code-content")
 ) => {
-  console.log("cleanSelectedLines", lineNum);
   parentElm!
     .querySelectorAll(`.is-selected-${lineNum}`)
     .forEach(elm => elm.classList.remove(`is-selected-${lineNum}`));
@@ -42,8 +41,12 @@ const highlightSelectedLines = (
     );
 };
 
-const validationSchema = yup.object().shape({
+const questionSchema = yup.object().shape({
   title: yup.string().required(),
+  text: yup.string().required(),
+});
+
+const replySchema = yup.object().shape({
   text: yup.string().required(),
 });
 
@@ -53,7 +56,7 @@ export const CommentForm = ({
   submitForm,
   view,
 }: TextEditorProps) => {
-  const formRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (lineNum) {
@@ -79,7 +82,7 @@ export const CommentForm = ({
 
   return (
     <Formik
-      validationSchema={validationSchema}
+      validationSchema={isReply ? replySchema : questionSchema}
       initialValues={{
         title: "",
         text: "",
@@ -97,10 +100,10 @@ export const CommentForm = ({
         }
       }}
     >
-      {({ isValid, errors }) => {
-        console.log(errors);
+      {({ isValid, handleSubmit }) => {
         return (
           <FormContainer
+            onSubmit={handleSubmit}
             ref={formRef}
             isReply={isReply}
             view={view}
@@ -130,7 +133,12 @@ export const CommentForm = ({
             <Separator />
             <div className="btn-box">
               {view === "code-view" && (
-                <MyButton variant="form" className="btn" onClick={onCancel}>
+                <MyButton
+                  type="button"
+                  variant="form"
+                  className="btn"
+                  onClick={onCancel}
+                >
                   Cancel
                 </MyButton>
               )}

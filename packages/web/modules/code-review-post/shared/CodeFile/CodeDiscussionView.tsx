@@ -38,7 +38,7 @@ const DiscussionContainer = styled.div`
   border-top: 1px solid #dfe2e5;
   border-bottom: ${(p: { showEditor: boolean }) =>
     p.showEditor ? "none" : "1px solid #dfe2e5"};
-  margin-bottom: ${p => (p.showEditor ? "-0.5em" : "0")};
+  margin-bottom: 0px;
 `;
 
 const COLLAPSE = "Collapse this discussion";
