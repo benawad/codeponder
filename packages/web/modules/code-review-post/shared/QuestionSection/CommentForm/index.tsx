@@ -97,52 +97,55 @@ export const CommentForm = ({
         }
       }}
     >
-      {({ isValid }) => (
-        <FormContainer
-          ref={formRef}
-          isReply={isReply}
-          view={view}
-          className={`${view === "code-view" ? "inner-animate-box" : ""}`}
-        >
-          {// show title only for question
-          !isReply && (
+      {({ isValid, errors }) => {
+        console.log(errors);
+        return (
+          <FormContainer
+            ref={formRef}
+            isReply={isReply}
+            view={view}
+            className={`${view === "code-view" ? "inner-animate-box" : ""}`}
+          >
+            {// show title only for question
+            !isReply && (
+              <FormRow>
+                <Field
+                  component={CommentInputField}
+                  placeholder="Title"
+                  name="title"
+                  autoFocus={!isReply}
+                />
+              </FormRow>
+            )}
             <FormRow>
               <Field
                 component={CommentInputField}
-                placeholder="Title"
-                name="title"
-                autoFocus={!isReply}
+                autoFocus={isReply}
+                minHeight="100px"
+                name="text"
+                placeholder={isReply ? "Type your Reply" : "Type your Question"}
+                as="textarea"
               />
             </FormRow>
-          )}
-          <FormRow>
-            <Field
-              component={CommentInputField}
-              autoFocus={isReply}
-              minHeight="100px"
-              name="question"
-              placeholder={isReply ? "Type your Reply" : "Type your Question"}
-              as="textarea"
-            />
-          </FormRow>
-          <Separator />
-          <div className="btn-box">
-            {view === "code-view" && (
-              <MyButton variant="form" className="btn" onClick={onCancel}>
-                Cancel
+            <Separator />
+            <div className="btn-box">
+              {view === "code-view" && (
+                <MyButton variant="form" className="btn" onClick={onCancel}>
+                  Cancel
+                </MyButton>
+              )}
+              <MyButton
+                type="submit"
+                variant="form"
+                disabled={!isValid}
+                className={`primary ${isValid ? "" : "disabled"}`}
+              >
+                Save
               </MyButton>
-            )}
-            <MyButton
-              type="submit"
-              variant="form"
-              disabled={!isValid}
-              className={`primary ${isValid ? "" : "disabled"}`}
-            >
-              Save
-            </MyButton>
-          </div>
-        </FormContainer>
-      )}
+            </div>
+          </FormContainer>
+        );
+      }}
     </Formik>
   );
 };

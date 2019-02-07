@@ -1,11 +1,5 @@
 import { CommentCard, styled } from "@codeponder/ui";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext } from "react";
 import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
 import { PostContext } from "../PostContext";
 
@@ -53,38 +47,22 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   toggleEditor,
   showEditor,
 }) => {
-  const toggleButtonRef = useRef<HTMLButtonElement>(null);
-  const discussionRef = useRef<HTMLDivElement>(null);
-  const [showDiscussion, setShowDiscussion] = useState(false);
-
-  const onToggleDiscussion = useCallback(() => {
-    toggleEditor();
-    if (showDiscussion) {
-      setShowDiscussion(false);
-    } else {
-      setShowDiscussion(true);
-    }
-  }, [showDiscussion]);
-
   return (
     <>
       <button
-        ref={toggleButtonRef}
         className="token-btn discussion-badge"
-        title={showDiscussion ? COLLAPSE : EXPANDED}
-        onClick={onToggleDiscussion}
+        title={showEditor ? COLLAPSE : EXPANDED}
+        onClick={toggleEditor}
       >
         <span className="badge-counter">{question.numReplies}</span>
         <span className="badge-icon">▾</span>
       </button>
-      {showDiscussion && (
+      {showEditor && (
         <Discussion
-          discussionRef={discussionRef}
           className={"inner-animate-box is-open"}
           question={question}
           toggleEditor={toggleEditor}
           showEditor={showEditor}
-          animate={true}
         />
       )}
     </>
@@ -92,53 +70,31 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
 };
 
 interface DiscussionProps extends CodeDiscussionViewProps {
-  discussionRef: React.RefObject<HTMLDivElement>;
   className: string;
-  animate?: boolean;
 }
 
 export const Discussion: React.FC<DiscussionProps> = ({
-  discussionRef,
   className,
   question,
   toggleEditor,
   showEditor,
-  animate,
 }) => {
   const { owner } = useContext(PostContext);
-  useEffect(() => {
-    if (animate) {
-      discussionRef.current!.classList.add("is-open");
-    }
-  }, [showEditor]);
-
-  useEffect(() => {
-    const id = setTimeout(() => {
-      discussionRef.current!.style.maxHeight = "none";
-    }, 200);
-
-    return clearTimeout(id);
-  }, []);
-
   return (
-    <DiscussionContainer
-      ref={discussionRef}
-      className={className}
-      showEditor={showEditor}
-    >
+    <DiscussionContainer className={className} showEditor={showEditor}>
       <DiscussionNavBar>
         <h2 className="header-title">
           <span className="discussion-title">{question.title}</span>
         </h2>
         <span className="header-sub-title">{question.lineNum}</span>
       </DiscussionNavBar>
-      {question.replies.map((reply, key) => {
+      {[question, ...question.replies].map((reply, key) => {
         return (
           <CommentCard
             {...reply}
             isOwner={reply.creator.id === owner}
             key={key}
-            onOpenEditor={toggleEditor}
+            onReplyClick={toggleEditor}
           />
         );
       })}

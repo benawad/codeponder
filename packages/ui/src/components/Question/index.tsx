@@ -30,14 +30,14 @@ interface CommentCardProps extends Props {
   isOwner: boolean;
   newComment?: boolean;
   numReplies?: number;
-  onOpenEditor: (e: any) => void;
+  onReplyClick?: (e: any) => void;
 }
 
 interface BaseProps extends Props {
   isOwner?: boolean;
   newComment?: boolean;
   numReplies?: number;
-  onOpenEditor?: (e: any) => void;
+  onReplyClick?: (e: any) => void;
   variant: "outline" | "flat";
 }
 
@@ -111,7 +111,7 @@ const BaseCommentCard = ({
   createdAt,
   creator: { username, pictureUrl },
   isOwner,
-  onOpenEditor,
+  onReplyClick,
   variant,
 }: BaseProps) => {
   const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
@@ -150,7 +150,7 @@ const BaseCommentCard = ({
           <MyButton
             variant="form"
             className="btn-reply"
-            onClick={onOpenEditor}
+            onClick={onReplyClick}
             title="Reply"
           >
             <Icon size={16} name="reply" fill="#555555" />
