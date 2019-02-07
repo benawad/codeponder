@@ -6,7 +6,7 @@ import {
   FindCodeReviewQuestionsVariables,
 } from "../../../../generated/apollo-components";
 import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
-import { CreateQuestion } from "./CreateQuestion";
+import { CreateQuestion } from "../CreateQuestion";
 
 interface Props {
   variables: FindCodeReviewQuestionsVariables;
@@ -19,25 +19,21 @@ interface QuestionListProps {
 const InnerQuestionSection: React.FC<QuestionListProps> = ({ list }) => {
   const [questions, updateQuestions] = useState(list);
 
-  const onEditorSubmit = useCallback(
-    ({ submitted, response }: EditorSubmitProps) => {
-      if (submitted && response) {
-        updateQuestions([
-          ...questions,
-          response as CodeReviewQuestionInfoFragment,
-        ]);
-      }
-    },
-    [questions]
-  );
+  const onEditorSubmit = useCallback(({
+    submitted,
+    response,
+  }: EditorSubmitProps) => {
+    if (submitted && response) {
+      updateQuestions([
+        ...questions,
+        response as CodeReviewQuestionInfoFragment,
+      ]);
+    }
+  }, [questions]);
 
   return (
     <>
-      <CreateQuestion
-        onEditorSubmit={onEditorSubmit}
-        isReply={false}
-        view="repo-view"
-      />
+      <CreateQuestion onEditorSubmit={onEditorSubmit} view="repo-view" />
       <div
         style={{
           border: "1px solid #F2F2F2",

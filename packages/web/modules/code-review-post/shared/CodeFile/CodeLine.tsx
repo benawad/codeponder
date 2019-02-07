@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
-import { CreateQuestion } from "../QuestionSection/CreateQuestion";
+import { CreateQuestion } from "../CreateQuestion";
 import { CodeDiscussionView } from "./CodeDiscussionView";
 
 interface RenderLineProps {
@@ -22,7 +22,11 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
           dangerouslySetInnerHTML={{ __html: line }}
           onClick={e => {
             if ((e.target as any).classList.contains("btn-open-edit")) {
-              setShowEditor(true);
+              if (question) {
+                setShowDiscussion(true);
+              } else {
+                setShowEditor(true);
+              }
             }
           }}
         />

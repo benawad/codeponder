@@ -2,8 +2,8 @@ import { MyButton } from "@codeponder/ui";
 import { Field, Formik } from "formik";
 import React, { useCallback, useEffect, useRef } from "react";
 import * as yup from "yup";
-import { scrollToView } from "../../../../../utils/domScrollUtils";
-import { CommentInputField } from "../../../../shared/formik-fields/CommentInputField";
+import { scrollToView } from "../../../../utils/domScrollUtils";
+import { CommentInputField } from "../../../shared/formik-fields/CommentInputField";
 import { FormContainer, FormRow, Separator } from "./components";
 
 export interface TextEditorProps {

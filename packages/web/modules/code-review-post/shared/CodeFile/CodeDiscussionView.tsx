@@ -1,8 +1,8 @@
 import { CommentCard, styled } from "@codeponder/ui";
 import React, { useContext, useState } from "react";
 import { CodeReviewQuestionInfoFragment } from "../../../../generated/apollo-components";
+import { CreateQuestionReply } from "../CreateQuestionReply";
 import { PostContext } from "../PostContext";
-import { CreateQuestionReply } from "../QuestionReply";
 
 interface CodeDiscussionViewProps {
   question: CodeReviewQuestionInfoFragment;
@@ -58,7 +58,10 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
       <button
         className="token-btn discussion-badge"
         title={showDiscussion ? COLLAPSE : EXPANDED}
-        onClick={toggleDiscussion}
+        onClick={() => {
+          setShowReply(false);
+          toggleDiscussion();
+        }}
       >
         <span className="badge-counter">{question.numReplies}</span>
         <span className="badge-icon">▾</span>

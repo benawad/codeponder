@@ -6,8 +6,8 @@ import {
   QuestionReplyInfoFragment,
 } from "../../../generated/apollo-components";
 import { findCodeReviewQuestionsQuery } from "../../../graphql/code-review-question/query/findCodeReviewQuestions";
+import { CommentForm, TextEditorResult } from "./CommentForm";
 import { PostContext } from "./PostContext";
-import { CommentForm, TextEditorResult } from "./QuestionSection/CommentForm";
 
 interface EditorSubmitProps {
   submitted: boolean;

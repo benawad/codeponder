@@ -3,11 +3,11 @@ import {
   CreateCodeReviewQuestionComponent,
   FindCodeReviewQuestionsQuery,
   FindCodeReviewQuestionsVariables,
-} from "../../../../generated/apollo-components";
-import { findCodeReviewQuestionsQuery } from "../../../../graphql/code-review-question/query/findCodeReviewQuestions";
-import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
-import { PostContext } from "../PostContext";
+} from "../../../generated/apollo-components";
+import { findCodeReviewQuestionsQuery } from "../../../graphql/code-review-question/query/findCodeReviewQuestions";
+import { EditorSubmitProps } from "../../../types/questionReplyTypes";
 import { CommentForm, TextEditorResult } from "./CommentForm";
+import { PostContext } from "./PostContext";
 
 export interface CreateQuestionProps {
   onEditorSubmit: (T: EditorSubmitProps) => void;
