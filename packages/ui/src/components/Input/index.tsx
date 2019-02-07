@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { icons } from "../Icon/icons";
 import { Icon } from "../Icon";
+import { icons } from "../Icon/icons";
 
 const Container = styled.div`
   padding: 0.8rem 1.5rem;

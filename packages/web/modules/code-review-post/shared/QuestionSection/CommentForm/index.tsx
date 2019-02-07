@@ -1,8 +1,10 @@
 import { MyButton } from "@codeponder/ui";
+import { Field, Formik } from "formik";
 import React, { useCallback, useEffect, useRef } from "react";
+import * as yup from "yup";
 import { scrollToView } from "../../../../../utils/domScrollUtils";
-import { useInputValue } from "../../../../../utils/useInputValue";
-import { FormContainer, FormInput, FormRow, Separator } from "./components";
+import { CommentInputField } from "../../../../shared/formik-fields/CommentInputField";
+import { FormContainer, FormRow, Separator } from "./components";
 
 export interface TextEditorProps {
   isReply: boolean;
@@ -40,18 +42,18 @@ const highlightSelectedLines = (
     );
 };
 
-export const CommentForm = (props: TextEditorProps) => {
-  const { isReply, lineNum, submitForm, view } = props;
+const validationSchema = yup.object().shape({
+  title: yup.string().required(),
+  text: yup.string().required(),
+});
 
+export const CommentForm = ({
+  isReply,
+  lineNum,
+  submitForm,
+  view,
+}: TextEditorProps) => {
   const formRef = useRef<HTMLDivElement>(null);
-  const [title, titleChange] = useInputValue("");
-  const [text, textChange] = useInputValue("");
-
-  // validate fields
-  const titleTrimmed = title.trim();
-  const textTrimmed = text.trim();
-
-  const isValidForm = isReply ? textTrimmed : titleTrimmed && textTrimmed;
 
   useEffect(() => {
     if (lineNum) {
@@ -67,91 +69,80 @@ export const CommentForm = (props: TextEditorProps) => {
     }
   }, []);
 
-  const clearForm = useCallback(() => {
-    const value = { currentTarget: { value: "" } };
-    titleChange(value);
-    textChange(value);
-  }, []);
-
-  // close editor with Esc if user did not start editing
-  const onKeyDown = useCallback(({ keyCode }: any) => {
-    if (keyCode === 27 && !titleTrimmed && !textTrimmed) {
-      onCancel();
-    }
-  }, [titleTrimmed, textTrimmed]);
-
   const onCancel = useCallback(() => {
-    if (view === "repo-view") {
-      clearForm();
-    } else {
-      if (lineNum) {
-        cleanSelectedLines(lineNum);
-      }
-      formRef.current!.classList.remove("is-open");
-      submitForm({ cancel: true } as TextEditorResult);
+    if (lineNum) {
+      cleanSelectedLines(lineNum);
     }
+    formRef.current!.classList.remove("is-open");
+    submitForm({ cancel: true } as TextEditorResult);
   }, []);
 
   return (
-    <FormContainer
-      ref={formRef}
-      onKeyDown={onKeyDown}
-      isReply={isReply}
-      view={view}
-      className={`${view === "code-view" ? "inner-animate-box" : ""}`}
+    <Formik
+      validationSchema={validationSchema}
+      initialValues={{
+        title: "",
+        text: "",
+      }}
+      onSubmit={({ text, title }, { resetForm }) => {
+        formRef.current!.classList.remove("is-open");
+        submitForm({
+          cancel: false,
+          lineNum,
+          title: title.trim(),
+          text: text.trim(),
+        });
+        if (view === "repo-view") {
+          resetForm();
+        }
+      }}
     >
-      {// show title only for question
-      !isReply && (
-        <FormRow>
-          <FormInput
-            placeholder="Title"
-            name="title"
-            value={title}
-            onChange={titleChange}
-            autoFocus={!isReply}
-          />
-        </FormRow>
-      )}
-      <FormRow>
-        <FormInput
-          autoFocus={isReply}
-          minHeight="100px"
-          name="question"
-          placeholder={isReply ? "Type your Reply" : "Type your Question"}
-          value={text}
-          onChange={textChange}
-          as="textarea"
-        />
-      </FormRow>
-      <Separator />
-      <div className="btn-box">
-        {view === "code-view" && (
-          <MyButton variant="form" className="btn" onClick={onCancel}>
-            Cancel
-          </MyButton>
-        )}
-        <MyButton
-          variant="form"
-          disabled={!isValidForm}
-          className={`primary ${isValidForm ? "" : "disabled"}`}
-          onClick={() => {
-            if (isValidForm) {
-              formRef.current!.classList.remove("is-open");
-              submitForm({
-                cancel: false,
-                lineNum,
-                title: titleTrimmed,
-                text: textTrimmed,
-              });
-              if (view === "repo-view") {
-                clearForm();
-              }
-            }
-          }}
+      {({ isValid }) => (
+        <FormContainer
+          ref={formRef}
+          isReply={isReply}
+          view={view}
+          className={`${view === "code-view" ? "inner-animate-box" : ""}`}
         >
-          Save
-        </MyButton>
-      </div>
-    </FormContainer>
+          {// show title only for question
+          !isReply && (
+            <FormRow>
+              <Field
+                component={CommentInputField}
+                placeholder="Title"
+                name="title"
+                autoFocus={!isReply}
+              />
+            </FormRow>
+          )}
+          <FormRow>
+            <Field
+              component={CommentInputField}
+              autoFocus={isReply}
+              minHeight="100px"
+              name="question"
+              placeholder={isReply ? "Type your Reply" : "Type your Question"}
+              as="textarea"
+            />
+          </FormRow>
+          <Separator />
+          <div className="btn-box">
+            {view === "code-view" && (
+              <MyButton variant="form" className="btn" onClick={onCancel}>
+                Cancel
+              </MyButton>
+            )}
+            <MyButton
+              type="submit"
+              variant="form"
+              disabled={!isValid}
+              className={`primary ${isValid ? "" : "disabled"}`}
+            >
+              Save
+            </MyButton>
+          </div>
+        </FormContainer>
+      )}
+    </Formik>
   );
 };
