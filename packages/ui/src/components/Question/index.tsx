@@ -23,6 +23,7 @@ interface Props {
 }
 
 interface QuestionProps extends Props {
+  title: string;
   numReplies: number;
 }
 
@@ -34,6 +35,7 @@ interface CommentCardProps extends Props {
 }
 
 interface BaseProps extends Props {
+  title?: string;
   isOwner?: boolean;
   newComment?: boolean;
   numReplies?: number;
@@ -105,6 +107,7 @@ export const CommentCard = (props: CommentCardProps) => {
 };
 
 const BaseCommentCard = ({
+  title,
   text,
   path,
   numReplies,
@@ -164,7 +167,7 @@ const BaseCommentCard = ({
         fontSize={2}
         color="#78909C"
       >
-        {text}
+        {title || text}
       </Text>
     </>
   );
