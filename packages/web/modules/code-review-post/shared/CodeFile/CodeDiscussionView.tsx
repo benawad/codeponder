@@ -36,8 +36,8 @@ const DiscussionNavBar = styled.div`
 const DiscussionContainer = styled.div`
   background-color: #ffffff;
   border-top: 1px solid #dfe2e5;
-  border-bottom: ${(p: { showEditor: boolean }) =>
-    p.showEditor ? "none" : "1px solid #dfe2e5"};
+  border-bottom: ${(p: { showReply: boolean }) =>
+    p.showReply ? "none" : "1px solid #dfe2e5"};
   margin-bottom: 0px;
 `;
 
@@ -69,7 +69,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
       {showDiscussion && (
         <DiscussionContainer
           className="inner-animate-box is-open"
-          showEditor={showDiscussion}
+          showReply={showReply}
         >
           <DiscussionNavBar>
             <h2 className="header-title">
