@@ -44,6 +44,11 @@ const DiscussionContainer = styled.div`
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
 
+const badgeClassList = (open: boolean) => {
+  const classNames = "token-btn discussion-badge";
+  return open ? `${classNames} is-open` : classNames;
+};
+
 export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   question,
   toggleDiscussion,
@@ -56,7 +61,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   return (
     <>
       <button
-        className="token-btn discussion-badge"
+        className={badgeClassList(showDiscussion)}
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={() => {
           setShowReply(false);
