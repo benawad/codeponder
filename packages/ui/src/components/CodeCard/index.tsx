@@ -20,13 +20,17 @@ const Pre = styled.pre`
   font-size: ${(p: styleProps) => p.fontSize || 14}px;
 
   &.code-content code[class*="language-"] {
+    background-color: #fafafa;
+    /* override prism-coy stripes */
+    background-image: none;
     /* override prism-coy border */
     border: 1px solid #ddd;
     border-radius: 3px;
     box-shadow: none;
     margin-bottom: 1em;
     margin-top: 1em;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding: 0;
   }
 
@@ -163,16 +167,6 @@ export const CodeCard: React.FunctionComponent<Props> = ({
   ...props
 }) => (
   <Pre className={`code-content language-${lang}`} {...props}>
-    {/* backgroundImage: "" removes stripes */}
-    <code
-      style={{
-        overflowX: "auto",
-        backgroundColor: "#fafafa",
-        backgroundImage: "",
-      }}
-      className={`language-${lang}`}
-    >
-      {children}
-    </code>
+    <code className={`language-${lang}`}>{children}</code>
   </Pre>
 );
