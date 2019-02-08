@@ -36,13 +36,18 @@ const DiscussionNavBar = styled.div`
 const DiscussionContainer = styled.div`
   background-color: #ffffff;
   border-top: 1px solid #dfe2e5;
-  border-bottom: ${(p: { showEditor: boolean }) =>
-    p.showEditor ? "none" : "1px solid #dfe2e5"};
+  border-bottom: ${(p: { showReply: boolean }) =>
+    p.showReply ? "none" : "1px solid #dfe2e5"};
   margin-bottom: 0px;
 `;
 
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
+
+const badgeClassList = (open: boolean) => {
+  const classNames = "token-btn discussion-badge";
+  return open ? `${classNames} is-open` : classNames;
+};
 
 export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   question,
@@ -56,7 +61,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   return (
     <>
       <button
-        className="token-btn discussion-badge"
+        className={badgeClassList(showDiscussion)}
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={() => {
           setShowReply(false);
@@ -69,7 +74,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
       {showDiscussion && (
         <DiscussionContainer
           className="inner-animate-box is-open"
-          showEditor={showDiscussion}
+          showReply={showReply}
         >
           <DiscussionNavBar>
             <h2 className="header-title">
