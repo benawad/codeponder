@@ -1,3 +1,4 @@
+require("dotenv-safe").config();
 import { ApolloError, ApolloServer } from "apollo-server-express";
 import * as connectRedis from "connect-redis";
 import * as cors from "cors";
@@ -15,19 +16,24 @@ import { questionReplyLoader } from "./loaders/questionReplyLoader";
 import { userLoader } from "./loaders/userLoader";
 import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
-require("dotenv-safe").config();
+import { logManager } from "./utils/logManager";
 
-const SESSION_SECRET = process.env.SESSION_SECRET; 
+const logger = logManager(process.env.LOG_FILE!);
+logger.info("Loading environment...");
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
 const RedisStore = connectRedis(session as any);
 
 const startServer = async () => {
+  logger.info("Connecting database...");
   const conn = await createTypeormConn();
   if (conn) {
     await conn.runMigrations();
   }
-
+  logger.info("Creating express server...");
   const app = express();
 
+  logger.info("Creating GQL server...");
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [__dirname + "/modules/**/resolver.*"],

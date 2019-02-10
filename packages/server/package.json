@@ -19,6 +19,7 @@
     "typescript": "3.2.4"
   },
   "dependencies": {
+    "@types/pino": "^5.8.4",
     "apollo-server-express": "2.3.2",
     "connect-redis": "3.4.0",
     "cors": "2.8.5",
@@ -31,6 +32,8 @@
     "passport": "0.4.0",
     "passport-github": "1.1.0",
     "pg": "7.8.0",
+    "pino": "^5.11.1",
+    "pino-pretty": "^2.5.0",
     "reflect-metadata": "0.1.13",
     "type-graphql": "0.16.0",
     "typeorm": "0.2.12",

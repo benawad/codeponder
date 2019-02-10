@@ -1,0 +1,5 @@
+{"level":30,"time":1549760971289,"msg":"Logging initialized at 2/9/2019, 8:09:31 PM","pid":51528,"hostname":"JBJ-MAC.local","v":1}
+{"level":30,"time":1549760971290,"msg":"Loading environment...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
+{"level":30,"time":1549760971290,"msg":"Connecting database...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
+{"level":30,"time":1549760971421,"msg":"Creating express server...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
+{"level":30,"time":1549760971422,"msg":"Creating GQL server...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
