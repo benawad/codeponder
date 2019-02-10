@@ -1,9 +1,10 @@
 import * as pino from "pino";
-import * as fs from "fs";
 
-export const logManager = (logFileName: fs.PathLike) => {
-  const logFile = fs.createWriteStream(logFileName);
-  const loggingInstance = pino(logFile);
+export const logManager = () => {
+  const loggingInstance = pino(
+    { prettyPrint: { colorize: true } },
+    process.stdout
+  );
 
   process.on("uncaughtException", err => {
     const finalLogger = pino.final(loggingInstance);

@@ -18,7 +18,7 @@ import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
 import { logManager } from "./utils/logManager";
 
-const logger = logManager(process.env.LOG_FILE!);
+const logger = logManager();
 logger.info("Loading environment...");
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
