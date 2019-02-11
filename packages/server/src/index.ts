@@ -17,12 +17,14 @@ import { userLoader } from "./loaders/userLoader";
 import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
 import { logManager } from "./utils/logManager";
+import { setupErrorHandling  } from "./utils/shutdown";
+import { getConnection } from "typeorm";
 
 const logger = logManager();
 logger.info("Loading environment...");
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
-const RedisStore = connectRedis(session as any);
+const RedisStore = connectRedis(session as any); // connect node.req.session to redis backing store
 
 const startServer = async () => {
   logger.info("Connecting database...");
@@ -148,9 +150,16 @@ const startServer = async () => {
 
   server.applyMiddleware({ app, cors: false }); // app is from an existing express app
 
-  app.listen({ port: 4000 }, () =>
+  const nodeServer = app.listen({ port: 4000 }, () =>
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
   );
+
+  setupErrorHandling({
+    db: getConnection(),
+    redisClient: redis,
+    logger: logger,
+    nodeServer: nodeServer,
+  });
 };
 
 startServer();

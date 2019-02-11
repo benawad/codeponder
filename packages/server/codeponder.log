@@ -1,5 +1,12 @@
-{"level":30,"time":1549760971289,"msg":"Logging initialized at 2/9/2019, 8:09:31 PM","pid":51528,"hostname":"JBJ-MAC.local","v":1}
-{"level":30,"time":1549760971290,"msg":"Loading environment...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
-{"level":30,"time":1549760971290,"msg":"Connecting database...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
-{"level":30,"time":1549760971421,"msg":"Creating express server...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
-{"level":30,"time":1549760971422,"msg":"Creating GQL server...","pid":51528,"hostname":"JBJ-MAC.local","v":1}
+[1549843091605] [32mINFO [39m (82547 on JBJ-MAC.local): [36mLogging to codeponder.log initialized at 2/10/2019, 6:58:11 PM[39m
+[1549843091606] [32mINFO [39m (82547 on JBJ-MAC.local): [36mLoading environment...[39m
+[1549843091607] [32mINFO [39m (82547 on JBJ-MAC.local): [36mConnecting database...[39m
+[1549843091769] [32mINFO [39m (82547 on JBJ-MAC.local): [36mCreating express server...[39m
+[1549843091770] [32mINFO [39m (82547 on JBJ-MAC.local): [36mCreating GQL server...[39m
+[1549843099223] [33mWARN [39m (82547 on JBJ-MAC.local): [36mNode process terminated via SIGINT...[39m
+[1549843193272] [32mINFO [39m (82987 on JBJ-MAC.local): [36mLogging to codeponder.log initialized at 2/10/2019, 6:59:53 PM[39m
+[1549843193274] [32mINFO [39m (82987 on JBJ-MAC.local): [36mLoading environment...[39m
+[1549843193274] [32mINFO [39m (82987 on JBJ-MAC.local): [36mConnecting database...[39m
+[1549843193422] [32mINFO [39m (82987 on JBJ-MAC.local): [36mCreating express server...[39m
+[1549843193423] [32mINFO [39m (82987 on JBJ-MAC.local): [36mCreating GQL server...[39m
+[1549843197768] [33mWARN [39m (82987 on JBJ-MAC.local): [36mNode process terminated via SIGINT...[39m
