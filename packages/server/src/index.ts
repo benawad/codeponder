@@ -17,7 +17,7 @@ import { userLoader } from "./loaders/userLoader";
 import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
 import { logManager } from "./utils/logManager";
-import { setupErrorHandling  } from "./utils/shutdown";
+import { setupErrorHandling } from "./utils/shutdown";
 import { getConnection } from "typeorm";
 
 const logger = logManager();
@@ -30,6 +30,7 @@ const startServer = async () => {
   logger.info("Connecting database...");
   const conn = await createTypeormConn();
   if (conn) {
+    logger.info("database connected ");
     await conn.runMigrations();
   }
   logger.info("Creating express server...");

@@ -5,7 +5,7 @@ import {
   Arg,
   Ctx,
   FieldResolver,
-  Root
+  Root,
 } from "type-graphql";
 import { MyContext } from "../../types/Context";
 import { User } from "../../entity/User";
@@ -27,11 +27,11 @@ export function createBaseResolver<
       const value = await (entity as any)
         .create({
           ...(input as any),
-          creatorId: ctx.req.session!.userId
+          creatorId: ctx.req.session!.userId,
         })
         .save();
       return {
-        [argAndReturnKeyName]: value
+        [argAndReturnKeyName]: value,
       };
     }
 

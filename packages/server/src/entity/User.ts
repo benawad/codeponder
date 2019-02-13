@@ -45,6 +45,7 @@ export class User extends BaseEntity {
   @OneToMany(() => QuestionReply, qr => qr.creator)
   questionReply: Promise<QuestionReply[]>;
 
+  // not in database.... 
   @Field(() => String, { nullable: true })
   accessToken: string | null;
 }
