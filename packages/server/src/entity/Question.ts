@@ -10,13 +10,13 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { MyContext } from "../types/Context";
-import { CodeReviewPost } from "./CodeReviewPost";
-import { QuestionReply } from "./QuestionReply";
+import { Comment } from "./Comment";
+import { Post } from "./Post";
 import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class CodeReviewQuestion {
+export class Question {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -49,7 +49,7 @@ export class CodeReviewQuestion {
   @Column("uuid")
   creatorId: string;
 
-  @ManyToOne(() => User, user => user.codeReviewQuestions)
+  @ManyToOne(() => User, user => user.Questions)
   creatorConnection: Promise<User>;
 
   @Field(() => User)
@@ -57,17 +57,17 @@ export class CodeReviewQuestion {
     return userLoader.load(this.creatorId);
   }
 
-  @Field(() => CodeReviewPost)
-  @ManyToOne(() => CodeReviewPost, crp => crp.questions)
+  @Field(() => Post)
+  @ManyToOne(() => Post, crp => crp.questions)
   @JoinColumn({ name: "postId" })
   post: Promise<User>;
   @Field()
   @Column("uuid")
   postId: string;
 
-  @Field(() => [QuestionReply])
-  @OneToMany(() => QuestionReply, qr => qr.question)
-  replies: Promise<QuestionReply[]>;
+  @Field(() => [Comment])
+  @OneToMany(() => Comment, qr => qr.question)
+  comments: Promise<Comment[]>;
 
   @Field()
   @CreateDateColumn({ type: "timestamp with time zone" })

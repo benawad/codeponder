@@ -1,27 +1,27 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { QuestionReply } from "../../entity/QuestionReply";
+import { Comment } from "../../entity/Comment";
 import { MyContext } from "../../types/Context";
 import { isAuthenticated } from "../shared/middleware/isAuthenticated";
-import { CreateQuestionReplyInput } from "./createInput";
+import { CreateCommentInput } from "./createInput";
 import { QuestionReplyResponse } from "./response";
 
-@Resolver(QuestionReply)
-export class QuestionReplyResolver {
+@Resolver(Comment)
+export class CommentResolver {
   constructor(
-    @InjectRepository(QuestionReply)
-    private readonly replyRepo: Repository<QuestionReply>
+    @InjectRepository(Comment)
+    private readonly commentRepo: Repository<Comment>
   ) {}
 
   @Mutation(() => QuestionReplyResponse)
   @UseMiddleware(isAuthenticated)
   async createQuestionReply(
-    @Arg("questionReply") input: CreateQuestionReplyInput,
+    @Arg("questionReply") input: CreateCommentInput,
     @Ctx() { req }: MyContext
   ): Promise<QuestionReplyResponse> {
     return {
-      questionReply: await this.replyRepo.save({
+      comment: await this.commentRepo.save({
         ...input,
         creatorId: req.session!.userId,
       }),

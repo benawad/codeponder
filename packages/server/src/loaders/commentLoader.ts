@@ -1,19 +1,19 @@
 import * as DataLoader from "dataloader";
 import { getRepository, In } from "typeorm";
-import { QuestionReply } from "../entity/QuestionReply";
+import { Comment } from "../entity/Comment";
 
-export const questionReplyLoader = () =>
+export const commentLoader = () =>
   new DataLoader(async (keys: string[]) => {
     // code review question ids
-    const questionReplies = await getRepository(QuestionReply).find({
+    const comments = await getRepository(Comment).find({
       where: {
         questionId: In(keys),
       },
     });
 
-    const qrMap: { [key: string]: QuestionReply[] } = {};
+    const qrMap: { [key: string]: Comment[] } = {};
 
-    questionReplies.forEach(reply => {
+    comments.forEach(reply => {
       if (reply.questionId in qrMap) {
         qrMap[reply.questionId].push(reply);
       } else {

@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import { CodeReviewPost } from "../entity/CodeReviewPost";
+import { Post } from "../entity/Post";
 
 interface FindByTopicsOptions {
   topics: string[];
@@ -7,10 +7,10 @@ interface FindByTopicsOptions {
   limit: number;
 }
 
-@EntityRepository(CodeReviewPost)
-export class CodeReviewPostRepository extends Repository<CodeReviewPost> {
+@EntityRepository(Post)
+export class PostRepository extends Repository<Post> {
   async findByTopics({ topics, offset, limit }: FindByTopicsOptions) {
-    const posts = await this.createQueryBuilder("crp")
+    const posts = await this.createQueryBuilder("p")
       .where("topics @> :topics", { topics })
       .skip(offset)
       .take(limit + 1)

@@ -14,7 +14,7 @@ import { v4 } from "uuid";
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "./entity/User";
 import { DisplayError } from "./errors/DisplayError";
-import { questionReplyLoader } from "./loaders/questionReplyLoader";
+import { commentLoader } from "./loaders/commentLoader";
 import { userLoader } from "./loaders/userLoader";
 import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
@@ -41,7 +41,7 @@ const startServer = async () => {
     context: ({ req }: any) => ({
       req,
       userLoader: userLoader(),
-      questionReplyLoader: questionReplyLoader(),
+      commentLoader: commentLoader(),
     }),
     formatError: (error: GraphQLError) => {
       if (

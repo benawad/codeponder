@@ -1,8 +1,8 @@
 import { Field, ID, ObjectType } from "type-graphql";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { CodeReviewPost } from "./CodeReviewPost";
-import { CodeReviewQuestion } from "./CodeReviewQuestion";
-import { QuestionReply } from "./QuestionReply";
+import { Comment } from "./Comment";
+import { Post } from "./Post";
+import { Question } from "./Question";
 
 @Entity()
 @ObjectType()
@@ -30,14 +30,14 @@ export class User {
   @Column({ type: "text" })
   bio: string;
 
-  @OneToMany(() => CodeReviewQuestion, crq => crq.creatorConnection)
-  codeReviewQuestions: Promise<CodeReviewQuestion[]>;
+  @OneToMany(() => Question, crq => crq.creatorConnection)
+  Questions: Promise<Question[]>;
 
-  @OneToMany(() => CodeReviewPost, crp => crp.creatorConnection)
-  codeReviewPosts: Promise<CodeReviewPost[]>;
+  @OneToMany(() => Post, crp => crp.creatorConnection)
+  Posts: Promise<Post[]>;
 
-  @OneToMany(() => QuestionReply, qr => qr.creatorConnection)
-  questionReply: Promise<QuestionReply[]>;
+  @OneToMany(() => Comment, qr => qr.creatorConnection)
+  comments: Promise<Comment[]>;
 
   @Field(() => String, { nullable: true })
   accessToken: string | null;

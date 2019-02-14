@@ -14,9 +14,9 @@ import { Post } from "../../entity/Post";
 import { PostRepository } from "../../repositories/PostRepo";
 import { QuestionRepository } from "../../repositories/QuestionRepo";
 import { MyContext } from "../../types/Context";
-import { FindPostInput } from "../post/findInput";
 import { isAuthenticated } from "../shared/middleware/isAuthenticated";
 import { CreatePostInput } from "./createInput";
+import { FindPostInput } from "./findInput";
 import { FindPostResponse } from "./findResponse";
 import { PostResponse } from "./response";
 
@@ -51,7 +51,7 @@ export class PostResolvers {
     }
 
     return {
-      Post: value,
+      post: value,
     };
   }
 

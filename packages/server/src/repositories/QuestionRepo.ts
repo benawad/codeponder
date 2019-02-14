@@ -1,11 +1,9 @@
 import { EntityRepository, Repository } from "typeorm";
-import { CodeReviewQuestion } from "../entity/CodeReviewQuestion";
+import { Question } from "../entity/Question";
 
-@EntityRepository(CodeReviewQuestion)
-export class CodeReviewQuestionRepository extends Repository<
-  CodeReviewQuestion
-> {
-  async add(input: Partial<CodeReviewQuestion>) {
+@EntityRepository(Question)
+export class QuestionRepository extends Repository<Question> {
+  async add(input: Partial<Question>) {
     const q = await this.findOne({
       where: {
         lineNum: input.lineNum,

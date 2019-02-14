@@ -1,40 +1,57 @@
-import { Ctx, Field, ID, ObjectType } from "type-graphql";
+import { Ctx, Field, ID, Int, ObjectType } from "type-graphql";
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { MyContext } from "../types/Context";
-import { CodeReviewQuestion } from "./CodeReviewQuestion";
+import { Question } from "./Question";
 import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class QuestionReply {
+export class Post {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
+  @Field(() => [String])
+  @Column({ type: "text", array: true })
+  topics: string[];
+
   @Field()
   @Column({ type: "text" })
-  text: string;
+  title: string;
 
-  @ManyToOne(() => CodeReviewQuestion, crq => crq.replies)
-  question: Promise<CodeReviewQuestion>;
   @Field()
-  @Column("uuid")
-  questionId: string;
+  @Column({ type: "text" })
+  description: string;
 
-  @ManyToOne(() => User, user => user.questionReply)
-  @JoinColumn({ name: "creatorId" })
-  creatorConnection: Promise<User>;
+  @Field()
+  @Column({ type: "text" })
+  repo: string;
+
+  @Field()
+  @Column({ type: "text" })
+  commitId: string;
+
+  @Field()
+  @Column({ type: "text" })
+  repoOwner: string;
+
+  @OneToMany(() => Question, crq => crq.post)
+  questions: Promise<Question[]>;
+
   @Field()
   @Column("uuid")
   creatorId: string;
+
+  @ManyToOne(() => User, user => user.Questions)
+  creatorConnection: Promise<User>;
 
   @Field(() => User)
   creator(@Ctx() { userLoader }: MyContext): Promise<User> {
@@ -47,4 +64,7 @@ export class QuestionReply {
 
   @UpdateDateColumn({ type: "timestamp with time zone" })
   updatedAt: Date;
+
+  @Field(() => Int)
+  numQuestions: number;
 }

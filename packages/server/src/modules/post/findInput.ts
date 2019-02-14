@@ -1,7 +1,7 @@
-import { InputType, Field, Int } from "type-graphql";
+import { Field, InputType, Int } from "type-graphql";
 
 @InputType()
-export class FindCodeReviewPostInput {
+export class FindPostInput {
   @Field(() => [String], { nullable: true })
   topics: string[];
 

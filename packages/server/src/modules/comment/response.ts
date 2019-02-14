@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "type-graphql";
-import { QuestionReply } from "../../entity/QuestionReply";
+import { Comment } from "../../entity/Comment";
 
 @ObjectType()
 export class QuestionReplyResponse {
   @Field()
-  questionReply: QuestionReply;
+  comment: Comment;
 }

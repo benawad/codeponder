@@ -11,36 +11,35 @@ import {
 } from "type-graphql";
 import { FindConditions, getConnection, IsNull, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
-import { QuestionReply } from "../../entity/QuestionReply";
+import { Question } from "../../entity/Question";
 import { DisplayError } from "../../errors/DisplayError";
-import { CodeReviewQuestionRepository } from "../../repositories/CodeReviewQuestionRepo";
+import { QuestionRepository } from "../../repositories/QuestionRepo";
 import { MyContext } from "../../types/Context";
 import { isAuthenticated } from "../shared/middleware/isAuthenticated";
-import { CreateCodeReviewQuestionInput } from "./createInput";
-import { CodeReviewQuestionResponse } from "./response";
+import { CreateQuestionInput } from "./createInput";
+import { QuestionResponse } from "./response";
 
 const PAGE_SIZE = 6;
-@Resolver(CodeReviewQuestion)
-export class CodeReviewQuestionResolver {
+@Resolver(Question)
+export class QuestionResolver {
   constructor(
-    @InjectRepository(CodeReviewQuestionRepository)
-    private readonly questionRepo: CodeReviewQuestionRepository,
-    @InjectRepository(QuestionReply)
-    private readonly replyRepo: Repository<CodeReviewQuestion>
+    @InjectRepository(QuestionRepository)
+    private readonly questionRepo: QuestionRepository,
+    @InjectRepository(Comment)
+    private readonly commentRepo: Repository<Comment>
   ) {}
 
   @FieldResolver()
-  numReplies(@Root() root: CodeReviewQuestion) {
-    return this.replyRepo.count({ where: { questionId: root.id } });
+  numReplies(@Root() root: Question) {
+    return this.commentRepo.count({ where: { questionId: root.id } });
   }
 
-  @Mutation(() => CodeReviewQuestionResponse)
+  @Mutation(() => QuestionResponse)
   @UseMiddleware(isAuthenticated)
-  async createCodeReviewQuestion(
-    @Arg("codeReviewQuestion") input: CreateCodeReviewQuestionInput,
+  async createQuestion(
+    @Arg("Question") input: CreateQuestionInput,
     @Ctx() ctx: MyContext
-  ): Promise<CodeReviewQuestionResponse> {
+  ): Promise<QuestionResponse> {
     const q = await this.questionRepo.add({
       ...input,
       creatorId: ctx.req.session!.userId,
@@ -51,12 +50,12 @@ export class CodeReviewQuestionResolver {
     }
 
     return {
-      codeReviewQuestion: q,
+      question: q,
     };
   }
 
-  @Mutation(() => CodeReviewQuestion)
-  async updateCodeReviewQuestionTitle(
+  @Mutation(() => Question)
+  async updateQuestionTitle(
     @Arg("id") id: string,
     @Arg("title") title: string
   ) {
@@ -71,12 +70,12 @@ export class CodeReviewQuestionResolver {
     return q;
   }
 
-  @Query(() => [CodeReviewQuestion])
-  async findCodeReviewQuestions(
+  @Query(() => [Question])
+  async findQuestions(
     @Arg("postId") postId: string,
     @Arg("path", () => String, { nullable: true }) path?: string
   ) {
-    const where: FindConditions<CodeReviewQuestion> = {
+    const where: FindConditions<Question> = {
       postId,
     };
 
@@ -93,7 +92,7 @@ export class CodeReviewQuestionResolver {
     });
   }
 
-  @Query(() => [CodeReviewQuestion])
+  @Query(() => [Question])
   async homeQuestions(
     @Arg("offset", () => Int, { nullable: true }) offset = PAGE_SIZE,
     @Arg("limit", () => Int, { nullable: true, description: "max of 18" })
@@ -113,9 +112,9 @@ export class CodeReviewQuestionResolver {
     return questions;
   }
 
-  @FieldResolver(() => [QuestionReply])
-  async replies(@Root() root: CodeReviewQuestion, @Ctx() ctx: MyContext) {
-    const replies = await ctx.questionReplyLoader.load(root.id);
+  @FieldResolver(() => [Comment])
+  async replies(@Root() root: Question, @Ctx() ctx: MyContext) {
+    const replies = await ctx.commentLoader.load(root.id);
     return replies || [];
   }
 }
