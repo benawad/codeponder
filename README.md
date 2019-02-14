@@ -79,6 +79,12 @@ yarn dev
 ```
 The website should be available at http://localhost:3000 now
 
+8. I would recommend running
+```
+yarn watch
+```
+In the `ui` package so it rebuilds it whenever you make changes.
+
 
 
 If you need any help setting this up feel free to message me on Discord: https://discord.gg/Vehs99V
