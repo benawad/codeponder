@@ -9,7 +9,7 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
-import { FindConditions, getConnection, Repository } from "typeorm";
+import { FindConditions, getConnection, IsNull, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { CodeReviewQuestion } from "../../entity/CodeReviewQuestion";
 import { QuestionReply } from "../../entity/QuestionReply";
@@ -73,12 +73,16 @@ export class CodeReviewQuestionResolver {
 
   @Query(() => [CodeReviewQuestion])
   async findCodeReviewQuestions(
-    @Arg("path", { nullable: true }) path: string,
-    @Arg("postId") postId: string
+    @Arg("postId") postId: string,
+    @Arg("path", () => String, { nullable: true }) path?: string
   ) {
     const where: FindConditions<CodeReviewQuestion> = {
       postId,
     };
+
+    if (path === undefined) {
+      where.path = IsNull();
+    }
 
     if (path) {
       where.path = path;

@@ -68,23 +68,25 @@ export const CreateQuestion = ({
                   },
                 });
 
-                cache.writeQuery<
-                  FindCodeReviewQuestionsQuery,
-                  FindCodeReviewQuestionsVariables
-                >({
-                  query: findCodeReviewQuestionsQuery,
-                  variables: {
-                    postId,
-                    path,
-                  },
-                  data: {
-                    __typename: "Query",
-                    findCodeReviewQuestions: [
-                      ...x!.findCodeReviewQuestions,
-                      data.createCodeReviewQuestion.codeReviewQuestion,
-                    ],
-                  },
-                });
+                try {
+                  cache.writeQuery<
+                    FindCodeReviewQuestionsQuery,
+                    FindCodeReviewQuestionsVariables
+                  >({
+                    query: findCodeReviewQuestionsQuery,
+                    variables: {
+                      postId,
+                      path,
+                    },
+                    data: {
+                      __typename: "Query",
+                      findCodeReviewQuestions: [
+                        ...x!.findCodeReviewQuestions,
+                        data.createCodeReviewQuestion.codeReviewQuestion,
+                      ],
+                    },
+                  });
+                } catch {}
               },
             });
 
