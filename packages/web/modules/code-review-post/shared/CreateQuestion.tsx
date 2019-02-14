@@ -10,7 +10,7 @@ import { CommentForm, TextEditorResult } from "./CommentForm";
 import { PostContext } from "./PostContext";
 
 export interface CreateQuestionProps {
-  onEditorSubmit: (T: EditorSubmitProps) => void;
+  onEditorSubmit?: (T: EditorSubmitProps) => void;
   lineNum?: number;
   view: "code-view" | "repo-view";
 }
@@ -90,14 +90,18 @@ export const CreateQuestion = ({
 
             console.log(response);
 
-            onEditorSubmit({
-              submitted: true,
-              response:
-                response &&
-                response.data!.createCodeReviewQuestion.codeReviewQuestion,
-            });
+            if (onEditorSubmit) {
+              onEditorSubmit({
+                submitted: true,
+                response:
+                  response &&
+                  response.data!.createCodeReviewQuestion.codeReviewQuestion,
+              });
+            }
           } else {
-            onEditorSubmit({ submitted: false });
+            if (onEditorSubmit) {
+              onEditorSubmit({ submitted: false });
+            }
           }
         };
         return (

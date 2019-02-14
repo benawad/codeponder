@@ -1,52 +1,11 @@
 import { Question } from "@codeponder/ui";
-import React, { useCallback, useState } from "react";
-import {
-  CodeReviewQuestionInfoFragment,
-  FindCodeReviewQuestionsComponent,
-  FindCodeReviewQuestionsVariables,
-} from "../../../../generated/apollo-components";
-import { EditorSubmitProps } from "../../../../types/questionReplyTypes";
+import React from "react";
+import { FindCodeReviewQuestionsComponent, FindCodeReviewQuestionsVariables } from "../../../../generated/apollo-components";
 import { CreateQuestion } from "../CreateQuestion";
 
 interface Props {
   variables: FindCodeReviewQuestionsVariables;
 }
-
-interface QuestionListProps {
-  list: CodeReviewQuestionInfoFragment[];
-}
-
-const InnerQuestionSection: React.FC<QuestionListProps> = ({ list }) => {
-  const [questions, updateQuestions] = useState(list);
-
-  const onEditorSubmit = useCallback(({
-    submitted,
-    response,
-  }: EditorSubmitProps) => {
-    if (submitted && response) {
-      updateQuestions([
-        ...questions,
-        response as CodeReviewQuestionInfoFragment,
-      ]);
-    }
-  }, [questions]);
-
-  return (
-    <>
-      <CreateQuestion onEditorSubmit={onEditorSubmit} view="repo-view" />
-      <div
-        style={{
-          border: "1px solid #F2F2F2",
-          borderRadius: "5px",
-        }}
-      >
-        {questions.map(crq => (
-          <Question key={crq.id} {...crq} />
-        ))}
-      </div>
-    </>
-  );
-};
 
 export const QuestionSection = ({ variables }: Props) => {
   return (
@@ -55,7 +14,28 @@ export const QuestionSection = ({ variables }: Props) => {
         if (!data || loading) {
           return null;
         }
-        return <InnerQuestionSection list={data.findCodeReviewQuestions} />;
+
+        return (
+          <>
+            <div
+              style={{ fontSize: 24, fontFamily: "rubik", marginTop: "4rem", marginBottom: '.5rem' }}
+            >
+              Questions
+            </div>
+            <CreateQuestion view="repo-view" />
+            <div
+              style={{
+                border: "1px solid #F2F2F2",
+                borderRadius: "5px",
+              }}
+            >
+              {data &&
+                data.findCodeReviewQuestions.map(crq => (
+                  <Question key={crq.id} {...crq} />
+                ))}
+            </div>
+          </>
+        );
       }}
     </FindCodeReviewQuestionsComponent>
   );
