@@ -13,6 +13,7 @@ export const codeReviewQuestionInfoFragment = gql`
     numReplies
     createdAt
     path
+    postId
     creator {
       ...UserInfo
     }

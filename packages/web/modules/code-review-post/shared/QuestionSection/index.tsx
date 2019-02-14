@@ -1,6 +1,10 @@
 import { Question } from "@codeponder/ui";
 import React from "react";
-import { FindCodeReviewQuestionsComponent, FindCodeReviewQuestionsVariables } from "../../../../generated/apollo-components";
+import {
+  FindCodeReviewQuestionsComponent,
+  FindCodeReviewQuestionsVariables,
+} from "../../../../generated/apollo-components";
+import { Link } from "../../../../server/routes";
 import { CreateQuestion } from "../CreateQuestion";
 
 interface Props {
@@ -18,7 +22,12 @@ export const QuestionSection = ({ variables }: Props) => {
         return (
           <>
             <div
-              style={{ fontSize: 24, fontFamily: "rubik", marginTop: "4rem", marginBottom: '.5rem' }}
+              style={{
+                fontSize: 24,
+                fontFamily: "rubik",
+                marginTop: "4rem",
+                marginBottom: ".5rem",
+              }}
             >
               Questions
             </div>
@@ -31,7 +40,21 @@ export const QuestionSection = ({ variables }: Props) => {
             >
               {data &&
                 data.findCodeReviewQuestions.map(crq => (
-                  <Question key={crq.id} {...crq} />
+                  <Question
+                    key={crq.id}
+                    renderLink={body => (
+                      <Link
+                        route="post"
+                        params={{
+                          id: crq.postId,
+                          path: crq.path || "",
+                        }}
+                      >
+                        <a>{body}</a>
+                      </Link>
+                    )}
+                    {...crq}
+                  />
                 ))}
             </div>
           </>

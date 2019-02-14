@@ -246,6 +246,8 @@ export type CodeReviewQuestionInfoFragment = {
 
   path: Maybe<string>;
 
+  postId: string;
+
   creator: CodeReviewQuestionInfoCreator;
 
   replies: CodeReviewQuestionInfoReplies[];
@@ -344,6 +346,7 @@ export const CodeReviewQuestionInfoFragmentDoc = gql`
     numReplies
     createdAt
     path
+    postId
     creator {
       ...UserInfo
     }

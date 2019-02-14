@@ -23,7 +23,7 @@ const data = {
 
 storiesOf("Question", module).add("basic example", () => (
   <div style={{ display: "inline-block" }}>
-    <Question {...data} />
+    <Question renderLink={() => <div />} {...data} />
   </div>
 ));
 
