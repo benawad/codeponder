@@ -178,6 +178,7 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
               <QuestionSection
                 variables={{
                   postId: id,
+                  path: "",
                 }}
               />
             </PostContext.Provider>
