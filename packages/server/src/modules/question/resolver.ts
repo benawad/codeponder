@@ -11,6 +11,7 @@ import {
 } from "type-graphql";
 import { FindConditions, getConnection, IsNull, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
+import { Comment } from "../../entity/Comment";
 import { Question } from "../../entity/Question";
 import { DisplayError } from "../../errors/DisplayError";
 import { QuestionRepository } from "../../repositories/QuestionRepo";
