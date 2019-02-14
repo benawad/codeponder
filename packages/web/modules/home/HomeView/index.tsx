@@ -1,7 +1,7 @@
 import { MyButton, PostRow, SidebarCard, Topic } from "@codeponder/ui";
 import { NextContext } from "next";
 import * as React from "react";
-import { Box } from "rebass";
+import { Box, Text } from "rebass";
 import {
   FindCodeReviewPostComponent,
   FindCodeReviewPostQuery,
@@ -145,8 +145,11 @@ export class HomeView extends React.Component<Props, State> {
                       </>
                     )}
                   </SidebarCard>
-                  <SidebarCard flex="0 0 24rem" ml="4rem">
-                    i am sidebar
+                  <SidebarCard flex="0 0 24rem" ml="4rem" p="1rem">
+                    <Text fontFamily="rubik">
+                      With Code Ponder you can post your code from GitHub and
+                      get reviewed on it.
+                    </Text>
                   </SidebarCard>
                 </div>
               </div>
