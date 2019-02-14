@@ -6,7 +6,7 @@ import { Flex, Link } from "rebass";
 import styled from "styled-components";
 import Logo from "../../../../assets/logo/logo2.png";
 import { MeComponent } from "../../generated/apollo-components";
-import { CreateCodeReviewModal } from "./CreateCodeReviewModal";
+import { CreatePostModal } from "./CreatePostModal";
 
 const Container = styled(Flex)`
   flex: 0 0 auto;
@@ -39,7 +39,7 @@ export const NavBar = () => {
           if (isLoggedIn) {
             return (
               <Flex alignItems="center">
-                <CreateCodeReviewModal />
+                <CreatePostModal />
                 <Menu
                   options={["logout"]}
                   renderOption={({ Anchor }) => (

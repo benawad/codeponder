@@ -13,11 +13,11 @@ export const commentLoader = () =>
 
     const qrMap: { [key: string]: Comment[] } = {};
 
-    comments.forEach(reply => {
-      if (reply.questionId in qrMap) {
-        qrMap[reply.questionId].push(reply);
+    comments.forEach(comment => {
+      if (comment.questionId in qrMap) {
+        qrMap[comment.questionId].push(comment);
       } else {
-        qrMap[reply.questionId] = [reply];
+        qrMap[comment.questionId] = [comment];
       }
     });
 

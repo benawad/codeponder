@@ -1,6 +1,6 @@
 export type Maybe<T> = T | null;
 
-export interface FindCodeReviewPostInput {
+export interface FindPostInput {
   topics?: Maybe<string[]>;
 
   offset: number;
@@ -8,7 +8,13 @@ export interface FindCodeReviewPostInput {
   limit: number;
 }
 
-export interface CreateCodeReviewPostInput {
+export interface CreateCommentInput {
+  text: string;
+
+  questionId: string;
+}
+
+export interface CreatePostInput {
   topics: string[];
 
   repo: string;
@@ -22,7 +28,7 @@ export interface CreateCodeReviewPostInput {
   repoOwner: string;
 }
 
-export interface CreateCodeReviewQuestionInput {
+export interface CreateQuestionInput {
   lineNum?: Maybe<number>;
 
   title: string;
@@ -38,12 +44,6 @@ export interface CreateCodeReviewQuestionInput {
   programmingLanguage?: Maybe<string>;
 }
 
-export interface CreateQuestionReplyInput {
-  text: string;
-
-  questionId: string;
-}
-
 /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
 export type DateTime = any;
 
@@ -51,86 +51,104 @@ export type DateTime = any;
 // Documents
 // ====================================================
 
-export type FindOrCreateCodeReviewPostVariables = {
-  codeReviewPost: CreateCodeReviewPostInput;
+export type CreateCommentVariables = {
+  comment: CreateCommentInput;
 };
 
-export type FindOrCreateCodeReviewPostMutation = {
+export type CreateCommentMutation = {
   __typename?: "Mutation";
 
-  findOrCreateCodeReviewPost: FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost;
+  createComment: CreateCommentCreateComment;
 };
 
-export type FindOrCreateCodeReviewPostFindOrCreateCodeReviewPost = {
-  __typename?: "CodeReviewPostResponse";
+export type CreateCommentCreateComment = {
+  __typename?: "CommentResponse";
 
-  codeReviewPost: FindOrCreateCodeReviewPostCodeReviewPost;
+  comment: CreateCommentComment;
 };
 
-export type FindOrCreateCodeReviewPostCodeReviewPost = CodeReviewPostInfoFragment;
+export type CreateCommentComment = CommentInfoFragment;
 
-export type FindCodeReviewPostVariables = {
-  input: FindCodeReviewPostInput;
+export type FindOrCreatePostVariables = {
+  post: CreatePostInput;
 };
 
-export type FindCodeReviewPostQuery = {
+export type FindOrCreatePostMutation = {
+  __typename?: "Mutation";
+
+  findOrCreatePost: FindOrCreatePostFindOrCreatePost;
+};
+
+export type FindOrCreatePostFindOrCreatePost = {
+  __typename?: "PostResponse";
+
+  post: FindOrCreatePostPost;
+};
+
+export type FindOrCreatePostPost = PostInfoFragment;
+
+export type FindPostVariables = {
+  input: FindPostInput;
+};
+
+export type FindPostQuery = {
   __typename?: "Query";
 
-  findCodeReviewPost: FindCodeReviewPostFindCodeReviewPost;
+  findPost: FindPostFindPost;
 };
 
-export type FindCodeReviewPostFindCodeReviewPost = {
-  __typename?: "FindCodeReviewPostResponse";
+export type FindPostFindPost = {
+  __typename?: "FindPostResponse";
 
   hasMore: boolean;
 
-  posts: FindCodeReviewPostPosts[];
+  posts: FindPostPosts[];
 };
 
-export type FindCodeReviewPostPosts = CodeReviewPostInfoFragment;
+export type FindPostPosts = PostInfoFragment;
 
-export type GetCodeReviewPostByIdVariables = {
+export type GetPostByIdVariables = {
   id: string;
 };
 
-export type GetCodeReviewPostByIdQuery = {
+export type GetPostByIdQuery = {
   __typename?: "Query";
 
-  getCodeReviewPostById: Maybe<GetCodeReviewPostByIdGetCodeReviewPostById>;
+  getPostById: Maybe<GetPostByIdGetPostById>;
 };
 
-export type GetCodeReviewPostByIdGetCodeReviewPostById = CodeReviewPostInfoFragment;
+export type GetPostByIdGetPostById = PostInfoFragment;
 
-export type CreateCodeReviewQuestionVariables = {
-  codeReviewQuestion: CreateCodeReviewQuestionInput;
+export type CreateQuestionVariables = {
+  question: CreateQuestionInput;
 };
 
-export type CreateCodeReviewQuestionMutation = {
+export type CreateQuestionMutation = {
   __typename?: "Mutation";
 
-  createCodeReviewQuestion: CreateCodeReviewQuestionCreateCodeReviewQuestion;
+  createQuestion: CreateQuestionCreateQuestion;
 };
 
-export type CreateCodeReviewQuestionCreateCodeReviewQuestion = {
-  __typename?: "CodeReviewQuestionResponse";
+export type CreateQuestionCreateQuestion = {
+  __typename?: "QuestionResponse";
 
-  codeReviewQuestion: CreateCodeReviewQuestionCodeReviewQuestion;
+  question: CreateQuestionQuestion;
 };
 
-export type CreateCodeReviewQuestionCodeReviewQuestion = CodeReviewQuestionInfoFragment;
+export type CreateQuestionQuestion = QuestionInfoFragment;
 
-export type FindCodeReviewQuestionsVariables = {
+export type FindQuestionsVariables = {
   postId: string;
   path?: Maybe<string>;
 };
 
-export type FindCodeReviewQuestionsQuery = {
+export type FindQuestionsQuery = {
   __typename?: "Query";
 
-  findCodeReviewQuestions: FindCodeReviewQuestionsFindCodeReviewQuestions[];
+  findQuestions: FindQuestionsFindQuestions[];
 };
 
-export type FindCodeReviewQuestionsFindCodeReviewQuestions = CodeReviewQuestionInfoFragment;
+export type FindQuestionsFindQuestions = QuestionInfoFragment;
 
 export type HomeQuestionsVariables = {
   offset?: Maybe<number>;
@@ -144,7 +162,7 @@ export type HomeQuestionsQuery = {
 };
 
 export type HomeQuestionsHomeQuestions = {
-  __typename?: "CodeReviewQuestion";
+  __typename?: "Question";
 
   id: string;
 
@@ -165,24 +183,6 @@ export type HomeQuestionsCreator = {
   pictureUrl: string;
 };
 
-export type CreateQuestionReplyVariables = {
-  questionReply: CreateQuestionReplyInput;
-};
-
-export type CreateQuestionReplyMutation = {
-  __typename?: "Mutation";
-
-  createQuestionReply: CreateQuestionReplyCreateQuestionReply;
-};
-
-export type CreateQuestionReplyCreateQuestionReply = {
-  __typename?: "QuestionReplyResponse";
-
-  questionReply: CreateQuestionReplyQuestionReply;
-};
-
-export type CreateQuestionReplyQuestionReply = QuestionReplyInfoFragment;
-
 export type LogoutVariables = {};
 
 export type LogoutMutation = {
@@ -201,8 +201,22 @@ export type MeQuery = {
 
 export type MeMe = UserInfoFragment;
 
-export type CodeReviewPostInfoFragment = {
-  __typename?: "CodeReviewPost";
+export type CommentInfoFragment = {
+  __typename?: "Comment";
+
+  id: string;
+
+  text: string;
+
+  createdAt: DateTime;
+
+  creator: CommentInfoCreator;
+};
+
+export type CommentInfoCreator = UserInfoFragment;
+
+export type PostInfoFragment = {
+  __typename?: "Post";
 
   id: string;
 
@@ -220,13 +234,13 @@ export type CodeReviewPostInfoFragment = {
 
   createdAt: DateTime;
 
-  creator: CodeReviewPostInfoCreator;
+  creator: PostInfoCreator;
 };
 
-export type CodeReviewPostInfoCreator = UserInfoFragment;
+export type PostInfoCreator = UserInfoFragment;
 
-export type CodeReviewQuestionInfoFragment = {
-  __typename?: "CodeReviewQuestion";
+export type QuestionInfoFragment = {
+  __typename?: "Question";
 
   id: string;
 
@@ -240,7 +254,7 @@ export type CodeReviewQuestionInfoFragment = {
 
   codeSnippet: Maybe<string>;
 
-  numReplies: number;
+  numComments: number;
 
   createdAt: DateTime;
 
@@ -248,28 +262,14 @@ export type CodeReviewQuestionInfoFragment = {
 
   postId: string;
 
-  creator: CodeReviewQuestionInfoCreator;
+  creator: QuestionInfoCreator;
 
-  replies: CodeReviewQuestionInfoReplies[];
+  comments: QuestionInfoComments[];
 };
 
-export type CodeReviewQuestionInfoCreator = UserInfoFragment;
+export type QuestionInfoCreator = UserInfoFragment;
 
-export type CodeReviewQuestionInfoReplies = QuestionReplyInfoFragment;
-
-export type QuestionReplyInfoFragment = {
-  __typename?: "QuestionReply";
-
-  id: string;
-
-  text: string;
-
-  createdAt: DateTime;
-
-  creator: QuestionReplyInfoCreator;
-};
-
-export type QuestionReplyInfoCreator = UserInfoFragment;
+export type QuestionInfoComments = CommentInfoFragment;
 
 export type UserInfoFragment = {
   __typename?: "User";
@@ -304,8 +304,8 @@ export const UserInfoFragmentDoc = gql`
   }
 `;
 
-export const CodeReviewPostInfoFragmentDoc = gql`
-  fragment CodeReviewPostInfo on CodeReviewPost {
+export const PostInfoFragmentDoc = gql`
+  fragment PostInfo on Post {
     id
     title
     repo
@@ -322,8 +322,8 @@ export const CodeReviewPostInfoFragmentDoc = gql`
   ${UserInfoFragmentDoc}
 `;
 
-export const QuestionReplyInfoFragmentDoc = gql`
-  fragment QuestionReplyInfo on QuestionReply {
+export const CommentInfoFragmentDoc = gql`
+  fragment CommentInfo on Comment {
     id
     text
     createdAt
@@ -335,308 +335,315 @@ export const QuestionReplyInfoFragmentDoc = gql`
   ${UserInfoFragmentDoc}
 `;
 
-export const CodeReviewQuestionInfoFragmentDoc = gql`
-  fragment CodeReviewQuestionInfo on CodeReviewQuestion {
+export const QuestionInfoFragmentDoc = gql`
+  fragment QuestionInfo on Question {
     id
     lineNum
     title
     text
     programmingLanguage
     codeSnippet
-    numReplies
+    numComments
     createdAt
     path
     postId
     creator {
       ...UserInfo
     }
-    replies {
-      ...QuestionReplyInfo
+    comments {
+      ...CommentInfo
     }
   }
 
   ${UserInfoFragmentDoc}
-  ${QuestionReplyInfoFragmentDoc}
+  ${CommentInfoFragmentDoc}
 `;
 
 // ====================================================
 // Components
 // ====================================================
 
-export const FindOrCreateCodeReviewPostDocument = gql`
-  mutation FindOrCreateCodeReviewPost(
-    $codeReviewPost: CreateCodeReviewPostInput!
-  ) {
-    findOrCreateCodeReviewPost(codeReviewPost: $codeReviewPost) {
-      codeReviewPost {
-        ...CodeReviewPostInfo
+export const CreateCommentDocument = gql`
+  mutation CreateComment($comment: CreateCommentInput!) {
+    createComment(comment: $comment) {
+      comment {
+        ...CommentInfo
       }
     }
   }
 
-  ${CodeReviewPostInfoFragmentDoc}
+  ${CommentInfoFragmentDoc}
 `;
-export class FindOrCreateCodeReviewPostComponent extends React.Component<
+export class CreateCommentComponent extends React.Component<
   Partial<
-    ReactApollo.MutationProps<
-      FindOrCreateCodeReviewPostMutation,
-      FindOrCreateCodeReviewPostVariables
-    >
+    ReactApollo.MutationProps<CreateCommentMutation, CreateCommentVariables>
   >
 > {
   render() {
     return (
-      <ReactApollo.Mutation<
-        FindOrCreateCodeReviewPostMutation,
-        FindOrCreateCodeReviewPostVariables
-      >
-        mutation={FindOrCreateCodeReviewPostDocument}
+      <ReactApollo.Mutation<CreateCommentMutation, CreateCommentVariables>
+        mutation={CreateCommentDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type FindOrCreateCodeReviewPostProps<TChildProps = any> = Partial<
-  ReactApollo.MutateProps<
-    FindOrCreateCodeReviewPostMutation,
-    FindOrCreateCodeReviewPostVariables
-  >
+export type CreateCommentProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<CreateCommentMutation, CreateCommentVariables>
 > &
   TChildProps;
-export type FindOrCreateCodeReviewPostMutationFn = ReactApollo.MutationFn<
-  FindOrCreateCodeReviewPostMutation,
-  FindOrCreateCodeReviewPostVariables
+export type CreateCommentMutationFn = ReactApollo.MutationFn<
+  CreateCommentMutation,
+  CreateCommentVariables
 >;
-export function FindOrCreateCodeReviewPostHOC<TProps, TChildProps = any>(
+export function CreateCommentHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        FindOrCreateCodeReviewPostMutation,
-        FindOrCreateCodeReviewPostVariables,
-        FindOrCreateCodeReviewPostProps<TChildProps>
+        CreateCommentMutation,
+        CreateCommentVariables,
+        CreateCommentProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    FindOrCreateCodeReviewPostMutation,
-    FindOrCreateCodeReviewPostVariables,
-    FindOrCreateCodeReviewPostProps<TChildProps>
-  >(FindOrCreateCodeReviewPostDocument, operationOptions);
+    CreateCommentMutation,
+    CreateCommentVariables,
+    CreateCommentProps<TChildProps>
+  >(CreateCommentDocument, operationOptions);
 }
-export const FindCodeReviewPostDocument = gql`
-  query findCodeReviewPost($input: FindCodeReviewPostInput!) {
-    findCodeReviewPost(input: $input) {
+export const FindOrCreatePostDocument = gql`
+  mutation FindOrCreatePost($post: CreatePostInput!) {
+    findOrCreatePost(post: $post) {
+      post {
+        ...PostInfo
+      }
+    }
+  }
+
+  ${PostInfoFragmentDoc}
+`;
+export class FindOrCreatePostComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      FindOrCreatePostMutation,
+      FindOrCreatePostVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<FindOrCreatePostMutation, FindOrCreatePostVariables>
+        mutation={FindOrCreatePostDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type FindOrCreatePostProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<FindOrCreatePostMutation, FindOrCreatePostVariables>
+> &
+  TChildProps;
+export type FindOrCreatePostMutationFn = ReactApollo.MutationFn<
+  FindOrCreatePostMutation,
+  FindOrCreatePostVariables
+>;
+export function FindOrCreatePostHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        FindOrCreatePostMutation,
+        FindOrCreatePostVariables,
+        FindOrCreatePostProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    FindOrCreatePostMutation,
+    FindOrCreatePostVariables,
+    FindOrCreatePostProps<TChildProps>
+  >(FindOrCreatePostDocument, operationOptions);
+}
+export const FindPostDocument = gql`
+  query findPost($input: FindPostInput!) {
+    findPost(input: $input) {
       hasMore
       posts {
-        ...CodeReviewPostInfo
+        ...PostInfo
       }
     }
   }
 
-  ${CodeReviewPostInfoFragmentDoc}
+  ${PostInfoFragmentDoc}
 `;
-export class FindCodeReviewPostComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<FindCodeReviewPostQuery, FindCodeReviewPostVariables>
-  >
+export class FindPostComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<FindPostQuery, FindPostVariables>>
 > {
   render() {
     return (
-      <ReactApollo.Query<FindCodeReviewPostQuery, FindCodeReviewPostVariables>
-        query={FindCodeReviewPostDocument}
+      <ReactApollo.Query<FindPostQuery, FindPostVariables>
+        query={FindPostDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type FindCodeReviewPostProps<TChildProps = any> = Partial<
-  ReactApollo.DataProps<FindCodeReviewPostQuery, FindCodeReviewPostVariables>
+export type FindPostProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<FindPostQuery, FindPostVariables>
 > &
   TChildProps;
-export function FindCodeReviewPostHOC<TProps, TChildProps = any>(
+export function FindPostHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        FindCodeReviewPostQuery,
-        FindCodeReviewPostVariables,
-        FindCodeReviewPostProps<TChildProps>
+        FindPostQuery,
+        FindPostVariables,
+        FindPostProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    FindCodeReviewPostQuery,
-    FindCodeReviewPostVariables,
-    FindCodeReviewPostProps<TChildProps>
-  >(FindCodeReviewPostDocument, operationOptions);
+    FindPostQuery,
+    FindPostVariables,
+    FindPostProps<TChildProps>
+  >(FindPostDocument, operationOptions);
 }
-export const GetCodeReviewPostByIdDocument = gql`
-  query GetCodeReviewPostById($id: String!) {
-    getCodeReviewPostById(id: $id) {
-      ...CodeReviewPostInfo
+export const GetPostByIdDocument = gql`
+  query GetPostById($id: String!) {
+    getPostById(id: $id) {
+      ...PostInfo
     }
   }
 
-  ${CodeReviewPostInfoFragmentDoc}
+  ${PostInfoFragmentDoc}
 `;
-export class GetCodeReviewPostByIdComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<
-      GetCodeReviewPostByIdQuery,
-      GetCodeReviewPostByIdVariables
-    >
-  >
+export class GetPostByIdComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<GetPostByIdQuery, GetPostByIdVariables>>
 > {
   render() {
     return (
-      <ReactApollo.Query<
-        GetCodeReviewPostByIdQuery,
-        GetCodeReviewPostByIdVariables
-      >
-        query={GetCodeReviewPostByIdDocument}
+      <ReactApollo.Query<GetPostByIdQuery, GetPostByIdVariables>
+        query={GetPostByIdDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type GetCodeReviewPostByIdProps<TChildProps = any> = Partial<
-  ReactApollo.DataProps<
-    GetCodeReviewPostByIdQuery,
-    GetCodeReviewPostByIdVariables
-  >
+export type GetPostByIdProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<GetPostByIdQuery, GetPostByIdVariables>
 > &
   TChildProps;
-export function GetCodeReviewPostByIdHOC<TProps, TChildProps = any>(
+export function GetPostByIdHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        GetCodeReviewPostByIdQuery,
-        GetCodeReviewPostByIdVariables,
-        GetCodeReviewPostByIdProps<TChildProps>
+        GetPostByIdQuery,
+        GetPostByIdVariables,
+        GetPostByIdProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    GetCodeReviewPostByIdQuery,
-    GetCodeReviewPostByIdVariables,
-    GetCodeReviewPostByIdProps<TChildProps>
-  >(GetCodeReviewPostByIdDocument, operationOptions);
+    GetPostByIdQuery,
+    GetPostByIdVariables,
+    GetPostByIdProps<TChildProps>
+  >(GetPostByIdDocument, operationOptions);
 }
-export const CreateCodeReviewQuestionDocument = gql`
-  mutation CreateCodeReviewQuestion(
-    $codeReviewQuestion: CreateCodeReviewQuestionInput!
-  ) {
-    createCodeReviewQuestion(codeReviewQuestion: $codeReviewQuestion) {
-      codeReviewQuestion {
-        ...CodeReviewQuestionInfo
+export const CreateQuestionDocument = gql`
+  mutation CreateQuestion($question: CreateQuestionInput!) {
+    createQuestion(question: $question) {
+      question {
+        ...QuestionInfo
       }
     }
   }
 
-  ${CodeReviewQuestionInfoFragmentDoc}
+  ${QuestionInfoFragmentDoc}
 `;
-export class CreateCodeReviewQuestionComponent extends React.Component<
+export class CreateQuestionComponent extends React.Component<
   Partial<
-    ReactApollo.MutationProps<
-      CreateCodeReviewQuestionMutation,
-      CreateCodeReviewQuestionVariables
-    >
+    ReactApollo.MutationProps<CreateQuestionMutation, CreateQuestionVariables>
   >
 > {
   render() {
     return (
-      <ReactApollo.Mutation<
-        CreateCodeReviewQuestionMutation,
-        CreateCodeReviewQuestionVariables
-      >
-        mutation={CreateCodeReviewQuestionDocument}
+      <ReactApollo.Mutation<CreateQuestionMutation, CreateQuestionVariables>
+        mutation={CreateQuestionDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type CreateCodeReviewQuestionProps<TChildProps = any> = Partial<
-  ReactApollo.MutateProps<
-    CreateCodeReviewQuestionMutation,
-    CreateCodeReviewQuestionVariables
-  >
+export type CreateQuestionProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<CreateQuestionMutation, CreateQuestionVariables>
 > &
   TChildProps;
-export type CreateCodeReviewQuestionMutationFn = ReactApollo.MutationFn<
-  CreateCodeReviewQuestionMutation,
-  CreateCodeReviewQuestionVariables
+export type CreateQuestionMutationFn = ReactApollo.MutationFn<
+  CreateQuestionMutation,
+  CreateQuestionVariables
 >;
-export function CreateCodeReviewQuestionHOC<TProps, TChildProps = any>(
+export function CreateQuestionHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        CreateCodeReviewQuestionMutation,
-        CreateCodeReviewQuestionVariables,
-        CreateCodeReviewQuestionProps<TChildProps>
+        CreateQuestionMutation,
+        CreateQuestionVariables,
+        CreateQuestionProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    CreateCodeReviewQuestionMutation,
-    CreateCodeReviewQuestionVariables,
-    CreateCodeReviewQuestionProps<TChildProps>
-  >(CreateCodeReviewQuestionDocument, operationOptions);
+    CreateQuestionMutation,
+    CreateQuestionVariables,
+    CreateQuestionProps<TChildProps>
+  >(CreateQuestionDocument, operationOptions);
 }
-export const FindCodeReviewQuestionsDocument = gql`
-  query FindCodeReviewQuestions($postId: String!, $path: String) {
-    findCodeReviewQuestions(postId: $postId, path: $path) {
-      ...CodeReviewQuestionInfo
+export const FindQuestionsDocument = gql`
+  query FindQuestions($postId: String!, $path: String) {
+    findQuestions(postId: $postId, path: $path) {
+      ...QuestionInfo
     }
   }
 
-  ${CodeReviewQuestionInfoFragmentDoc}
+  ${QuestionInfoFragmentDoc}
 `;
-export class FindCodeReviewQuestionsComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<
-      FindCodeReviewQuestionsQuery,
-      FindCodeReviewQuestionsVariables
-    >
-  >
+export class FindQuestionsComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<FindQuestionsQuery, FindQuestionsVariables>>
 > {
   render() {
     return (
-      <ReactApollo.Query<
-        FindCodeReviewQuestionsQuery,
-        FindCodeReviewQuestionsVariables
-      >
-        query={FindCodeReviewQuestionsDocument}
+      <ReactApollo.Query<FindQuestionsQuery, FindQuestionsVariables>
+        query={FindQuestionsDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type FindCodeReviewQuestionsProps<TChildProps = any> = Partial<
-  ReactApollo.DataProps<
-    FindCodeReviewQuestionsQuery,
-    FindCodeReviewQuestionsVariables
-  >
+export type FindQuestionsProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<FindQuestionsQuery, FindQuestionsVariables>
 > &
   TChildProps;
-export function FindCodeReviewQuestionsHOC<TProps, TChildProps = any>(
+export function FindQuestionsHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        FindCodeReviewQuestionsQuery,
-        FindCodeReviewQuestionsVariables,
-        FindCodeReviewQuestionsProps<TChildProps>
+        FindQuestionsQuery,
+        FindQuestionsVariables,
+        FindQuestionsProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    FindCodeReviewQuestionsQuery,
-    FindCodeReviewQuestionsVariables,
-    FindCodeReviewQuestionsProps<TChildProps>
-  >(FindCodeReviewQuestionsDocument, operationOptions);
+    FindQuestionsQuery,
+    FindQuestionsVariables,
+    FindQuestionsProps<TChildProps>
+  >(FindQuestionsDocument, operationOptions);
 }
 export const HomeQuestionsDocument = gql`
   query HomeQuestions($offset: Int, $limit: Int) {
@@ -684,65 +691,6 @@ export function HomeQuestionsHOC<TProps, TChildProps = any>(
     HomeQuestionsVariables,
     HomeQuestionsProps<TChildProps>
   >(HomeQuestionsDocument, operationOptions);
-}
-export const CreateQuestionReplyDocument = gql`
-  mutation CreateQuestionReply($questionReply: CreateQuestionReplyInput!) {
-    createQuestionReply(questionReply: $questionReply) {
-      questionReply {
-        ...QuestionReplyInfo
-      }
-    }
-  }
-
-  ${QuestionReplyInfoFragmentDoc}
-`;
-export class CreateQuestionReplyComponent extends React.Component<
-  Partial<
-    ReactApollo.MutationProps<
-      CreateQuestionReplyMutation,
-      CreateQuestionReplyVariables
-    >
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Mutation<
-        CreateQuestionReplyMutation,
-        CreateQuestionReplyVariables
-      >
-        mutation={CreateQuestionReplyDocument}
-        {...(this as any)["props"] as any}
-      />
-    );
-  }
-}
-export type CreateQuestionReplyProps<TChildProps = any> = Partial<
-  ReactApollo.MutateProps<
-    CreateQuestionReplyMutation,
-    CreateQuestionReplyVariables
-  >
-> &
-  TChildProps;
-export type CreateQuestionReplyMutationFn = ReactApollo.MutationFn<
-  CreateQuestionReplyMutation,
-  CreateQuestionReplyVariables
->;
-export function CreateQuestionReplyHOC<TProps, TChildProps = any>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        CreateQuestionReplyMutation,
-        CreateQuestionReplyVariables,
-        CreateQuestionReplyProps<TChildProps>
-      >
-    | undefined
-) {
-  return ReactApollo.graphql<
-    TProps,
-    CreateQuestionReplyMutation,
-    CreateQuestionReplyVariables,
-    CreateQuestionReplyProps<TChildProps>
-  >(CreateQuestionReplyDocument, operationOptions);
 }
 export const LogoutDocument = gql`
   mutation Logout {

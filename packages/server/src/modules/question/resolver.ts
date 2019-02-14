@@ -31,14 +31,14 @@ export class QuestionResolver {
   ) {}
 
   @FieldResolver()
-  numReplies(@Root() root: Question) {
+  numComments(@Root() root: Question) {
     return this.commentRepo.count({ where: { questionId: root.id } });
   }
 
   @Mutation(() => QuestionResponse)
   @UseMiddleware(isAuthenticated)
   async createQuestion(
-    @Arg("Question") input: CreateQuestionInput,
+    @Arg("question") input: CreateQuestionInput,
     @Ctx() ctx: MyContext
   ): Promise<QuestionResponse> {
     const q = await this.questionRepo.add({
@@ -114,8 +114,8 @@ export class QuestionResolver {
   }
 
   @FieldResolver(() => [Comment])
-  async replies(@Root() root: Question, @Ctx() ctx: MyContext) {
-    const replies = await ctx.commentLoader.load(root.id);
-    return replies || [];
+  async comments(@Root() root: Question, @Ctx() ctx: MyContext) {
+    const comments = await ctx.commentLoader.load(root.id);
+    return comments || [];
   }
 }

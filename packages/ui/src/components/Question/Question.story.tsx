@@ -9,7 +9,7 @@ const data = {
   text: `i am a question body
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Est consequuntur modi quas alias placeat aliquam vitae explicabo magni saepe commodi. Corporis ullam ratione fugit optio tempore provident voluptates commodi quasi!`,
   codeSnippet: "i am code",
-  numReplies: 14,
+  numComments: 14,
   createdAt: "12/28/2018",
   path: "/packages/server/package.json",
   creator: {

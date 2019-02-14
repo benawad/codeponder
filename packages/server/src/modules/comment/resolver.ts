@@ -5,7 +5,7 @@ import { Comment } from "../../entity/Comment";
 import { MyContext } from "../../types/Context";
 import { isAuthenticated } from "../shared/middleware/isAuthenticated";
 import { CreateCommentInput } from "./createInput";
-import { QuestionReplyResponse } from "./response";
+import { CommentResponse } from "./response";
 
 @Resolver(Comment)
 export class CommentResolver {
@@ -14,12 +14,12 @@ export class CommentResolver {
     private readonly commentRepo: Repository<Comment>
   ) {}
 
-  @Mutation(() => QuestionReplyResponse)
+  @Mutation(() => CommentResponse)
   @UseMiddleware(isAuthenticated)
-  async createQuestionReply(
-    @Arg("questionReply") input: CreateCommentInput,
+  async createComment(
+    @Arg("comment") input: CreateCommentInput,
     @Ctx() { req }: MyContext
-  ): Promise<QuestionReplyResponse> {
+  ): Promise<CommentResponse> {
     return {
       comment: await this.commentRepo.save({
         ...input,

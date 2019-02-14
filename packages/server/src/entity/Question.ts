@@ -77,5 +77,5 @@ export class Question {
   updatedAt: Date;
 
   @Field(() => Int)
-  numReplies: number;
+  numComments: number;
 }

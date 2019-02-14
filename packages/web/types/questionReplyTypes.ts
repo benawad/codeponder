@@ -1,11 +1,11 @@
 import {
-  CodeReviewQuestionInfoFragment,
+  QuestionInfoFragment,
   QuestionReplyInfoFragment,
 } from "../generated/apollo-components";
 
 export interface EditorSubmitProps {
   submitted: boolean;
-  response?: CodeReviewQuestionInfoFragment | QuestionReplyInfoFragment | void;
+  response?: QuestionInfoFragment | QuestionReplyInfoFragment | void;
 }
 
 type KeysToExclude = {
@@ -13,8 +13,8 @@ type KeysToExclude = {
 };
 
 export type QuestionInfo = Pick<
-  CodeReviewQuestionInfoFragment,
-  Exclude<keyof CodeReviewQuestionInfoFragment, keyof KeysToExclude>
+  QuestionInfoFragment,
+  Exclude<keyof QuestionInfoFragment, keyof KeysToExclude>
 >;
 
 export interface QuestionProps extends QuestionInfo {

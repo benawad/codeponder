@@ -32,7 +32,7 @@ export class PostResolvers {
   @Mutation(() => PostResponse)
   @UseMiddleware(isAuthenticated)
   async findOrCreatePost(
-    @Arg("Post") input: CreatePostInput,
+    @Arg("post") input: CreatePostInput,
     @Ctx() { req }: MyContext
   ): Promise<PostResponse> {
     let value = await this.postRepo.findOne({

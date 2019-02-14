@@ -1,3 +1,3 @@
-import { CodeReviewPostView } from "../modules/code-review-post/CodeReviewPostView";
+import { PostView } from "../modules/post/PostView";
 
-export default CodeReviewPostView;
+export default PostView;
