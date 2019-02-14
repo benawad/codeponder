@@ -25,6 +25,7 @@ import { FilePath } from "./FilePath";
 interface Props {
   id: string;
   path?: string;
+  questionId?: string;
   owner: string;
   name: string;
   expression: string;
@@ -34,7 +35,7 @@ interface Props {
 export class CodeReviewPostView extends React.PureComponent<Props> {
   static contextType = GitHubApolloClientContext;
   static async getInitialProps({
-    query: { id, path },
+    query: { id, path, questionId },
     githubApolloClient,
     apolloClient,
     ...ctx
@@ -71,17 +72,27 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
       name: getCodeReviewPostById.repo,
       owner: getCodeReviewPostById.repoOwner,
       topics: getCodeReviewPostById.topics,
+      questionId,
     };
   }
 
   render() {
-    const { owner, path, name, expression, id, topics } = this.props;
+    const {
+      owner,
+      path,
+      name,
+      expression,
+      id,
+      topics,
+      questionId,
+    } = this.props;
     const context: ContextProps = {
       lang: path ? filenameToLang(path) : "",
       owner,
       path,
       postId: id,
     };
+
     return (
       <Layout title={`Code Review Post: ${name}`}>
         <BigCard>
@@ -124,7 +135,7 @@ export class CodeReviewPostView extends React.PureComponent<Props> {
                 return (
                   <>
                     <PostContext.Provider value={context}>
-                      <CodeFile />
+                      <CodeFile questionId={questionId} />
                     </PostContext.Provider>
                   </>
                 );

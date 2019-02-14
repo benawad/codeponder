@@ -55,7 +55,7 @@ const useHighlight = (lang: string, code: string) => {
   return highlightCode;
 };
 
-export const CodeFile: React.FC = () => {
+export const CodeFile: React.FC<{ questionId?: string }> = ({ questionId }) => {
   const { code, lang, path, postId } = useContext(PostContext);
   const highlightCode = useHighlight(lang, code || "");
 
@@ -91,6 +91,7 @@ export const CodeFile: React.FC = () => {
                   question={questionMap[index + 1]}
                   line={line}
                   lineNum={index + 1}
+                  openQuestionId={questionId}
                 />
               );
             })}

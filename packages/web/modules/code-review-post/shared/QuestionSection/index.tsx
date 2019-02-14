@@ -39,23 +39,28 @@ export const QuestionSection = ({ variables }: Props) => {
               }}
             >
               {data &&
-                data.findCodeReviewQuestions.map(crq => (
-                  <Question
-                    key={crq.id}
-                    renderLink={body => (
-                      <Link
-                        route="post"
-                        params={{
-                          id: crq.postId,
-                          path: crq.path || "",
-                        }}
-                      >
-                        <a>{body}</a>
-                      </Link>
-                    )}
-                    {...crq}
-                  />
-                ))}
+                data.findCodeReviewQuestions.map(crq => {
+                  const params: Record<string, string> = {
+                    id: crq.postId,
+                    questionId: crq.id,
+                  };
+
+                  if (crq.path) {
+                    params.path = crq.path;
+                  }
+
+                  return (
+                    <Question
+                      key={crq.id}
+                      renderLink={body => (
+                        <Link route="post" params={params}>
+                          <a>{body}</a>
+                        </Link>
+                      )}
+                      {...crq}
+                    />
+                  );
+                })}
             </div>
           </>
         );

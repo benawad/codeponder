@@ -5,14 +5,17 @@ import { CodeDiscussionView } from "./CodeDiscussionView";
 
 interface RenderLineProps {
   question?: CodeReviewQuestionInfoFragment;
+  openQuestionId?: string;
   line: string;
   lineNum: number;
 }
 
 export const RenderLine: React.FC<RenderLineProps> = memo(
-  ({ question, line, lineNum }) => {
+  ({ question, line, lineNum, openQuestionId }) => {
     const [showEditor, setShowEditor] = useState(false);
-    const [showDiscussion, setShowDiscussion] = useState(false);
+    const [showDiscussion, setShowDiscussion] = useState(
+      !!question && question.id === openQuestionId
+    );
 
     return (
       <div key={lineNum} className="token-line">
