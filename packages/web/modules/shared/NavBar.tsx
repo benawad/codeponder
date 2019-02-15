@@ -40,6 +40,20 @@ export const NavBar = () => {
             return (
               <Flex alignItems="center">
                 <CreatePostModal />
+                <NextLink href="/notifications">
+                  <a>
+                    <Icon
+                      name={
+                        data!.me!.hasNotifications
+                          ? "activeNotificationBell"
+                          : "emptyNotificationBell"
+                      }
+                      size={30}
+                      fill="#000"
+                      style={{ marginRight: "1rem", marginLeft: "1rem" }}
+                    />
+                  </a>
+                </NextLink>
                 <Menu
                   options={["logout"]}
                   renderOption={({ Anchor }) => (

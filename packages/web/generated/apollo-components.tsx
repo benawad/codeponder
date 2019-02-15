@@ -283,6 +283,8 @@ export type UserInfoFragment = {
   bio: string;
 
   accessToken: Maybe<string>;
+
+  hasNotifications: boolean;
 };
 
 import * as ReactApollo from "react-apollo";
@@ -301,6 +303,7 @@ export const UserInfoFragmentDoc = gql`
     pictureUrl
     bio
     accessToken
+    hasNotifications
   }
 `;
 
