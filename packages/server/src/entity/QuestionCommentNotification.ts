@@ -22,6 +22,7 @@ export class QuestionCommentNotification {
   @PrimaryColumn("uuid")
   commentId: string;
 
+  @Field(() => Question)
   @ManyToOne(() => Question, { onDelete: "CASCADE" })
   question: Promise<Question>;
   @Field()
@@ -29,14 +30,18 @@ export class QuestionCommentNotification {
   questionId: string;
 
   @ManyToOne(() => User, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "questionAskerId" })
-  questionAsker: Promise<User>;
+  @JoinColumn({ name: "userToNotifyId" })
+  userToNotify: Promise<User>;
   @Field()
   @Column("uuid")
-  questionAskerId: string;
+  userToNotifyId: string;
+
+  @Field(() => String)
+  @Column()
+  type: "reply" | "mention";
 
   @Field()
-  @Column()
+  @Column("boolean", { default: "false" })
   read: boolean;
 
   @Field()

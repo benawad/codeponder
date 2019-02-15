@@ -9,7 +9,6 @@ import {
 } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { CommentMentionNotification } from "../../entity/CommentMentionNotification";
 import { QuestionCommentNotification } from "../../entity/QuestionCommentNotification";
 import { User } from "../../entity/User";
 import { MyContext } from "../../types/Context";
@@ -20,10 +19,6 @@ export class UserResolver {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
-    @InjectRepository(CommentMentionNotification)
-    private readonly commentMentionNotificationRepo: Repository<
-      CommentMentionNotification
-    >,
     @InjectRepository(QuestionCommentNotification)
     private readonly questionCommentNotificationRepo: Repository<
       QuestionCommentNotification
@@ -33,16 +28,10 @@ export class UserResolver {
   @FieldResolver()
   async hasNotifications(@Root() user: User) {
     const qc = await this.questionCommentNotificationRepo.findOne({
-      where: { questionAskerId: user.id },
+      where: { questionAskerId: user.id, read: false },
     });
 
-    if (qc) {
-      return true;
-    }
-
-    return !!(await this.commentMentionNotificationRepo.findOne({
-      where: { userMentionedId: user.id },
-    }));
+    return !!qc;
   }
 
   @FieldResolver()

@@ -38,7 +38,8 @@ export class CommentResolver {
     await this.questionCommentNotificationRepo.save({
       commentId: comment.id,
       questionId: input.questionId,
-      questionAskerId: question!.creatorId,
+      userToNotifyId: question!.creatorId,
+      type: "reply",
     });
 
     return {

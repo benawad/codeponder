@@ -119,6 +119,56 @@ export type GetPostByIdQuery = {
 
 export type GetPostByIdGetPostById = PostInfoFragment;
 
+export type NotificationsVariables = {
+  read: boolean;
+};
+
+export type NotificationsQuery = {
+  __typename?: "Query";
+
+  notifications: NotificationsNotifications[];
+};
+
+export type NotificationsNotifications = {
+  __typename?: "QuestionCommentNotification";
+
+  comment: NotificationsComment;
+
+  question: NotificationsQuestion;
+};
+
+export type NotificationsComment = {
+  __typename?: "Comment";
+
+  id: string;
+
+  text: string;
+
+  creator: NotificationsCreator;
+};
+
+export type NotificationsCreator = {
+  __typename?: "User";
+
+  username: string;
+};
+
+export type NotificationsQuestion = {
+  __typename?: "Question";
+
+  title: string;
+
+  numComments: number;
+
+  post: NotificationsPost;
+};
+
+export type NotificationsPost = {
+  __typename?: "Post";
+
+  title: string;
+};
+
 export type CreateQuestionVariables = {
   question: CreateQuestionInput;
 };
@@ -555,6 +605,59 @@ export function GetPostByIdHOC<TProps, TChildProps = any>(
     GetPostByIdVariables,
     GetPostByIdProps<TChildProps>
   >(GetPostByIdDocument, operationOptions);
+}
+export const NotificationsDocument = gql`
+  query Notifications($read: Boolean!) {
+    notifications(read: $read) {
+      comment {
+        id
+        text
+        creator {
+          username
+        }
+      }
+      question {
+        title
+        numComments
+        post {
+          title
+        }
+      }
+    }
+  }
+`;
+export class NotificationsComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<NotificationsQuery, NotificationsVariables>>
+> {
+  render() {
+    return (
+      <ReactApollo.Query<NotificationsQuery, NotificationsVariables>
+        query={NotificationsDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type NotificationsProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<NotificationsQuery, NotificationsVariables>
+> &
+  TChildProps;
+export function NotificationsHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        NotificationsQuery,
+        NotificationsVariables,
+        NotificationsProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    NotificationsQuery,
+    NotificationsVariables,
+    NotificationsProps<TChildProps>
+  >(NotificationsDocument, operationOptions);
 }
 export const CreateQuestionDocument = gql`
   mutation CreateQuestion($question: CreateQuestionInput!) {

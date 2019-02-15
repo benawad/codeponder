@@ -1,5 +1,5 @@
 schema: http://localhost:4000/graphql
-documents: ./graphql/{question,user,comment,post}/**/*.{ts,tsx}
+documents: ./graphql/**/*.{ts,tsx}
 overwrite: true
 generates:
   ./generated/apollo-components.tsx:
