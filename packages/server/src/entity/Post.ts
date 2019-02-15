@@ -50,7 +50,7 @@ export class Post {
   @Column("uuid")
   creatorId: string;
 
-  @ManyToOne(() => User, user => user.Questions)
+  @ManyToOne(() => User, user => user.Questions, { onDelete: "CASCADE" })
   creatorConnection: Promise<User>;
 
   @Field(() => User)

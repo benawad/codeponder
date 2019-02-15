@@ -7,5 +7,6 @@ export const userInfoFragment = gql`
     pictureUrl
     bio
     accessToken
+    numQuestionCommentNotifications
   }
 `;

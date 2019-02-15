@@ -9,31 +9,24 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Comment } from "./Comment";
-import { Question } from "./Question";
 import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class QuestionCommentNotification {
+export class CommentMentionNotification {
   @Field(() => Comment)
-  @ManyToOne(() => Comment)
+  @ManyToOne(() => Comment, { onDelete: "CASCADE" })
   comment: Promise<Comment>;
   @Field()
   @PrimaryColumn("uuid")
   commentId: string;
 
-  @ManyToOne(() => Question, { onDelete: "CASCADE" })
-  question: Promise<Question>;
-  @Field()
-  @PrimaryColumn("uuid")
-  questionId: string;
-
   @ManyToOne(() => User, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "questionAskerId" })
-  questionAsker: Promise<User>;
+  @JoinColumn({ name: "userMentionedId" })
+  userMentioned: Promise<User>;
   @Field()
   @Column("uuid")
-  questionAskerId: string;
+  userMentionedId: string;
 
   @Field()
   @Column()

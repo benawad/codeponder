@@ -49,7 +49,7 @@ export class Question {
   @Column("uuid")
   creatorId: string;
 
-  @ManyToOne(() => User, user => user.Questions)
+  @ManyToOne(() => User, user => user.Questions, { onDelete: "CASCADE" })
   creatorConnection: Promise<User>;
 
   @Field(() => User)
@@ -58,7 +58,7 @@ export class Question {
   }
 
   @Field(() => Post)
-  @ManyToOne(() => Post, crp => crp.questions)
+  @ManyToOne(() => Post, crp => crp.questions, { onDelete: "CASCADE" })
   @JoinColumn({ name: "postId" })
   post: Promise<User>;
   @Field()

@@ -43,7 +43,9 @@ export const NavBar = () => {
                 <Menu
                   options={["logout"]}
                   renderOption={({ Anchor }) => (
-                    <NextLink href="/logout">{Anchor}</NextLink>
+                    <NextLink key="logout" href="/logout">
+                      {Anchor}
+                    </NextLink>
                   )}
                 >
                   <div style={{ display: "flex", alignItems: "center" }}>

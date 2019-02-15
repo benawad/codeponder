@@ -23,13 +23,13 @@ export class Comment {
   @Column({ type: "text" })
   text: string;
 
-  @ManyToOne(() => Question, crq => crq.comments)
+  @ManyToOne(() => Question, crq => crq.comments, { onDelete: "CASCADE" })
   question: Promise<Question>;
   @Field()
   @Column("uuid")
   questionId: string;
 
-  @ManyToOne(() => User, user => user.comments)
+  @ManyToOne(() => User, user => user.comments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "creatorId" })
   creatorConnection: Promise<User>;
   @Field()
