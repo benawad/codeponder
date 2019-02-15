@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Comment } from "./Comment";
 import { Post } from "./Post";
 import { Question } from "./Question";
+import { QuestionCommentNotification } from "./QuestionCommentNotification";
 
 @Entity()
 @ObjectType()
@@ -41,4 +42,8 @@ export class User {
 
   @Field(() => String, { nullable: true })
   accessToken: string | null;
+
+  @OneToMany(() => QuestionCommentNotification, qcn => qcn.questionAsker)
+  @Field(() => [QuestionCommentNotification])
+  questionCommentNotifications: Promise<QuestionCommentNotification[]>;
 }

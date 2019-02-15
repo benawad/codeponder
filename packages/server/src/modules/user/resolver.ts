@@ -44,6 +44,13 @@ export class UserResolver {
     ctx: MyContext
   ) {
     const { userId } = ctx.req.session!;
-    return userId ? this.userRepo.findOne(userId) : null;
+    return userId
+      ? this.userRepo.findOne(userId, {
+          relations: [
+            "questionCommentNotifications",
+            "questionCommentNotifications.comment",
+          ],
+        })
+      : null;
   }
 }
