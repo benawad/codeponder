@@ -3,18 +3,26 @@ import gql from "graphql-tag";
 export const notificationsQuery = gql`
   query Notifications($read: Boolean!) {
     notifications(read: $read) {
+      type
+      createdAt
+      read
       comment {
         id
-        text
         creator {
           username
+          pictureUrl
         }
       }
       question {
+        id
         title
-        numComments
+        path
         post {
-          title
+          id
+          repo
+          creator {
+            username
+          }
         }
       }
     }

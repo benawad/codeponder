@@ -11,6 +11,7 @@ export * from "./components/Input";
 export * from "./components/Label";
 export * from "./components/Menu";
 export * from "./components/MyButton";
+export * from "./components/NotificationRow";
 export * from "./components/PostCard";
 export * from "./components/PostRow";
 export * from "./components/Question";

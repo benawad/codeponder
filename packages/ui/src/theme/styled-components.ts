@@ -17,6 +17,7 @@ export const GlobalStyle = createGlobalStyle`
 body {
   background-color: #F9FBFD;
   font-size: 1.5rem;
+  font-family: rubik;
 }
 
 * {

@@ -119,6 +119,38 @@ export type GetPostByIdQuery = {
 
 export type GetPostByIdGetPostById = PostInfoFragment;
 
+export type MarkAllNotificationsAsReadVariables = {};
+
+export type MarkAllNotificationsAsReadMutation = {
+  __typename?: "Mutation";
+
+  markAllNotificationsAsRead: MarkAllNotificationsAsReadMarkAllNotificationsAsRead;
+};
+
+export type MarkAllNotificationsAsReadMarkAllNotificationsAsRead = {
+  __typename?: "OkResponse";
+
+  ok: boolean;
+};
+
+export type UpdateNotificationReadVariables = {
+  read: boolean;
+  questionId: string;
+  commentId: string;
+};
+
+export type UpdateNotificationReadMutation = {
+  __typename?: "Mutation";
+
+  updateNotificationRead: UpdateNotificationReadUpdateNotificationRead;
+};
+
+export type UpdateNotificationReadUpdateNotificationRead = {
+  __typename?: "OkResponse";
+
+  ok: boolean;
+};
+
 export type NotificationsVariables = {
   read: boolean;
 };
@@ -132,6 +164,12 @@ export type NotificationsQuery = {
 export type NotificationsNotifications = {
   __typename?: "QuestionCommentNotification";
 
+  type: string;
+
+  createdAt: DateTime;
+
+  read: boolean;
+
   comment: NotificationsComment;
 
   question: NotificationsQuestion;
@@ -142,8 +180,6 @@ export type NotificationsComment = {
 
   id: string;
 
-  text: string;
-
   creator: NotificationsCreator;
 };
 
@@ -151,14 +187,18 @@ export type NotificationsCreator = {
   __typename?: "User";
 
   username: string;
+
+  pictureUrl: string;
 };
 
 export type NotificationsQuestion = {
   __typename?: "Question";
 
+  id: string;
+
   title: string;
 
-  numComments: number;
+  path: Maybe<string>;
 
   post: NotificationsPost;
 };
@@ -166,7 +206,17 @@ export type NotificationsQuestion = {
 export type NotificationsPost = {
   __typename?: "Post";
 
-  title: string;
+  id: string;
+
+  repo: string;
+
+  creator: Notifications_Creator;
+};
+
+export type Notifications_Creator = {
+  __typename?: "User";
+
+  username: string;
 };
 
 export type CreateQuestionVariables = {
@@ -606,21 +656,147 @@ export function GetPostByIdHOC<TProps, TChildProps = any>(
     GetPostByIdProps<TChildProps>
   >(GetPostByIdDocument, operationOptions);
 }
+export const MarkAllNotificationsAsReadDocument = gql`
+  mutation MarkAllNotificationsAsRead {
+    markAllNotificationsAsRead {
+      ok
+    }
+  }
+`;
+export class MarkAllNotificationsAsReadComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      MarkAllNotificationsAsReadMutation,
+      MarkAllNotificationsAsReadVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        MarkAllNotificationsAsReadMutation,
+        MarkAllNotificationsAsReadVariables
+      >
+        mutation={MarkAllNotificationsAsReadDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type MarkAllNotificationsAsReadProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    MarkAllNotificationsAsReadMutation,
+    MarkAllNotificationsAsReadVariables
+  >
+> &
+  TChildProps;
+export type MarkAllNotificationsAsReadMutationFn = ReactApollo.MutationFn<
+  MarkAllNotificationsAsReadMutation,
+  MarkAllNotificationsAsReadVariables
+>;
+export function MarkAllNotificationsAsReadHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        MarkAllNotificationsAsReadMutation,
+        MarkAllNotificationsAsReadVariables,
+        MarkAllNotificationsAsReadProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    MarkAllNotificationsAsReadMutation,
+    MarkAllNotificationsAsReadVariables,
+    MarkAllNotificationsAsReadProps<TChildProps>
+  >(MarkAllNotificationsAsReadDocument, operationOptions);
+}
+export const UpdateNotificationReadDocument = gql`
+  mutation UpdateNotificationRead(
+    $read: Boolean!
+    $questionId: String!
+    $commentId: String!
+  ) {
+    updateNotificationRead(
+      read: $read
+      questionId: $questionId
+      commentId: $commentId
+    ) {
+      ok
+    }
+  }
+`;
+export class UpdateNotificationReadComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      UpdateNotificationReadMutation,
+      UpdateNotificationReadVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        UpdateNotificationReadMutation,
+        UpdateNotificationReadVariables
+      >
+        mutation={UpdateNotificationReadDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type UpdateNotificationReadProps<TChildProps = any> = Partial<
+  ReactApollo.MutateProps<
+    UpdateNotificationReadMutation,
+    UpdateNotificationReadVariables
+  >
+> &
+  TChildProps;
+export type UpdateNotificationReadMutationFn = ReactApollo.MutationFn<
+  UpdateNotificationReadMutation,
+  UpdateNotificationReadVariables
+>;
+export function UpdateNotificationReadHOC<TProps, TChildProps = any>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        UpdateNotificationReadMutation,
+        UpdateNotificationReadVariables,
+        UpdateNotificationReadProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.graphql<
+    TProps,
+    UpdateNotificationReadMutation,
+    UpdateNotificationReadVariables,
+    UpdateNotificationReadProps<TChildProps>
+  >(UpdateNotificationReadDocument, operationOptions);
+}
 export const NotificationsDocument = gql`
   query Notifications($read: Boolean!) {
     notifications(read: $read) {
+      type
+      createdAt
+      read
       comment {
         id
-        text
         creator {
           username
+          pictureUrl
         }
       }
       question {
+        id
         title
-        numComments
+        path
         post {
-          title
+          id
+          repo
+          creator {
+            username
+          }
         }
       }
     }

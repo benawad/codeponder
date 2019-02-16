@@ -1,4 +1,4 @@
-import { distanceInWordsStrict } from "date-fns";
+import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
 import { Box, Card, Flex, Text } from "rebass";
 import styled from "../../theme/styled-components";
@@ -43,7 +43,7 @@ export const PostRow: React.SFC<Props> = ({
   onTopicClick,
 }) => {
   const linkProps = getLinkProps();
-  const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
+  const dtString = distanceInWordsToNow(Date.parse(createdAt), {
     addSuffix: true,
   });
 
