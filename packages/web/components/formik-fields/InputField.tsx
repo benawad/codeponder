@@ -8,6 +8,6 @@ export const InputField = ({
   ...props
 }: FieldProps<any>) => {
   const errorText = touched[field.name] && errors[field.name];
-
+//@ts-ignore 
   return <Input errorText={errorText} {...field} {...props} />;
 };

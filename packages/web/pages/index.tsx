@@ -57,7 +57,7 @@ export default class Index extends React.Component<{}, State> {
                       {topic}
                     </Topic>
                   ))}
-                  <SidebarCard flex="1">
+                  <SidebarCard >
                     {data && data.findCodeReviewPost && (
                       <>
                         {data.findCodeReviewPost.posts.map(post => (
@@ -124,7 +124,7 @@ export default class Index extends React.Component<{}, State> {
                       </>
                     )}
                   </SidebarCard>
-                  <SidebarCard flex="0 0 24rem" ml="4rem">
+                  <SidebarCard ml="4rem">
                     i am sidebar
                   </SidebarCard>
                 </div>
