@@ -256,39 +256,6 @@ export type FindQuestionsQuery = {
 
 export type FindQuestionsFindQuestions = QuestionInfoFragment;
 
-export type HomeQuestionsVariables = {
-  offset?: Maybe<number>;
-  limit?: Maybe<number>;
-};
-
-export type HomeQuestionsQuery = {
-  __typename?: "Query";
-
-  homeQuestions: HomeQuestionsHomeQuestions[];
-};
-
-export type HomeQuestionsHomeQuestions = {
-  __typename?: "Question";
-
-  id: string;
-
-  text: string;
-
-  programmingLanguage: Maybe<string>;
-
-  creator: HomeQuestionsCreator;
-};
-
-export type HomeQuestionsCreator = {
-  __typename?: "User";
-
-  id: string;
-
-  username: string;
-
-  pictureUrl: string;
-};
-
 export type LogoutVariables = {};
 
 export type LogoutMutation = {
@@ -305,7 +272,11 @@ export type MeQuery = {
   me: Maybe<MeMe>;
 };
 
-export type MeMe = UserInfoFragment;
+export type MeMe = {
+  __typename?: "User";
+
+  hasUnreadNotifications: boolean;
+} & UserInfoFragment;
 
 export type CommentInfoFragment = {
   __typename?: "Comment";
@@ -389,8 +360,6 @@ export type UserInfoFragment = {
   bio: string;
 
   accessToken: Maybe<string>;
-
-  hasUnreadNotifications: boolean;
 };
 
 import * as ReactApollo from "react-apollo";
@@ -409,7 +378,6 @@ export const UserInfoFragmentDoc = gql`
     pictureUrl
     bio
     accessToken
-    hasUnreadNotifications
   }
 `;
 
@@ -936,53 +904,6 @@ export function FindQuestionsHOC<TProps, TChildProps = any>(
     FindQuestionsProps<TChildProps>
   >(FindQuestionsDocument, operationOptions);
 }
-export const HomeQuestionsDocument = gql`
-  query HomeQuestions($offset: Int, $limit: Int) {
-    homeQuestions(offset: $offset, limit: $limit) {
-      id
-      text
-      programmingLanguage
-      creator {
-        id
-        username
-        pictureUrl
-      }
-    }
-  }
-`;
-export class HomeQuestionsComponent extends React.Component<
-  Partial<ReactApollo.QueryProps<HomeQuestionsQuery, HomeQuestionsVariables>>
-> {
-  render() {
-    return (
-      <ReactApollo.Query<HomeQuestionsQuery, HomeQuestionsVariables>
-        query={HomeQuestionsDocument}
-        {...(this as any)["props"] as any}
-      />
-    );
-  }
-}
-export type HomeQuestionsProps<TChildProps = any> = Partial<
-  ReactApollo.DataProps<HomeQuestionsQuery, HomeQuestionsVariables>
-> &
-  TChildProps;
-export function HomeQuestionsHOC<TProps, TChildProps = any>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        HomeQuestionsQuery,
-        HomeQuestionsVariables,
-        HomeQuestionsProps<TChildProps>
-      >
-    | undefined
-) {
-  return ReactApollo.graphql<
-    TProps,
-    HomeQuestionsQuery,
-    HomeQuestionsVariables,
-    HomeQuestionsProps<TChildProps>
-  >(HomeQuestionsDocument, operationOptions);
-}
 export const LogoutDocument = gql`
   mutation Logout {
     logout
@@ -1028,6 +949,7 @@ export function LogoutHOC<TProps, TChildProps = any>(
 export const MeDocument = gql`
   query Me {
     me {
+      hasUnreadNotifications
       ...UserInfo
     }
   }
