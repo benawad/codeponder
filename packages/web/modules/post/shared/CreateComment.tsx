@@ -69,7 +69,7 @@ export const CreateQuestionReply = ({
                       q.id === questionId
                         ? {
                             ...q,
-                            replies: [
+                            comments: [
                               ...q.comments,
                               data.createComment.comment,
                             ],
