@@ -44,7 +44,7 @@ export const NavBar = () => {
                   <a>
                     <Icon
                       name={
-                        data!.me!.hasNotifications
+                        data!.me!.hasUnreadNotifications
                           ? "activeNotificationBell"
                           : "emptyNotificationBell"
                       }

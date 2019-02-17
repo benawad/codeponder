@@ -2524,7 +2524,7 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@4.14.120":
+"@types/lodash@*":
   version "4.14.120"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.120.tgz#cf265d06f6c7a710db087ed07523ab8c1a24047b"
   integrity sha512-jQ21kQ120mo+IrDs1nFNVm/AsdFxIx2+vZ347DbogHJPd/JzKNMOqU6HCYin1W6v8l5R9XSO2/e9cxmn7HAnVw==
@@ -17191,7 +17191,7 @@ type-detect@^4.0.8:
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
   integrity sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==
 
-type-graphql@0.16.0:
+type-graphql@^0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/type-graphql/-/type-graphql-0.16.0.tgz#4d22beffb7ce3f8601e6ad090b4104b7852e5c9d"
   integrity sha512-rR8cgRB9GuJfv0IFKHQKgfFan8aSlPFtJjMWkdmMY9fmeoJY6IGWm18bev1C1dO4jT9kKXi6Yeese636vakTng==

@@ -7,6 +7,6 @@ export const userInfoFragment = gql`
     pictureUrl
     bio
     accessToken
-    hasNotifications
+    hasUnreadNotifications
   }
 `;

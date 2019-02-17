@@ -43,5 +43,5 @@ export class User {
   accessToken: string | null;
 
   @Field(() => Boolean)
-  hasNotifications: Promise<boolean>;
+  hasUnreadNotifications: Promise<boolean>;
 }

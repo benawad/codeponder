@@ -26,7 +26,7 @@ export class UserResolver {
   ) {}
 
   @FieldResolver()
-  async hasNotifications(@Root() user: User) {
+  async hasUnreadNotifications(@Root() user: User) {
     const qc = await this.questionCommentNotificationRepo.findOne({
       where: { questionAskerId: user.id, read: false },
     });

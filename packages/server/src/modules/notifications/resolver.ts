@@ -13,7 +13,9 @@ import { QuestionCommentNotification } from "../../entity/QuestionCommentNotific
 import { MyContext } from "../../types/Context";
 import { isAuthenticated } from "../shared/middleware/isAuthenticated";
 import { OkResponse } from "../shared/OkResponse";
+import { NotificationsResponse } from "./response";
 
+const NOTIF_LIMIT = 50;
 @Resolver(Comment)
 export class CommentResolver {
   constructor(
@@ -23,12 +25,12 @@ export class CommentResolver {
     >
   ) {}
 
-  @Query(() => [QuestionCommentNotification])
+  @Query(() => NotificationsResponse)
   @UseMiddleware(isAuthenticated)
   async notifications(
     @Ctx() { req }: MyContext,
-    @Arg("cursor") cursor?: string
-  ): Promise<QuestionCommentNotification[]> {
+    @Arg("cursor", { nullable: true }) cursor?: string
+  ): Promise<NotificationsResponse> {
     const where: any = {
       userToNotifyId: req.session!.userId,
     };
@@ -37,12 +39,17 @@ export class CommentResolver {
       where.createdAt = LessThan(cursor);
     }
 
-    return this.questionCommentNotificationRepo.find({
+    const notifs = await this.questionCommentNotificationRepo.find({
       where,
       relations: ["comment", "question", "question.post"],
       order: { read: "ASC", createdAt: "DESC" },
-      take: 50,
+      take: NOTIF_LIMIT + 1,
     });
+
+    return {
+      notifications: notifs.slice(0, NOTIF_LIMIT),
+      hasMore: notifs.length === NOTIF_LIMIT + 1,
+    };
   }
 
   @Mutation(() => OkResponse)

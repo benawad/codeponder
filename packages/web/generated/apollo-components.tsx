@@ -151,15 +151,25 @@ export type UpdateNotificationReadUpdateNotificationRead = {
   ok: boolean;
 };
 
-export type NotificationsVariables = {};
+export type NotificationsVariables = {
+  cursor?: Maybe<string>;
+};
 
 export type NotificationsQuery = {
   __typename?: "Query";
 
-  notifications: NotificationsNotifications[];
+  notifications: NotificationsNotifications;
 };
 
 export type NotificationsNotifications = {
+  __typename?: "NotificationsResponse";
+
+  hasMore: boolean;
+
+  notifications: Notifications_Notifications[];
+};
+
+export type Notifications_Notifications = {
   __typename?: "QuestionCommentNotification";
 
   type: string;
@@ -382,7 +392,7 @@ export type UserInfoFragment = {
 
   accessToken: Maybe<string>;
 
-  hasNotifications: boolean;
+  hasUnreadNotifications: boolean;
 };
 
 import * as ReactApollo from "react-apollo";
@@ -401,7 +411,7 @@ export const UserInfoFragmentDoc = gql`
     pictureUrl
     bio
     accessToken
-    hasNotifications
+    hasUnreadNotifications
   }
 `;
 
@@ -773,27 +783,30 @@ export function UpdateNotificationReadHOC<TProps, TChildProps = any>(
   >(UpdateNotificationReadDocument, operationOptions);
 }
 export const NotificationsDocument = gql`
-  query Notifications {
-    notifications {
-      type
-      createdAt
-      read
-      comment {
-        id
-        creator {
-          username
-          pictureUrl
-        }
-      }
-      question {
-        id
-        title
-        path
-        post {
+  query Notifications($cursor: String) {
+    notifications(cursor: $cursor) {
+      hasMore
+      notifications {
+        type
+        createdAt
+        read
+        comment {
           id
-          repo
           creator {
             username
+            pictureUrl
+          }
+        }
+        question {
+          id
+          title
+          path
+          post {
+            id
+            repo
+            creator {
+              username
+            }
           }
         }
       }
