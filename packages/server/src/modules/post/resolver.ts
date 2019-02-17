@@ -1,4 +1,3 @@
-import { ApolloError } from "apollo-server-core";
 import {
   Arg,
   Ctx,
@@ -20,6 +19,7 @@ import { FindPostInput } from "./findInput";
 import { FindPostResponse } from "./findResponse";
 import { PostResponse } from "./response";
 
+const POST_LIMIT = 6;
 @Resolver(Post)
 export class PostResolvers {
   constructor(
@@ -70,18 +70,13 @@ export class PostResolvers {
   @Query(() => FindPostResponse)
   async findPost(@Arg("input")
   {
-    offset,
-    limit,
+    cursor,
     topics,
   }: FindPostInput): Promise<FindPostResponse> {
-    if (limit > 6) {
-      throw new ApolloError("max limit of 6");
-    }
-
     return this.postRepo.findByTopics({
-      limit,
-      offset,
+      cursor,
       topics,
+      limit: POST_LIMIT,
     });
   }
 }

@@ -3,9 +3,7 @@ export type Maybe<T> = T | null;
 export interface FindPostInput {
   topics?: Maybe<string[]>;
 
-  offset: number;
-
-  limit: number;
+  cursor?: Maybe<string>;
 }
 
 export interface CreateCommentInput {

@@ -5,7 +5,6 @@ import Modal from "react-modal";
 import { Heading } from "rebass";
 import { FindOrCreatePostComponent } from "../../../generated/apollo-components";
 import { GetViewerReposEdges } from "../../../generated/github-apollo-components";
-import { findPostQuery } from "../../../graphql/post/queries/findPost";
 import { Router } from "../../../server/routes";
 import { removeDuplicates } from "../../../utils/removeDuplicates";
 import { useInputValue } from "../../../utils/useInputValue";
@@ -31,20 +30,7 @@ export const CreatePostModal = () => {
   const [title, changeTitle] = useInputValue("");
 
   return (
-    <FindOrCreatePostComponent
-      refetchQueries={[
-        {
-          query: findPostQuery,
-          variables: {
-            input: {
-              limit: 6,
-              offset: 0,
-              topics: [],
-            },
-          },
-        },
-      ]}
-    >
+    <FindOrCreatePostComponent>
       {mutate => (
         <>
           <Modal
@@ -119,7 +105,6 @@ export const CreatePostModal = () => {
                     },
                   });
 
-                  console.log(response);
                   if (response && response.data) {
                     changeOpen(false);
                     Router.pushRoute("post", {

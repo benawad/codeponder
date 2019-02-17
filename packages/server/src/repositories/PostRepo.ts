@@ -3,19 +3,26 @@ import { Post } from "../entity/Post";
 
 interface FindByTopicsOptions {
   topics: string[];
-  offset: number;
+  cursor?: string;
   limit: number;
 }
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
-  async findByTopics({ topics, offset, limit }: FindByTopicsOptions) {
-    const posts = await this.createQueryBuilder("p")
-      .where("topics @> :topics", { topics })
-      .skip(offset)
-      .take(limit + 1)
+  async findByTopics({ topics, cursor, limit }: FindByTopicsOptions) {
+    const qb = this.createQueryBuilder("p")
       .orderBy('"createdAt"', "DESC")
-      .getMany();
+      .take(limit + 1);
+
+    if (topics.length) {
+      qb.where("topics @> :topics", { topics });
+    }
+
+    if (cursor) {
+      qb.where('"createdAt" < :cursor', { cursor });
+    }
+
+    const posts = await qb.getMany();
 
     return {
       hasMore: posts.length === limit + 1,

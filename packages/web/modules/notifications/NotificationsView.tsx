@@ -106,8 +106,9 @@ export const NotificationsView: React.FC = () => {
                               await fetchMore({
                                 query: findPostQuery,
                                 variables: {
-                                  cursor: data.notifications.notifications.pop()!
-                                    .createdAt,
+                                  cursor: data.notifications.notifications[
+                                    data.notifications.notifications.length - 1
+                                  ]!.createdAt,
                                 },
                                 updateQuery: (
                                   previous,
