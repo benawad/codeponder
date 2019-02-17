@@ -72,12 +72,15 @@ export class CommentResolver {
             .createQueryBuilder()
             .insert()
             .values(
-              users.map(u => ({
-                commentId: comment.id,
-                questionId: input.questionId,
-                userToNotifyId: u.id,
-                type: "mention" as "mention",
-              }))
+              // the question creator will already get a notif
+              users
+                .filter(u => u.id === question!.creatorId)
+                .map(u => ({
+                  commentId: comment.id,
+                  questionId: input.questionId,
+                  userToNotifyId: u.id,
+                  type: "mention" as "mention",
+                }))
             )
             .execute();
         }
