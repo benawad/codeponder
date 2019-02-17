@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev --respawn --project tsconfig.server.json server/index.ts",
+    "dev": "ts-node-dev --respawn --ignore-watch .next --project tsconfig.server.json server/index.ts",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
