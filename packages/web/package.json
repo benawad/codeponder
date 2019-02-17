@@ -31,6 +31,10 @@
     "react-dom": "^16.8.1",
     "react-modal": "3.8.1",
     "react-select": "2.3.0",
+    "remark": "^10.0.1",
+    "remark-parse": "^6.0.3",
+    "remark-ping": "^2.1.6",
+    "remark-react": "^5.0.1",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
