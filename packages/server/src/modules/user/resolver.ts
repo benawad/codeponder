@@ -26,7 +26,11 @@ export class UserResolver {
   ) {}
 
   @FieldResolver()
-  async hasUnreadNotifications(@Root() user: User) {
+  async hasUnreadNotifications(@Root() user: User, @Ctx() ctx: MyContext) {
+    if (ctx.req.session!.userId !== user.id) {
+      throw new Error("not authorized");
+    }
+
     const qc = await this.questionCommentNotificationRepo.findOne({
       where: { questionAskerId: user.id, read: false },
     });
