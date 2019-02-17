@@ -22,11 +22,11 @@ export class RepoAutoComplete extends React.Component<Props> {
       <GetViewerReposComponent client={this.context}>
         {({ data }) => (
           <Select
+            placeholder="browse repos"
             onChange={x => {
               onChange(x ? (x as any).value : null);
             }}
             isSearchable
-            isClearable
             options={
               data && data.viewer && data.viewer.repositories.edges
                 ? data.viewer.repositories.edges.map(x => ({

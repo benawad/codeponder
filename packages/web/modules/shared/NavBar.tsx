@@ -1,4 +1,4 @@
-import { Avatar, GitHubButton, Icon, Menu } from "@codeponder/ui";
+import { Avatar, GitHubButton, Icon, Menu, MyButton } from "@codeponder/ui";
 import get from "lodash.get";
 import NextLink from "next/link";
 import * as React from "react";
@@ -6,7 +6,6 @@ import { Flex, Link } from "rebass";
 import styled from "styled-components";
 import Logo from "../../../../assets/logo/logo2.png";
 import { MeComponent } from "../../generated/apollo-components";
-import { CreatePostModal } from "./CreatePostModal";
 
 const Container = styled(Flex)`
   flex: 0 0 auto;
@@ -39,7 +38,11 @@ export const NavBar = () => {
           if (isLoggedIn) {
             return (
               <Flex alignItems="center">
-                <CreatePostModal />
+                <NextLink href="/submit">
+                  <a>
+                    <MyButton variant="primary">NEW CODE REVIEW</MyButton>
+                  </a>
+                </NextLink>
                 <NextLink href="/notifications">
                   <a>
                     <Icon
