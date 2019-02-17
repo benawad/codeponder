@@ -168,7 +168,7 @@ export type NotificationsNotifications = {
 };
 
 export type Notifications_Notifications = {
-  __typename?: "QuestionCommentNotification";
+  __typename: "QuestionCommentNotification";
 
   type: string;
 
@@ -753,6 +753,7 @@ export const NotificationsDocument = gql`
     notifications(cursor: $cursor) {
       hasMore
       notifications {
+        __typename
         type
         createdAt
         read

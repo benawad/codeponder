@@ -45,7 +45,7 @@ export const NotificationRow: React.FC<Props> = ({
   });
 
   return (
-    <PostRowContainer>
+    <PostRowContainer style={{ backgroundColor: !read ? "#f2f2f2" : "#fff" }}>
       <div style={{ fontWeight: 600 }}>
         {renderRepoLink(
           `${question.post.creator.username}/${question.post.repo}`

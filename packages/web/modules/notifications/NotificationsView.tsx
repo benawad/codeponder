@@ -54,6 +54,7 @@ export const NotificationsView: React.FC = () => {
                                   query: notificationsQuery,
                                   data: {
                                     notifications: {
+                                      __typename: "NotificationsResponse",
                                       hasMore: data.notifications.hasMore,
                                       notifications: orderBy(
                                         data.notifications.notifications.map(
@@ -119,9 +120,8 @@ export const NotificationsView: React.FC = () => {
                                   }
 
                                   return {
-                                    ...previous,
                                     notifications: {
-                                      ...previous.notifications,
+                                      __typename: "NotificationsResponse",
                                       hasMore:
                                         fetchMoreResult.notifications.hasMore,
                                       notifications: [

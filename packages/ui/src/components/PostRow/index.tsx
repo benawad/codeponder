@@ -1,6 +1,6 @@
 import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
-import { Box, Card, Flex, Text } from "rebass";
+import { Box, Flex, Text } from "rebass";
 import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Topic } from "../Topic";
@@ -24,7 +24,7 @@ interface Props {
   getLinkProps: () => any;
 }
 
-export const PostRowContainer = styled(Card)`
+export const PostRowContainer = styled("div")`
   border-width: 0 0 0.1rem 0;
   border-style: solid;
   padding: 1.2rem;
