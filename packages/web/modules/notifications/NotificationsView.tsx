@@ -1,11 +1,5 @@
-import {
-  MyButton,
-  NotificationRow,
-  SidebarCard,
-  Spinner,
-} from "@codeponder/ui";
+import { NotificationRow, SidebarCard, Spinner } from "@codeponder/ui";
 import * as React from "react";
-import { useState } from "react";
 import {
   NotificationsComponent,
   NotificationsQuery,
@@ -17,18 +11,13 @@ import { Link } from "../../server/routes";
 import { Layout } from "../shared/Layout";
 
 export const NotificationsView: React.FC = () => {
-  const [showRead, setShowRead] = useState(false);
-
   return (
     <Layout title="Notifications">
       <div style={{ display: "flex", flex: 1, marginBottom: "2rem" }}>
         <SidebarCard style={{ flex: 1 }}>
           <UpdateNotificationReadComponent>
             {updateNotificationRead => (
-              <NotificationsComponent
-                fetchPolicy="network-only"
-                variables={{ read: showRead }}
-              >
+              <NotificationsComponent fetchPolicy="network-only">
                 {({ data, loading }) => {
                   if (!data || loading) {
                     return <Spinner />;
@@ -52,9 +41,6 @@ export const NotificationsView: React.FC = () => {
                               NotificationsQuery,
                               NotificationsVariables
                             >({
-                              variables: {
-                                read: showRead,
-                              },
                               query: notificationsQuery,
                               data: {
                                 notifications: data.notifications.map(x =>
@@ -98,14 +84,6 @@ export const NotificationsView: React.FC = () => {
               </NotificationsComponent>
             )}
           </UpdateNotificationReadComponent>
-        </SidebarCard>
-        <SidebarCard flex="0 0 24rem" ml="4rem" p="1rem">
-          <MyButton variant="primary" onClick={() => setShowRead(true)}>
-            read
-          </MyButton>
-          <MyButton variant="primary" onClick={() => setShowRead(false)}>
-            unread
-          </MyButton>
         </SidebarCard>
       </div>
     </Layout>

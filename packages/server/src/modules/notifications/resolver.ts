@@ -6,7 +6,7 @@ import {
   Resolver,
   UseMiddleware,
 } from "type-graphql";
-import { Repository } from "typeorm";
+import { LessThan, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Comment } from "../../entity/Comment";
 import { QuestionCommentNotification } from "../../entity/QuestionCommentNotification";
@@ -26,13 +26,22 @@ export class CommentResolver {
   @Query(() => [QuestionCommentNotification])
   @UseMiddleware(isAuthenticated)
   async notifications(
-    @Arg("read") read: boolean,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: MyContext,
+    @Arg("cursor") cursor?: string
   ): Promise<QuestionCommentNotification[]> {
+    const where: any = {
+      userToNotifyId: req.session!.userId,
+    };
+
+    if (cursor) {
+      where.createdAt = LessThan(cursor);
+    }
+
     return this.questionCommentNotificationRepo.find({
-      where: { userToNotifyId: req.session!.userId, read },
+      where,
       relations: ["comment", "question", "question.post"],
-      order: { createdAt: "DESC" },
+      order: { read: "ASC", createdAt: "DESC" },
+      take: 50,
     });
   }
 

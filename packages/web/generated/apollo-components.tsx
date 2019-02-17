@@ -151,9 +151,7 @@ export type UpdateNotificationReadUpdateNotificationRead = {
   ok: boolean;
 };
 
-export type NotificationsVariables = {
-  read: boolean;
-};
+export type NotificationsVariables = {};
 
 export type NotificationsQuery = {
   __typename?: "Query";
@@ -775,8 +773,8 @@ export function UpdateNotificationReadHOC<TProps, TChildProps = any>(
   >(UpdateNotificationReadDocument, operationOptions);
 }
 export const NotificationsDocument = gql`
-  query Notifications($read: Boolean!) {
-    notifications(read: $read) {
+  query Notifications {
+    notifications {
       type
       createdAt
       read

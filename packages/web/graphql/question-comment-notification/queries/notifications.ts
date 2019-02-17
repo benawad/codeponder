@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const notificationsQuery = gql`
-  query Notifications($read: Boolean!) {
-    notifications(read: $read) {
+  query Notifications {
+    notifications {
       type
       createdAt
       read
