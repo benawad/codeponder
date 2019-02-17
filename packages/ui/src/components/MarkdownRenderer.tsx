@@ -4,6 +4,7 @@ import React from "react";
 import remark from "remark";
 import remarkPing from "remark-ping";
 import remark2react from "remark-react";
+import styled from "../theme/styled-components";
 
 const sanitize = {
   ...schema,
@@ -13,9 +14,16 @@ const sanitize = {
   },
 };
 
+const MarkdownContainer = styled("div")`
+  & .ping-link {
+    color: #24292e;
+    font-weight: 600;
+  }
+`;
+
 export const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
   return (
-    <div className="markdown-body">
+    <MarkdownContainer className="markdown-body">
       {
         remark()
           .use(remarkPing, {
@@ -27,6 +35,6 @@ export const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
           })
           .processSync(text).contents
       }
-    </div>
+    </MarkdownContainer>
   );
 };
