@@ -36,10 +36,15 @@
     "passport-github": "1.1.0",
     "pg": "7.8.0",
     "reflect-metadata": "0.1.13",
+    "rehype-stringify": "^5.0.0",
+    "remark-parse": "^6.0.3",
+    "remark-ping": "^2.1.6",
+    "remark-rehype": "^4.0.0",
     "type-graphql": "^0.16.0",
     "typedi": "^0.8.0",
     "typeorm": "0.2.12",
     "typeorm-typedi-extensions": "^0.2.3",
+    "unified": "^7.1.0",
     "uuid": "3.3.2"
   },
   "scripts": {
