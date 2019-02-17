@@ -4,6 +4,7 @@ import { Card, Flex, Text } from "rebass";
 import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Icon } from "../Icon";
+import { MarkdownRenderer } from "../MarkdownRenderer";
 import { MyButton } from "../MyButton";
 
 interface Props {
@@ -163,15 +164,19 @@ const BaseCommentCard = ({
           </MyButton>
         )}
       </Flex>
-      <Text
-        className="comment-text"
-        my="1rem"
-        fontFamily="rubik"
-        fontSize={2}
-        color="#78909C"
-      >
-        {title || text}
-      </Text>
+      {title ? (
+        <Text
+          className="comment-text"
+          my="1rem"
+          fontFamily="rubik"
+          fontSize={2}
+          color="#78909C"
+        >
+          {title}
+        </Text>
+      ) : (
+        <MarkdownRenderer text={text} />
+      )}
     </>
   );
 };

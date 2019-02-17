@@ -9,6 +9,7 @@ export * from "./components/Header";
 export * from "./components/Icon";
 export * from "./components/Input";
 export * from "./components/Label";
+export * from "./components/MarkdownRenderer";
 export * from "./components/Menu";
 export * from "./components/MyButton";
 export * from "./components/NotificationRow";
