@@ -175,7 +175,9 @@ const BaseCommentCard = ({
           {title}
         </Text>
       ) : (
-        <MarkdownRenderer text={text} />
+        <div style={{ padding: "1rem" }}>
+          <MarkdownRenderer text={text} />
+        </div>
       )}
     </>
   );
