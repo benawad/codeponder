@@ -85,7 +85,7 @@ const CommentContainer = styled(Card as any)`
 `;
 
 export const GrayText = ({ children }: { children: React.ReactNode }) => (
-  <Text fontSize={1} fontFamily="rubik" color="#A5A5A5" pl=".4rem" pr=".8rem">
+  <Text fontSize={4} fontFamily="rubik" color="#A5A5A5" pl=".4rem" pr=".8rem">
     {children}
   </Text>
 );
@@ -136,16 +136,16 @@ const BaseCommentCard = ({
           <Avatar m="0rem" size={28} src={pictureUrl} />
           <Flex flexDirection="column" justifyContent="center" ml=".6rem">
             <Flex alignItems="center">
-              <Text mb=".2rem" fontFamily="rubik" fontSize={2} fontWeight="500">
+              <Text mb=".2rem" fontFamily="rubik" fontSize={5} fontWeight="500">
                 {username}
               </Text>
               {isOwner && (
-                <Text mb="0.2rem" className="user-role" fontSize={1}>
+                <Text mb="0.2rem" className="user-role" fontSize={4}>
                   Author
                 </Text>
               )}
             </Flex>
-            <Flex>
+            <Flex alignItems="center">
               {Number(numComments) >= 0 && (
                 <>
                   <Icon size={12} name="comment" fill="#A5A5A5" />
@@ -173,7 +173,7 @@ const BaseCommentCard = ({
           className="comment-text"
           my="1rem"
           fontFamily="rubik"
-          fontSize={2}
+          fontSize={5}
           color="#78909C"
         >
           {title}

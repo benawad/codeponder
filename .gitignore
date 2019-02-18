@@ -9,3 +9,4 @@ dist
 .env
 *.log
 storybook-static/
+.DS_Store
