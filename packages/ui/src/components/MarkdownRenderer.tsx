@@ -28,7 +28,7 @@ export const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
         remark()
           .use(remarkPing, {
             pingUsername: () => true,
-            userURL: () => `#`,
+            userURL: (username: string) => `https://github.com/${username}`,
           })
           .use(remark2react, {
             sanitize,

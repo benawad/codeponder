@@ -4,12 +4,6 @@ export const FormRow = styled.div`
   padding: 1rem 0.9rem;
 `;
 
-export const Separator = styled.div`
-  width: 100%
-  height: 1;
-  background: #f2f2f2;
-`;
-
 export const FormContainer = styled.form`
   background-color: #ffffff;
   border-top: ${(p: { isReply: boolean; view: string }) =>
@@ -22,15 +16,6 @@ export const FormContainer = styled.form`
 
   &.is-open {
     padding: ${(p: { isReply: boolean }) => (p.isReply ? "0" : "0.9rem")};
-  }
-
-  & .btn-box {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0.8em 0.4em;
-    & button {
-      min-width: 6em;
-    }
   }
 
   /* Tooltip text */
@@ -48,5 +33,37 @@ export const FormContainer = styled.form`
 
   .start-tooltip:focus + .tooltiptext {
     visibility: visible;
+  }
+
+  & .editor-outer-box {
+    border: 1px solid rgb(209, 213, 218);
+    border-radius: 3px;
+    margin: 1rem 0.9rem;
+    padding: 0;
+  }
+
+  & .editor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    & a {
+      display: flex;
+      align-items: center;
+
+      & svg {
+        margin-right: 1rem;
+      }
+    }
+
+    & .btn-box {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0.8em 0.4em;
+      & button {
+        min-width: 6em;
+      }
+    }
   }
 `;
