@@ -82,15 +82,16 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
         className={badgeClassList(showDiscussion)}
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={() => {
-          setShowReply(false);
           if (showDiscussion) {
             discussionRef.current!.style.maxHeight = "";
             discussionRef.current!.classList.remove("is-open");
             setTimeout(() => {
               toggleDiscussion();
+              setShowReply(false);
             }, 200);
           } else {
             toggleDiscussion();
+            setShowReply(false);
           }
         }}
       >
