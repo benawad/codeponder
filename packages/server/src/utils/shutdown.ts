@@ -1,7 +1,7 @@
-import { Connection } from "typeorm";
 import * as redisClient from "ioredis";
-import * as pino from "pino";
 import { Server } from "net";
+import * as pino from "pino";
+import { Connection } from "typeorm";
 
 export interface ShutdownOptions {
   db: Connection;
@@ -24,9 +24,6 @@ export const setupErrorHandling = (config: ShutdownOptions) => {
   });
 };
 
-// TODO: not sure if the callbacks are modeled right for await behavior on methods
-// like nodeServer.close and redis.disconnect.
-// not sure about handling of finalLogger for pino.  it's supposed to ensure
 // that all logging gets performed before process exit.
 const shutdown = async (config: ShutdownOptions) => {
   config.logger.warn("Shutting down HTTP server.");
@@ -39,7 +36,7 @@ const shutdown = async (config: ShutdownOptions) => {
       config.logger.warn("Database disconnected.");
       const finalLogger = pino.final(config.logger);
       finalLogger.warn("Bye.");
-      process.exit(0);
+      process.exit(1);
     });
   });
 };

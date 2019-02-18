@@ -19,7 +19,7 @@
     "typescript": "3.2.4"
   },
   "dependencies": {
-    "@types/pino": "^5.8.4",
+    "@types/pino": "^5.8.5",
     "apollo-server-express": "2.3.2",
     "connect-redis": "3.4.0",
     "cors": "2.8.5",
