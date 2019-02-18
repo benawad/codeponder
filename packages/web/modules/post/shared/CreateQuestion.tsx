@@ -3,12 +3,16 @@ import {
   CreateQuestionComponent,
   FindQuestionsQuery,
   FindQuestionsVariables,
+  QuestionInfoFragment,
 } from "../../../generated/apollo-components";
 import { findQuestionsQuery } from "../../../graphql/question/query/findQuestions";
-import { EditorSubmitProps } from "../../../types/questionReplyTypes";
 import { CommentForm, TextEditorResult } from "./CommentForm";
 import { PostContext } from "./PostContext";
 
+interface EditorSubmitProps {
+  submitted: boolean;
+  response?: QuestionInfoFragment | void;
+}
 export interface CreateQuestionProps {
   onEditorSubmit?: (T: EditorSubmitProps) => void;
   lineNum?: number;

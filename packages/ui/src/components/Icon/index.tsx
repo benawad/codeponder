@@ -1,7 +1,7 @@
 import * as React from "react";
 import { icons } from "./icons";
 
-interface Props {
+export interface IconProps {
   name: keyof typeof icons;
   size?: number;
   fill: string;
@@ -9,7 +9,7 @@ interface Props {
   onClick?: () => void;
 }
 
-export const Icon: React.SFC<Props> = ({
+export const Icon: React.SFC<IconProps> = ({
   name,
   size = 16,
   fill,

@@ -31,7 +31,6 @@ interface QuestionProps extends Props {
 
 interface CommentCardProps extends Props {
   isOwner: boolean;
-  newComment?: boolean;
   numComments?: number;
   onReplyClick?: (e: any) => void;
 }
@@ -39,7 +38,6 @@ interface CommentCardProps extends Props {
 interface BaseProps extends Props {
   title?: string;
   isOwner?: boolean;
-  newComment?: boolean;
   numComments?: number;
   onReplyClick?: (e: any) => void;
   variant: "outline" | "flat";
@@ -67,8 +65,14 @@ const CommentContainer = styled(Card as any)`
 
   & .comment-text {
     margin: 0;
-    padding: 0.7rem;
+    padding: 0.7rem 1.4rem;
     white-space: normal;
+
+    & ol,
+    & ul,
+    & dl {
+      padding-left: 1.5em;
+    }
   }
 
   & .btn-reply {
@@ -105,7 +109,7 @@ export const Question = ({ path, renderLink, ...props }: QuestionProps) => {
 export const CommentCard = (props: CommentCardProps) => {
   return (
     <CommentContainer>
-      <BaseCommentCard {...props} variant="outline" />
+      <BaseCommentCard {...props} title="" variant="outline" />
     </CommentContainer>
   );
 };
