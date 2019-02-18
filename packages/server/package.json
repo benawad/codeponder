@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@codeponder/common": "1.0.0",
-    "apollo-server-express": "2.0.4",
+    "@types/pino": "^5.8.5",
+    "apollo-server-express": "2.3.2",
     "connect-redis": "3.4.0",
     "cors": "2.8.5",
     "dataloader": "1.4.0",
@@ -35,6 +36,8 @@
     "passport": "0.4.0",
     "passport-github": "1.1.0",
     "pg": "7.8.0",
+    "pino": "^5.11.1",
+    "pino-pretty": "^2.5.0",
     "reflect-metadata": "0.1.13",
     "rehype-stringify": "^5.0.0",
     "remark-parse": "^6.0.3",

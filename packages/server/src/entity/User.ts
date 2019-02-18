@@ -39,6 +39,7 @@ export class User {
   @OneToMany(() => Comment, qr => qr.creatorConnection)
   comments: Promise<Comment[]>;
 
+  // not in database.... 
   @Field(() => String, { nullable: true })
   accessToken: string | null;
 
