@@ -1,8 +1,8 @@
 schema: http://localhost:4000/graphql
-documents: ./graphql/{code-review-question,user,question-reply,code-review-post}/**/*.{ts,tsx}
+documents: ./graphql/**/*.{ts,tsx}
 overwrite: true
 generates:
-  ./components/apollo-components.tsx:
+  ./generated/apollo-components.tsx:
     config:
       noNamespaces: true
     plugins:

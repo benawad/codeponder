@@ -1,10 +1,10 @@
+import { distanceInWordsStrict } from "date-fns";
 import * as React from "react";
 import { Card, Flex, Text } from "rebass";
-import { distanceInWordsStrict } from "date-fns";
-
 import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Icon } from "../Icon";
+import { MarkdownRenderer } from "../MarkdownRenderer";
 import { MyButton } from "../MyButton";
 
 interface Props {
@@ -24,21 +24,22 @@ interface Props {
 }
 
 interface QuestionProps extends Props {
-  numReplies: number;
+  title: string;
+  numComments: number;
+  renderLink: (body: JSX.Element) => JSX.Element;
 }
 
 interface CommentCardProps extends Props {
   isOwner: boolean;
-  newComment?: boolean;
-  numReplies?: number;
-  onOpenEditor: (e: any) => void;
+  numComments?: number;
+  onReplyClick?: (e: any) => void;
 }
 
 interface BaseProps extends Props {
+  title?: string;
   isOwner?: boolean;
-  newComment?: boolean;
-  numReplies?: number;
-  onOpenEditor?: (e: any) => void;
+  numComments?: number;
+  onReplyClick?: (e: any) => void;
   variant: "outline" | "flat";
 }
 
@@ -64,8 +65,14 @@ const CommentContainer = styled(Card as any)`
 
   & .comment-text {
     margin: 0;
-    padding: 0.7rem;
+    padding: 0.7rem 1.4rem;
     white-space: normal;
+
+    & ol,
+    & ul,
+    & dl {
+      padding-left: 1.5em;
+    }
   }
 
   & .btn-reply {
@@ -83,16 +90,18 @@ export const GrayText = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-export const Question = ({ path, ...props }: QuestionProps) => {
+export const Question = ({ path, renderLink, ...props }: QuestionProps) => {
   return (
     <Card p="1rem">
       <BaseCommentCard {...props} variant="flat" />
-      {path && (
-        <Flex alignItems="center">
-          <Icon name="link" fill="#a5a5a5" />
-          <GrayText>This code is a reference to: {path}</GrayText>
-        </Flex>
-      )}
+      {path &&
+        renderLink &&
+        renderLink(
+          <Flex alignItems="center">
+            <Icon name="link" fill="#a5a5a5" />
+            <GrayText>This code is a reference to: {path}</GrayText>
+          </Flex>
+        )}
     </Card>
   );
 };
@@ -100,19 +109,20 @@ export const Question = ({ path, ...props }: QuestionProps) => {
 export const CommentCard = (props: CommentCardProps) => {
   return (
     <CommentContainer>
-      <BaseCommentCard {...props} variant="outline" />
+      <BaseCommentCard {...props} title="" variant="outline" />
     </CommentContainer>
   );
 };
 
 const BaseCommentCard = ({
+  title,
   text,
   path,
-  numReplies,
+  numComments,
   createdAt,
   creator: { username, pictureUrl },
   isOwner,
-  onOpenEditor,
+  onReplyClick,
   variant,
 }: BaseProps) => {
   const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
@@ -136,10 +146,10 @@ const BaseCommentCard = ({
               )}
             </Flex>
             <Flex>
-              {Number(numReplies) >= 0 && (
+              {Number(numComments) >= 0 && (
                 <>
                   <Icon size={12} name="comment" fill="#A5A5A5" />
-                  <GrayText>{numReplies}</GrayText>
+                  <GrayText>{numComments}</GrayText>
                 </>
               )}
               <Icon size={12} name="clock" fill="#A5A5A5" />
@@ -147,26 +157,32 @@ const BaseCommentCard = ({
             </Flex>
           </Flex>
         </Flex>
-        {variant == "outline" && (
+        {variant === "outline" && (
           <MyButton
             variant="form"
             className="btn-reply"
-            onClick={onOpenEditor}
+            onClick={onReplyClick}
             title="Reply"
           >
             <Icon size={16} name="reply" fill="#555555" />
           </MyButton>
         )}
       </Flex>
-      <Text
-        className="comment-text"
-        my="1rem"
-        fontFamily="rubik"
-        fontSize={2}
-        color="#78909C"
-      >
-        {text}
-      </Text>
+      {title ? (
+        <Text
+          className="comment-text"
+          my="1rem"
+          fontFamily="rubik"
+          fontSize={2}
+          color="#78909C"
+        >
+          {title}
+        </Text>
+      ) : (
+        <div style={{ padding: "1rem" }}>
+          <MarkdownRenderer text={text} />
+        </div>
+      )}
     </>
   );
 };

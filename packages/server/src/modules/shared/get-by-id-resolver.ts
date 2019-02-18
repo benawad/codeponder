@@ -1,4 +1,4 @@
-import { Resolver, Arg, Query } from "type-graphql";
+import { Arg, Query, Resolver } from "type-graphql";
 
 export function getByIdResolver<T extends Object>(
   suffix: string,

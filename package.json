@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "build:server": "lerna run build --scope={@codeponder/common,@codeponder/server}",
-    "build:web": "lerna run build --scope={@codeponder/common,@codeponder/web}"
+    "build:web": "lerna run build --scope={@codeponder/common,@codeponder/web",
+    "build:deps": "lerna run build --scope={@codeponder/common,@codeponder/ui}"
   },
   "workspaces": {
     "packages": [
@@ -14,7 +15,7 @@
     "lerna": "3.10.7"
   },
   "resolutions": {
-    "graphql": "14.0.2"
+    "graphql": "14.1.1"
   },
   "config": {
     "commitizen": {

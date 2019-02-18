@@ -1,3 +1,4 @@
+require("dotenv-safe").config();
 import { ApolloError, ApolloServer } from "apollo-server-express";
 import * as connectRedis from "connect-redis";
 import * as cors from "cors";
@@ -7,41 +8,55 @@ import { GraphQLError } from "graphql";
 import * as passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github";
 import "reflect-metadata";
-import { buildSchema } from "type-graphql";
+import { buildSchema, useContainer } from "type-graphql";
+import { Container } from "typedi";
+import * as typeorm from "typeorm";
+import { getConnection } from "typeorm";
 import { v4 } from "uuid";
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "./entity/User";
-import { questionReplyLoader } from "./loaders/questionReplyLoader";
+import { DisplayError } from "./errors/DisplayError";
+import { commentLoader } from "./loaders/commentLoader";
 import { userLoader } from "./loaders/userLoader";
 import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
-require("dotenv-safe").config();
+import { logManager } from "./utils/logManager";
+import { setupErrorHandling } from "./utils/shutdown";
 
-const SESSION_SECRET = process.env.SESSION_SECRET; 
-const RedisStore = connectRedis(session as any);
+const logger = logManager();
+logger.info("Loading environment...");
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const RedisStore = connectRedis(session as any); // connect node.req.session to redis backing store
+
+useContainer(Container);
+typeorm.useContainer(Container);
 
 const startServer = async () => {
+  logger.info("Connecting database...");
   const conn = await createTypeormConn();
   if (conn) {
+    logger.info("database connected ");
     await conn.runMigrations();
   }
-
+  logger.info("Creating express server...");
   const app = express();
 
+  logger.info("Creating GQL server...");
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [__dirname + "/modules/**/resolver.*"],
-      authChecker: ({ context }) => {
-        return context.req.session && context.req.session.userId; // or false if access denied
-      },
     }),
     context: ({ req }: any) => ({
       req,
       userLoader: userLoader(),
-      questionReplyLoader: questionReplyLoader(),
+      commentLoader: commentLoader(),
     }),
     formatError: (error: GraphQLError) => {
-      if (error.originalError instanceof ApolloError) {
+      if (
+        error.originalError instanceof ApolloError ||
+        error.originalError instanceof DisplayError
+      ) {
         return error;
       }
 
@@ -72,7 +87,7 @@ const startServer = async () => {
       try {
         const qid = authorization.split(" ")[1];
         req.headers.cookie = `qid=${qid}`;
-      } catch (_) {}
+      } catch {}
     }
 
     return next();
@@ -103,7 +118,9 @@ const startServer = async () => {
         callbackURL: "http://localhost:4000/oauth/github",
       },
       async (accessToken, refreshToken, profile: any, cb) => {
-        let user = await User.findOne({ where: { githubId: profile.id } });
+        let user = await typeorm
+          .getRepository(User)
+          .findOne({ where: { githubId: profile.id } });
         if (!user) {
           user = await createUser({
             username: profile.username,
@@ -136,15 +153,22 @@ const startServer = async () => {
         req.session.accessToken = req.user.accessToken;
         req.session.refreshToken = req.user.refreshToken;
       }
-      res.redirect("http://localhost:3000/pick-repo");
+      res.redirect("http://localhost:3000/");
     }
   );
 
   server.applyMiddleware({ app, cors: false }); // app is from an existing express app
 
-  app.listen({ port: 4000 }, () =>
+  const nodeServer = app.listen({ port: 4000 }, () =>
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
   );
+
+  setupErrorHandling({
+    db: getConnection(),
+    redisClient: redis,
+    logger: logger,
+    nodeServer: nodeServer,
+  });
 };
 
 startServer();

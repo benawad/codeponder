@@ -1,18 +1,12 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  OneToMany,
-} from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
-import { CodeReviewQuestion } from "./CodeReviewQuestion";
-import { QuestionReply } from "./QuestionReply";
-import { CodeReviewPost } from "./CodeReviewPost";
+import { Field, ID, ObjectType } from "type-graphql";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Comment } from "./Comment";
+import { Post } from "./Post";
+import { Question } from "./Question";
 
 @Entity()
 @ObjectType()
-export class User extends BaseEntity {
+export class User {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -36,15 +30,19 @@ export class User extends BaseEntity {
   @Column({ type: "text" })
   bio: string;
 
-  @OneToMany(() => CodeReviewQuestion, crq => crq.creator)
-  codeReviewQuestions: Promise<CodeReviewQuestion[]>;
+  @OneToMany(() => Question, crq => crq.creatorConnection)
+  Questions: Promise<Question[]>;
 
-  @OneToMany(() => CodeReviewPost, crp => crp.creator)
-  codeReviewPosts: Promise<CodeReviewPost[]>;
+  @OneToMany(() => Post, crp => crp.creatorConnection)
+  Posts: Promise<Post[]>;
 
-  @OneToMany(() => QuestionReply, qr => qr.creator)
-  questionReply: Promise<QuestionReply[]>;
+  @OneToMany(() => Comment, qr => qr.creatorConnection)
+  comments: Promise<Comment[]>;
 
+  // not in database.... 
   @Field(() => String, { nullable: true })
   accessToken: string | null;
+
+  @Field(() => Boolean)
+  hasUnreadNotifications: Promise<boolean>;
 }

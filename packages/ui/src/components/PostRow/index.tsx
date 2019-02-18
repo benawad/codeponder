@@ -1,10 +1,9 @@
+import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
-import { Card, Flex, Text, Box } from "rebass";
-import { distanceInWordsStrict } from "date-fns";
-
+import { Box, Flex, Text } from "rebass";
+import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Topic } from "../Topic";
-import styled from "../../theme/styled-components";
 
 interface Props {
   id: string;
@@ -25,9 +24,11 @@ interface Props {
   getLinkProps: () => any;
 }
 
-const BorderCard = styled(Card)`
+export const PostRowContainer = styled("div")`
   border-width: 0 0 0.1rem 0;
   border-style: solid;
+  padding: 1.2rem;
+  border-color: #e6eaef;
 `;
 
 export const PostRow: React.SFC<Props> = ({
@@ -39,14 +40,15 @@ export const PostRow: React.SFC<Props> = ({
   getLinkProps,
   Link,
   createdAt,
+  onTopicClick,
 }) => {
   const linkProps = getLinkProps();
-  const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
+  const dtString = distanceInWordsToNow(Date.parse(createdAt), {
     addSuffix: true,
   });
 
   return (
-    <BorderCard p="1.2rem" borderColor="neutrals.3">
+    <PostRowContainer>
       <Flex justifyContent="center">
         <Avatar size={34} src={pictureUrl} alt="avatar" />
         <div
@@ -79,11 +81,20 @@ export const PostRow: React.SFC<Props> = ({
           </Link>
           <Box mt=".4rem">
             {topics.slice(0, 3).map(topic => (
-              <Topic key={topic}>{topic}</Topic>
+              <Topic
+                key={topic}
+                onClick={() => {
+                  if (onTopicClick) {
+                    onTopicClick(topic);
+                  }
+                }}
+              >
+                {topic}
+              </Topic>
             ))}
           </Box>
         </div>
       </Flex>
-    </BorderCard>
+    </PostRowContainer>
   );
 };

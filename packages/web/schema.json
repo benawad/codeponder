@@ -14,7 +14,7 @@
         "description": "",
         "fields": [
           {
-            "name": "listCodeReviews",
+            "name": "lists",
             "description": "",
             "args": [],
             "type": {
@@ -28,7 +28,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "CodeReview",
+                    "name": "",
                     "ofType": null
                   }
                 }
@@ -105,7 +105,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CodeReview",
+        "name": "",
         "description": "",
         "fields": [
           {
@@ -325,7 +325,7 @@
         "description": "",
         "fields": [
           {
-            "name": "codeReviewId",
+            "name": "Id",
             "description": "",
             "args": [],
             "type": {
@@ -357,7 +357,7 @@
             "deprecationReason": null
           },
           {
-            "name": "codeReview",
+            "name": "",
             "description": "",
             "args": [],
             "type": {
@@ -365,7 +365,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "CodeReview",
+                "name": "",
                 "ofType": null
               }
             },
@@ -416,7 +416,7 @@
         "description": "",
         "fields": [
           {
-            "name": "createCodeReview",
+            "name": "create",
             "description": "",
             "args": [
               {
@@ -427,7 +427,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "CreateCodeReviewInput",
+                    "name": "CreateInput",
                     "ofType": null
                   }
                 },
@@ -439,7 +439,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "CreateCodeReviewResponse",
+                "name": "CreateResponse",
                 "ofType": null
               }
             },
@@ -594,7 +594,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "CreateCodeReviewInput",
+        "name": "CreateInput",
         "description": "",
         "fields": null,
         "inputFields": [
@@ -665,7 +665,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CreateCodeReviewResponse",
+        "name": "CreateResponse",
         "description": "",
         "fields": [
           {
@@ -689,12 +689,12 @@
             "deprecationReason": null
           },
           {
-            "name": "codeReview",
+            "name": "",
             "description": "",
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "CodeReview",
+              "name": "",
               "ofType": null
             },
             "isDeprecated": false,
@@ -770,7 +770,7 @@
             "defaultValue": null
           },
           {
-            "name": "codeReviewId",
+            "name": "Id",
             "description": "",
             "type": {
               "kind": "NON_NULL",
@@ -846,7 +846,7 @@
             "defaultValue": null
           },
           {
-            "name": "codeReviewId",
+            "name": "Id",
             "description": "",
             "type": {
               "kind": "NON_NULL",
@@ -1868,11 +1868,7 @@
       {
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
+        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
         "args": [
           {
             "name": "if",
@@ -1893,11 +1889,7 @@
       {
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-        "locations": [
-          "FIELD",
-          "FRAGMENT_SPREAD",
-          "INLINE_FRAGMENT"
-        ],
+        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
         "args": [
           {
             "name": "if",
@@ -1918,10 +1910,7 @@
       {
         "name": "deprecated",
         "description": "Marks an element of a GraphQL schema as no longer supported.",
-        "locations": [
-          "FIELD_DEFINITION",
-          "ENUM_VALUE"
-        ],
+        "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
         "args": [
           {
             "name": "reason",

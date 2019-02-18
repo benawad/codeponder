@@ -1,9 +1,9 @@
+import "prismjs/themes/prism-coy.css";
 import * as React from "react";
 import styled, {
-  SimpleInterpolation,
   FlattenSimpleInterpolation,
+  SimpleInterpolation,
 } from "styled-components";
-import "prismjs/themes/prism-coy.css";
 
 interface Props extends React.HTMLAttributes<HTMLPreElement> {
   fontSize?: number;
@@ -20,13 +20,17 @@ const Pre = styled.pre`
   font-size: ${(p: styleProps) => p.fontSize || 14}px;
 
   &.code-content code[class*="language-"] {
+    background-color: #fafafa;
+    /* override prism-coy stripes */
+    background-image: none;
     /* override prism-coy border */
     border: 1px solid #ddd;
     border-radius: 3px;
     box-shadow: none;
     margin-bottom: 1em;
     margin-top: 1em;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding: 0;
   }
 
@@ -84,15 +88,10 @@ const Pre = styled.pre`
     transform: scale(0.8);
     transition: transform 0.1s ease-in-out;
 
-    &.hidden {
-      opacity: 0;
-    }
-
-    & span {
-      font-size: 16px;
-      line-height: 1;
-      vertical-align: middle;
-    }
+    opacity: 0;
+    font-size: 16px;
+    line-height: 1;
+    vertical-align: middle;
   }
 
   &.js-select-line {
@@ -102,13 +101,10 @@ const Pre = styled.pre`
   }
 
   &:not(.js-select-line) {
-    & .token-line:not([class*="is-selected"]).is-hovered {
-      & .btn-open-edit {
+    & .token-line:not([class*="is-selected"]) {
+      & .btn-open-edit:hover {
         opacity: 1;
         cursor: pointer;
-      }
-
-      & .btn-open-edit:hover {
         transform: scale(1);
       }
     }
@@ -118,6 +114,7 @@ const Pre = styled.pre`
     background-color: transparent;
     color: ${p => p.theme.colors.primary[2]};
     cursor: pointer;
+    display: flex;
     width: 36px;
     height: 22px;
     line-height: 1;
@@ -132,7 +129,6 @@ const Pre = styled.pre`
     & .badge-counter {
       background-color: ${p => p.theme.colors.primary[3]};
       border-radius: 50%;
-      display: inline-block;
       font-size: 10px;
       margin: 0;
       padding: 5.5px 0;
@@ -141,7 +137,6 @@ const Pre = styled.pre`
     }
 
     & .badge-icon {
-      display: inline-block;
       font-size: 20px;
       vertical-align: middle;
       transition: transform 0.3s ease-in-out;
@@ -155,7 +150,7 @@ const Pre = styled.pre`
   & .inner-animate-box {
     max-height: 0;
     opacity: 0;
-    transition: max-height 400ms ease-in-out, opacity 600ms ease-in-out;
+    transition: max-height 200ms ease-in-out, opacity 300ms ease-in-out;
 
     &.is-open {
       max-height: 2000px;

@@ -74,14 +74,16 @@ const loadLanguage = async (lang: string) => {
     }
   }
 
+  // not sure if needed
   // see prismjs/components/index.js
-  delete require.cache[require.resolve(`prismjs/components/prism-${lang}`)];
+  delete require.cache[require.resolve(`prismjs/components/prism-${lang}.min`)];
   delete Prism.languages[lang];
 
   return import(`prismjs/components/prism-${lang}.min`);
 };
 
 export const getHighlightedCode = async (code: string, lang: string) => {
+  // check if the language has already been loaded
   let grammar = Prism.languages[lang];
   if (grammar === undefined) {
     try {

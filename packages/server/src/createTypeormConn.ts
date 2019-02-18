@@ -11,7 +11,6 @@ export const createTypeormConn = async () => {
         username: process.env.DB_USER,
         password: process.env.DB_PASS,
       };
-      console.log(secureConfig);
       return createConnection(secureConfig);
     } catch (err) {
       console.log(err);

@@ -7,4 +7,5 @@ temp/
 dist
 .next
 .env
+*.log
 storybook-static/
