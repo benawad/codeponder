@@ -6,6 +6,7 @@ export const notificationsQuery = gql`
       hasMore
       notifications {
         __typename
+        id
         type
         createdAt
         read

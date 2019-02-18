@@ -26,7 +26,7 @@ export const NotificationsView: React.FC = () => {
           <UpdateNotificationReadComponent>
             {updateNotificationRead => (
               <NotificationsComponent fetchPolicy="network-only">
-                {({ data, loading, fetchMore }) => {
+                {({ data, loading, fetchMore, ...stuff }) => {
                   if (!data || loading) {
                     return <Spinner />;
                   }

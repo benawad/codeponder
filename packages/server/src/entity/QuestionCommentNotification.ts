@@ -1,11 +1,11 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { Comment } from "./Comment";
@@ -15,18 +15,20 @@ import { User } from "./User";
 @Entity()
 @ObjectType()
 export class QuestionCommentNotification {
+  @Field(() => ID)
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
+
   @Field(() => Comment)
   @ManyToOne(() => Comment)
   comment: Promise<Comment>;
   @Field()
-  @PrimaryColumn("uuid")
   commentId: string;
 
   @Field(() => Question)
   @ManyToOne(() => Question, { onDelete: "CASCADE" })
   question: Promise<Question>;
   @Field()
-  @PrimaryColumn("uuid")
   questionId: string;
 
   @ManyToOne(() => User, { onDelete: "CASCADE" })
