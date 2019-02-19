@@ -59,6 +59,7 @@ export default (App: any) => {
         GITHUB_LINK_OPTIONS,
         {},
         {
+          //@ts-ignore
           getToken: () => {
             return me ? me.accessToken || "" : "";
           },

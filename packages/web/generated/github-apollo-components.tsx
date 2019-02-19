@@ -1088,7 +1088,7 @@ export type RepoInfoFragment = {
 
   owner: RepoInfoOwner;
 
-  defaultBranchRef: Maybe<RepoInfoDefaultBranchRef>;
+ defaultBranchRef: Maybe<RepoInfoDefaultBranchRef>;
 
   languages: Maybe<RepoInfoLanguages>;
 
@@ -1117,7 +1117,6 @@ export type RepoInfoTarget = {
 
 export type RepoInfoLanguages = {
   __typename?: "LanguageConnection";
-
   edges: Maybe<RepoInfoEdges[]>;
 };
 
@@ -1139,13 +1138,11 @@ export type RepoInfoNode = {
 
 export type RepoInfoRepositoryTopics = {
   __typename?: "RepositoryTopicConnection";
-
   edges: Maybe<RepoInfo_Edges[]>;
 };
 
 export type RepoInfo_Edges = {
   __typename?: "RepositoryTopicEdge";
-
   node: Maybe<RepoInfo_Node>;
 };
 
@@ -1161,10 +1158,10 @@ export type RepoInfoTopic = {
   name: string;
 };
 
-import * as ReactApollo from "react-apollo";
-import * as React from "react";
-
 import gql from "graphql-tag";
+import * as React from "react";
+import * as ReactApollo from "react-apollo";
+
 
 // ====================================================
 // Fragments
