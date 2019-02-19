@@ -26,9 +26,9 @@ export class User {
   @Column({ type: "text" })
   pictureUrl: string;
 
-  @Field()
-  @Column({ type: "text" })
-  bio: string;
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
+  bio: string | null;
 
   @OneToMany(() => Question, crq => crq.creatorConnection)
   Questions: Promise<Question[]>;
@@ -39,7 +39,7 @@ export class User {
   @OneToMany(() => Comment, qr => qr.creatorConnection)
   comments: Promise<Comment[]>;
 
-  // not in database.... 
+  // not in database....
   @Field(() => String, { nullable: true })
   accessToken: string | null;
 
