@@ -1,6 +1,5 @@
 import { BigCard, FolderTree } from "@codeponder/ui";
 import { orderBy } from "lodash";
-import "prismjs";
 import * as React from "react";
 import { Box, Heading } from "rebass";
 import { GetPostByIdQuery } from "../../../generated/apollo-components";

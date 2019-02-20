@@ -1,10 +1,11 @@
 import { CodeCard, css } from "@codeponder/ui";
+import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import {
   FindQuestionsComponent,
   QuestionInfoFragment,
 } from "../../../../generated/apollo-components";
-import { getHighlightedCode } from "../../../../utils/highlightCode";
+import { getHighlightedHTML } from "../../../../utils/highlightCode";
 import { PostContext } from ".././PostContext";
 import { RenderLine } from "./CodeLine";
 
@@ -42,15 +43,12 @@ const useHighlight = (lang: string, code: string) => {
   });
 
   useEffect(() => {
-    getHighlightedCode(code, lang).then(highlightedCode => {
-      const tokens = highlightedCode.split("\n").map(line => {
-        return `${PLUSBUTTON}${line}`;
-      });
-
-      setHighlightCode({ pending: false, resolved: tokens });
+    const highlightedHTML = getHighlightedHTML(code, lang);
+    const tokens = highlightedHTML.split("\n").map(line => {
+      return `${PLUSBUTTON}${line}`;
     });
 
-    return () => {};
+    setHighlightCode({ pending: false, resolved: tokens });
   }, []);
   return highlightCode;
 };
