@@ -1,4 +1,3 @@
-import { MarkdownRenderer } from "@codeponder/ui";
 import { Field } from "formik";
 import React, {
   useCallback,
@@ -10,6 +9,7 @@ import React, {
 import { CommentInputField } from "../../../shared/formik-fields/CommentInputField";
 import { commandsHandler, keyBoardCommands } from "./commands";
 import { EditorContainer } from "./components";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 import { Tab, Toolbar } from "./Toolbar";
 
 interface EditorProps {
@@ -83,7 +83,7 @@ export const MarkdownEditor: React.FC<EditorProps> = React.memo(
         </div>
         {tab === "preview" && (
           <div
-            className="preview-content markdown-body selected"
+            className="preview-content selected"
             style={{
               minHeight: writeRef.current!.style.height || "100px",
             }}
