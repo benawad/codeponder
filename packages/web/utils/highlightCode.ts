@@ -1,103 +1,75 @@
-import Prism from "prismjs/components/prism-core";
+import toH from "hast-to-hyperscript";
+import React from "react";
+import refractor, { HastNode } from "refractor/core.js";
+import rehype from "rehype";
 
-const langDepMap: { [key: string]: string | string[] } = {
-  javascript: "clike",
-  actionscript: "javascript",
-  arduino: "cpp",
-  aspnet: ["markup", "csharp"],
-  bison: "c",
-  c: "clike",
-  csharp: "clike",
-  cpp: "c",
-  coffeescript: "javascript",
-  crystal: "ruby",
-  "css-extras": "css",
-  d: "clike",
-  dart: "clike",
-  django: "markup",
-  erb: ["ruby", "markup-templating"],
-  fsharp: "clike",
-  flow: "javascript",
-  glsl: "clike",
-  go: "clike",
-  groovy: "clike",
-  haml: "ruby",
-  handlebars: "markup-templating",
-  haxe: "clike",
-  java: "clike",
-  jolie: "clike",
-  kotlin: "clike",
-  less: "css",
-  markdown: "markup",
-  "markup-templating": "markup",
-  n4js: "javascript",
-  nginx: "clike",
-  objectivec: "c",
-  opencl: "cpp",
-  parser: "markup",
-  php: ["clike", "markup-templating"],
-  "php-extras": "php",
-  plsql: "sql",
-  processing: "clike",
-  protobuf: "clike",
-  pug: "javascript",
-  qore: "clike",
-  jsx: ["markup", "javascript"],
-  tsx: ["jsx", "typescript"],
-  reason: "clike",
-  ruby: "clike",
-  sass: "css",
-  scss: "css",
-  scala: "java",
-  smarty: "markup-templating",
-  soy: "markup-templating",
-  swift: "clike",
-  tap: "yaml",
-  textile: "markup",
-  tt2: ["clike", "markup-templating"],
-  twig: "markup",
-  typescript: "javascript",
-  vbnet: "basic",
-  velocity: "markup",
-  wiki: "markup",
-  xeora: "markup",
-  xquery: "markup",
-};
+const lineNumber = (lineNum: number): HastNode => ({
+  type: "element",
+  tagName: "span",
+  properties: { className: ["token", "line-number"] },
+  children: [{ type: "text", value: `${lineNum}` }],
+});
 
-const loadLanguage = async (lang: string) => {
-  const deps = langDepMap[lang];
-  if (deps) {
-    if (typeof deps === "string") {
-      await loadLanguage(deps);
+const addLineNumber = (ast: HastNode[], lineNum: number, root = true) => {
+  const nodes: HastNode[] = root ? [lineNumber(lineNum++)] : [];
+  ast.forEach(node => {
+    if (node.type === "text" && node.value!.includes("\n")) {
+      const lines = node.value!.split("\n");
+      const lastLine = lines.pop();
+      for (const line of lines) {
+        nodes.push({ type: "text", value: `${line}\n` });
+        nodes.push(lineNumber(lineNum++));
+      }
+      if (lastLine) {
+        nodes.push({ type: "text", value: lastLine });
+      }
     } else {
-      await Promise.all(deps.map(loadLanguage));
+      if (node.children) {
+        const result = addLineNumber(node.children, lineNum, false);
+        node.children = result.nodes;
+        lineNum = result.lineNum;
+      }
+      nodes.push(node);
     }
-  }
-
-  // not sure if needed
-  // see prismjs/components/index.js
-  delete require.cache[require.resolve(`prismjs/components/prism-${lang}.min`)];
-  delete Prism.languages[lang];
-
-  return import(`prismjs/components/prism-${lang}.min`);
+  });
+  return { nodes, lineNum };
 };
 
-export const getHighlightedCode = async (code: string, lang: string) => {
-  // check if the language has already been loaded
-  let grammar = Prism.languages[lang];
-  if (grammar === undefined) {
+const getHast = (code: string, lang: string): HastNode[] | null => {
+  if (!lang) return null;
+  if (!refractor.registered(lang)) {
     try {
-      await loadLanguage(lang);
-    } catch {}
-    grammar = Prism.languages[lang];
+      refractor.register(require(`refractor/lang/${lang}.js`));
+    } catch (ex) {}
   }
-  const mixedTokens =
-    grammar !== undefined ? Prism.tokenize(code, grammar) : [code];
+  if (refractor.registered(lang)) {
+    return refractor.highlight(code, lang);
+  }
+  return null;
+};
 
-  const encoded = Prism.util.encode(mixedTokens);
-  return Prism.Token.stringify(
-    encoded,
-    lang as Prism.LanguageDefinition,
-    {} as HTMLPreElement
-  );
+export const getHighlightedCode = (
+  code: string,
+  lang: string,
+  firstLineNum: number
+) => {
+  let ast = getHast(code, lang);
+  if (ast) {
+    if (!isNaN(firstLineNum)) {
+      ast = addLineNumber(ast, firstLineNum || 1).nodes;
+    }
+    const root = toH(React.createElement, { type: "root", children: ast });
+    return root.props.children;
+  }
+  return code;
+};
+
+export const getHighlightedHTML = (code: string, lang: string): string => {
+  const ast = getHast(code, lang);
+  if (ast) {
+    return rehype()
+      .stringify({ type: "root", children: ast })
+      .toString();
+  }
+  return code;
 };

@@ -6,8 +6,11 @@ import { CommentCard, Question } from ".";
 const data = {
   title: "iamtitle",
   id: "dafs",
-  text: `i am a question body
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est consequuntur modi quas alias placeat aliquam vitae explicabo magni saepe commodi. Corporis ullam ratione fugit optio tempore provident voluptates commodi quasi!`,
+  markdown: React.createElement(
+    "label",
+    null,
+    "i am a question body"
+  ),
   codeSnippet: "i am code",
   numComments: 14,
   createdAt: "12/28/2018",

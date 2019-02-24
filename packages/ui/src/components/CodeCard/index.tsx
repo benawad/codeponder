@@ -16,6 +16,16 @@ interface styleProps {
   selectedLines: SimpleInterpolation;
 }
 
+export const LineNumberStyle = `
+  color: #999;
+  display: inline-block;
+  letter-spacing: -1px;
+  padding-right: 1.5em;
+  text-align: right;
+  user-select: none;
+  min-width: 3em;
+`;
+
 const Pre = styled.pre`
   font-size: ${(p: styleProps) => p.fontSize || 14}px;
 
@@ -54,13 +64,7 @@ const Pre = styled.pre`
       /* line-number */
       &::before {
         content: attr(data-line-number);
-        color: #999;
-        display: inline-block;
-        letter-spacing: -1px;
-        padding-right: 1.5em;
-        text-align: right;
-        user-select: none;
-        min-width: 3em;
+        ${LineNumberStyle}
       }
     }
   }

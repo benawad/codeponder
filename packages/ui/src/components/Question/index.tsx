@@ -4,12 +4,11 @@ import { Card, Flex, Text } from "rebass";
 import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
 import { Icon } from "../Icon";
-import { MarkdownRenderer } from "../MarkdownRenderer";
 import { MyButton } from "../MyButton";
 
 interface Props {
   id: string;
-  text: string;
+  markdown: React.ReactElement<any> | null;
   programmingLanguage?: string | null;
   codeSnippet?: string | null;
   createdAt: string;
@@ -116,7 +115,7 @@ export const CommentCard = (props: CommentCardProps) => {
 
 const BaseCommentCard = ({
   title,
-  text,
+  markdown,
   path,
   numComments,
   createdAt,
@@ -179,9 +178,7 @@ const BaseCommentCard = ({
           {title}
         </Text>
       ) : (
-        <div style={{ padding: "1rem" }}>
-          <MarkdownRenderer text={text} />
-        </div>
+        <div style={{ padding: "1rem" }}>{markdown}</div>
       )}
     </>
   );
