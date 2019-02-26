@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "@codeponder/ui";
 
 export const FormRow = styled.div`
   padding: 1rem 0.9rem;
