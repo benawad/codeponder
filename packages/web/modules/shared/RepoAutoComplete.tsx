@@ -3,8 +3,8 @@ import Select from "react-select";
 import {
   GetViewerReposComponent,
   GetViewerReposEdges,
-} from "../../../generated/github-apollo-components";
-import { GitHubApolloClientContext } from "../GithubApolloClientContext";
+} from "../../generated/github-apollo-components";
+import { GitHubApolloClientContext } from "./GithubApolloClientContext";
 
 interface Props {
   onChange: (data: GetViewerReposEdges | null) => void;

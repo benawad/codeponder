@@ -12,10 +12,10 @@ import {
 import { getRepoQuery } from "../../github-graphql/query/getRepo.github";
 import { Router } from "../../server/routes";
 import { removeDuplicates } from "../../utils/removeDuplicates";
-import { RepoAutoComplete } from "../shared/CreatePostModal/RepoAutoComplete";
 import { InputField } from "../shared/formik-fields/InputField";
 import { GitHubApolloClientContext } from "../shared/GithubApolloClientContext";
 import { Layout } from "../shared/Layout";
+import { RepoAutoComplete } from "../shared/RepoAutoComplete";
 
 const githubUrlRegex = /(?:https:\/\/)?(?:www\.)?github\.com\/([A-Za-z\d-]+)\/([A-Za-z\d-]+)/;
 
