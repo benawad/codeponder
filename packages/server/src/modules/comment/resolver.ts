@@ -1,7 +1,7 @@
-import rehypeStringify from "rehype-stringify";
-import remarkParse from "remark-parse";
-import remarkPing from "remark-ping";
-import remark2rehype from "remark-rehype";
+import * as rehypeStringify from "rehype-stringify";
+import * as remarkParse from "remark-parse";
+import * as remarkPing from "remark-ping";
+import * as remark2rehype from "remark-rehype";
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { In, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -53,18 +53,20 @@ export class CommentResolver {
 
     unified()
       .use(remarkParse)
-      .use(remarkPing, { pingUsername: true, userURL: () => "" })
+      .use(remarkPing, { pingUsername: () => true, userURL: () => "" })
       .use(remark2rehype)
       .use(rehypeStringify)
       .process(input.text)
-      .then(async (vfile: any) => {
-        if (!vfile.data.ping.length) {
+      .then(async vfile => {
+        // data property type is set unknown
+        const { ping } = vfile.data as { ping: string[] };
+        if (!Array.isArray(ping) || !ping.length) {
           return;
         }
 
         const users = await this.userRepo.find({
           // you can mention up to 10 people per comment
-          username: In(vfile.data.ping.slice(0, 10)),
+          username: In(ping.slice(0, 10)),
         });
 
         if (users.length) {
