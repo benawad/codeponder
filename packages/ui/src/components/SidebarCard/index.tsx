@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Card, CardProps } from "rebass";
 
-export const SidebarCard: React.SFC<
+export const SidebarCard: React.FC<
   CardProps & { flex?: string; style?: React.CSSProperties }
-> = ({ children, ...props }) => {
+> = ({ children, ...props }): JSX.Element => {
   return (
     <Card
       bg="#fff"

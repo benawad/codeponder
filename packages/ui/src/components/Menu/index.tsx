@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface Props {
   options: string[];
   renderOption: (data: {
-    Anchor: React.ReactElement<any>;
+    Anchor: JSX.Element;
     option: string;
   }) => React.ReactNode;
 }
@@ -19,7 +19,11 @@ const MenuLink = styled("a")`
   }
 `;
 
-export const Menu: React.FC<Props> = ({ children, options, renderOption }) => {
+export const Menu: React.FC<Props> = ({
+  children,
+  options,
+  renderOption,
+}): JSX.Element => {
   const [open, changeOpen] = useState(false);
 
   return (

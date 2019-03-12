@@ -3,11 +3,11 @@ import Head from "next/head";
 import * as React from "react";
 import { NavBar } from "./NavBar";
 
-type Props = {
+interface Props {
   title: string;
-};
+}
 
-export const Layout: React.SFC<Props> = ({ children, title }) => (
+export const Layout: React.SFC<Props> = ({ children, title }): JSX.Element => (
   <div>
     <Head>
       <title>{title}</title>

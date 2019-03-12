@@ -1,12 +1,12 @@
-import * as React from "react";
-
 import { storiesOf } from "@storybook/react";
+import * as React from "react";
 import FolderTree from ".";
+import { defaultLinkProps } from "../Link";
 import { MyButton } from "../MyButton";
 
 storiesOf("FolderTree", module).add("basic example", () => (
   <FolderTree
-    getLinkProps={() => {}}
+    getLinkProps={() => defaultLinkProps}
     Link={MyButton}
     items={[
       {

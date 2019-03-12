@@ -1,6 +1,9 @@
 import { Question } from "@codeponder/ui";
 import React from "react";
-import { FindQuestionsComponent, FindQuestionsVariables } from "../../../../generated/apollo-components";
+import {
+  FindQuestionsComponent,
+  FindQuestionsVariables,
+} from "../../../../generated/apollo-components";
 import { Link } from "../../../../server/routes";
 import { CreateQuestion } from "../CreateQuestion";
 
@@ -8,7 +11,7 @@ interface Props {
   variables: FindQuestionsVariables;
 }
 
-export const QuestionSection = ({ variables }: Props) => {
+export const QuestionSection = ({ variables }: Props): JSX.Element => {
   return (
     <FindQuestionsComponent variables={variables}>
       {({ data, loading }) => {
@@ -54,6 +57,7 @@ export const QuestionSection = ({ variables }: Props) => {
                           <a>{body}</a>
                         </Link>
                       )}
+                      markdown={null}
                       {...crq}
                     />
                   );

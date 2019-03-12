@@ -1,4 +1,4 @@
-export interface ITheme {
+export interface Theme {
   /**
    * Fonts according to design spec, can be accessed using `fontFamily="key"` in component props
    */
@@ -41,7 +41,7 @@ export interface ITheme {
   };
 }
 
-const theme: ITheme = {
+const theme: Theme = {
   fonts: {
     sans: '"Rubik", sans-serif',
     mono: '"Roboto Mono", sans-serif',

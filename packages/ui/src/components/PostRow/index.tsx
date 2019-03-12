@@ -3,6 +3,7 @@ import * as React from "react";
 import { Box, Flex, Text } from "rebass";
 import styled from "../../theme/styled-components";
 import { Avatar } from "../Avatar";
+import { LinkProps, RouteLinkProps } from "../Link";
 import { Topic } from "../Topic";
 
 interface Props {
@@ -20,8 +21,8 @@ interface Props {
     username: string;
     pictureUrl: string;
   };
-  Link: any;
-  getLinkProps: () => any;
+  Link: React.ComponentType<LinkProps> | React.FunctionComponent;
+  getLinkProps: () => RouteLinkProps;
 }
 
 export const PostRowContainer = styled("div")`
@@ -31,7 +32,7 @@ export const PostRowContainer = styled("div")`
   border-color: #e6eaef;
 `;
 
-export const PostRow: React.SFC<Props> = ({
+export const PostRow: React.FC<Props> = ({
   title,
   repo,
   repoOwner,
@@ -41,7 +42,7 @@ export const PostRow: React.SFC<Props> = ({
   Link,
   createdAt,
   onTopicClick,
-}) => {
+}): JSX.Element => {
   const linkProps = getLinkProps();
   const dtString = distanceInWordsToNow(Date.parse(createdAt), {
     addSuffix: true,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React from "react";
 
 export default () => (
   <div style={{ fontSize: 20 }}>

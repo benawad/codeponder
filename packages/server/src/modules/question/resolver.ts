@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Arg,
   Ctx,
@@ -23,15 +24,13 @@ import { QuestionResponse } from "./response";
 const PAGE_SIZE = 6;
 @Resolver(Question)
 export class QuestionResolver {
-  constructor(
-    @InjectRepository(QuestionRepository)
-    private readonly questionRepo: QuestionRepository,
-    @InjectRepository(Comment)
-    private readonly commentRepo: Repository<Comment>
-  ) {}
+  @InjectRepository(QuestionRepository)
+  private readonly questionRepo: QuestionRepository;
+  @InjectRepository(Comment)
+  private readonly commentRepo: Repository<Comment>;
 
   @FieldResolver()
-  numComments(@Root() root: Question) {
+  numComments(@Root() root: Question): Promise<number> {
     return this.commentRepo.count({ where: { questionId: root.id } });
   }
 
@@ -43,7 +42,7 @@ export class QuestionResolver {
   ): Promise<QuestionResponse> {
     const q = await this.questionRepo.add({
       ...input,
-      creatorId: ctx.req.session!.userId,
+      creatorId: ctx.req.session && ctx.req.session.userId,
     });
 
     if (!q) {
@@ -59,7 +58,7 @@ export class QuestionResolver {
   async updateQuestionTitle(
     @Arg("id") id: string,
     @Arg("title") title: string
-  ) {
+  ): Promise<Question> {
     const q = await this.questionRepo.findOne(id);
 
     if (!q) {
@@ -75,7 +74,7 @@ export class QuestionResolver {
   async findQuestions(
     @Arg("postId") postId: string,
     @Arg("path", () => String, { nullable: true }) path?: string
-  ) {
+  ): Promise<Question[]> {
     const where: FindConditions<Question> = {
       postId,
     };
@@ -98,7 +97,8 @@ export class QuestionResolver {
     @Arg("offset", () => Int, { nullable: true }) offset = PAGE_SIZE,
     @Arg("limit", () => Int, { nullable: true, description: "max of 18" })
     limit = PAGE_SIZE
-  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
     if (limit > 18) {
       limit = 18;
     }
@@ -114,7 +114,10 @@ export class QuestionResolver {
   }
 
   @FieldResolver(() => [Comment])
-  async comments(@Root() root: Question, @Ctx() ctx: MyContext) {
+  async comments(
+    @Root() root: Question,
+    @Ctx() ctx: MyContext
+  ): Promise<Comment[]> {
     const comments = await ctx.commentLoader.load(root.id);
     return comments || [];
   }

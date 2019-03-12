@@ -13,7 +13,7 @@ export const createUser = async ({
   pictureUrl: string;
   bio: string;
   name: string;
-}) => {
+}): Promise<User | undefined> => {
   let user: User | undefined = undefined;
   let times = 0;
 

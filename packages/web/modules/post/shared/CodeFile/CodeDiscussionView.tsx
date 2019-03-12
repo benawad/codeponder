@@ -45,7 +45,7 @@ const DiscussionContainer = styled.div`
 const COLLAPSE = "Collapse this discussion";
 const EXPANDED = "Expanded this discussion";
 
-const badgeClassList = (open: boolean) => {
+const badgeClassList = (open: boolean): string => {
   const classNames = "token-btn discussion-badge";
   return open ? `${classNames} is-open` : classNames;
 };
@@ -55,14 +55,14 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
   toggleDiscussion,
   showDiscussion,
   lineNum,
-}) => {
+}): JSX.Element => {
   const discussionRef = useRef<HTMLDivElement>(null);
   const { owner } = useContext(PostContext);
   const [showReply, setShowReply] = useState(false);
 
   useEffect(() => {
-    if (showDiscussion) {
-      discussionRef.current!.classList.add("is-open");
+    if (showDiscussion && discussionRef.current) {
+      discussionRef.current.classList.add("is-open");
     }
   }, [showDiscussion, showReply]);
 
@@ -71,7 +71,9 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
     // animation ends for the case the height is grater than 2000px
     if (showDiscussion) {
       const id = setTimeout(() => {
-        discussionRef.current!.style.maxHeight = "none";
+        if (discussionRef.current) {
+          discussionRef.current.style.maxHeight = "none";
+        }
       }, 200);
       return () => clearTimeout(id);
     }
@@ -84,8 +86,10 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
         title={showDiscussion ? COLLAPSE : EXPANDED}
         onClick={() => {
           if (showDiscussion) {
-            discussionRef.current!.style.maxHeight = "";
-            discussionRef.current!.classList.remove("is-open");
+            if (discussionRef.current) {
+              discussionRef.current.style.maxHeight = "";
+              discussionRef.current.classList.remove("is-open");
+            }
             setTimeout(() => {
               toggleDiscussion();
               setShowReply(false);
@@ -129,7 +133,7 @@ export const CodeDiscussionView: React.FC<CodeDiscussionViewProps> = ({
           view="code-view"
           onEditorSubmit={() => setShowReply(false)}
           lineNum={lineNum}
-          questionId={question!.id}
+          questionId={question.id}
         />
       )}
     </>

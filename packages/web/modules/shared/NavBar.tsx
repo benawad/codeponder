@@ -17,7 +17,7 @@ const Container = styled(Flex)`
   flex: 0 0 auto;
 `;
 
-export const NavBar = () => {
+export const NavBar = (): JSX.Element => {
   return (
     <Container my="1.5rem" justifyContent="space-between">
       <Flex alignItems="center">
@@ -28,6 +28,7 @@ export const NavBar = () => {
                 width: 300,
               }}
               src={Logo}
+              alt="Code Ponder logo"
             />
           </Link>
         </NextLink>
@@ -53,7 +54,7 @@ export const NavBar = () => {
                   <a>
                     <Icon
                       name={
-                        data!.me!.hasUnreadNotifications
+                        data && data.me && data.me.hasUnreadNotifications
                           ? "activeNotificationBell"
                           : "emptyNotificationBell"
                       }
@@ -72,7 +73,11 @@ export const NavBar = () => {
                   )}
                 >
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <Avatar size={32} src={data!.me!.pictureUrl} alt="avatar" />
+                    <Avatar
+                      size={32}
+                      src={data && data.me ? data.me.pictureUrl : undefined}
+                      alt="avatar"
+                    />
                     <Icon fill="#333" name="downArrow" />
                   </div>
                 </Menu>

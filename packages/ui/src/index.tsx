@@ -9,6 +9,7 @@ export * from "./components/Header";
 export * from "./components/Icon";
 export * from "./components/Input";
 export * from "./components/Label";
+export * from "./components/Link";
 export * from "./components/Menu";
 export * from "./components/MyButton";
 export * from "./components/NotificationRow";
@@ -21,3 +22,4 @@ export * from "./components/Topic";
 export * from "./components/Wrapper";
 export { default as theme } from "./theme";
 export * from "./theme/styled-components";
+

@@ -5,10 +5,11 @@ import React from "react";
 import remark from "remark";
 import remarkPing from "remark-ping";
 import remark2react from "remark-react";
+import { Node } from "unist";
 import visit from "unist-util-visit";
 import { getHighlightedCode } from "../../../../utils/highlightCode";
 
-const HighlightCode = ({ children }: any) => {
+const HighlightCode = ({ children }: { children: string }): JSX.Element => {
   try {
     const { value, lang, meta } = JSON.parse(children);
     return <code>{getHighlightedCode(value, lang, parseInt(meta))}</code>;
@@ -25,12 +26,16 @@ const sanitize = {
   },
 };
 
-const setCodeProps = () => {
-  return (ast: any) =>
-    visit(ast, "code", (node: any) => {
-      const { lang, meta, value } = node;
-      node.value = JSON.stringify({ value, lang, meta });
-    });
+const setCodeProps = (): ((ast: Node[]) => void) => {
+  return (ast: Node[]): void =>
+    visit(
+      ast,
+      "code",
+      (node: Node): void => {
+        const { lang, meta, value } = node;
+        node.value = JSON.stringify({ value, lang, meta });
+      }
+    );
 };
 
 const MarkdownContainer = styled("div")`
@@ -44,24 +49,26 @@ const MarkdownContainer = styled("div")`
   }
 `;
 
-export const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
-  return (
-    <MarkdownContainer className="markdown-body">
-      {
-        remark()
-          .use(remarkPing, {
-            pingUsername: () => true,
-            userURL: (username: string) => `https://github.com/${username}`,
-          })
-          .use(setCodeProps)
-          .use(remark2react, {
-            sanitize,
-            remarkReactComponents: {
-              code: HighlightCode,
-            },
-          })
-          .processSync(text).contents
-      }
-    </MarkdownContainer>
-  );
-};
+interface Props {
+  text: string;
+}
+
+export const MarkdownRenderer: React.FC<Props> = ({ text }): JSX.Element => (
+  <MarkdownContainer className="markdown-body">
+    {
+      remark()
+        .use(remarkPing, {
+          pingUsername: () => true,
+          userURL: (username: string) => `https://github.com/${username}`,
+        })
+        .use(setCodeProps)
+        .use(remark2react, {
+          sanitize,
+          remarkReactComponents: {
+            code: HighlightCode,
+          },
+        })
+        .processSync(text).contents
+    }
+  </MarkdownContainer>
+);

@@ -11,18 +11,18 @@ interface Props {
   topic?: string;
 }
 
-export const HomeView = ({ topic: initialTopic }: Props) => {
+export const HomeView = ({ topic: initialTopic }: Props): JSX.Element => {
   const [topics, setTopics] = React.useState(
     initialTopic ? [initialTopic] : []
   );
 
-  const handleTopic = (topicClicked: string) => {
+  const handleTopic = (topicClicked: string): void => {
     if (!topics.includes(topicClicked)) {
       setTopics(currentTopics => [topicClicked, ...currentTopics]);
     }
   };
 
-  const removeTopic = (topicToDelete: string) => {
+  const removeTopic = (topicToDelete: string): void => {
     setTopics(currentTopics => currentTopics.filter(x => x !== topicToDelete));
   };
 

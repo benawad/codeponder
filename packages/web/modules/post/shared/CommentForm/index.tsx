@@ -24,16 +24,17 @@ export interface TextEditorResult {
 const cleanSelectedLines = (
   lineNum: number,
   parentElm = document.querySelector(".code-content")
-) => {
-  parentElm!
-    .querySelectorAll(`.is-selected-${lineNum}`)
-    .forEach(elm => elm.classList.remove(`is-selected-${lineNum}`));
+): void => {
+  parentElm &&
+    parentElm
+      .querySelectorAll(`.is-selected-${lineNum}`)
+      .forEach(elm => elm.classList.remove(`is-selected-${lineNum}`));
 };
 
 const highlightSelectedLines = (
   lineNum: number,
   parentElm = document.querySelector(".code-content")
-) => {
+): void => {
   let numberElm: HTMLElement | null =
     parentElm && parentElm.querySelector(`[data-line-number="${lineNum}"]`);
   numberElm &&
@@ -56,7 +57,7 @@ export const CommentForm = ({
   lineNum,
   submitForm,
   view,
-}: TextEditorProps) => {
+}: TextEditorProps): JSX.Element => {
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -67,7 +68,9 @@ export const CommentForm = ({
 
   // make sure the editor is fully visible
   useEffect(() => {
-    formRef.current!.classList.add("is-open");
+    if (formRef.current) {
+      formRef.current.classList.add("is-open");
+    }
     if (view === "code-view" && formRef.current) {
       scrollToView(formRef.current, 200);
     }
@@ -77,9 +80,11 @@ export const CommentForm = ({
     if (lineNum) {
       cleanSelectedLines(lineNum);
     }
-    formRef.current!.classList.remove("is-open");
+    if (formRef.current) {
+      formRef.current.classList.remove("is-open");
+    }
     setTimeout(() => {
-      submitForm({ cancel: true } as TextEditorResult);
+      submitForm({ cancel: true, text: "", title: "" });
     }, 200);
   }, []);
 
@@ -91,7 +96,9 @@ export const CommentForm = ({
         text: "",
       }}
       onSubmit={({ text, title }, { resetForm }) => {
-        formRef.current!.classList.remove("is-open");
+        if (formRef.current) {
+          formRef.current.classList.remove("is-open");
+        }
         submitForm({
           cancel: false,
           lineNum,
@@ -133,6 +140,7 @@ export const CommentForm = ({
                 <a
                   href="https://guides.github.com/features/mastering-markdown"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Icon size={16} name="markdown" fill="#000" />
                   Styling with Markdown is supported

@@ -22,7 +22,7 @@ export interface CreateQuestionProps {
 export const CreateQuestion = ({
   onEditorSubmit,
   ...props
-}: CreateQuestionProps) => {
+}: CreateQuestionProps): JSX.Element => {
   const { code, path, postId, lang } = useContext(PostContext);
   return (
     <CreateQuestionComponent>
@@ -32,7 +32,7 @@ export const CreateQuestion = ({
           lineNum,
           text,
           title,
-        }: TextEditorResult) => {
+        }: TextEditorResult): Promise<void> => {
           if (!cancel) {
             // save result
             const response = await mutate({
@@ -82,7 +82,7 @@ export const CreateQuestion = ({
                     data: {
                       __typename: "Query",
                       findQuestions: [
-                        ...x!.findQuestions,
+                        ...(x ? x.findQuestions : []),
                         data.createQuestion.question,
                       ],
                     },
@@ -110,7 +110,7 @@ export const CreateQuestion = ({
                     data: {
                       __typename: "Query",
                       findQuestions: [
-                        ...x!.findQuestions,
+                        ...(x ? x.findQuestions : []),
                         data.createQuestion.question,
                       ],
                     },
@@ -124,7 +124,10 @@ export const CreateQuestion = ({
             if (onEditorSubmit) {
               onEditorSubmit({
                 submitted: true,
-                response: response && response.data!.createQuestion.question,
+                response:
+                  response &&
+                  response.data &&
+                  response.data.createQuestion.question,
               });
             }
           } else {

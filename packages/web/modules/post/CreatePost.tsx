@@ -1,13 +1,16 @@
 import { MyButton } from "@codeponder/ui";
 import { Field, Formik } from "formik";
 import { get } from "lodash";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import * as yup from "yup";
 import { FindOrCreatePostComponent } from "../../generated/apollo-components";
 import {
   GetRepoQuery,
   GetRepoVariables,
   GetViewerReposNode,
+  RepoInfoEdges,
+  /* eslint-disable-next-line @typescript-eslint/camelcase */
+  RepoInfo_Edges,
 } from "../../generated/github-apollo-components";
 import { getRepoQuery } from "../../github-graphql/query/getRepo.github";
 import { Router } from "../../server/routes";
@@ -27,10 +30,10 @@ const validationSchema = yup.object().shape({
   title: yup.string().required("required"),
 });
 
-const makeGitHubUrl = (node: GetViewerReposNode) =>
+const makeGitHubUrl = (node: GetViewerReposNode): string =>
   `https://github.com/${node.owner.login}/${node.name}`;
 
-export const CreatePost = () => {
+export const CreatePost = (): JSX.Element => {
   const [
     lastRepoSelected,
     setLastRepoSelected,
@@ -52,7 +55,11 @@ export const CreatePost = () => {
               ) {
                 item = lastRepoSelected;
               } else {
-                const [, owner, name] = githubUrl.match(githubUrlRegex)!;
+                if (!githubClient) {
+                  return setErrors({ githubUrl: "unable to find repo" });
+                }
+                const [, owner = "", name = ""] =
+                  githubUrl.match(githubUrlRegex) || [];
                 try {
                   const response = await githubClient.query<
                     GetRepoQuery,
@@ -72,10 +79,11 @@ export const CreatePost = () => {
               }
 
               const programmingLanguages = get(item, "languages.edges", []).map(
-                (x: any) => x.node!.name
+                (x: RepoInfoEdges) => x.node.name
               );
               const topics = get(item, "repositoryTopics.edges", []).map(
-                (x: any) => x.node!.topic.name
+                /* eslint-disable-next-line @typescript-eslint/camelcase */
+                (x: RepoInfo_Edges) => x.node && x.node.topic.name
               );
               const response = await mutate({
                 variables: {
@@ -85,7 +93,10 @@ export const CreatePost = () => {
                       ...programmingLanguages,
                       ...topics,
                     ]),
-                    commitId: item.defaultBranchRef!.target.oid,
+                    commitId:
+                      (item.defaultBranchRef &&
+                        item.defaultBranchRef.target.oid) ||
+                      "",
                     description: item.description || "",
                     repo: item.name,
                     repoOwner: item.owner.login,

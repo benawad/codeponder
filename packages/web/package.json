@@ -50,7 +50,7 @@
     "@types/cookie": "0.3.2",
     "@types/lodash": "^4.14.121",
     "@types/lodash.get": "4.4.4",
-    "@types/next": "7.0.6",
+    "@types/next": "7.0.9",
     "@types/prismjs": "1.9.0",
     "@types/react": "16.7.22",
     "@types/react-dom": "16.0.11",

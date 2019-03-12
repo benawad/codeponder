@@ -1,21 +1,59 @@
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
-import { IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
+import {
+  IntrospectionFragmentMatcher,
+  IntrospectionResultData,
+} from "apollo-cache-inmemory";
 import cookie from "cookie";
+import { IncomingMessage } from "http";
+import { NextContext } from "next";
+import NextApp, {
+  AppComponentType,
+  AppProps,
+  DefaultAppIProps,
+  NextAppContext,
+} from "next/app";
 import Head from "next/head";
+import { DefaultQuery } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import { getDataFromTree } from "react-apollo";
-import { MeQuery } from "../generated/apollo-components";
+import { MeMe, MeQuery } from "../generated/apollo-components";
 import { meQuery } from "../graphql/user/query/me";
 import introspectionQueryResultData from "./github-api-fragments.json";
 import initApollo from "./init-apollo";
 import { isBrowser } from "./isBrowser";
 
+interface ApolloProps {
+  apolloClient: ApolloClient<NormalizedCacheObject>;
+  githubApolloClient: ApolloClient<NormalizedCacheObject>;
+}
+
+interface AppContext<Q extends DefaultQuery = DefaultQuery>
+  extends NextContext<Q>,
+    // Custom prop added by withApollo
+    ApolloProps {}
+
+export interface ApolloContext<Q extends DefaultQuery = DefaultQuery>
+  extends NextAppContext<Q> {
+  ctx: AppContext<Q>;
+}
+
+export interface ApolloHocProps {
+  me?: MeMe;
+  apolloState: NormalizedCacheObject;
+  githubApolloState: NormalizedCacheObject;
+}
+
 const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData: introspectionQueryResultData as any,
+  introspectionQueryResultData: introspectionQueryResultData as IntrospectionResultData,
 });
 
-function parseCookies(req?: any, options = {}) {
+function parseCookies(
+  req?: IncomingMessage,
+  options = {}
+): {
+  [key: string]: string;
+} {
   return cookie.parse(
     req ? req.headers.cookie || "" : document.cookie,
     options
@@ -28,14 +66,18 @@ const SERVER_LINK_OPTIONS = {
 };
 const GITHUB_LINK_OPTIONS = { uri: "https://api.github.com/graphql" };
 
-export default (App: any) => {
-  return class WithData extends React.Component {
+export default <P extends DefaultAppIProps>(
+  App: typeof NextApp & AppComponentType<P & ApolloProps, P>
+) => {
+  return class WithData extends React.Component<P & AppProps & ApolloHocProps> {
     static displayName = `WithData(${App.displayName})`;
     static propTypes = {
       apolloState: PropTypes.object.isRequired,
     };
 
-    static async getInitialProps(ctx: any) {
+    static async getInitialProps(
+      ctx: ApolloContext
+    ): Promise<P & ApolloHocProps | {}> {
       const {
         Component,
         router,
@@ -70,7 +112,7 @@ export default (App: any) => {
       ctx.ctx.apolloClient = apollo;
       ctx.ctx.githubApolloClient = githubApolloClient;
 
-      let appProps = {};
+      let appProps = { pageProps: {} };
       if (App.getInitialProps) {
         appProps = await App.getInitialProps(ctx);
       }
@@ -122,7 +164,7 @@ export default (App: any) => {
     apolloClient: ApolloClient<NormalizedCacheObject>;
     githubApolloClient: ApolloClient<NormalizedCacheObject>;
 
-    constructor(props: any) {
+    constructor(props: P & AppProps & ApolloHocProps) {
       super(props);
       // `getDataFromTree` renders the component first, the client is passed off as a property.
       // After that rendering is done using Next's normal rendering pipeline
@@ -137,14 +179,14 @@ export default (App: any) => {
         props.githubApolloState,
         {
           getToken: () => {
-            return props.me ? props.me.accessToken : "";
+            return (props.me && props.me.accessToken) || "";
           },
         },
         { fragmentMatcher }
       );
     }
 
-    render() {
+    render(): JSX.Element {
       return (
         <App
           {...this.props}

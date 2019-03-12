@@ -1,7 +1,7 @@
-import * as React from "react";
-
 import { storiesOf } from "@storybook/react";
+import * as React from "react";
 import { PostCard } from ".";
+import { defaultLinkProps } from "../Link";
 import { MyButton } from "../MyButton";
 
 storiesOf("Post Card", module).add("basic example", () => (
@@ -19,7 +19,7 @@ storiesOf("Post Card", module).add("basic example", () => (
         pictureUrl: "https://dummyimage.com/600x400/000/fff",
       }}
       Link={MyButton}
-      getLinkProps={() => ({})}
+      getLinkProps={() => defaultLinkProps}
     />
   </div>
 ));

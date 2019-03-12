@@ -1,6 +1,7 @@
 import { CodeCard, css } from "@codeponder/ui";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
+import { FlattenSimpleInterpolation } from "styled-components";
 import {
   FindQuestionsComponent,
   QuestionInfoFragment,
@@ -18,7 +19,9 @@ interface LoadingCodeState {
  * *Styles for the line numbers coming from the server
  *
  */
-const selectLines = (prop: QuestionInfoFragment[]) => {
+const selectLines = (
+  prop: QuestionInfoFragment[]
+): FlattenSimpleInterpolation => {
   const styles = prop.reduce((total, current) => {
     const { lineNum } = current;
     total += `
@@ -37,7 +40,7 @@ const selectLines = (prop: QuestionInfoFragment[]) => {
 
 const PLUSBUTTON = `<button class="btn-open-edit token-btn">+</button>`;
 
-const useHighlight = (lang: string, code: string) => {
+const useHighlight = (lang: string, code: string): LoadingCodeState => {
   const [highlightCode, setHighlightCode] = useState<LoadingCodeState>({
     pending: true,
   });
@@ -53,7 +56,9 @@ const useHighlight = (lang: string, code: string) => {
   return highlightCode;
 };
 
-export const CodeFile: React.FC<{ questionId?: string }> = ({ questionId }) => {
+export const CodeFile: React.FC<{ questionId?: string }> = ({
+  questionId,
+}): JSX.Element => {
   const { code, lang, path, postId } = useContext(PostContext);
   const highlightCode = useHighlight(lang, code || "");
 
@@ -71,7 +76,7 @@ export const CodeFile: React.FC<{ questionId?: string }> = ({ questionId }) => {
 
         const questionMap: Record<string, QuestionInfoFragment> = {};
 
-        data.findQuestions.map(q => {
+        data.findQuestions.forEach(q => {
           if (q.lineNum) {
             questionMap[q.lineNum] = q;
           }
@@ -79,7 +84,7 @@ export const CodeFile: React.FC<{ questionId?: string }> = ({ questionId }) => {
 
         return (
           <CodeCard lang={lang} selectedLines={selectLines(data.findQuestions)}>
-            {highlightCode.resolved!.map((line, index) => {
+            {(highlightCode.resolved || []).map((line, index) => {
               return (
                 <RenderLine
                   key={index}

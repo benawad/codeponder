@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { Icon } from "../Icon";
+import { LinkProps, RouteLinkProps } from "../Link";
 
 interface TreeItem {
   name: string;
@@ -9,8 +10,8 @@ interface TreeItem {
 
 interface Props {
   items: TreeItem[];
-  Link: any;
-  getLinkProps: (path: string) => any;
+  Link: React.ComponentType<LinkProps> | React.FunctionComponent;
+  getLinkProps: (path: string) => RouteLinkProps;
 }
 
 const Container = styled.div`
@@ -43,7 +44,7 @@ export const FolderTree: React.FunctionComponent<Props> = ({
   items,
   Link,
   getLinkProps,
-}) => (
+}): JSX.Element => (
   <Container>
     {items.map((item, idx) => {
       return (

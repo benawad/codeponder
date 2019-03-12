@@ -3,8 +3,12 @@ interface Error {
   message: string;
 }
 
-export const normalizeErrors = (errors: Error[]) => {
-  const errMap: { [key: string]: string } = {};
+interface ErrMap {
+  [key: string]: string;
+}
+
+export const normalizeErrors = (errors: Error[]): ErrMap => {
+  const errMap: ErrMap = {};
 
   errors.forEach(err => {
     errMap[err.path] = err.message;

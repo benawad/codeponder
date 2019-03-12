@@ -1,15 +1,20 @@
-import Document from "next/document";
+import Document, {
+  DefaultDocumentIProps,
+  NextDocumentContext,
+} from "next/document";
+import React from "react";
 import { ServerStyleSheet } from "styled-components";
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx: any) {
+  static async getInitialProps(
+    ctx: NextDocumentContext
+  ): Promise<DefaultDocumentIProps> {
     const sheet = new ServerStyleSheet();
 
     const originalRenderPage = ctx.renderPage;
     ctx.renderPage = () =>
       originalRenderPage({
-        enhanceApp: (App: any) => (props: any) =>
-          sheet.collectStyles(<App {...props} />),
+        enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
       });
 
     const initialProps = await Document.getInitialProps(ctx);

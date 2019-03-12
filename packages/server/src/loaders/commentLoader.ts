@@ -2,7 +2,7 @@ import * as DataLoader from "dataloader";
 import { getRepository, In } from "typeorm";
 import { Comment } from "../entity/Comment";
 
-export const commentLoader = () =>
+export const commentLoader = (): DataLoader<string, Comment[]> =>
   new DataLoader(async (keys: string[]) => {
     // code review question ids
     const comments = await getRepository(Comment).find({
