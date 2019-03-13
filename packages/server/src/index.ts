@@ -1,4 +1,3 @@
-require("dotenv-safe").config();
 import { ApolloError, ApolloServer } from "apollo-server-express";
 import * as connectRedis from "connect-redis";
 import * as cors from "cors";
@@ -6,7 +5,8 @@ import * as express from "express";
 import * as session from "express-session";
 import { GraphQLError } from "graphql";
 import * as passport from "passport";
-import { Strategy as GitHubStrategy } from "passport-github";
+import { Profile, Strategy as GitHubStrategy } from "passport-github";
+import { RedisClient } from "redis";
 import "reflect-metadata";
 import { buildSchema, useContainer } from "type-graphql";
 import { Container } from "typedi";
@@ -22,17 +22,18 @@ import { redis } from "./redis";
 import { createUser } from "./utils/createUser";
 import { logManager } from "./utils/logManager";
 import { setupErrorHandling } from "./utils/shutdown";
+require("dotenv-safe").config();
 
 const logger = logManager();
 logger.info("Loading environment...");
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
-const RedisStore = connectRedis(session as any); // connect node.req.session to redis backing store
+const RedisStore = connectRedis(session); // connect node.req.session to redis backing store
 
 useContainer(Container);
 typeorm.useContainer(Container);
 
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
   logger.info("Connecting database...");
   const conn = await createTypeormConn();
   if (conn) {
@@ -47,7 +48,7 @@ const startServer = async () => {
     schema: await buildSchema({
       resolvers: [__dirname + "/modules/**/resolver.*"],
     }),
-    context: ({ req }: any) => ({
+    context: ({ req }: { req: Request }) => ({
       req,
       userLoader: userLoader(),
       commentLoader: commentLoader(),
@@ -93,37 +94,44 @@ const startServer = async () => {
     return next();
   });
 
-  app.use(
-    session({
-      store: new RedisStore({
-        client: redis as any,
-      }),
-      name: "qid",
-      secret: SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
-      },
-    } as any)
-  );
+  const sessionOption: session.SessionOptions = {
+    store: new RedisStore({
+      client: (redis as unknown) as RedisClient,
+    }),
+    name: "qid",
+    secret: SESSION_SECRET || "",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
+    },
+  };
+
+  app.use(session(sessionOption));
+
+  interface UserProfile extends Profile {
+    _json: {
+      [key: string]: string;
+    };
+  }
 
   passport.use(
     new GitHubStrategy(
       {
-        clientID: process.env.GITHUB_CLIENT_ID!,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+        clientID: process.env.GITHUB_CLIENT_ID || "",
+        clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
         callbackURL: "http://localhost:4000/oauth/github",
       },
-      async (accessToken, refreshToken, profile: any, cb) => {
+      async (accessToken, refreshToken, userProfile, cb) => {
+        const profile = (userProfile as unknown) as UserProfile;
         let user = await typeorm
           .getRepository(User)
           .findOne({ where: { githubId: profile.id } });
         if (!user) {
           user = await createUser({
-            username: profile.username,
+            username: profile.username || "",
             githubId: profile.id,
             pictureUrl: profile._json.avatar_url,
             bio: profile._json.bio,
@@ -147,8 +155,8 @@ const startServer = async () => {
   app.get(
     "/oauth/github",
     passport.authenticate("github", { session: false }),
-    (req: any, res) => {
-      if (req.user.user.id) {
+    (req, res) => {
+      if (req.user.user.id && req.session) {
         req.session.userId = req.user.user.id;
         req.session.accessToken = req.user.accessToken;
         req.session.refreshToken = req.user.refreshToken;

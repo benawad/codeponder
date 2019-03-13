@@ -11,7 +11,7 @@ interface Props extends React.HTMLAttributes<HTMLPreElement> {
   selectedLines: FlattenSimpleInterpolation;
 }
 
-interface styleProps {
+interface StyleProps {
   fontSize?: number;
   selectedLines: SimpleInterpolation;
 }
@@ -27,7 +27,7 @@ export const LineNumberStyle = `
 `;
 
 const Pre = styled.pre`
-  font-size: ${(p: styleProps) => p.fontSize || 14}px;
+  font-size: ${(p: StyleProps) => p.fontSize || 14}px;
 
   &.code-content code[class*="language-"] {
     background-color: #fafafa;
@@ -162,14 +162,14 @@ const Pre = styled.pre`
     }
   }
 
-  ${(p: styleProps) => p.selectedLines}
+  ${(p: StyleProps) => p.selectedLines}
 `;
 
 export const CodeCard: React.FunctionComponent<Props> = ({
   lang,
   children,
   ...props
-}) => (
+}): JSX.Element => (
   <Pre className={`code-content language-${lang}`} {...props}>
     <code className={`language-${lang}`}>{children}</code>
   </Pre>

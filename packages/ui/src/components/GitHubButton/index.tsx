@@ -1,10 +1,10 @@
 import * as React from "react";
-import { ButtonProps, Button, Box } from "rebass";
+import { Box, Button, ButtonProps } from "rebass";
 import { Icon } from "../Icon";
 
-export const GitHubButton: React.SFC<
+export const GitHubButton: React.FC<
   ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ children }) => {
+> = ({ children }): JSX.Element => {
   return (
     <Button variant="github">
       <Box mr="1.2rem">

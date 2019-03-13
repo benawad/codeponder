@@ -3,7 +3,9 @@ import { Question } from "../entity/Question";
 
 @EntityRepository(Question)
 export class QuestionRepository extends Repository<Question> {
-  async add(input: Partial<Question>) {
+  async add(
+    input: Partial<Question>
+  ): Promise<(Partial<Question> & Question) | null> {
     const q = await this.findOne({
       where: {
         lineNum: input.lineNum,

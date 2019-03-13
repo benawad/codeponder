@@ -5,7 +5,7 @@ export const FilePath: React.FC<{
   id: string;
   name: string;
   path?: string;
-}> = ({ id, name, path }) => {
+}> = ({ id, name, path }): JSX.Element | null => {
   if (!path) {
     return null;
   }
@@ -30,7 +30,7 @@ export const FilePath: React.FC<{
               route="post"
               params={{
                 id,
-                path: [...currentPath] as any,
+                path: [...currentPath],
               }}
             >
               <a>{part}</a>

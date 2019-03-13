@@ -1,4 +1,6 @@
-type CommandsMap = {
+import { IconProps } from "@codeponder/ui";
+
+interface CommandsMap {
   [key: string]: {
     label: string;
     className?: string;
@@ -7,39 +9,39 @@ type CommandsMap = {
     newLine?: string;
     multiple?: true;
   };
-};
+}
 
 export const commands: CommandsMap = {
-  header_text: { label: "Add header text", before: "### " },
-  bold_text: { label: "Add bold text <ctrl+b>", before: "**", after: "**" },
-  italic_text: { label: "Add italic text <ctrl+i>", before: "_", after: "_" },
-  insert_quote: {
+  headerText: { label: "Add header text", before: "### " },
+  boldText: { label: "Add bold text <ctrl+b>", before: "**", after: "**" },
+  italicText: { label: "Add italic text <ctrl+i>", before: "_", after: "_" },
+  insertQuote: {
     label: "Insert a quote",
     before: "> ",
     newLine: "\n",
     multiple: true,
   },
-  insert_code: { label: "Insert code", before: "`", after: "`" },
-  insert_link: { label: "Add a link <ctrl+k>", before: "[", after: "](url)" },
-  bulleted_list: {
+  insertCode: { label: "Insert code", before: "`", after: "`" },
+  insertLink: { label: "Add a link <ctrl+k>", before: "[", after: "](url)" },
+  bulletedList: {
     label: "Add a bulleted list",
     before: "- ",
     newLine: "\n",
     multiple: true,
   },
-  numbered_list: {
+  numberedList: {
     label: "Add a numbered list",
     before: "%. ",
     newLine: "\n",
     multiple: true,
   },
-  task_list: {
+  taskList: {
     label: "Add a task list",
     before: "- [ ] ",
     newLine: "\n",
     multiple: true,
   },
-  mention_user: {
+  mentionUser: {
     label: "Directly mention a user or team",
     className: "tooltipped-nw",
     before: "",
@@ -56,15 +58,19 @@ const executeCommand = (
   text: string,
   selectionStart: number | null,
   selectionEnd: number | null
-) => {
+): {
+  newText: string;
+  start: number;
+  end: number;
+} => {
   let { before, after = "", newLine = "", multiple = false } = commands[name];
 
   const start = selectionStart || 0;
   const end = selectionEnd || 0;
   const length = text.length;
 
-  if (start == length) {
-    const newLineBefore = start == 0 ? "" : newLine + newLine;
+  if (start === length) {
+    const newLineBefore = start === 0 ? "" : newLine + newLine;
     const offset = (newLineBefore + before).length;
     const newText = text + newLineBefore + before.replace(/%/, "1") + after;
     return { newText, start: start + offset, end: end + offset };
@@ -90,18 +96,18 @@ const executeCommand = (
   const rows = selection.split("\n");
   const last = text.substring(endIndex);
 
-  if (name == "insert_code" && rows.length > 1) {
+  if (name === "insertCode" && rows.length > 1) {
     before = "```\n";
     after = "\n```";
   }
 
   const newLineBefore =
-    startIndex == 0
+    startIndex === 0
       ? ""
-      : newLine + (first[first.length - 1] == newLine ? "" : newLine);
+      : newLine + (first[first.length - 1] === newLine ? "" : newLine);
 
   const newLineAfter =
-    endIndex == length ? "" : newLine + (last[0] == newLine ? "" : newLine);
+    endIndex === length ? "" : newLine + (last[0] === newLine ? "" : newLine);
 
   const offset = (newLineBefore + before).length;
 
@@ -114,7 +120,7 @@ const executeCommand = (
   const startText = first + newLineBefore + middle;
   const newText = startText + after + newLineAfter + last;
 
-  if (name == "insert_link") {
+  if (name === "insertLink") {
     return { newText, start: startText.length + 2, end: startText.length + 5 };
   }
 
@@ -125,26 +131,37 @@ const executeCommand = (
   };
 };
 
-export const keyBoardCommands = (e: React.KeyboardEvent) => {
+export const keyBoardCommands = (
+  e: React.KeyboardEvent
+): IconProps["name"] | "" => {
   const control = !e.altKey && (e.ctrlKey || e.metaKey);
   if (control) {
     switch (e.keyCode) {
       case 66: // 'b' Add bold text
-        return "bold_text";
+        return "boldText";
       case 73: // 'i' Add italic text
-        return "italic_text";
+        return "italicText";
       case 75: // 'k' Add a link
-        return "insert_link";
+        return "insertLink";
+      default:
+        break;
     }
   }
   return "";
 };
 
+export interface EditCommand {
+  target: {
+    name: string;
+    value: string;
+  };
+}
+
 export const commandsHandler = (
   name: string,
   textarea: HTMLTextAreaElement,
-  textChange: (e: any) => void
-) => {
+  textChange: (c: EditCommand) => void
+): void => {
   const { value: text, selectionStart, selectionEnd } = textarea;
   const { newText, start, end } = executeCommand(
     name,

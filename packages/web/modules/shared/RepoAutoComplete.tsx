@@ -10,12 +10,13 @@ interface Props {
   onChange: (data: GetViewerReposEdges | null) => void;
 }
 
-const itemToString = (x: GetViewerReposEdges) => (x ? x.node!.name : "");
+const itemToString = (x: GetViewerReposEdges): string =>
+  x && x.node ? x.node.name : "";
 
 export class RepoAutoComplete extends React.Component<Props> {
   static contextType = GitHubApolloClientContext;
 
-  render() {
+  render(): JSX.Element {
     const { onChange } = this.props;
 
     return (
@@ -24,7 +25,7 @@ export class RepoAutoComplete extends React.Component<Props> {
           <Select
             placeholder="browse repos"
             onChange={x => {
-              onChange(x ? (x as any).value : null);
+              onChange(x ? (Array.isArray(x) ? x[0] : x).value : null);
             }}
             isSearchable
             options={

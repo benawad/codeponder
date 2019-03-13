@@ -1,6 +1,6 @@
 import * as pino from "pino";
 
-export const logManager = () => {
+export const logManager = (): pino.Logger => {
   const loggingInstance = pino(
     { prettyPrint: { colorize: true } },
     process.stdout
@@ -8,9 +8,7 @@ export const logManager = () => {
 
   // write first log entry...
   const lNow = new Date().toLocaleString();
-  loggingInstance.info(
-    `Logging initialized at ${lNow}`
-  );
+  loggingInstance.info(`Logging initialized at ${lNow}`);
 
   return loggingInstance;
 };

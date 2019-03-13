@@ -18,7 +18,7 @@ import { notificationsQuery } from "../../graphql/question-comment-notification/
 import { Link } from "../../server/routes";
 import { Layout } from "../shared/Layout";
 
-export const NotificationsView: React.FC = () => {
+export const NotificationsView: React.FC = (): JSX.Element => {
   return (
     <Layout title="Notifications">
       <div style={{ display: "flex", flex: 1, marginBottom: "2rem" }}>
@@ -26,7 +26,7 @@ export const NotificationsView: React.FC = () => {
           <UpdateNotificationReadComponent>
             {updateNotificationRead => (
               <NotificationsComponent fetchPolicy="network-only">
-                {({ data, loading, fetchMore, ...stuff }) => {
+                {({ data, loading, fetchMore }) => {
                   if (!data || loading) {
                     return <Spinner />;
                   }
@@ -79,7 +79,7 @@ export const NotificationsView: React.FC = () => {
                               route="post"
                               params={{
                                 id: n.question.post.id,
-                                path: n.question.path!,
+                                path: n.question.path || "",
                                 questionId: n.question.id,
                               }}
                             >
@@ -104,12 +104,15 @@ export const NotificationsView: React.FC = () => {
                           <MyButton
                             variant="primary"
                             onClick={async () => {
+                              const notification =
+                                data.notifications.notifications[
+                                  data.notifications.notifications.length - 1
+                                ];
                               await fetchMore({
                                 query: findPostQuery,
                                 variables: {
-                                  cursor: data.notifications.notifications[
-                                    data.notifications.notifications.length - 1
-                                  ]!.createdAt,
+                                  cursor:
+                                    notification && notification.createdAt,
                                 },
                                 updateQuery: (
                                   previous,

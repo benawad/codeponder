@@ -8,7 +8,7 @@ import { MyButton } from "../MyButton";
 
 interface Props {
   id: string;
-  markdown: React.ReactElement<any> | null;
+  markdown: React.ReactElement<HTMLElement> | null;
   programmingLanguage?: string | null;
   codeSnippet?: string | null;
   createdAt: string;
@@ -31,18 +31,18 @@ interface QuestionProps extends Props {
 interface CommentCardProps extends Props {
   isOwner: boolean;
   numComments?: number;
-  onReplyClick?: (e: any) => void;
+  onReplyClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 interface BaseProps extends Props {
   title?: string;
   isOwner?: boolean;
   numComments?: number;
-  onReplyClick?: (e: any) => void;
+  onReplyClick?: (e: React.MouseEvent<HTMLElement>) => void;
   variant: "outline" | "flat";
 }
 
-const CommentContainer = styled(Card as any)`
+const CommentContainer = styled(Card)`
   background-color: #fff;
   border: 1px solid #d1d5da;
   border-radius: 3px;
@@ -83,13 +83,21 @@ const CommentContainer = styled(Card as any)`
   }
 `;
 
-export const GrayText = ({ children }: { children: React.ReactNode }) => (
+export const GrayText = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => (
   <Text fontSize={4} fontFamily="rubik" color="#A5A5A5" pl=".4rem" pr=".8rem">
     {children}
   </Text>
 );
 
-export const Question = ({ path, renderLink, ...props }: QuestionProps) => {
+export const Question = ({
+  path,
+  renderLink,
+  ...props
+}: QuestionProps): JSX.Element => {
   return (
     <Card p="1rem">
       <BaseCommentCard {...props} variant="flat" />
@@ -105,7 +113,7 @@ export const Question = ({ path, renderLink, ...props }: QuestionProps) => {
   );
 };
 
-export const CommentCard = (props: CommentCardProps) => {
+export const CommentCard = (props: CommentCardProps): JSX.Element => {
   return (
     <CommentContainer>
       <BaseCommentCard {...props} title="" variant="outline" />
@@ -116,14 +124,13 @@ export const CommentCard = (props: CommentCardProps) => {
 const BaseCommentCard = ({
   title,
   markdown,
-  path,
   numComments,
   createdAt,
   creator: { username, pictureUrl },
   isOwner,
   onReplyClick,
   variant,
-}: BaseProps) => {
+}: BaseProps): JSX.Element => {
   const dtString = distanceInWordsStrict(new Date(), Date.parse(createdAt), {
     addSuffix: true,
   });

@@ -2,7 +2,7 @@ import { logoutMutation } from "../graphql/user/mutations/logout";
 import redirect from "../lib/redirect";
 import { NextContextWithApollo } from "../types/NextContextWithApollo";
 
-const Logout = () => {
+const Logout = (): null => {
   return null;
 };
 

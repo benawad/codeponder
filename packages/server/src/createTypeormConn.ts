@@ -1,6 +1,6 @@
-import { createConnection, getConnectionOptions } from "typeorm";
+import { Connection, createConnection, getConnectionOptions } from "typeorm";
 
-export const createTypeormConn = async () => {
+export const createTypeormConn = async (): Promise<Connection | null> => {
   let retries = 5;
   while (retries) {
     try {

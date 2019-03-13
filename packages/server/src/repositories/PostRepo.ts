@@ -9,7 +9,14 @@ interface FindByTopicsOptions {
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
-  async findByTopics({ topics, cursor, limit }: FindByTopicsOptions) {
+  async findByTopics({
+    topics,
+    cursor,
+    limit,
+  }: FindByTopicsOptions): Promise<{
+    hasMore: boolean;
+    posts: Post[];
+  }> {
     const qb = this.createQueryBuilder("p")
       .orderBy('"createdAt"', "DESC")
       .take(limit + 1);

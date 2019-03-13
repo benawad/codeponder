@@ -17,18 +17,16 @@ import { CommentResponse } from "./response";
 
 @Resolver(Comment)
 export class CommentResolver {
-  constructor(
-    @InjectRepository(Comment)
-    private readonly commentRepo: Repository<Comment>,
-    @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
-    @InjectRepository(Question)
-    private readonly questionRepo: Repository<Question>,
-    @InjectRepository(QuestionCommentNotification)
-    private readonly questionCommentNotificationRepo: Repository<
-      QuestionCommentNotification
-    >
-  ) {}
+  @InjectRepository(Comment)
+  private readonly commentRepo: Repository<Comment>;
+  @InjectRepository(User)
+  private readonly userRepo: Repository<User>;
+  @InjectRepository(Question)
+  private readonly questionRepo: Repository<Question>;
+  @InjectRepository(QuestionCommentNotification)
+  private readonly questionCommentNotificationRepo: Repository<
+    QuestionCommentNotification
+  >;
 
   @Mutation(() => CommentResponse)
   @UseMiddleware(isAuthenticated)
@@ -38,7 +36,7 @@ export class CommentResolver {
   ): Promise<CommentResponse> {
     const comment = await this.commentRepo.save({
       ...input,
-      creatorId: req.session!.userId,
+      creatorId: req.session && req.session.userId,
     });
 
     const question = await this.questionRepo.findOne(input.questionId);
@@ -47,7 +45,7 @@ export class CommentResolver {
     this.questionCommentNotificationRepo.save({
       commentId: comment.id,
       questionId: input.questionId,
-      userToNotifyId: question!.creatorId,
+      userToNotifyId: question ? question.creatorId : "",
       type: "reply",
     });
 
@@ -76,7 +74,7 @@ export class CommentResolver {
             .values(
               // the question creator will already get a notif
               users
-                .filter(u => u.id === question!.creatorId)
+                .filter(u => question && u.id === question.creatorId)
                 .map(u => ({
                   commentId: comment.id,
                   questionId: input.questionId,

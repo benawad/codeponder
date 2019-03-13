@@ -6,11 +6,7 @@ import { CommentCard, Question } from ".";
 const data = {
   title: "iamtitle",
   id: "dafs",
-  markdown: React.createElement(
-    "label",
-    null,
-    "i am a question body"
-  ),
+  markdown: <label>i am a question body</label>,
   codeSnippet: "i am code",
   numComments: 14,
   createdAt: "12/28/2018",

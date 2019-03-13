@@ -24,14 +24,19 @@ const MyInput = styled.input`
   width: 100%;
 `;
 
-interface Props extends React.HTMLProps<HTMLInputElement> {
+interface Props {
   big?: boolean;
   errorText?: string;
   icon?: keyof typeof icons;
+  onChange?: (event: React.FormEvent<HTMLInputElement>) => void | undefined;
+  onBlur?: (event: React.FormEvent<HTMLInputElement>) => void | undefined;
+  placeholder?: string;
+  style?: React.CSSProperties | undefined;
+  value?: string;
 }
 
 export class Input extends React.PureComponent<Props> {
-  render() {
+  render(): JSX.Element {
     const { icon, style, errorText, big, ...props } = this.props;
     return (
       <div style={style}>
@@ -44,10 +49,7 @@ export class Input extends React.PureComponent<Props> {
                 style={{ marginRight: ".8rem" }}
               />
             )}
-            <MyInput
-              style={{ fontSize: big ? "2rem" : "1.6rem" }}
-              {...props as any}
-            />
+            <MyInput style={{ fontSize: big ? "2rem" : "1.6rem" }} {...props} />
           </Row>
         </Container>
         {errorText && (

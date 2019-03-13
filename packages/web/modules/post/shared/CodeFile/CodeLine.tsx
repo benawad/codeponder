@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import React, { memo, useState } from "react";
 import { QuestionInfoFragment } from "../../../../generated/apollo-components";
 import { CreateQuestion } from "../CreateQuestion";
 import { CodeDiscussionView } from "./CodeDiscussionView";
@@ -24,7 +24,8 @@ export const RenderLine: React.FC<RenderLineProps> = memo(
           data-line-number={lineNum}
           dangerouslySetInnerHTML={{ __html: line }}
           onClick={e => {
-            if ((e.target as any).classList.contains("btn-open-edit")) {
+            const target = e.target as HTMLButtonElement;
+            if (target.classList.contains("btn-open-edit")) {
               if (question) {
                 setShowDiscussion(true);
               } else {

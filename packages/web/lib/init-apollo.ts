@@ -1,27 +1,31 @@
 import {
   ApolloClient,
+  ApolloReducerConfig,
   InMemoryCache,
   NormalizedCacheObject,
-  ApolloReducerConfig
 } from "apollo-boost";
-import { createHttpLink, HttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
+import { createHttpLink, HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
 import { isBrowser } from "./isBrowser";
 
 const apolloMap: { [key: string]: ApolloClient<NormalizedCacheObject> } = {};
 
+interface ApolloServer extends NodeJS.Global {
+  fetch: typeof fetch;
+}
+
 // Polyfill fetch() on the server (used by apollo-client)
 if (!isBrowser) {
-  (global as any).fetch = fetch;
+  (global as ApolloServer).fetch = fetch;
 }
 
 function create(
   linkOptions: HttpLink.Options,
-  initialState: any,
+  initialState: NormalizedCacheObject,
   { getToken }: { getToken: () => string },
   cacheConfig: ApolloReducerConfig = {}
-) {
+): ApolloClient<NormalizedCacheObject> {
   const httpLink = createHttpLink(linkOptions);
 
   const authLink = setContext((_, { headers }) => {
@@ -29,8 +33,8 @@ function create(
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : ""
-      }
+        authorization: token ? `Bearer ${token}` : "",
+      },
     };
   });
 
@@ -39,16 +43,16 @@ function create(
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(cacheConfig).restore(initialState || {})
+    cache: new InMemoryCache(cacheConfig).restore(initialState || {}),
   });
 }
 
 export default function initApollo(
   linkOptions: HttpLink.Options,
-  initialState: any,
+  initialState: NormalizedCacheObject,
   options: { getToken: () => string },
   cacheConfig: ApolloReducerConfig = {}
-) {
+): ApolloClient<NormalizedCacheObject> {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!isBrowser) {

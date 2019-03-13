@@ -3,7 +3,8 @@
   "scripts": {
     "build:server": "lerna run build --scope={@codeponder/common,@codeponder/server}",
     "build:web": "lerna run build --scope={@codeponder/common,@codeponder/web",
-    "build:deps": "lerna run build --scope={@codeponder/common,@codeponder/ui}"
+    "build:deps": "lerna run build --scope={@codeponder/common,@codeponder/ui}",
+    "lint": "eslint --fix -c .eslintrc.js --ignore-path .gitignore --cache --ignore-pattern packages/web/generated/** --ext .js,.ts,.tsx ."
   },
   "workspaces": {
     "packages": [

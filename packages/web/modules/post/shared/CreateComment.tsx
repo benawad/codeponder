@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import {
   CommentInfoFragment,
   CreateCommentComponent,
@@ -25,13 +25,16 @@ export const CreateQuestionReply = ({
   questionId,
   onEditorSubmit,
   ...props
-}: QuestionReplyProps) => {
+}: QuestionReplyProps): JSX.Element => {
   const { postId, path } = useContext(PostContext);
 
   return (
     <CreateCommentComponent>
       {mutate => {
-        const submitForm = async ({ cancel, text }: TextEditorResult) => {
+        const submitForm = async ({
+          cancel,
+          text,
+        }: TextEditorResult): Promise<void> => {
           if (!cancel) {
             // save result
             const response = await mutate({
@@ -65,17 +68,19 @@ export const CreateQuestionReply = ({
                   },
                   data: {
                     __typename: "Query",
-                    findQuestions: x!.findQuestions.map(q =>
-                      q.id === questionId
-                        ? {
-                            ...q,
-                            comments: [
-                              ...q.comments,
-                              data.createComment.comment,
-                            ],
-                          }
-                        : q
-                    ),
+                    findQuestions: x
+                      ? x.findQuestions.map(q =>
+                          q.id === questionId
+                            ? {
+                                ...q,
+                                comments: [
+                                  ...q.comments,
+                                  data.createComment.comment,
+                                ],
+                              }
+                            : q
+                        )
+                      : [],
                   },
                 });
               },
@@ -83,7 +88,10 @@ export const CreateQuestionReply = ({
 
             onEditorSubmit({
               submitted: true,
-              response: response && response.data!.createComment.comment,
+              response:
+                response &&
+                response.data &&
+                response.data.createComment.comment,
             });
           } else {
             onEditorSubmit({ submitted: false });

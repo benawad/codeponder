@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 const extensions: { [key: string]: string } = {
   py: "python",
   gyp: "python",
@@ -75,9 +76,9 @@ const extensions: { [key: string]: string } = {
   asm: "asm6502",
 };
 
-export const filenameToLang = (filename: string) => {
+export const filenameToLang = (filename: string):string => {
   const lfn = filename.toLowerCase();
-  const extension = (lfn.match(/\.(\w+)$/) || [, ""])[1];
+  const extension = (lfn.match(/\.(\w+)$/) || ["", ""])[1];
   if (extension) {
     return extensions[extension] || extension;
   }

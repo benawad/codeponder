@@ -1,4 +1,10 @@
-export function isScrolledIntoView(elm: HTMLElement | null) {
+export function isScrolledIntoView(
+  elm: HTMLElement | null
+): {
+  isVisible: boolean;
+  offsetTop?: number;
+  offsetBottom?: number;
+} {
   if (!elm) {
     return { isVisible: false };
   }
@@ -14,16 +20,29 @@ export function isScrolledIntoView(elm: HTMLElement | null) {
   };
 }
 
-export function getScrollY() {
+export function getScrollY(): number {
   // IE not supporting window.scrollY
   const doc = document.documentElement;
   return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 }
 
-export const scrollToView = (elm: HTMLElement, duration: number) => {
+const smoothScroll = (baseY: number, distance: number): void => {
+  let start = 0;
+  const step = (timestamp: number): void => {
+    if (!start) start = timestamp;
+    const delta = timestamp - start;
+    window.scrollTo(0, baseY + delta);
+    if (delta < distance) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+};
+
+export const scrollToView = (elm: HTMLElement, duration: number): void => {
   let start = 0;
   const baseY = getScrollY();
-  const step = (timestamp: number) => {
+  const step = (timestamp: number): void => {
     if (!start) start = timestamp;
     const deltaTime = timestamp - start;
     const { offsetBottom = 0 } = isScrolledIntoView(elm);
@@ -32,19 +51,6 @@ export const scrollToView = (elm: HTMLElement, duration: number) => {
       smoothScroll(baseY, offsetBottom + extraOffset);
     }
     if (deltaTime < duration) {
-      window.requestAnimationFrame(step);
-    }
-  };
-  window.requestAnimationFrame(step);
-};
-
-const smoothScroll = (baseY: number, distance: number) => {
-  let start = 0;
-  const step = (timestamp: number) => {
-    if (!start) start = timestamp;
-    const delta = timestamp - start;
-    window.scrollTo(0, baseY + delta);
-    if (delta < distance) {
       window.requestAnimationFrame(step);
     }
   };

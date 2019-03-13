@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import { CommentInputField } from "../../../shared/formik-fields/CommentInputField";
-import { commandsHandler, keyBoardCommands } from "./commands";
+import { commandsHandler, EditCommand, keyBoardCommands } from "./commands";
 import { EditorContainer } from "./components";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { Tab, Toolbar } from "./Toolbar";
@@ -15,7 +15,7 @@ import { Tab, Toolbar } from "./Toolbar";
 interface EditorProps {
   isReply: boolean;
   text: string;
-  textChange: (e: any) => void;
+  textChange: (c: EditCommand) => void;
 }
 
 let isIE8 = false;
@@ -28,14 +28,16 @@ export const MarkdownEditor: React.FC<EditorProps> = React.memo(
     const handleTabChange = useCallback(async (newTab: Tab) => {
       if (newTab === "write") {
         await setTab("write");
-        writeRef.current!.focus();
+        writeRef.current && writeRef.current.focus();
       } else {
         setTab("preview");
       }
     }, []);
 
     const handleCommand = useCallback((name: string) => {
-      commandsHandler(name, writeRef.current!, textChange);
+      if (writeRef.current) {
+        commandsHandler(name, writeRef.current, textChange);
+      }
     }, []);
 
     const handleKeyCommand = useCallback((e: React.KeyboardEvent) => {
@@ -47,18 +49,21 @@ export const MarkdownEditor: React.FC<EditorProps> = React.memo(
     }, []);
 
     useLayoutEffect(() => {
-      const textarea = writeRef.current!;
+      const textarea = writeRef.current;
       // textarea selectionStart and selectionEnd does not exist on IE8
-      isIE8 =
-        typeof textarea.selectionStart !== "number" ||
-        typeof textarea.selectionEnd !== "number";
+      isIE8 = textarea
+        ? typeof textarea.selectionStart !== "number" ||
+          typeof textarea.selectionEnd !== "number"
+        : false;
     }, []);
 
     // dynamically set textarea height
     useEffect(() => {
-      const textarea = writeRef.current!;
-      textarea.style.height = "100px";
-      textarea.style.height = writeRef.current!.scrollHeight + 2 + "px";
+      const textarea = writeRef.current;
+      if (textarea) {
+        textarea.style.height = "100px";
+        textarea.style.height = textarea.scrollHeight + 2 + "px";
+      }
     }, [text]);
 
     return (
@@ -85,7 +90,8 @@ export const MarkdownEditor: React.FC<EditorProps> = React.memo(
           <div
             className="preview-content selected"
             style={{
-              minHeight: writeRef.current!.style.height || "100px",
+              minHeight:
+                (writeRef.current && writeRef.current.style.height) || "100px",
             }}
           >
             <MarkdownRenderer text={text.trim() || "Nothing to preview"} />

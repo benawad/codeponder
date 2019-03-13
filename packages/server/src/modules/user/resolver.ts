@@ -16,18 +16,19 @@ import { isAuthenticated } from "../shared/middleware/isAuthenticated";
 
 @Resolver(User)
 export class UserResolver {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
-    @InjectRepository(QuestionCommentNotification)
-    private readonly questionCommentNotificationRepo: Repository<
-      QuestionCommentNotification
-    >
-  ) {}
+  @InjectRepository(User)
+  private readonly userRepo: Repository<User>;
+  @InjectRepository(QuestionCommentNotification)
+  private readonly questionCommentNotificationRepo: Repository<
+    QuestionCommentNotification
+  >;
 
   @FieldResolver()
-  async hasUnreadNotifications(@Root() user: User, @Ctx() ctx: MyContext) {
-    if (ctx.req.session!.userId !== user.id) {
+  async hasUnreadNotifications(
+    @Root() user: User,
+    @Ctx() ctx: MyContext
+  ): Promise<boolean> {
+    if (!ctx.req.session || ctx.req.session.userId !== user.id) {
       throw new Error("not authorized");
     }
 
@@ -39,8 +40,8 @@ export class UserResolver {
   }
 
   @FieldResolver()
-  accessToken(@Ctx() ctx: MyContext) {
-    return ctx.req.session!.accessToken;
+  accessToken(@Ctx() ctx: MyContext): string | undefined {
+    return ctx.req.session && ctx.req.session.accessToken;
   }
 
   @Mutation(() => Boolean)
@@ -48,21 +49,23 @@ export class UserResolver {
   async logout(
     @Ctx()
     ctx: MyContext
-  ) {
-    return new Promise(res =>
-      ctx.req.session!.destroy(err => {
-        console.log(err);
-        res(!!err);
-      })
-    );
+  ): Promise<{}> {
+    return new Promise(res => {
+      ctx.req.session
+        ? ctx.req.session.destroy(err => {
+            console.log(err);
+            res(!!err);
+          })
+        : res(true);
+    });
   }
 
   @Query(() => User, { nullable: true })
   async me(
     @Ctx()
     ctx: MyContext
-  ) {
-    const { userId } = ctx.req.session!;
+  ): Promise<User | null | undefined> {
+    const { userId = "" } = ctx.req.session || {};
     return userId ? this.userRepo.findOne(userId) : null;
   }
 }

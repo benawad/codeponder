@@ -31,6 +31,16 @@ interface Props {
   topics: string[];
 }
 
+interface ReturnedProps {
+  id: string | string[] | undefined;
+  path: string | string[] | undefined;
+  expression: string;
+  name: string;
+  owner: string;
+  topics: string[];
+  questionId: string | string[] | undefined;
+}
+
 export class PostView extends React.PureComponent<Props> {
   static contextType = GitHubApolloClientContext;
   static async getInitialProps({
@@ -38,7 +48,7 @@ export class PostView extends React.PureComponent<Props> {
     githubApolloClient,
     apolloClient,
     ...ctx
-  }: NextContextWithApollo) {
+  }: NextContextWithApollo): Promise<ReturnedProps | {}> {
     const response = await apolloClient.query<GetPostByIdQuery>({
       query: getPostByIdQuery,
       variables: {
@@ -75,7 +85,7 @@ export class PostView extends React.PureComponent<Props> {
     };
   }
 
-  render() {
+  render(): JSX.Element {
     const {
       owner,
       path,
@@ -160,7 +170,7 @@ export class PostView extends React.PureComponent<Props> {
                           path: [
                             ...(path ? path.split("/") : []),
                             ...itemPath.split("/"),
-                          ] as any,
+                          ],
                           id,
                         },
                       })}

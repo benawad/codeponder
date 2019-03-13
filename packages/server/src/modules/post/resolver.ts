@@ -22,12 +22,10 @@ import { PostResponse } from "./response";
 const POST_LIMIT = 6;
 @Resolver(Post)
 export class PostResolvers {
-  constructor(
-    @InjectRepository(QuestionRepository)
-    private readonly questionRepo: QuestionRepository,
-    @InjectRepository(PostRepository)
-    private readonly postRepo: PostRepository
-  ) {}
+  @InjectRepository(QuestionRepository)
+  private readonly questionRepo: QuestionRepository;
+  @InjectRepository(PostRepository)
+  private readonly postRepo: PostRepository;
 
   @Mutation(() => PostResponse)
   @UseMiddleware(isAuthenticated)
@@ -46,7 +44,7 @@ export class PostResolvers {
     if (!value) {
       value = await this.postRepo.save({
         ...input,
-        creatorId: req.session!.userId,
+        creatorId: req.session && req.session.userId,
       });
     }
 
@@ -58,12 +56,12 @@ export class PostResolvers {
   @Query(() => Post, {
     nullable: true,
   })
-  async getPostById(@Arg("id") id: string) {
+  async getPostById(@Arg("id") id: string): Promise<Post | undefined> {
     return this.postRepo.findOne(id);
   }
 
   @FieldResolver()
-  numQuestions(@Root() root: Post) {
+  numQuestions(@Root() root: Post): Promise<number> {
     return this.questionRepo.count({ where: { postId: root.id } });
   }
 

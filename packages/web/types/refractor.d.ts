@@ -3,18 +3,21 @@ declare module "rehype";
 declare module "refractor/core.js" {
   import PrismLib from "prismjs";
 
-  export type HastNode = {
+  interface Properties {
+    [k: string]: string | string[] | number | boolean;
+  }
+  export interface HastNode {
     type: "element" | "text";
     tagName?: string;
-    properties?: any;
-    children?: Array<HastNode>;
+    properties?: Properties;
+    children?: HastNode[];
     value?: string;
-  };
+  }
 
   export function highlight(
     value: string,
     name: string | PrismLib.LanguageDefinition
-  ): Array<HastNode>;
+  ): HastNode[];
 
   export function register(grammar: PrismLib.LanguageDefinition): void;
 

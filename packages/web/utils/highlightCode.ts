@@ -10,11 +10,18 @@ const lineNumber = (lineNum: number): HastNode => ({
   children: [{ type: "text", value: `${lineNum}` }],
 });
 
-const addLineNumber = (ast: HastNode[], lineNum: number, root = true) => {
+const addLineNumber = (
+  ast: HastNode[],
+  lineNum: number,
+  root = true
+): {
+  nodes: HastNode[];
+  lineNum: number;
+} => {
   const nodes: HastNode[] = root ? [lineNumber(lineNum++)] : [];
   ast.forEach(node => {
-    if (node.type === "text" && node.value!.includes("\n")) {
-      const lines = node.value!.split("\n");
+    if (node.type === "text" && node.value && node.value.includes("\n")) {
+      const lines = node.value.split("\n");
       const lastLine = lines.pop();
       for (const line of lines) {
         nodes.push({ type: "text", value: `${line}\n` });
@@ -52,7 +59,7 @@ export const getHighlightedCode = (
   code: string,
   lang: string,
   firstLineNum: number
-) => {
+): React.ReactNode[] | string => {
   let ast = getHast(code, lang);
   if (ast) {
     if (!isNaN(firstLineNum)) {

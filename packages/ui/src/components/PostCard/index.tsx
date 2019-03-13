@@ -1,7 +1,8 @@
 import * as React from "react";
 import styled from "../../theme/styled-components";
-import { Topic } from "../Topic";
 import { Avatar } from "../Avatar";
+import { LinkProps, RouteLinkProps } from "../Link";
+import { Topic } from "../Topic";
 
 interface Props {
   id: string;
@@ -16,8 +17,8 @@ interface Props {
     username: string;
     pictureUrl: string;
   };
-  Link: any;
-  getLinkProps: () => any;
+  Link: React.ComponentType<LinkProps> | React.FunctionComponent;
+  getLinkProps: () => RouteLinkProps;
 }
 
 const Container = styled.div`
@@ -65,7 +66,7 @@ const Username = styled.div`
   padding-left: 0.8rem;
 `;
 
-export const PostCard: React.SFC<Props> = ({
+export const PostCard: React.FC<Props> = ({
   repo,
   topics,
   repoOwner,
@@ -74,7 +75,7 @@ export const PostCard: React.SFC<Props> = ({
   creator: { pictureUrl, username },
   Link,
   getLinkProps,
-}) => {
+}): JSX.Element => {
   const linkProps = getLinkProps();
 
   return (

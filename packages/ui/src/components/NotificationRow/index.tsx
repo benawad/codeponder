@@ -39,7 +39,7 @@ export const NotificationRow: React.FC<Props> = ({
   renderRepoLink,
   read,
   onMarkAsClick,
-}) => {
+}): JSX.Element => {
   const dtString = distanceInWordsToNow(Date.parse(createdAt), {
     addSuffix: true,
   });

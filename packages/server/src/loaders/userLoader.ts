@@ -2,7 +2,7 @@ import * as DataLoader from "dataloader";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 
-export const userLoader = () =>
+export const userLoader = (): DataLoader<string, User> =>
   new DataLoader(async (keys: string[]) => {
     const users = await getRepository(User).findByIds(keys);
 

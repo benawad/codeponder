@@ -1,6 +1,7 @@
 import { GlobalStyle, theme, ThemeProvider } from "@codeponder/ui";
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import App, { Container } from "next/app";
-import React from "react";
+import * as React from "react";
 import { ApolloProvider } from "react-apollo";
 import ReactModal from "react-modal";
 import "../empty.css";
@@ -10,11 +11,13 @@ import { GitHubApolloClientContext } from "../modules/shared/GithubApolloClientC
 if (typeof window !== "undefined") {
   ReactModal.setAppElement("body");
 }
-
-class MyApp extends App {
-  render() {
-    const { Component, pageProps, apolloClient, githubApolloClient } = this
-      .props as any;
+interface Props {
+  apolloClient: ApolloClient<NormalizedCacheObject>;
+  githubApolloClient: ApolloClient<NormalizedCacheObject>;
+}
+class MyApp extends App<Props> {
+  render(): JSX.Element {
+    const {Component, pageProps, apolloClient, githubApolloClient} = this.props;
     return (
       <Container>
         <GlobalStyle />

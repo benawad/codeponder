@@ -6,7 +6,7 @@ import {
   Resolver,
   UseMiddleware,
 } from "type-graphql";
-import { LessThan, Repository } from "typeorm";
+import { FindOneOptions, LessThan, Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Comment } from "../../entity/Comment";
 import { QuestionCommentNotification } from "../../entity/QuestionCommentNotification";
@@ -18,12 +18,10 @@ import { NotificationsResponse } from "./response";
 const NOTIF_LIMIT = 50;
 @Resolver(Comment)
 export class CommentResolver {
-  constructor(
-    @InjectRepository(QuestionCommentNotification)
-    private readonly questionCommentNotificationRepo: Repository<
-      QuestionCommentNotification
-    >
-  ) {}
+  @InjectRepository(QuestionCommentNotification)
+  private readonly questionCommentNotificationRepo: Repository<
+    QuestionCommentNotification
+  >;
 
   @Query(() => NotificationsResponse)
   @UseMiddleware(isAuthenticated)
@@ -31,8 +29,8 @@ export class CommentResolver {
     @Ctx() { req }: MyContext,
     @Arg("cursor", { nullable: true }) cursor?: string
   ): Promise<NotificationsResponse> {
-    const where: any = {
-      userToNotifyId: req.session!.userId,
+    const where: FindOneOptions["where"] = {
+      userToNotifyId: req.session && req.session.userId,
     };
 
     if (cursor) {
@@ -64,7 +62,7 @@ export class CommentResolver {
       {
         commentId,
         questionId,
-        userToNotifyId: req.session!.userId,
+        userToNotifyId: req.session && req.session.userId,
       },
       {
         read,
@@ -83,7 +81,7 @@ export class CommentResolver {
   > {
     await this.questionCommentNotificationRepo.update(
       {
-        userToNotifyId: req.session!.userId,
+        userToNotifyId: req.session && req.session.userId,
       },
       {
         read: true,

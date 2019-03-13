@@ -6,6 +6,7 @@ interface Options {
 }
 
 export class DisplayError extends Error {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public extensions: Record<string, any>;
   backgroundColor?: string;
   textColor?: string;

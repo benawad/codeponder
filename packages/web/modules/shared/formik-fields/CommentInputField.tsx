@@ -2,7 +2,7 @@ import { BlueInput, styled } from "@codeponder/ui";
 import { FieldProps } from "formik";
 import * as React from "react";
 
-interface CommentInputFieldProps extends FieldProps<any> {
+interface CommentInputFieldProps extends FieldProps {
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
@@ -38,11 +38,12 @@ export const FormInput = styled(BlueInput)`
   */
 `;
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export const CommentInputField = ({
   inputRef,
   field, // { name, value, onChange, onBlur }
   form: _,
   ...props
-}: CommentInputFieldProps) => {
+}: CommentInputFieldProps): JSX.Element => {
   return <FormInput ref={inputRef} {...field} {...props} />;
 };

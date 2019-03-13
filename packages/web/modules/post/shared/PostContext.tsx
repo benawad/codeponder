@@ -9,4 +9,8 @@ export interface ContextProps {
   totalLines?: number;
 }
 
-export const PostContext = createContext<ContextProps>({} as any);
+export const PostContext = createContext<ContextProps>({
+  lang: "",
+  owner: "",
+  postId: "",
+});
