@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { userInfoFragment } from "../../user/fragments/UserInfo";
 
 export const notificationsQuery = gql`
   query Notifications($cursor: String) {
@@ -13,8 +14,7 @@ export const notificationsQuery = gql`
         comment {
           id
           creator {
-            username
-            pictureUrl
+            ...UserInfo
           }
         }
         question {
@@ -25,11 +25,13 @@ export const notificationsQuery = gql`
             id
             repo
             creator {
-              username
+              ...UserInfo
             }
           }
         }
       }
     }
   }
+
+  ${userInfoFragment}
 `;

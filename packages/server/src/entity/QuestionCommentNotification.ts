@@ -11,6 +11,7 @@ import {
 import { Comment } from "./Comment";
 import { Question } from "./Question";
 import { User } from "./User";
+import { Lazy } from "../types/Lazy";
 
 @Entity()
 @ObjectType()
@@ -21,19 +22,21 @@ export class QuestionCommentNotification {
 
   @Field(() => Comment)
   @ManyToOne(() => Comment)
-  comment: Promise<Comment>;
+  comment: Lazy<Comment>;
   @Field()
+  @Column("uuid")
   commentId: string;
 
   @Field(() => Question)
   @ManyToOne(() => Question, { onDelete: "CASCADE" })
-  question: Promise<Question>;
+  question: Lazy<Question>;
   @Field()
+  @Column("uuid")
   questionId: string;
 
   @ManyToOne(() => User, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userToNotifyId" })
-  userToNotify: Promise<User>;
+  userToNotify: Lazy<User>;
   @Field()
   @Column("uuid")
   userToNotifyId: string;
