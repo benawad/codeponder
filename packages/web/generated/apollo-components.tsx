@@ -170,6 +170,8 @@ export type NotificationsNotifications = {
 export type Notifications_Notifications = {
   __typename: "QuestionCommentNotification";
 
+  id: string;
+
   type: string;
 
   createdAt: DateTime;
@@ -189,13 +191,7 @@ export type NotificationsComment = {
   creator: NotificationsCreator;
 };
 
-export type NotificationsCreator = {
-  __typename?: "User";
-
-  username: string;
-
-  pictureUrl: string;
-};
+export type NotificationsCreator = UserInfoFragment;
 
 export type NotificationsQuestion = {
   __typename?: "Question";
@@ -219,11 +215,7 @@ export type NotificationsPost = {
   creator: Notifications_Creator;
 };
 
-export type Notifications_Creator = {
-  __typename?: "User";
-
-  username: string;
-};
+export type Notifications_Creator = UserInfoFragment;
 
 export type CreateQuestionVariables = {
   question: CreateQuestionInput;
@@ -357,7 +349,7 @@ export type UserInfoFragment = {
 
   pictureUrl: string;
 
-  bio: string;
+  bio: Maybe<string>;
 
   accessToken: Maybe<string>;
 };
@@ -754,14 +746,14 @@ export const NotificationsDocument = gql`
       hasMore
       notifications {
         __typename
+        id
         type
         createdAt
         read
         comment {
           id
           creator {
-            username
-            pictureUrl
+            ...UserInfo
           }
         }
         question {
@@ -772,13 +764,15 @@ export const NotificationsDocument = gql`
             id
             repo
             creator {
-              username
+              ...UserInfo
             }
           }
         }
       }
     }
   }
+
+  ${UserInfoFragmentDoc}
 `;
 export class NotificationsComponent extends React.Component<
   Partial<ReactApollo.QueryProps<NotificationsQuery, NotificationsVariables>>

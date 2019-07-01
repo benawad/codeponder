@@ -1,9 +1,9 @@
 import toH from "hast-to-hyperscript";
 import React from "react";
-import refractor, { HastNode } from "refractor/core.js";
+import refractor, { RefractorNode } from "refractor";
 import rehype from "rehype";
 
-const lineNumber = (lineNum: number): HastNode => ({
+const lineNumber = (lineNum: number): RefractorNode => ({
   type: "element",
   tagName: "span",
   properties: { className: ["token", "line-number"] },
@@ -11,14 +11,14 @@ const lineNumber = (lineNum: number): HastNode => ({
 });
 
 const addLineNumber = (
-  ast: HastNode[],
+  ast: RefractorNode[],
   lineNum: number,
   root = true
 ): {
-  nodes: HastNode[];
+  nodes: RefractorNode[];
   lineNum: number;
 } => {
-  const nodes: HastNode[] = root ? [lineNumber(lineNum++)] : [];
+  const nodes: RefractorNode[] = root ? [lineNumber(lineNum++)] : [];
   ast.forEach(node => {
     if (node.type === "text" && node.value && node.value.includes("\n")) {
       const lines = node.value.split("\n");
@@ -31,7 +31,7 @@ const addLineNumber = (
         nodes.push({ type: "text", value: lastLine });
       }
     } else {
-      if (node.children) {
+      if (node.type == "element" && node.children) {
         const result = addLineNumber(node.children, lineNum, false);
         node.children = result.nodes;
         lineNum = result.lineNum;
@@ -42,7 +42,7 @@ const addLineNumber = (
   return { nodes, lineNum };
 };
 
-const getHast = (code: string, lang: string): HastNode[] | null => {
+const getHast = (code: string, lang: string): RefractorNode[] | null => {
   if (!lang) return null;
   if (!refractor.registered(lang)) {
     try {

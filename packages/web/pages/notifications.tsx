@@ -1,3 +1,4 @@
 import { NotificationsView } from "../modules/notifications/NotificationsView";
+import { withAuth } from "../modules/shared/withAuth";
 
-export default NotificationsView;
+export default withAuth(NotificationsView);
