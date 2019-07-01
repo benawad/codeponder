@@ -12,13 +12,17 @@ import {
   NotificationsQuery,
   NotificationsVariables,
   UpdateNotificationReadComponent,
+  MeMe,
 } from "../../generated/apollo-components";
 import { findPostQuery } from "../../graphql/post/queries/findPost";
 import { notificationsQuery } from "../../graphql/question-comment-notification/queries/notifications";
 import { Link } from "../../server/routes";
 import { Layout } from "../shared/Layout";
+import gql from "graphql-tag";
 
-export const NotificationsView: React.FC = (): JSX.Element => {
+export const NotificationsView: React.FC<{ me: MeMe }> = ({
+  me,
+}): JSX.Element => {
   return (
     <Layout title="Notifications">
       <div style={{ display: "flex", flex: 1, marginBottom: "2rem" }}>
@@ -47,6 +51,14 @@ export const NotificationsView: React.FC = (): JSX.Element => {
                                 read: !n.read,
                               },
                               update: cache => {
+                                const notifications = data.notifications.notifications.map(
+                                  x =>
+                                    x.comment.id === n.comment.id &&
+                                    x.question.id === n.question.id
+                                      ? { ...n, read: !n.read }
+                                      : x
+                                );
+
                                 cache.writeQuery<
                                   NotificationsQuery,
                                   NotificationsVariables
@@ -57,17 +69,26 @@ export const NotificationsView: React.FC = (): JSX.Element => {
                                       __typename: "NotificationsResponse",
                                       hasMore: data.notifications.hasMore,
                                       notifications: orderBy(
-                                        data.notifications.notifications.map(
-                                          x =>
-                                            x.comment.id === n.comment.id &&
-                                            x.question.id === n.question.id
-                                              ? { ...n, read: !n.read }
-                                              : x
-                                        ),
+                                        notifications,
                                         ["read", "createdAt"],
                                         ["asc", "desc"]
                                       ),
                                     },
+                                  },
+                                });
+
+                                cache.writeFragment({
+                                  id: `User:${me.id}`,
+                                  fragment: gql`
+                                    fragment test on User {
+                                      hasUnreadNotifications
+                                    }
+                                  `,
+                                  data: {
+                                    __typename: "User",
+                                    hasUnreadNotifications: notifications.some(
+                                      noti => !noti.read
+                                    ),
                                   },
                                 });
                               },
