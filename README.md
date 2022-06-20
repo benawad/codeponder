@@ -29,7 +29,7 @@ You can view the current figma mockup [here](https://www.figma.com/proto/hM2nbxq
 
   # Installing
 
-1. Clone and install dependecies
+1. Clone and install dependencies
 
 ```
 git clone https://github.com/benawad/codeponder.git
@@ -101,3 +101,4 @@ yarn watch
 In the `ui` package so it rebuilds it whenever you make changes.
 
 If you need any help setting this up feel free to message me on Discord: https://discord.gg/Vehs99V
+
